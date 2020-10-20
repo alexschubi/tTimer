@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="color_back">#2A2E3A</color>
+    <color name="color_header">#304380</color>
+    <color name="color_items">#939DBC</color>
+    <color name="text_light">#939DBC</color>
+</resources>
