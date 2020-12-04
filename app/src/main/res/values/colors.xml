@@ -4,4 +4,5 @@
     <color name="color_header">#304380</color>
     <color name="color_items">#939DBC</color>
     <color name="text_light">#939DBC</color>
+    <color name="color_items_chosen">#F44336</color>
 </resources>
