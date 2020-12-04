@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import kotlinx.android.synthetic.main.activity_add.*
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -18,8 +19,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        b_add.setOnClickListener(){
+        b_add.setOnClickListener()
+        {
             Toast.makeText(this,"b_add clicked", Toast.LENGTH_SHORT).show()
+            setContentView(R.layout.activity_add)
         }
         b_del.setOnClickListener(){
             Toast.makeText(this,"b_del clicked", Toast.LENGTH_SHORT).show()
@@ -38,6 +41,8 @@ class MainActivity : AppCompatActivity() {
         linearLayout_h_Item_1.setOnClickListener(){
             Toast.makeText(this, "Item $linearLayout_h_Item_1 clicked", Toast.LENGTH_SHORT).show()
         }
+        
     }
+
 
 }

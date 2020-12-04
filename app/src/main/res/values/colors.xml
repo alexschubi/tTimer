@@ -5,4 +5,5 @@
     <color name="color_items">#939DBC</color>
     <color name="text_light">#939DBC</color>
     <color name="color_items_chosen">#F44336</color>
+    <color name="text_back_light">#E2E2E2</color>
 </resources>
