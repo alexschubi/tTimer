@@ -1,48 +1,60 @@
 package com.example.ttimer
 
-import android.annotation.SuppressLint
-import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_add.*
 import kotlinx.android.synthetic.main.activity_main.*
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
+import android.widget.DatePicker
+import android.widget.TimePicker
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity()
+{
 
 
     //VARIABLES
-    var delmode = false
+    var delmode: Boolean = false
+    var addText: String = ""
+    var addDate: String = ""
+    var addTime: String = ""
+
     //START
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?)
+    {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        b_add.setOnClickListener()
-        {
-            Toast.makeText(this,"b_add clicked", Toast.LENGTH_SHORT).show()
+        b_add.setOnClickListener() {
+            Toast.makeText(this, "b_add clicked", Toast.LENGTH_SHORT).show()
             setContentView(R.layout.activity_add)
+
+            b_add_final.setOnClickListener() {
+                addText = tb_add_text.text.toString()
+                addDate = tb_add_date.text.toString()
+                addTime = tb_add_time.text.toString()
+                setContentView(R.layout.activity_main)
+                Toast.makeText(this, "b_add_final clicked", Toast.LENGTH_SHORT).show()
+            }
         }
-        b_del.setOnClickListener(){
-            Toast.makeText(this,"b_del clicked", Toast.LENGTH_SHORT).show()
+        b_del.setOnClickListener() {
+            Toast.makeText(this, "b_del clicked", Toast.LENGTH_SHORT).show()
             if (delmode)
             {
-                b_del.background.setTint(getColor(R.color.color_items))
+                b_del.background.setTint(getColor(R.color.color_header))
                 this.delmode = false
-                Toast.makeText(this,"delmode disabled",Toast.LENGTH_SHORT).show()
-            }else
+                Toast.makeText(this, "delmode disabled", Toast.LENGTH_SHORT).show()
+            } else
             {
                 b_del.background.setTint(getColor(R.color.color_items_chosen))
                 this.delmode = true
-                Toast.makeText(this,"delmode enabled",Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "delmode enabled", Toast.LENGTH_SHORT).show()
             }
         }
-        linearLayout_h_Item_1.setOnClickListener(){
+        linearLayout_h_Item_1.setOnClickListener() {
             Toast.makeText(this, "Item $linearLayout_h_Item_1 clicked", Toast.LENGTH_SHORT).show()
         }
-        
+
+
     }
-
-
 }

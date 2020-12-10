@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="size_title">200dp</dimen>
-    <dimen name="size_date">100dp</dimen>
-    <dimen name="size_time">80dp</dimen>
-    <dimen name="size_inputtext">500dp</dimen>
+    <dimen name="size_date">240dp</dimen>
+    <dimen name="size_time">200dp</dimen>
+    <dimen name="size_item">400dp</dimen>
 </resources>
