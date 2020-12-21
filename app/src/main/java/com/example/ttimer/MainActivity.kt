@@ -25,7 +25,11 @@ class MainActivity : AppCompatActivity()
     {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        b_add.setOnClickListener() {
+
+        //BUTTONS-link
+        b_add.setOnClickListener(){clickAdd()}
+        b_del.setOnClickListener(){clickDelete()}
+        /*b_add.setOnClickListener() {
             Toast.makeText(this, "b_add clicked", Toast.LENGTH_SHORT).show()
             setContentView(R.layout.activity_add)
 
@@ -34,6 +38,7 @@ class MainActivity : AppCompatActivity()
                 addDate = tb_add_date.text.toString()
                 addTime = tb_add_time.text.toString()
                 setContentView(R.layout.activity_main)
+                onCreate()
                 Toast.makeText(this, "b_add_final clicked", Toast.LENGTH_SHORT).show()
             }
         }
@@ -53,8 +58,31 @@ class MainActivity : AppCompatActivity()
         }
         linearLayout_h_Item_1.setOnClickListener() {
             Toast.makeText(this, "Item $linearLayout_h_Item_1 clicked", Toast.LENGTH_SHORT).show()
+        }*/
+
+
+    }
+
+    fun clickAdd(){
+        Toast.makeText(this, "b_add clicked", Toast.LENGTH_SHORT).show()
+        setContentView(R.layout.activity_add)
+        b_add_final.setOnClickListener(){clickAddSave()}
+    }
+    fun clickDelete(){
+        if (delmode) {
+            delmode = false
+            b_del.background.setTint(getColor(R.color.color_header))
+            Toast.makeText(this, "delmode false",Toast.LENGTH_SHORT).show()}
+        else{
+            delmode = true
+            b_del.background.setTint(getColor(R.color.color_items_chosen))
+            Toast.makeText(this, "delmode true",Toast.LENGTH_SHORT).show()}
         }
-
-
+    fun clickAddSave(){
+        addText = tb_add_text.text.toString()
+        addDate = tb_add_date.text.toString()
+        addTime = tb_add_time.text.toString()
+        setContentView(R.layout.activity_main)
+        Toast.makeText(this, "b_add_final clicked", Toast.LENGTH_SHORT).show()
     }
 }
