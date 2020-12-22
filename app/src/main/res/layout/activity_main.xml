@@ -121,6 +121,14 @@
 
                 </LinearLayout>
 
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/text_back_light"
+                    android:hint="TESTTESTETST"
+                    android:text="TextView" />
+
             </LinearLayout>
         </ScrollView>
 
