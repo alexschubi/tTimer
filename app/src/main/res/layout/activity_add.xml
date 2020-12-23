@@ -57,6 +57,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/text_back_light"
                 android:clickable="true"
+                android:onClick="addItem"
                 android:text="Add"
                 android:textSize="24sp" />
 

@@ -1,14 +1,18 @@
 package com.example.ttimer
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_add.*
 import kotlinx.android.synthetic.main.activity_main.*
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.widget.DatePicker
-import android.widget.TimePicker
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.*
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import kotlin.random.Random
 
 class MainActivity : AppCompatActivity()
 {
@@ -19,24 +23,21 @@ class MainActivity : AppCompatActivity()
     var addText: String = ""
     var addDate: String = ""
     var addTime: String = ""
-
+    private val exList = ArrayList<Item>()
+    private val adapter = RVadapter(exList)
+    private var index: Int = 0
     //START
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+//-------------ADDING
         b_add.setOnClickListener() {
             Toast.makeText(this, "b_add clicked", Toast.LENGTH_SHORT).show()
             setContentView(R.layout.activity_add)
-
-            b_add_final.setOnClickListener() {
-                addText = tb_add_text.text.toString()
-                addDate = tb_add_date.text.toString()
-                addTime = tb_add_time.text.toString()
-                setContentView(R.layout.activity_main)
-                Toast.makeText(this, "b_add_final clicked", Toast.LENGTH_SHORT).show()
-            }
         }
+        //DELMODE
         b_del.setOnClickListener() {
             Toast.makeText(this, "b_del clicked", Toast.LENGTH_SHORT).show()
             if (delmode)
@@ -51,10 +52,44 @@ class MainActivity : AppCompatActivity()
                 Toast.makeText(this, "delmode enabled", Toast.LENGTH_SHORT).show()
             }
         }
-        linearLayout_h_Item_1.setOnClickListener() {
-            Toast.makeText(this, "Item $linearLayout_h_Item_1 clicked", Toast.LENGTH_SHORT).show()
+
+
+
+//CREATE LISTE TODO
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.setHasFixedSize(true)
+    }
+    //-------------------ADDITEM
+    fun addItem(view: View) {
+        setContentView(R.layout.activity_main)
+
+        addText = tb_add_text.text.toString()
+        addDate = tb_add_date.text.toString()
+        addTime = tb_add_time.text.toString()
+        index++
+
+        val newItem = Item(addText, addDate, addTime)
+        exList.add(index, newItem)
+        adapter.notifyItemInserted(index)
+
+        Toast.makeText(this, "b_add_final clicked", Toast.LENGTH_SHORT).show()
+    }
+    fun deleteItem (view: View){
+
+    }
+//TEST
+    private fun generateDummyList(size: Int): ArrayList<Item> {
+        val list = ArrayList<Item>()
+        for (i in 0 until size) {
+            val String = when (i % 3) {
+                0 -> "blblblblbl"
+                1 -> "tototototootot"
+                else -> "rtrtrtrtrttr"
+            }
+            val item = Item(String, "Item $i", "Line 2")
+            list += item
         }
-
-
+        return list
     }
 }

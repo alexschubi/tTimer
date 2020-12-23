@@ -1,42 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/linearLayout_h_Item_1"
-    android:layout_width="@dimen/size_item"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:drawable/editbox_background_normal"
-    android:backgroundTint="@color/color_items"
-    android:clickable="true"
-    android:orientation="horizontal"
-    android:focusable="true">
+    android:layout_margin="4dp">
 
-    <TextView
-        android:id="@+id/tv_title_item_1"
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:autoLink="all"
-        android:clickable="false"
-        android:text="title1blblblbllb"
-        android:textAlignment="center"
-        android:textSize="18sp" />
+        android:padding="4dp">
 
-    <TextView
-        android:id="@+id/tv_date_item_1"
-        android:layout_width="@dimen/size_date"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:text="00.00.0000"
-        android:textAlignment="center"
-        android:textSize="18sp" />
+        <TextView
+            android:id="@+id/tv_title_item_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:autoLink="all"
+            android:clickable="false"
+            android:text=""
+            android:textAlignment="center"
+            android:textSize="20sp" />
 
-    <TextView
-        android:id="@+id/tv_time_item_1"
-        android:layout_width="@dimen/size_time"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:text="00:00"
-        android:textAlignment="center"
-        android:textAllCaps="false"
-        android:textSize="18sp" />
+        <TextView
+            android:id="@+id/tv_date_item_1"
+            android:layout_width="@dimen/size_date"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="00.00.0000"
+            android:textAlignment="center"
+            android:textSize="20sp" />
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/tv_time_item_1"
+            android:layout_width="@dimen/size_time"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="00:00"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textSize="20sp" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
