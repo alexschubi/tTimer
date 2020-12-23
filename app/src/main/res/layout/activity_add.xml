@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="Text"
-                android:inputType="date"
+                android:inputType="none"
                 android:singleLine="true"
                 android:textSize="24sp" />
 

@@ -1,16 +1,12 @@
 package com.example.ttimer
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_add.*
 import kotlinx.android.synthetic.main.activity_main.*
-import android.app.DatePickerDialog
-import android.app.TimePickerDialog
-import android.content.SharedPreferences
-import android.widget.CalendarView
-import android.widget.DatePicker
-import android.widget.TimePicker
 
 class MainActivity : AppCompatActivity()
 {
@@ -23,9 +19,10 @@ class MainActivity : AppCompatActivity()
     var addTime: String = ""
     var test: String = ""
     //val array = Array(row) { IntArray(column) }
-    val ArrayData: Array
+    var arrayitem = arrayOf(
+        arrayOf("TextTest1", "DateTest1", "TimeTest1"))
 
-//    val sharedPref: SharedPreferences = getSharedPreferences("SavedData1", 0)
+
 
 
 
@@ -38,6 +35,16 @@ class MainActivity : AppCompatActivity()
         //BUTTONS-link
         b_add.setOnClickListener(){clickAdd()}
         b_del.setOnClickListener(){clickDelete()}
+
+        //TestTextViewOutput
+        for (array in arrayitem) {
+            for (value in array) {
+
+                test += value
+            }
+            test += "- \n"
+        }
+        textView.text = test
     }
 
     private fun clickAdd(){
@@ -49,7 +56,7 @@ class MainActivity : AppCompatActivity()
         if (delmode) {
             delmode = false
             b_del.background.setTint(getColor(R.color.color_header))
-            main()
+            test()
             Toast.makeText(this, "delmode false",Toast.LENGTH_SHORT).show()}
         else{
             delmode = true
@@ -60,24 +67,24 @@ class MainActivity : AppCompatActivity()
         addText = tb_add_text.text.toString()
         addDate = calendarView.date.toString()
         addTime = tb_add_time.text.toString()
+        arrayitem += (arrayOf(addText, addDate, addTime))
+        val arrayItemString = arrayitem.toString()
+
+
         setContentView(R.layout.activity_main)
         tv_date_item_1.text = addDate
+
+
+        ///////RELOAD
         this.recreate()
 
         Toast.makeText(this, "b_add_final clicked / Date$addDate", Toast.LENGTH_LONG).show()
     }
-    fun main() {
+    fun test() {
 
-
-        val cinema = arrayOf(
-            arrayOf(11, 12, 13, 14),
-            arrayOf(21,22,23,24),
-            arrayOf(31,32,33,34),
-            arrayOf(41,42,43,44)
-        )
-        cinema[1][0] = 1
-
-        for (array in cinema) {
+        arrayitem[0][1] = "99"
+        arrayitem += (arrayOf("51","52","53","52"))
+        for (array in arrayitem) {
             for (value in array) {
 
                     test += value
