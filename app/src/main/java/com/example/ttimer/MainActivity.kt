@@ -61,6 +61,7 @@ class MainActivity : AppCompatActivity()
         recyclerView.setHasFixedSize(true)
     }
     //-------------------ADDITEM
+    //TODO fragment host erstellen
     fun addItem(view: View) {
         setContentView(R.layout.activity_main)
 
