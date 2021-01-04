@@ -7,6 +7,7 @@ import kotlinx.android.synthetic.main.activity_add.*
 import kotlinx.android.synthetic.main.activity_main.*
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +21,7 @@ class MainActivity : AppCompatActivity()
 
 
     //VARIABLES
+   // val intent = Intent(this, SecondActivity::class.java)
     var delmode: Boolean = false
     var addText: String = ""
     var addDate: String = ""
@@ -36,7 +38,8 @@ class MainActivity : AppCompatActivity()
 //-------------ADDING
         b_add.setOnClickListener() {
             Toast.makeText(this, "b_add clicked", Toast.LENGTH_SHORT).show()
-            setContentView(R.layout.activity_add)
+            //setContentView(R.layout.activity_add)
+            R.layout.activity_add.bringToFront()
         }
         //DELMODE
         b_del.setOnClickListener() {
@@ -61,13 +64,15 @@ class MainActivity : AppCompatActivity()
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.setHasFixedSize(true)
     }
+
+
     //-------------------ADDITEM
     //TODO fragment host erstellen
     fun addItem(view: View) {
         setContentView(R.layout.activity_main)
 
         addText = tb_add_text.text.toString()
-        addDate = tb_add_date.text.toString()
+        addDate = calendarView.date.toString()
         addTime = tb_add_time.text.toString()
         index++
 
