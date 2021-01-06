@@ -23,7 +23,7 @@
             android:orientation="vertical">
 
             <EditText
-                android:id="@+id/tb_add_text"
+                android:id="@+id/tb_add_text_0"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -33,7 +33,7 @@
                 android:textSize="24sp" />
 
             <CalendarView
-                android:id="@+id/calendarView"
+                android:id="@+id/calendarView_0"
                 style="@android:style/Widget.Material.Light.CalendarView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
                 android:weekNumberColor="#DADADA" />
 
             <EditText
-                android:id="@+id/tb_add_time"
+                android:id="@+id/tb_add_time_0"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -51,7 +51,7 @@
                 android:textSize="24sp" />
 
             <Button
-                android:id="@+id/b_add_final"
+                android:id="@+id/b_add_final_0"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/text_back_light"

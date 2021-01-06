@@ -6,6 +6,24 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <androidx.constraintlayout.helper.widget.Layer
+        android:id="@+id/layer1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:constraint_referenced_ids="linearLayout_v_complete,b_del,b_add"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.helper.widget.Layer
+        android:id="@+id/layer2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        app:constraint_referenced_ids="scrollView2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <LinearLayout
         android:id="@+id/linearLayout_v_complete"
         android:layout_width="0dp"
@@ -60,15 +78,81 @@
 
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/tv_test_out"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TextView" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
             android:padding="4dp"
-            tools:listitem="@layout/recycler_view" />
+            tools:listitem="@layout/recycler_view" >
+
+        </androidx.recyclerview.widget.RecyclerView>
 
     </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_back"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:id="@+id/linearLayout_v_complete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_back"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/tb_add_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Text"
+                android:inputType="none"
+                android:singleLine="true"
+                android:textSize="24sp" />
+
+            <CalendarView
+                android:id="@+id/calendarView"
+                style="@android:style/Widget.Material.Light.CalendarView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/color_back"
+                android:theme="@style/Platform.MaterialComponents"
+                android:weekNumberColor="#DADADA" />
+
+            <EditText
+                android:id="@+id/tb_add_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Time"
+                android:inputType="time"
+                android:textSize="24sp" />
+
+            <Button
+                android:id="@+id/b_add_final"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/text_back_light"
+                android:clickable="true"
+                android:onClick="addItem"
+                android:text="Add"
+                android:textSize="24sp" />
+
+        </LinearLayout>
+    </ScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/b_del"
@@ -80,7 +164,6 @@
         android:clickable="true"
         android:onClick="deleteItem"
         android:tint="@color/text_light"
-        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/b_add"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@android:drawable/ic_menu_delete" />
