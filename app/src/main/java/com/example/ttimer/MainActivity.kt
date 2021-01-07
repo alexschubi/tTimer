@@ -16,6 +16,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.core.view.get
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlin.random.Random
@@ -39,6 +40,7 @@ class MainActivity : AppCompatActivity()
         setContentView(R.layout.activity_main)
         this.layer2.visibility = View.INVISIBLE
         this.layer1.visibility = View.VISIBLE
+        timePicker.setIs24HourView(true)
 
 //-------------ADDING
         b_add.setOnClickListener() {
@@ -78,12 +80,15 @@ class MainActivity : AppCompatActivity()
         Toast.makeText(this, "Button-ADD clicked", Toast.LENGTH_SHORT)
     }
 
+    fun calculateTime(){
+        addTime = timePicker.hour.toString() + ":" + timePicker.minute.toString()
+    }
     fun addItem(view: View) {
         //setContentView(R.layout.activity_main)
 
         addText = tb_add_text.text.toString()
         addDate = calendarView.date.toString()
-        addTime = tb_add_time.text.toString()
+        addTime = timePicker.hour.toString() + timePicker.minute.toString()
         index += 1
 
         /*val newItem = Item(addText, addDate, addTime)
@@ -124,7 +129,7 @@ class MainActivity : AppCompatActivity()
                 1 -> "tototototootot"
                 else -> "rtrtrtrtrttr"
             }
-            val item = Item(String, "Item $i", "Line 2")
+            val item = Item(0, "1", 2, 3)
             list += item
         }
         return list

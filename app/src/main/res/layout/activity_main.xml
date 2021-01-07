@@ -10,7 +10,7 @@
         android:id="@+id/layer1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="visible"
+        android:visibility="invisible"
         app:constraint_referenced_ids="linearLayout_v_complete,b_del,b_add"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -19,7 +19,7 @@
         android:id="@+id/layer2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:constraint_referenced_ids="scrollView2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -132,14 +132,13 @@
                 android:theme="@style/Platform.MaterialComponents"
                 android:weekNumberColor="#DADADA" />
 
-            <EditText
-                android:id="@+id/tb_add_time"
+            <TimePicker
+                android:id="@+id/timePicker"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Time"
-                android:inputType="time"
-                android:textSize="24sp" />
+                android:headerBackground="@color/color_header"
+                android:numbersSelectorColor="@color/color_header"
+                android:timePickerMode="clock" />
 
             <Button
                 android:id="@+id/b_add_final"

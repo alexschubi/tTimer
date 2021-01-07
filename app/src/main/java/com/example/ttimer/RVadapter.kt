@@ -20,9 +20,9 @@ class RVadapter(private val Liste: ArrayList<Item>) : RecyclerView.Adapter<RVada
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentItem = Liste[position]
 
-        holder.textView_title.text = currentItem.Title
-        holder.textView_date.text = currentItem.Date
-        holder.textView_time.text = currentItem.Time
+        holder.textView_title.text = currentItem.Text
+        holder.textView_date.text = currentItem.Date.toString()
+        holder.textView_time.text = currentItem.Time.toString()
 
     }
 
