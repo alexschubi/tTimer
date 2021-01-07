@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="@tools:sample/date/ddmmyy">
+    android:layout_height="match_parent">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -16,7 +15,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
-            android:id="@+id/linearLayout_v_complete"
+            android:id="@+id/linearLayout_v_main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/color_back"

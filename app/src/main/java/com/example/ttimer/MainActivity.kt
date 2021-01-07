@@ -87,16 +87,17 @@ class MainActivity : AppCompatActivity()
         //setContentView(R.layout.activity_main)
 
         addText = tb_add_text.text.toString()
-        addDate = calendarView.date.toString()
-        addTime = timePicker.hour.toString() + timePicker.minute.toString()
+        //addDate = calendarView.date.toString()
+        addDate = datePicker.dayOfMonth.toString() + "." + (datePicker.month + 1) + "." + datePicker.year
+        addTime = timePicker.hour.toString() + ":" + timePicker.minute.toString()
         index += 1
 
-        /*val newItem = Item(addText, addDate, addTime)
+        /*val newItem = Item( addText, addDate, addTime)
         exList.add(index, newItem)
         adapter.notifyItemInserted(index)*/
 
         //TEST-output
-        var addindex: String =index.toString()
+        var addindex: String = index.toString()
 
         testText += "$addindex $addText $addDate $addTime \n"
         tv_test_out.text = testText
@@ -121,15 +122,10 @@ class MainActivity : AppCompatActivity()
     }
 
     //TEST
-    private fun generateDummyList(size: Int): ArrayList<Item> {
+    private fun generateList(size: Int): ArrayList<Item> {
         val list = ArrayList<Item>()
         for (i in 0 until size) {
-            val String = when (i % 3) {
-                0 -> "blblblblbl"
-                1 -> "tototototootot"
-                else -> "rtrtrtrtrttr"
-            }
-            val item = Item(0, "1", 2, 3)
+            val item = Item(addText, addDate, addTime)
             list += item
         }
         return list

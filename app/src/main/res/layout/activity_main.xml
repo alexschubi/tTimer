@@ -10,8 +10,7 @@
         android:id="@+id/layer1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="invisible"
-        app:constraint_referenced_ids="linearLayout_v_complete,b_del,b_add"
+        app:constraint_referenced_ids="linearLayout_v_main,b_del,b_add"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -19,13 +18,13 @@
         android:id="@+id/layer2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="visible"
+        android:visibility="invisible"
         app:constraint_referenced_ids="scrollView2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
-        android:id="@+id/linearLayout_v_complete"
+        android:id="@+id/linearLayout_v_main"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@color/color_back"
@@ -82,7 +81,8 @@
             android:id="@+id/tv_test_out"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="TextView"
+            android:textColor="@color/text_light" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
@@ -107,7 +107,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
-            android:id="@+id/linearLayout_v_complete"
+            android:id="@+id/linearLayout_v_add"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/color_back"
@@ -117,10 +117,16 @@
                 android:id="@+id/tb_add_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/text_back_light"
+                android:backgroundTint="@color/text_back_light"
                 android:ems="10"
                 android:hint="Text"
                 android:inputType="none"
-                android:singleLine="true"
+                android:paddingLeft="4dp"
+                android:paddingTop="4dp"
+                android:paddingRight="4dp"
+                android:paddingBottom="4dp"
+                android:textColor="@color/text_light"
                 android:textSize="24sp" />
 
             <CalendarView
@@ -130,7 +136,23 @@
                 android:layout_height="wrap_content"
                 android:background="@color/color_back"
                 android:theme="@style/Platform.MaterialComponents"
+                android:visibility="gone"
                 android:weekNumberColor="#DADADA" />
+
+            <DatePicker
+                android:id="@+id/datePicker"
+                style="@style/DatePicker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:background="@color/color_back"
+                android:calendarTextColor="@color/text_back_light"
+                android:datePickerMode="calendar"
+                android:dayOfWeekBackground="@color/text_light"
+                android:headerBackground="@color/color_header"
+                android:minDate="01/01/2020"
+                android:startYear="2020"
+                android:theme="@style/DatePicker" />
 
             <TimePicker
                 android:id="@+id/timePicker"
