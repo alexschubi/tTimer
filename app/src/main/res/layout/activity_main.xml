@@ -84,6 +84,13 @@
             android:text="TextView"
             android:textColor="@color/text_light" />
 
+        <TextView
+            android:id="@+id/tv_test_out2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:textColor="@color/color_items" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"

@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.recycler_view.view.*
 
-class RVadapter(private val Liste: ArrayList<Item>) : RecyclerView.Adapter<RVadapter.ViewHolder>() {
+class RVadapter(private val Liste: ArrayList<ItemTest>) : RecyclerView.Adapter<RVadapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.recycler_view,

@@ -3,23 +3,12 @@ package com.example.ttimer
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_add.*
 import kotlinx.android.synthetic.main.activity_main.*
-import android.app.DatePickerDialog
-import android.app.TimePickerDialog
 import android.content.Context
-import android.content.Context.INPUT_METHOD_SERVICE
-import android.content.Intent
-import android.inputmethodservice.Keyboard
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.*
-import androidx.core.view.get
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import kotlin.random.Random
+
 
 class MainActivity : AppCompatActivity()
 {
@@ -29,10 +18,13 @@ class MainActivity : AppCompatActivity()
     var addText: String = ""
     var addDate: String = ""
     var addTime: String = ""
-    private val exList = ArrayList<Item>()
+    private val exList = ArrayList<ItemTest>()
     private val adapter = RVadapter(exList)
     private var index: Int = 0
     var testText: String = ""
+    //SAVINGS
+    val mutableListSave = mutableListOf<Item>()
+
     //START
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -66,13 +58,13 @@ class MainActivity : AppCompatActivity()
             }
         }
 
-
-
-//CREATE LISTE TODO recycler View
+// TODO recycler View
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.setHasFixedSize(true)
     }
+    //TODO SAVE IN TinyDB
+
 
     //-------------------ADDITEM
     //TODO fragment host erstellen
@@ -90,19 +82,27 @@ class MainActivity : AppCompatActivity()
         //addDate = calendarView.date.toString()
         addDate = datePicker.dayOfMonth.toString() + "." + (datePicker.month + 1) + "." + datePicker.year
         addTime = timePicker.hour.toString() + ":" + timePicker.minute.toString()
-        index += 1
 
-        /*val newItem = Item( addText, addDate, addTime)
-        exList.add(index, newItem)
-        adapter.notifyItemInserted(index)*/
+        val addItem: Item = Item(index, addText, datePicker.dayOfMonth, datePicker.month, datePicker.year, timePicker.hour, timePicker.minute)
+        mutableListSave.add(index, addItem)//maybe delete?
+        index += 1
 
         //TEST-output
         var addindex: String = index.toString()
-
         testText += "$addindex $addText $addDate $addTime \n"
         tv_test_out.text = testText
 
+        //Save in tinyDB https://github.com/kcochibili/TinyDB--Android-Shared-Preferences-Turbo
+        var tinyDB: TinyDB = TinyDB(applicationContext)
+        tinyDB.putObject("mutableListSave", mutableListSave)
+        Toast.makeText(this, tinyDB.getString("TEST"), Toast.LENGTH_SHORT).show()
 
+
+        var getMutableList = tinyDB.getObject("mutableListSave", MutableList<Item>(100, index)::class.java)
+        var testStringSave: String = getMutableList.toString()
+
+        tv_test_out2.text = testStringSave
+        //CLOSE add
         hideKeyboard()
         this.layer1.visibility = View.VISIBLE
         this.layer2.visibility = View.INVISIBLE
@@ -122,10 +122,10 @@ class MainActivity : AppCompatActivity()
     }
 
     //TEST
-    private fun generateList(size: Int): ArrayList<Item> {
-        val list = ArrayList<Item>()
+    private fun generateTestList(size: Int): ArrayList<ItemTest> {
+        val list = ArrayList<ItemTest>()
         for (i in 0 until size) {
-            val item = Item(addText, addDate, addTime)
+            val item = ItemTest(addText, addDate, addTime)
             list += item
         }
         return list
