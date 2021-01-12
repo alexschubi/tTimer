@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity()
     //SAVINGS
     val arrayListSave = ArrayList<Item>()
 
+
     //START
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -55,6 +56,8 @@ class MainActivity : AppCompatActivity()
             {
                 b_del.background.setTint(getColor(R.color.color_items_chosen))
                 this.delmode = true
+                tv_test_out.text = ""
+                tv_test_out2.text = ""
                 Toast.makeText(this, "delmode enabled", Toast.LENGTH_SHORT).show()
             }
         }
@@ -73,9 +76,10 @@ class MainActivity : AppCompatActivity()
         Toast.makeText(this, "Button-ADD clicked", Toast.LENGTH_SHORT)
     }
 
-    fun addItem(view: View) {
+    public fun addItem(view: View) {
         //setContentView(R.layout.activity_main)
-        var index = 1//not superglobal the same / save in prefs TODO
+        var tinyDB: TinyDB = TinyDB(applicationContext)
+       // var index = 0//global / save in prefs TODO
         addText = tb_add_text.text.toString()
         //addDate = calendarView.date.toString()
         addDate = datePicker.dayOfMonth.toString() + "." + (datePicker.month+1) + "." + datePicker.year
@@ -96,32 +100,32 @@ class MainActivity : AppCompatActivity()
             datePicker.dayOfMonth.toString(),
             (datePicker.month + 1).toString(),
             datePicker.year.toString(),
-            timePicker.hour.toString(),
-            timePicker.minute.toString()
+            putTime(timePicker.hour),
+            putTime(timePicker.minute)
         )
-        arrayListSave.add(addItem)//maybe delete?
-
-
-        //TEST-output
-        var addindex: String = index.toString()
-        testText += "$addindex $addText $addDate $addTime \n"
-        tv_test_out.text = testText
+        arrayListSave.add(addItem)//unused?
 
         //Save in tinyDB
         // https://github.com/kcochibili/TinyDB--Android-Shared-Preferences-Turbo
         //converted to Kotlin and works somehow
-        var tinyDB: TinyDB = TinyDB(applicationContext)
         tinyDB.putListString("Item $index", addItemString)
         tinyDB.putInt("Length", index)
 
         //TODO clearing needed
-        //get from tinyDB
+        //get from tinyDB --TEST
+        //getFromTinyDB()
         var length = tinyDB.getInt("Length")
         var testStringSave: String= ""
+        var gettestSting = ""
         while (length > 0){
             var getItem = tinyDB.getListString("Item $length")
+            //Test2
             testStringSave += getItem.toString() + "\n"
             tv_test_out2.text = testStringSave
+            //Test1
+            gettestSting += getItem[0] + ". [" + getItem[1] + "] \n " + getItem[2] + "." + getItem[3] + "." + getItem[4] + "  " + getItem[5] + ":" + getItem[6] + "\n\n"
+            tv_test_out.text = gettestSting
+
             length += -1
         }
 
@@ -131,6 +135,35 @@ class MainActivity : AppCompatActivity()
         this.layer2.visibility = View.INVISIBLE
         Toast.makeText(this, "b_add_final clicked", Toast.LENGTH_SHORT).show()
     }
+
+    private fun putTime(time: Int): String {
+        var stringMinute = ""
+        if (time<10){
+            stringMinute = "0" + time.toString()
+        }else{
+            stringMinute = time.toString()
+        }
+        return stringMinute
+    }
+
+    /*fun getFromTinyDB (){
+        var length = tinyDB.getInt("Length")
+        var testStringSave: String= ""
+        var gettestSting = ""
+        while (length > 0){
+            var getItem = tinyDB.getListString("Item $length")
+
+            //Test2
+            testStringSave += getItem.toString() + "\n"
+            tv_test_out2.text = testStringSave
+
+            //Test1
+            gettestSting += getItem[1] + ". [" + getItem[2] + "] \n " + getItem[3] + "." + getItem[4] + "." + getItem[5] + "  " + getItem[6] + ":" + getItem[7] + "\n\n"
+            tv_test_out.text = gettestSting
+
+            length += -1
+        }
+    }*/
     fun deleteItem(view: View){
 
     }
