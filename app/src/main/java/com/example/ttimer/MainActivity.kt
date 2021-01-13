@@ -1,14 +1,22 @@
 package com.example.ttimer
 
 import android.content.Context
+import android.icu.text.DateIntervalFormat
+import android.icu.text.SimpleDateFormat
+import android.icu.util.Calendar
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
+import java.time.LocalDateTime
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class MainActivity : AppCompatActivity()
@@ -76,10 +84,10 @@ class MainActivity : AppCompatActivity()
         Toast.makeText(this, "Button-ADD clicked", Toast.LENGTH_SHORT)
     }
 
-    public fun addItem(view: View) {
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun addItem(view: View) {
         //setContentView(R.layout.activity_main)
-        var tinyDB: TinyDB = TinyDB(applicationContext)
-       // var index = 0//global / save in prefs TODO
+        var tinyDB: TinyDB = TinyDB(applicationContext) //TODO Save globally
         addText = tb_add_text.text.toString()
         //addDate = calendarView.date.toString()
         addDate = datePicker.dayOfMonth.toString() + "." + (datePicker.month+1) + "." + datePicker.year
@@ -113,23 +121,47 @@ class MainActivity : AppCompatActivity()
 
         //TODO clearing needed
         //get from tinyDB --TEST
-        //getFromTinyDB()
         var length = tinyDB.getInt("Length")
         var testStringSave: String= ""
         var gettestSting = ""
+        var gettestSting2: String = ""
         while (length > 0){
+
             var getItem = tinyDB.getListString("Item $length")
-            //Test2
-            testStringSave += getItem.toString() + "\n"
-            tv_test_out2.text = testStringSave
             //Test1
             gettestSting += getItem[0] + ". [" + getItem[1] + "] \n " + getItem[2] + "." + getItem[3] + "." + getItem[4] + "  " + getItem[5] + ":" + getItem[6] + "\n\n"
             tv_test_out.text = gettestSting
 
+            var getIndex: Int = getItem[0].toInt()
+            var getText: String = getItem[1]
+            var getDay: Int = getItem[2].toInt()
+            var getMonth: Int = getItem[3].toInt()
+            var getYear: Int = getItem[4].toInt()
+            var getHour: Int = getItem[5].toInt()
+            var getMinute: Int = getItem[6].toInt()
+            val getDateTime = LocalDateTime.of(getYear, getMonth, getDay, getHour, getMinute)
+            val getCalendar = Calendar.getInstance()
+
+            //Calculate remaining Time//TODO make better for year-change
+            var gettestString2l: String = getItem[0] + ". [" + getItem[1] + "] \n "
+            val currentDateTime = LocalDateTime.now()
+            val currentCalendar = Calendar.getInstance()
+
+            Toast.makeText(this, (getDateTime.compareTo(currentDateTime)).toString(),Toast.LENGTH_SHORT).show()
+            if (getDateTime > currentDateTime){
+                gettestString2l += (getDateTime.compareTo(currentDateTime)).toString()
+
+            }else{
+                gettestString2l += "NEGATIVE DATE / TIME"
+            }
+
+
+            gettestSting2 += gettestString2l + "\n\n"
             length += -1
         }
 
-        //CLOSE add
+        tv_test_out2.text = gettestSting2
+        //CLOSE addView
         hideKeyboard()
         this.layer1.visibility = View.VISIBLE
         this.layer2.visibility = View.INVISIBLE
