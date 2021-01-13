@@ -25,8 +25,8 @@ class MainActivity : AppCompatActivity()
 {
     //VARIABLES
     //Prefs
-    var tinyDB: TinyDB
-    var preferences: SharedPreferences = getSharedPreferences("preferences", Context.MODE_PRIVATE)
+    var tinyDB: TinyDB = TinyDB(applicationContext)
+    var mainPrefs: SharedPreferences = getSharedPreferences("mainPrefs", Context.MODE_PRIVATE)
     // val intent = Intent(this, SecondActivity::class.java)
     var delmode: Boolean = false
     var addText: String = ""
@@ -92,11 +92,8 @@ class MainActivity : AppCompatActivity()
     @RequiresApi(Build.VERSION_CODES.O)
     fun addItem(view: View) {
 
-        val firstStart: Boolean = preferences.getBoolean("firstStart", true)
-        if(!firstStart) {
-        }else{preferences.getBoolean("firstStart", false)
-             tinyDB = TinyDB(applicationContext)
-        }
+        val firstStart: Boolean = mainPrefs.getBoolean("firstStart", true)
+
         //setContentView(R.layout.activity_main)
         addText = tb_add_text.text.toString()
         //addDate = calendarView.date.toString()
