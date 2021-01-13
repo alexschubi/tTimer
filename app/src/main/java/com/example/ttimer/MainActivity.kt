@@ -27,7 +27,6 @@ class MainActivity : AppCompatActivity()
     val preferences: SharedPreferences
     val firstStart: Boolean = preferences.getBoolean("firstStart", true)
     // val intent = Intent(this, SecondActivity::class.java)
-    var firstSTart: Boolean = true
     var delmode: Boolean = false
     var addText: String = ""
     var addDate: String = ""
