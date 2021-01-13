@@ -7,6 +7,7 @@ import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
 import android.os.Build
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -24,8 +25,8 @@ class MainActivity : AppCompatActivity()
 {
     //VARIABLES
     //Prefs
-    val preferences: SharedPreferences
-    val firstStart: Boolean = preferences.getBoolean("firstStart", true)
+    var tinyDB: TinyDB
+    var preferences: SharedPreferences = getSharedPreferences("preferences", Context.MODE_PRIVATE)
     // val intent = Intent(this, SecondActivity::class.java)
     var delmode: Boolean = false
     var addText: String = ""
@@ -37,7 +38,7 @@ class MainActivity : AppCompatActivity()
     var testText: String = ""
     //SAVINGS
     val arrayListSave = ArrayList<Item>()
-    var tinyDB: TinyDB = TinyDB(applicationContext)
+
 
     //START
     override fun onCreate(savedInstanceState: Bundle?)
@@ -48,9 +49,7 @@ class MainActivity : AppCompatActivity()
         this.layer1.visibility = View.VISIBLE
         timePicker.setIs24HourView(true)
 
-        if(tinyDB.getBoolean("firstSTart")) {
-            tinyDB.putBoolean("firstStart", false)
-        }
+
 //-------------ADDING
         b_add.setOnClickListener() {
             Toast.makeText(this, "b_add clicked", Toast.LENGTH_SHORT).show()
@@ -92,6 +91,12 @@ class MainActivity : AppCompatActivity()
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun addItem(view: View) {
+
+        val firstStart: Boolean = preferences.getBoolean("firstStart", true)
+        if(!firstStart) {
+        }else{preferences.getBoolean("firstStart", false)
+             tinyDB = TinyDB(applicationContext)
+        }
         //setContentView(R.layout.activity_main)
         addText = tb_add_text.text.toString()
         //addDate = calendarView.date.toString()
