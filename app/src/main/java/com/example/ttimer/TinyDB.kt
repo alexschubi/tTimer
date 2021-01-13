@@ -21,7 +21,9 @@ import java.lang.NumberFormatException
 import java.util.*
 
 class TinyDB(appContext: Context?) {
-    private val preferences: SharedPreferences
+
+    val preferences: SharedPreferences
+    val firstStart: Boolean = preferences.getBoolean("firstStart", true)
     private var DEFAULT_APP_IMAGEDATA_DIRECTORY: String? = null
 
     /**

@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.ttimer"
-        minSdkVersion 23
+        minSdkVersion 30
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -34,13 +34,13 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'com.google.android.material:material:1.2.1'
-    implementation files('C:\\temp\\Android\\lib\\gson-2.8.6.jar')
+    implementation files('E:\\Programme\\eigene\\tTimer\\app\\libs\\gson-2.8.6.jar')
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation "androidx.cardview:cardview:1.0.0"
     implementation "androidx.recyclerview:recyclerview:1.1.0"
-    implementation "com.google.code.gson:gson:2.8.6"
+    //implementation "com.google.code.gson:gson:2.8.6"
 /*
     def room_version = "2.2.5"
     implementation "androidx.room:room-runtime:$room_version"

@@ -1,6 +1,7 @@
 package com.example.ttimer
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.icu.text.DateIntervalFormat
 import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
@@ -22,7 +23,11 @@ import kotlin.collections.ArrayList
 class MainActivity : AppCompatActivity()
 {
     //VARIABLES
-   // val intent = Intent(this, SecondActivity::class.java)
+    //Prefs
+    val preferences: SharedPreferences
+    val firstStart: Boolean = preferences.getBoolean("firstStart", true)
+    // val intent = Intent(this, SecondActivity::class.java)
+    var firstSTart: Boolean = true
     var delmode: Boolean = false
     var addText: String = ""
     var addDate: String = ""
@@ -33,7 +38,7 @@ class MainActivity : AppCompatActivity()
     var testText: String = ""
     //SAVINGS
     val arrayListSave = ArrayList<Item>()
-
+    var tinyDB: TinyDB = TinyDB(applicationContext)
 
     //START
     override fun onCreate(savedInstanceState: Bundle?)
@@ -44,6 +49,9 @@ class MainActivity : AppCompatActivity()
         this.layer1.visibility = View.VISIBLE
         timePicker.setIs24HourView(true)
 
+        if(tinyDB.getBoolean("firstSTart")) {
+            tinyDB.putBoolean("firstStart", false)
+        }
 //-------------ADDING
         b_add.setOnClickListener() {
             Toast.makeText(this, "b_add clicked", Toast.LENGTH_SHORT).show()
@@ -75,7 +83,6 @@ class MainActivity : AppCompatActivity()
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.setHasFixedSize(true)
     }
-    //TODO SAVE IN TinyDB
 
 
     //-------------------ADDITEM
@@ -87,7 +94,6 @@ class MainActivity : AppCompatActivity()
     @RequiresApi(Build.VERSION_CODES.O)
     fun addItem(view: View) {
         //setContentView(R.layout.activity_main)
-        var tinyDB: TinyDB = TinyDB(applicationContext) //TODO Save globally
         addText = tb_add_text.text.toString()
         //addDate = calendarView.date.toString()
         addDate = datePicker.dayOfMonth.toString() + "." + (datePicker.month+1) + "." + datePicker.year
@@ -149,8 +155,7 @@ class MainActivity : AppCompatActivity()
 
             Toast.makeText(this, (getDateTime.compareTo(currentDateTime)).toString(),Toast.LENGTH_SHORT).show()
             if (getDateTime > currentDateTime){
-                gettestString2l += (getDateTime.compareTo(currentDateTime)).toString()
-
+                gettestString2l += (getDateTime.dayOfYear - currentDateTime.year).toString()
             }else{
                 gettestString2l += "NEGATIVE DATE / TIME"
             }
@@ -178,24 +183,6 @@ class MainActivity : AppCompatActivity()
         return stringMinute
     }
 
-    /*fun getFromTinyDB (){
-        var length = tinyDB.getInt("Length")
-        var testStringSave: String= ""
-        var gettestSting = ""
-        while (length > 0){
-            var getItem = tinyDB.getListString("Item $length")
-
-            //Test2
-            testStringSave += getItem.toString() + "\n"
-            tv_test_out2.text = testStringSave
-
-            //Test1
-            gettestSting += getItem[1] + ". [" + getItem[2] + "] \n " + getItem[3] + "." + getItem[4] + "." + getItem[5] + "  " + getItem[6] + ":" + getItem[7] + "\n\n"
-            tv_test_out.text = gettestSting
-
-            length += -1
-        }
-    }*/
     fun deleteItem(view: View){
 
     }
