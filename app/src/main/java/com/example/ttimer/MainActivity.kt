@@ -49,14 +49,13 @@ class MainActivity : AppCompatActivity()
 
         mainPrefs = getPreferences(MODE_PRIVATE)
         getDB()
-        linearLayout_v_main.setOnClickListener() {
+        tv_test_out.setOnClickListener() {
             getDB()
         }
 
 
 //-------------ADDING
         b_add.setOnClickListener() {
-            Toast.makeText(this, "b_add clicked", Toast.LENGTH_SHORT).show()
             this.layer1.visibility = View.INVISIBLE
             this.layer2.visibility = View.VISIBLE
 
@@ -80,16 +79,10 @@ class MainActivity : AppCompatActivity()
                 Toast.makeText(this, "delmode enabled", Toast.LENGTH_SHORT).show()
             }
         }
-
-// TODO recycler View
     }
-
+    // TODO recycler View
 
     //-------------------ADDITEM
-    //TODO fragment host erstellen
-    fun openAdd(view: View){
-        Toast.makeText(this, "Button-ADD clicked", Toast.LENGTH_SHORT)
-    }
 
     fun addItem(view: View) {
         //val tinyDB: TinyDB = TinyDB(applicationContext)
@@ -131,7 +124,7 @@ class MainActivity : AppCompatActivity()
         putListString("Item $index", addItemString)
         mainPrefs.edit().putInt("index", index).apply()
 
-        //CLOSE addView
+        //CLOSE addView TODO add Canceling of adding a new item
         getDB()
 
 
@@ -143,7 +136,7 @@ class MainActivity : AppCompatActivity()
     }
 
 
-    fun getDB() {
+    fun getDB() {//TODO refresh time in TextBoxes
 
         var getindex = mainPrefs.getInt("index", 0)
         var testStringSave: String= ""
@@ -161,18 +154,16 @@ class MainActivity : AppCompatActivity()
                  var getYear: Int = getItem[4].toInt()
                  var getHour: Int = getItem[5].toInt()
                  var getMinute: Int = getItem[6].toInt()
-                 val getDateTime = LocalDateTime.of(getYear, getMonth, getDay, getHour, getMinute)//TODO save date in Prefs
-                 val getCalendar = Calendar.getInstance()
+                 val getDateTime = LocalDateTime.of(getYear, getMonth, getDay, getHour, getMinute)//TODO save DATE in Prefs
+                 val getCalendar = Calendar.getInstance()// unused maybe better than separate time output calculation
 
-                 //Test1
-                 //gettestSting += getItem[0] + ". [" + getItem[1] + "] \n " + getItem[2] + "." + getItem[3] + "." + getItem[4] + "  " + getItem[5] + ":" + getItem[6] + "\n\n"
-                 //tv_test_out.text = gettestSting
+
 
                  //Calculate remaining Time//TODO make better for year-change
                  var gettestString2l: String = getItem[0] + ". [" + getItem[1] + "] \n "
-                 val currentDateTime = LocalDateTime.now()
+                 val currentDateTime = LocalDateTime.now() //TODO add timezones
                  tv_test_out2.text = currentDateTime.toString()
-                 val currentCalendar = Calendar.getInstance()
+                 val currentCalendar = Calendar.getInstance()//unused
 
                  if (getDateTime.isAfter(currentDateTime)){
                      gettestString2l += "In: "
@@ -216,7 +207,7 @@ class MainActivity : AppCompatActivity()
         return stringMinute
     }
 
-    fun deleteItem(view: View){
+    fun deleteItem(view: View){//TODO delete single Item
 
     }
     fun putListString(key: String?, stringList: ArrayList<String>) {
