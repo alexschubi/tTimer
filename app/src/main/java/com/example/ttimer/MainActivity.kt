@@ -1,6 +1,7 @@
 package com.example.ttimer
 
 import android.content.Context
+import android.content.ContextWrapper
 import android.content.SharedPreferences
 import android.icu.text.DateIntervalFormat
 import android.icu.text.SimpleDateFormat
@@ -8,11 +9,13 @@ import android.icu.util.Calendar
 import android.os.Build
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.text.TextUtils
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.edit
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
@@ -24,23 +27,26 @@ import kotlin.collections.ArrayList
 class MainActivity : AppCompatActivity()
 {
     //VARIABLES
-    //Prefs
-    var tinyDB: TinyDB = TinyDB(applicationContext)
-    var mainPrefs: SharedPreferences = getSharedPreferences("mainPrefs", Context.MODE_PRIVATE)
-    // val intent = Intent(this, SecondActivity::class.java)
+    //Preferences
+
+    lateinit var mainPrefs: SharedPreferences
+    var firststart: Boolean = true
+
+
+    // VARs VALs
     var delmode: Boolean = false
     var addText: String = ""
     var addDate: String = ""
     var addTime: String = ""
     private val exList = ArrayList<ItemTest>()
     private val adapter = RVadapter(exList)
-    private var index: Int = 0
+    //private var index: Int = 0
     var testText: String = ""
-    //SAVINGS
+    //Arrays
     val arrayListSave = ArrayList<Item>()
 
-
     //START
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
@@ -48,6 +54,10 @@ class MainActivity : AppCompatActivity()
         this.layer2.visibility = View.INVISIBLE
         this.layer1.visibility = View.VISIBLE
         timePicker.setIs24HourView(true)
+
+        mainPrefs = getPreferences(MODE_PRIVATE)
+        firststart = mainPrefs.getBoolean("firstStart", true)
+        getDB()
 
 
 //-------------ADDING
@@ -72,6 +82,7 @@ class MainActivity : AppCompatActivity()
                 this.delmode = true
                 tv_test_out.text = ""
                 tv_test_out2.text = ""
+                mainPrefs.edit().clear().apply()
                 Toast.makeText(this, "delmode enabled", Toast.LENGTH_SHORT).show()
             }
         }
@@ -91,15 +102,18 @@ class MainActivity : AppCompatActivity()
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun addItem(view: View) {
+        //val tinyDB: TinyDB = TinyDB(applicationContext)
 
-        val firstStart: Boolean = mainPrefs.getBoolean("firstStart", true)
+        var index = mainPrefs.getInt("index", 0)
+        index++
 
-        //setContentView(R.layout.activity_main)
+
+
         addText = tb_add_text.text.toString()
         //addDate = calendarView.date.toString()
         addDate = datePicker.dayOfMonth.toString() + "." + (datePicker.month+1) + "." + datePicker.year
         addTime = timePicker.hour.toString() + ":" + timePicker.minute.toString()
-        index += 1
+
         val addItem: Item = Item(
             index,
             addText,
@@ -123,55 +137,64 @@ class MainActivity : AppCompatActivity()
         //Save in tinyDB
         // https://github.com/kcochibili/TinyDB--Android-Shared-Preferences-Turbo
         //converted to Kotlin and works somehow
-        tinyDB.putListString("Item $index", addItemString)
-        tinyDB.putInt("Length", index)
 
-        //TODO clearing needed
-        //get from tinyDB --TEST
-        var length = tinyDB.getInt("Length")
-        var testStringSave: String= ""
-        var gettestSting = ""
-        var gettestSting2: String = ""
-        while (length > 0){
+        putListString("Item $index", addItemString)
+        mainPrefs.edit().putInt("index", index).apply()
 
-            var getItem = tinyDB.getListString("Item $length")
-            //Test1
-            gettestSting += getItem[0] + ". [" + getItem[1] + "] \n " + getItem[2] + "." + getItem[3] + "." + getItem[4] + "  " + getItem[5] + ":" + getItem[6] + "\n\n"
-            tv_test_out.text = gettestSting
-
-            var getIndex: Int = getItem[0].toInt()
-            var getText: String = getItem[1]
-            var getDay: Int = getItem[2].toInt()
-            var getMonth: Int = getItem[3].toInt()
-            var getYear: Int = getItem[4].toInt()
-            var getHour: Int = getItem[5].toInt()
-            var getMinute: Int = getItem[6].toInt()
-            val getDateTime = LocalDateTime.of(getYear, getMonth, getDay, getHour, getMinute)
-            val getCalendar = Calendar.getInstance()
-
-            //Calculate remaining Time//TODO make better for year-change
-            var gettestString2l: String = getItem[0] + ". [" + getItem[1] + "] \n "
-            val currentDateTime = LocalDateTime.now()
-            val currentCalendar = Calendar.getInstance()
-
-            Toast.makeText(this, (getDateTime.compareTo(currentDateTime)).toString(),Toast.LENGTH_SHORT).show()
-            if (getDateTime > currentDateTime){
-                gettestString2l += (getDateTime.dayOfYear - currentDateTime.year).toString()
-            }else{
-                gettestString2l += "NEGATIVE DATE / TIME"
-            }
-
-
-            gettestSting2 += gettestString2l + "\n\n"
-            length += -1
-        }
-
-        tv_test_out2.text = gettestSting2
         //CLOSE addView
+        getDB()
+
+
         hideKeyboard()
         this.layer1.visibility = View.VISIBLE
         this.layer2.visibility = View.INVISIBLE
         Toast.makeText(this, "b_add_final clicked", Toast.LENGTH_SHORT).show()
+
+    }
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getDB() {
+
+        var getindex = mainPrefs.getInt("index", 0)
+        var testStringSave: String= ""
+        var gettestSting = ""
+        var gettestSting2: String = ""
+        if (getindex > 0){
+             while(getindex > 0) {
+
+                 var getItem = getListString("Item $getindex")
+
+                 var getIndex: Int = getItem[0].toInt()
+                 var getText: String = getItem[1]
+                 var getDay: Int = getItem[2].toInt()
+                 var getMonth: Int = getItem[3].toInt()
+                 var getYear: Int = getItem[4].toInt()
+                 var getHour: Int = getItem[5].toInt()
+                 var getMinute: Int = getItem[6].toInt()
+                 val getDateTime = LocalDateTime.of(getYear, getMonth, getDay, getHour, getMinute)//TODO save date in Prefs
+                 val getCalendar = Calendar.getInstance()
+
+                 //Test1
+                 gettestSting += getindex.toString() + getItem[0] + ". [" + getItem[1] + "] \n " + getItem[2] + "." + getItem[3] + "." + getItem[4] + "  " + getItem[5] + ":" + getItem[6] + "\n\n"
+                 tv_test_out.text = gettestSting
+
+                 //Calculate remaining Time//TODO make better for year-change
+                 var gettestString2l: String = getItem[0] + ". [" + getItem[1] + "] \n "
+                 val currentDateTime = LocalDateTime.now()
+                 val currentCalendar = Calendar.getInstance()
+
+                 if (getDateTime > currentDateTime){
+                     gettestString2l += (getDateTime.dayOfYear - currentDateTime.year).toString()
+                 }else{
+                     gettestString2l += "NEGATIVE DATE / TIME"
+                 }
+
+                 gettestSting2 += gettestString2l + "\n\n"
+                 getindex += -1
+             }
+        }else{
+            gettestSting2 = "NO ITEMS SAVED"
+        }
+        tv_test_out2.text = gettestSting2
     }
 
     private fun putTime(time: Int): String {
@@ -186,6 +209,13 @@ class MainActivity : AppCompatActivity()
 
     fun deleteItem(view: View){
 
+    }
+    fun putListString(key: String?, stringList: ArrayList<String>) {
+        val myStringList = stringList.toTypedArray()
+        mainPrefs.edit().putString(key, TextUtils.join("‚‗‚", myStringList)).apply()
+    }
+    fun getListString(key: String?): java.util.ArrayList<String> {
+        return ArrayList(Arrays.asList(*TextUtils.split(mainPrefs.getString(key, ""),"‚‗‚")))
     }
 
     //HIDE KEYBOARD
