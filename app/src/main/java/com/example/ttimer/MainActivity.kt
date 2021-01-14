@@ -1,5 +1,6 @@
 package com.example.ttimer
 
+import android.app.job.JobService
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.SharedPreferences
@@ -13,7 +14,6 @@ import android.text.TextUtils
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,25 +28,17 @@ class MainActivity : AppCompatActivity()
 {
     //VARIABLES
     //Preferences
-
     lateinit var mainPrefs: SharedPreferences
-    var firststart: Boolean = true
-
-
     // VARs VALs
     var delmode: Boolean = false
     var addText: String = ""
     var addDate: String = ""
     var addTime: String = ""
-    private val exList = ArrayList<ItemTest>()
-    private val adapter = RVadapter(exList)
-    //private var index: Int = 0
-    var testText: String = ""
     //Arrays
     val arrayListSave = ArrayList<Item>()
 
     //START
-    @RequiresApi(Build.VERSION_CODES.O)
+
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
@@ -56,8 +48,10 @@ class MainActivity : AppCompatActivity()
         timePicker.setIs24HourView(true)
 
         mainPrefs = getPreferences(MODE_PRIVATE)
-        firststart = mainPrefs.getBoolean("firstStart", true)
         getDB()
+        linearLayout_v_main.setOnClickListener() {
+            getDB()
+        }
 
 
 //-------------ADDING
@@ -88,9 +82,6 @@ class MainActivity : AppCompatActivity()
         }
 
 // TODO recycler View
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.setHasFixedSize(true)
     }
 
 
@@ -100,7 +91,6 @@ class MainActivity : AppCompatActivity()
         Toast.makeText(this, "Button-ADD clicked", Toast.LENGTH_SHORT)
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun addItem(view: View) {
         //val tinyDB: TinyDB = TinyDB(applicationContext)
 
@@ -151,7 +141,8 @@ class MainActivity : AppCompatActivity()
         Toast.makeText(this, "b_add_final clicked", Toast.LENGTH_SHORT).show()
 
     }
-    @RequiresApi(Build.VERSION_CODES.O)
+
+
     fun getDB() {
 
         var getindex = mainPrefs.getInt("index", 0)
@@ -174,18 +165,36 @@ class MainActivity : AppCompatActivity()
                  val getCalendar = Calendar.getInstance()
 
                  //Test1
-                 gettestSting += getindex.toString() + getItem[0] + ". [" + getItem[1] + "] \n " + getItem[2] + "." + getItem[3] + "." + getItem[4] + "  " + getItem[5] + ":" + getItem[6] + "\n\n"
-                 tv_test_out.text = gettestSting
+                 //gettestSting += getItem[0] + ". [" + getItem[1] + "] \n " + getItem[2] + "." + getItem[3] + "." + getItem[4] + "  " + getItem[5] + ":" + getItem[6] + "\n\n"
+                 //tv_test_out.text = gettestSting
 
                  //Calculate remaining Time//TODO make better for year-change
                  var gettestString2l: String = getItem[0] + ". [" + getItem[1] + "] \n "
                  val currentDateTime = LocalDateTime.now()
+                 tv_test_out2.text = currentDateTime.toString()
                  val currentCalendar = Calendar.getInstance()
 
-                 if (getDateTime > currentDateTime){
-                     gettestString2l += (getDateTime.dayOfYear - currentDateTime.year).toString()
-                 }else{
-                     gettestString2l += "NEGATIVE DATE / TIME"
+                 if (getDateTime.isAfter(currentDateTime)){
+                     gettestString2l += "In: "
+                     when(getDateTime.year - currentDateTime.year) {
+                         0 -> when (getDateTime.dayOfYear - currentDateTime.dayOfYear) {
+                             0-> when (getDateTime.hour - currentDateTime.hour){
+                                 0-> when(getDateTime.minute - currentDateTime.minute){
+                                     0-> gettestString2l+= "Now"
+                                     1-> gettestString2l+= "1 Minute"
+                                     else -> gettestString2l += (getDateTime.minute - currentDateTime.minute).toString() + "Minutes "
+                                 }
+                                 1-> gettestString2l+= "1 Hour"
+                                 else-> gettestString2l += (getDateTime.hour - currentDateTime.hour).toString() + "Hours "
+                             }
+                             1-> gettestString2l+= "tomorrow"
+                             else-> gettestString2l += (getDateTime.dayOfYear - currentDateTime.dayOfYear).toString() + "Days "
+                         }
+                         1 -> gettestString2l += "Next Year "
+                         else -> gettestString2l += (getDateTime.year - currentDateTime.year).toString() + "Year "
+                     }
+                 }else {
+                     gettestString2l += "Date is in the past"
                  }
 
                  gettestSting2 += gettestString2l + "\n\n"
@@ -194,7 +203,7 @@ class MainActivity : AppCompatActivity()
         }else{
             gettestSting2 = "NO ITEMS SAVED"
         }
-        tv_test_out2.text = gettestSting2
+        tv_test_out.text = gettestSting2
     }
 
     private fun putTime(time: Int): String {
