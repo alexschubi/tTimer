@@ -137,16 +137,6 @@
                 android:textColor="@color/text_light"
                 android:textSize="24sp" />
 
-            <CalendarView
-                android:id="@+id/calendarView"
-                style="@android:style/Widget.Material.Light.CalendarView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/color_back"
-                android:theme="@style/Platform.MaterialComponents"
-                android:visibility="gone"
-                android:weekNumberColor="#DADADA" />
-
             <DatePicker
                 android:id="@+id/datePicker"
                 style="@style/DatePicker"
