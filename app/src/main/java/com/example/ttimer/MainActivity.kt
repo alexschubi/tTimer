@@ -1,7 +1,6 @@
 package com.example.ttimer
 
 import android.content.Context
-import android.content.IntentSender
 import android.content.SharedPreferences
 import android.icu.util.Calendar
 import android.os.Bundle
@@ -11,12 +10,12 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.gson.annotations.Until
+import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.concurrent.fixedRateTimer
 import kotlin.system.exitProcess
 
 
@@ -31,7 +30,9 @@ class MainActivity : AppCompatActivity()
     var addDate: String = ""
     var addTime: String = ""
     //Arrays Adapter
-    private val arrayListSave = ArrayList<Item>()
+    private val getArrayList = ArrayList<Item>()
+    val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
+    private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var adapter: RVadapter
     //START
 
@@ -43,9 +44,16 @@ class MainActivity : AppCompatActivity()
         this.layer1.visibility = View.VISIBLE
         timePicker.setIs24HourView(true)
 
+        linearLayoutManager = LinearLayoutManager(this)
+        recyclerViewItems.layoutManager = linearLayoutManager
+        adapter = RVadapter(getArrayList)
+        recyclerViewItems.adapter = adapter
+
         mainPrefs = getPreferences(MODE_PRIVATE)
         getDB()
         timer.start()
+
+        //TESTSdsfjdfgvhdifbvilubvu
         tv_test_out.setOnClickListener() { //TESTS
             val myIntList = arrayListOf<Int>(-123,232,0,4213,0,-1221,7)
             val intList = myIntList.toTypedArray()
@@ -59,28 +67,20 @@ class MainActivity : AppCompatActivity()
         b_add.setOnClickListener() {
             this.layer1.visibility = View.INVISIBLE
             this.layer2.visibility = View.VISIBLE
-
-            //setContentView(R.layout.activity_add)
         }
         //DELMODE
         b_del.setOnClickListener() {
             mainPrefs.edit().clear().apply()
+            getDB()
             //TODO delete single item
             Toast.makeText(this, "Dataset Cleared", Toast.LENGTH_SHORT).show()
-            /*if (delmode) {
-                b_del.background.setTint(getColor(R.color.color_header))
-                this.delmode = false
-            } else {
-                b_del.background.setTint(getColor(R.color.color_items_chosen))
-                this.delmode = true
-                mainPrefs.edit().clear().apply()
-            }*/
         }
     }
+
     //TIMER to refresh DB
-    private val timer = object: CountDownTimer( 1 * 60 * 60 * 1000, 1 * 10 * 1000){ //hour*min*sec*millisec
+    private val timer = object: CountDownTimer( 1 * 60 * 60 * 1000, 1 * 20 * 1000){ //hour*min*sec*millisec
         override fun onTick(millisUntilFinished: Long){
-            getDB()
+            refreshTime()
         }
         override fun onFinish() {
             Toast.makeText(applicationContext, "timer finished", Toast.LENGTH_SHORT).show()
@@ -95,7 +95,6 @@ class MainActivity : AppCompatActivity()
     //-------------------ADDITEM
 
     fun addItem(view: View) {
-        //val tinyDB: TinyDB = TinyDB(applicationContext)
 
         var index = mainPrefs.getInt("index", 0)
         index++
@@ -116,7 +115,6 @@ class MainActivity : AppCompatActivity()
             putTime(timePicker.hour),
             putTime(timePicker.minute)
         )
-
         //Save in tinyDB
         // https://github.com/kcochibili/TinyDB--Android-Shared-Preferences-Turbo
         //converted to Kotlin and works somehow
@@ -125,32 +123,71 @@ class MainActivity : AppCompatActivity()
         mainPrefs.edit().putInt("index", index).apply()
 
         //CLOSE addView TODO add Canceling of adding a new item
-        //getDB()
-
-
+        getDB()
         hideKeyboard()
         this.layer1.visibility = View.VISIBLE
         this.layer2.visibility = View.INVISIBLE
     }
 
+    fun refreshTime(): String {
+        var testOut = ""
+        for(item in getArrayList.indices) {
+            //Calculate remaining Time//TODO make better year-change (maybe)
+            var testOutLine: String =
+                (getArrayList[item].Index).toString() + ". [" + (getArrayList[item].Text) + "] \n "
+            val currentDateTime = LocalDateTime.now()
+            tv_test_out2.text = currentDateTime.toString()
+            val currentCalendar = Calendar.getInstance()//unused
 
-    fun getDB() {
+            if (getArrayList[item].Date.isAfter(currentDateTime)) {
+                when (getArrayList[item].Date.year - currentDateTime.year) {
+                    0 -> when (getArrayList[item].Date.dayOfYear - currentDateTime.dayOfYear) {
+                        0 -> when (getArrayList[item].Date.hour - currentDateTime.hour) {
+                            0 -> when (getArrayList[item].Date.minute - currentDateTime.minute) {
+                                0 -> testOutLine += "Now"
+                                1 -> testOutLine += "1 Minute"
+                                else -> testOutLine += (getArrayList[item].Date.minute - currentDateTime.minute).toString() + " Minutes "
+                            }
+                            1 -> testOutLine += "1 Hour"
+                            else -> testOutLine += (getArrayList[item].Date.hour - currentDateTime.hour).toString() + " Hours "
+                        }
+                        1 -> testOutLine += "tomorrow"
+                        else -> testOutLine += (getArrayList[item].Date.dayOfYear - currentDateTime.dayOfYear).toString() + " Days "
+                    }
+                    1 -> testOutLine += "Next Year "
+                    else -> testOutLine += (getArrayList[item].Date.year - currentDateTime.year).toString() + " Year "
+                }
+            } else {
+                testOutLine += "Date is in the past"
+            }
+            testOut += testOutLine + " until " + getArrayList[item].Date.format(formatter)+ " reached\n\n"
+            getArrayList[item].Span = testOut
+        }
+        if (getArrayList.isEmpty()){testOut = "No ItemsSaved"}
+        tv_test_out.text = testOut
+        return testOut
+    }
 
+    fun getDB() { //TODO only one get data and many time refreshes
+        getArrayList.clear()
         var getindex = mainPrefs.getInt("index", 0)
         var testStringSave: String= ""
         var gettestSting = ""
         var gettestSting2: String = ""
-        if (getindex > 0){
-             while(getindex > 0) {
+        if (getindex > 0) {
+            while (getindex > 0) {
 
-                 var getItem = getListString("Item $getindex")
-                 val getDateTime: LocalDateTime = getTime(getItem)
-                 //var getIndex: Int = getItem[0].toInt() //unused
-                 // var getText: String = getItem[1]
+                var getStringItem = getListString("Item $getindex")
+                val getDateTime: LocalDateTime = getTime(getStringItem)
+                val getItem = Item(getindex, getStringItem[1], getDateTime, refreshTime())
+                getArrayList.add(getItem)
+                refreshTime()
+                //var getIndex: Int = getItem[0].toInt() //unused
+                // var getText: String = getItem[1]
 
-                 //Calculate remaining Time//TODO make better for year-change
-                 var gettestString2l: String = getItem[0] + ". [" + getItem[1] + "] \n "
-                 val currentDateTime = LocalDateTime.now() //TODO add timezones
+                //Calculate remaining Time//TODO make better year-change (maybe)
+                /*var gettestString2l: String = getStringItem[0] + ". [" + getStringItem[1] + "] \n "
+                 val currentDateTime = LocalDateTime.now()
                  tv_test_out2.text = currentDateTime.toString()
                  val currentCalendar = Calendar.getInstance()//unused
 
@@ -177,15 +214,10 @@ class MainActivity : AppCompatActivity()
                      gettestString2l += "Date is in the past"
                  }
 
-                 gettestSting2 += gettestString2l + "\n\n"
+                 gettestSting2 += gettestString2l + "\n\n"*/
                  getindex += -1
              }
-        }else{
-            gettestSting2 = "NO ITEMS SAVED"
         }
-        tv_test_out.text = gettestSting2
-
-
     }
 
     private fun getTime(getItem: ArrayList<String>): LocalDateTime{
@@ -199,11 +231,8 @@ class MainActivity : AppCompatActivity()
 
     private fun putTime(time: Int): String {
         var stringMinute = ""
-        if (time<10){
-            stringMinute = "0" + time.toString()
-        }else{
-            stringMinute = time.toString()
-        }
+        if (time<10){ stringMinute = "0" + time.toString() }
+        else{ stringMinute = time.toString() }
         return stringMinute
     }
 

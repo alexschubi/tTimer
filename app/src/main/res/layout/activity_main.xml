@@ -83,21 +83,24 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:text="TextView"
-            android:textColor="@color/text_light" />
+            android:textColor="@color/text_light"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/tv_test_out2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="TextView"
-            android:textColor="@color/color_items" />
+            android:textColor="@color/color_items"
+            android:visibility="gone" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
+            android:id="@+id/recyclerViewItems"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
             android:padding="4dp"
+            android:scrollbars="vertical"
             tools:listitem="@layout/recycler_view">
 
         </androidx.recyclerview.widget.RecyclerView>
