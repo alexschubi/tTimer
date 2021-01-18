@@ -24,7 +24,7 @@ class RVadapter(private val rVArrayList: ArrayList<Item>) : RecyclerView.Adapter
         holder.itemView.tv_item_index.text = currentItem.Index.toString()
         holder.itemView.tv_item_text.text = currentItem.Text
         holder.itemView.tv_item_span.text = currentItem.Span
-        //holder.itemView.tv_item_datetime.text = currentItem.Date.format(DateTimeFormatter.ofPattern("dd.MM.uu HH:mm"))
+        holder.itemView.tv_item_datetime.text = currentItem.Date.format(DateTimeFormatter.ofPattern("dd.MM.uu HH:mm"))
     }
 
     override fun getItemCount() = rVArrayList.size

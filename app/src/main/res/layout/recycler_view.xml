@@ -12,7 +12,7 @@
 
     <TextView
         android:id="@+id/tv_item_index"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:layout_marginTop="4dp"
@@ -25,12 +25,11 @@
 
     <TextView
         android:id="@+id/tv_item_span"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="4dp"
-        android:hint="TimeSpan
-"
+        android:hint="TimeSpan"
         android:textColor="@color/text_back_light"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -41,11 +40,13 @@
         android:id="@+id/tv_item_datetime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
         android:layout_marginTop="4dp"
-        android:layout_marginEnd="4dp"
         android:hint="Date123"
+        android:textAlignment="center"
         android:textColor="@color/text_back_light"
-        app:layout_constraintEnd_toStartOf="@+id/tv_item_span"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_conversion_absoluteHeight="19dp"
         tools:layout_conversion_absoluteWidth="0dp" />

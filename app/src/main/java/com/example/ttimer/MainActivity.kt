@@ -46,24 +46,11 @@ class MainActivity : AppCompatActivity()
 
         linearLayoutManager = LinearLayoutManager(this)
         recyclerViewItems.layoutManager = linearLayoutManager
-        adapter = RVadapter(getArrayList)
-        recyclerViewItems.adapter = adapter
 
         mainPrefs = getPreferences(MODE_PRIVATE)
         getDB()
         timer.start()
-
-        //TESTSdsfjdfgvhdifbvilubvu
-        tv_test_out.setOnClickListener() { //TESTS
-            val myIntList = arrayListOf<Int>(-123,232,0,4213,0,-1221,7)
-            val intList = myIntList.toTypedArray()
-            var text: String = TextUtils.join("‚‗‚", intList)
-            tv_test_out2.text = text
-        }
-
-
-
-//-------------ADDING
+        //-------------ADDING
         b_add.setOnClickListener() {
             this.layer1.visibility = View.INVISIBLE
             this.layer2.visibility = View.VISIBLE
@@ -129,46 +116,21 @@ class MainActivity : AppCompatActivity()
         this.layer2.visibility = View.INVISIBLE
     }
 
-    fun refreshTime(): String {
-        var testOut = ""
+    fun refreshTime() { //TODO refresh recyclerView too
         for(item in getArrayList.indices) {
             //Calculate remaining Time//TODO make better year-change (maybe)
-            var testOutLine: String =
-                (getArrayList[item].Index).toString() + ". [" + (getArrayList[item].Text) + "] \n "
-            val currentDateTime = LocalDateTime.now()
-            tv_test_out2.text = currentDateTime.toString()
-            val currentCalendar = Calendar.getInstance()//unused
-
-            if (getArrayList[item].Date.isAfter(currentDateTime)) {
-                when (getArrayList[item].Date.year - currentDateTime.year) {
-                    0 -> when (getArrayList[item].Date.dayOfYear - currentDateTime.dayOfYear) {
-                        0 -> when (getArrayList[item].Date.hour - currentDateTime.hour) {
-                            0 -> when (getArrayList[item].Date.minute - currentDateTime.minute) {
-                                0 -> testOutLine += "Now"
-                                1 -> testOutLine += "1 Minute"
-                                else -> testOutLine += (getArrayList[item].Date.minute - currentDateTime.minute).toString() + " Minutes "
-                            }
-                            1 -> testOutLine += "1 Hour"
-                            else -> testOutLine += (getArrayList[item].Date.hour - currentDateTime.hour).toString() + " Hours "
-                        }
-                        1 -> testOutLine += "tomorrow"
-                        else -> testOutLine += (getArrayList[item].Date.dayOfYear - currentDateTime.dayOfYear).toString() + " Days "
-                    }
-                    1 -> testOutLine += "Next Year "
-                    else -> testOutLine += (getArrayList[item].Date.year - currentDateTime.year).toString() + " Year "
-                }
-            } else {
-                testOutLine += "Date is in the past"
-            }
-            testOut += testOutLine + " until " + getArrayList[item].Date.format(formatter)+ " reached\n\n"
-            getArrayList[item].Span = testOut
+            //testOutLine = (getArrayList[item].Index).toString() + ". [" + (getArrayList[item].Text) + "] \n "
+            getSpanString(item)
+            //testOut += testOutLine + " until " + getArrayList[item].Date.format(formatter)+ " reached\n\n"
         }
-        if (getArrayList.isEmpty()){testOut = "No ItemsSaved"}
-        tv_test_out.text = testOut
-        return testOut
+        if (getArrayList.isEmpty()){
+            Toast.makeText(this, "No Items saved", Toast.LENGTH_SHORT)
+            }
+        adapter = RVadapter(getArrayList)
+        recyclerViewItems.adapter = adapter
     }
 
-    fun getDB() { //TODO only one get data and many time refreshes
+    fun getDB() {
         getArrayList.clear()
         var getindex = mainPrefs.getInt("index", 0)
         var testStringSave: String= ""
@@ -179,45 +141,38 @@ class MainActivity : AppCompatActivity()
 
                 var getStringItem = getListString("Item $getindex")
                 val getDateTime: LocalDateTime = getTime(getStringItem)
-                val getItem = Item(getindex, getStringItem[1], getDateTime, refreshTime())
+                val getItem = Item(getindex, getStringItem[1], getDateTime, "first input")
                 getArrayList.add(getItem)
                 refreshTime()
-                //var getIndex: Int = getItem[0].toInt() //unused
-                // var getText: String = getItem[1]
-
-                //Calculate remaining Time//TODO make better year-change (maybe)
-                /*var gettestString2l: String = getStringItem[0] + ". [" + getStringItem[1] + "] \n "
-                 val currentDateTime = LocalDateTime.now()
-                 tv_test_out2.text = currentDateTime.toString()
-                 val currentCalendar = Calendar.getInstance()//unused
-
-                 if (getDateTime.isAfter(currentDateTime)){
-                     gettestString2l += "In: "
-                     when(getDateTime.year - currentDateTime.year) {
-                         0 -> when (getDateTime.dayOfYear - currentDateTime.dayOfYear) {
-                             0-> when (getDateTime.hour - currentDateTime.hour){
-                                 0-> when(getDateTime.minute - currentDateTime.minute){
-                                     0-> gettestString2l+= "Now"
-                                     1-> gettestString2l+= "1 Minute"
-                                     else -> gettestString2l += (getDateTime.minute - currentDateTime.minute).toString() + "Minutes "
-                                 }
-                                 1-> gettestString2l+= "1 Hour"
-                                 else-> gettestString2l += (getDateTime.hour - currentDateTime.hour).toString() + "Hours "
-                             }
-                             1-> gettestString2l+= "tomorrow"
-                             else-> gettestString2l += (getDateTime.dayOfYear - currentDateTime.dayOfYear).toString() + "Days "
-                         }
-                         1 -> gettestString2l += "Next Year "
-                         else -> gettestString2l += (getDateTime.year - currentDateTime.year).toString() + "Year "
-                     }
-                 }else {
-                     gettestString2l += "Date is in the past"
-                 }
-
-                 gettestSting2 += gettestString2l + "\n\n"*/
                  getindex += -1
              }
         }
+    }
+    fun getSpanString(item: Int) {
+        var testOutLine: String = ""
+        val currentDateTime = LocalDateTime.now()
+        if (getArrayList[item].Date.isAfter(currentDateTime)) {
+            when (getArrayList[item].Date.year - currentDateTime.year) {
+                0 -> when (getArrayList[item].Date.dayOfYear - currentDateTime.dayOfYear) {
+                    0 -> when (getArrayList[item].Date.hour - currentDateTime.hour) {
+                        0 -> when (getArrayList[item].Date.minute - currentDateTime.minute) {
+                            0 -> testOutLine += "Now"
+                            1 -> testOutLine += "1 Minute"
+                            else -> testOutLine += (getArrayList[item].Date.minute - currentDateTime.minute).toString() + " Minutes "
+                        }
+                        1 -> testOutLine += "1 Hour"
+                        else -> testOutLine += (getArrayList[item].Date.hour - currentDateTime.hour).toString() + " Hours "
+                    }
+                    1 -> testOutLine += "tomorrow"
+                    else -> testOutLine += (getArrayList[item].Date.dayOfYear - currentDateTime.dayOfYear).toString() + " Days "
+                }
+                1 -> testOutLine += "Next Year "
+                else -> testOutLine += (getArrayList[item].Date.year - currentDateTime.year).toString() + " Years "
+            }
+        } else {
+            testOutLine += "Date is in the past"
+        }
+        getArrayList[item].Span = testOutLine
     }
 
     private fun getTime(getItem: ArrayList<String>): LocalDateTime{
