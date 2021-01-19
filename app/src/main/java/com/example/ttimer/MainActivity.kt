@@ -22,10 +22,12 @@ import kotlin.system.exitProcess
 class MainActivity : AppCompatActivity()
 {
     //VARIABLES
+    //Global vars
+    public var delmode: Boolean = false
+    public var addmode: Boolean = false
     //Preferences
-    lateinit var mainPrefs: SharedPreferences
+    public lateinit var mainPrefs: SharedPreferences
     // VARs VALs
-    private var delmode: Boolean = false
     var addText: String = ""
     var addDate: String = ""
     var addTime: String = ""
@@ -34,13 +36,14 @@ class MainActivity : AppCompatActivity()
     val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var adapter: RVadapter
-    //START
 
+    //START
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        this.layer2.visibility = View.INVISIBLE
+        this.layer2.visibility = View.INVISIBLE //TODO use fragments
+        //https://devofandroid.blogspot.com/2018/03/add-back-button-to-action-bar-android.html
         this.layer1.visibility = View.VISIBLE
         timePicker.setIs24HourView(true)
 
@@ -54,13 +57,45 @@ class MainActivity : AppCompatActivity()
         b_add.setOnClickListener() {
             this.layer1.visibility = View.INVISIBLE
             this.layer2.visibility = View.VISIBLE
+            addmode = true
+
         }
         //DELMODE
         b_del.setOnClickListener() {
-            mainPrefs.edit().clear().apply()
+            if(delmode == true){
+                b_del.background.setTint(getColor(R.color.button_back))
+                delmode = false
+            }else{
+                b_del.background.setTint(getColor(R.color.button_select))
+                delmode = true
+            }
+
+            /*mainPrefs.edit().clear().apply()
             getDB()
             //TODO delete single item
-            Toast.makeText(this, "Dataset Cleared", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Dataset Cleared", Toast.LENGTH_SHORT).show()*/
+        }
+    }
+
+    public fun clickItem(ItemPos: Int, itemView: View){ //TODO
+        if(delmode) {
+            MainActivity().mainPrefs.edit().remove("Item $ItemPos").apply()
+            MainActivity().getDB()
+            Toast.makeText(itemView.context, "Item $ItemPos deleted", Toast.LENGTH_SHORT).show()
+        }else{
+            MainActivity().getDB()
+            MainActivity().mainPrefs.edit().remove("Item $ItemPos").apply()
+            MainActivity().getDB()
+            Toast.makeText(itemView.context, "Item $ItemPos clicked", Toast.LENGTH_SHORT).show()
+        }
+    }
+    override fun onBackPressed(){
+        if (addmode){
+            getDB()
+            hideKeyboard()
+            addmode = false
+            this.layer1.visibility = View.VISIBLE
+            this.layer2.visibility = View.INVISIBLE
         }
     }
 
@@ -109,19 +144,17 @@ class MainActivity : AppCompatActivity()
         putListString("Item $index", addItemString)
         mainPrefs.edit().putInt("index", index).apply()
 
-        //CLOSE addView TODO add Canceling of adding a new item
+        //CLOSE addView
         getDB()
         hideKeyboard()
+        addmode = false
         this.layer1.visibility = View.VISIBLE
         this.layer2.visibility = View.INVISIBLE
     }
 
-    fun refreshTime() { //TODO refresh recyclerView too
+    public fun refreshTime() {
         for(item in getArrayList.indices) {
-            //Calculate remaining Time//TODO make better year-change (maybe)
-            //testOutLine = (getArrayList[item].Index).toString() + ". [" + (getArrayList[item].Text) + "] \n "
             getSpanString(item)
-            //testOut += testOutLine + " until " + getArrayList[item].Date.format(formatter)+ " reached\n\n"
         }
         if (getArrayList.isEmpty()){
             Toast.makeText(this, "No Items saved", Toast.LENGTH_SHORT)
@@ -133,9 +166,6 @@ class MainActivity : AppCompatActivity()
     fun getDB() {
         getArrayList.clear()
         var getindex = mainPrefs.getInt("index", 0)
-        var testStringSave: String= ""
-        var gettestSting = ""
-        var gettestSting2: String = ""
         if (getindex > 0) {
             while (getindex > 0) {
 

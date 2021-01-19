@@ -2,16 +2,13 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/color_back</item>
-        <item name="colorPrimaryDark">@color/color_header</item>
-        <item name="colorAccent">@color/color_items</item>
     </style>
-    <style name="DatePicker">
-        <item name="colorControlActivated">@color/color_header</item>
-        <item name="android:selectableItemBackgroundBorderless">@color/color_back</item>
-        <item name="colorControlHighlight">#d50000</item>
-        <item name="android:textColorPrimary">@color/text_light</item> <!--days of the month-->
-        <item name="android:textColorSecondary">@color/text_light2</item>    <!--days of the week-->
+    <style name="DatePicker_dark">
+        <item name="colorControlActivated">@color/item_back</item>
+        <item name="android:selectableItemBackgroundBorderless">@color/text_back</item>
+        <item name="colorControlHighlight">@color/button_select</item>
+        <item name="android:textColorPrimary">@color/header_text</item> <!--days of the month-->
+        <item name="android:textColorSecondary">@color/item_text</item>    <!--days of the week-->
 
     </style>
 

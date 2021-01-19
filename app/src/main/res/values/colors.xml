@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="color_back">#2A2E3A</color>
-    <color name="color_header">#304380</color>
-    <color name="color_items">#304380</color>
-    <color name="text_light">#939DBC</color>
-    <color name="text_light2">#8C92A6</color>
-    <color name="color_items_chosen">#F44336</color>
-    <color name="text_back_light">#E2E2E2</color>
+    <color name="main_back">#343842</color>
+    <color name="header_back">#29396C</color>
+    <color name="item_back">#304380</color>
+    <color name="main_text">#AAAEC6</color>
+    <color name="header_text">#99A3C5</color>
+    <color name="text_back">#424753</color>
+    <color name="item_text">#AAAEC6</color>
+    <color name="button_back">#233A83</color>
+    <color name="button_text">#FFFFFF</color>
+    <color name="button_select">#CD0505</color>
 </resources>
