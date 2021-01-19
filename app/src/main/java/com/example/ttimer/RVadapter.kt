@@ -44,7 +44,7 @@ class RVadapter(private val rVArrayList: ArrayList<Item>) : RecyclerView.Adapter
 
         init { itemView.setOnClickListener(this) }
 
-        override fun onClick(itemView: View) {
+        override fun onClick(itemView: View) {//TODO get delmode-Bool and MainPrefs from MainActivity
             MainActivity().clickItem(layoutPosition + 1, itemView)
 
         }

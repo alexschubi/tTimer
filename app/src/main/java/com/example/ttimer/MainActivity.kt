@@ -124,7 +124,6 @@ class MainActivity : AppCompatActivity()
 
 
         addText = tb_add_text.text.toString()
-        //addDate = calendarView.date.toString()
         addDate = datePicker.dayOfMonth.toString() + "." + (datePicker.month+1) + "." + datePicker.year
         addTime = timePicker.hour.toString() + ":" + timePicker.minute.toString()
 
