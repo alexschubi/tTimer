@@ -159,7 +159,8 @@
                 android:layout_margin="4dp"
                 android:headerBackground="@color/text_back"
                 android:numbersSelectorColor="@color/item_back"
-                android:timePickerMode="clock" />
+                android:theme="@style/DatePicker_dark"
+                android:timePickerMode="spinner" />
 
             <Button
                 android:id="@+id/b_add_final"
@@ -170,6 +171,7 @@
                 android:clickable="true"
                 android:onClick="addItem"
                 android:text="Add"
+                android:textColor="@color/button_text"
                 android:textSize="24sp" />
 
         </LinearLayout>

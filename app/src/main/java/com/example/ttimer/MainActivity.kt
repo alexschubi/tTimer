@@ -18,15 +18,18 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.system.exitProcess
 
+public var delmode: Boolean = false
+public var addmode: Boolean = false
+public lateinit var mainPrefs: SharedPreferences
 
 class MainActivity : AppCompatActivity()
 {
     //VARIABLES
     //Global vars
-    public var delmode: Boolean = false
-    public var addmode: Boolean = false
+    //public var delmode: Boolean = false
+    //public var addmode: Boolean = false
     //Preferences
-    public lateinit var mainPrefs: SharedPreferences
+    //public lateinit var mainPrefs: SharedPreferences
     // VARs VALs
     var addText: String = ""
     var addDate: String = ""
@@ -64,6 +67,7 @@ class MainActivity : AppCompatActivity()
         b_del.setOnClickListener() {
             if(delmode == true){
                 b_del.background.setTint(getColor(R.color.button_back))
+                getDB()
                 delmode = false
             }else{
                 b_del.background.setTint(getColor(R.color.button_select))
@@ -77,18 +81,6 @@ class MainActivity : AppCompatActivity()
         }
     }
 
-    public fun clickItem(ItemPos: Int, itemView: View){ //TODO
-        if(delmode) {
-            MainActivity().mainPrefs.edit().remove("Item $ItemPos").apply()
-            MainActivity().getDB()
-            Toast.makeText(itemView.context, "Item $ItemPos deleted", Toast.LENGTH_SHORT).show()
-        }else{
-            MainActivity().getDB()
-            MainActivity().mainPrefs.edit().remove("Item $ItemPos").apply()
-            MainActivity().getDB()
-            Toast.makeText(itemView.context, "Item $ItemPos clicked", Toast.LENGTH_SHORT).show()
-        }
-    }
     override fun onBackPressed(){
         if (addmode){
             getDB()
@@ -158,7 +150,7 @@ class MainActivity : AppCompatActivity()
         if (getArrayList.isEmpty()){
             Toast.makeText(this, "No Items saved", Toast.LENGTH_SHORT)
             }
-        adapter = RVadapter(getArrayList)
+        adapter = RVadapter(getArrayList, delmode)
         recyclerViewItems.adapter = adapter
     }
 
@@ -169,6 +161,8 @@ class MainActivity : AppCompatActivity()
             while (getindex > 0) {
 
                 var getStringItem = getListString("Item $getindex")
+                Toast.makeText(this, getStringItem.toString(), Toast.LENGTH_LONG).show()
+                Toast.makeText(this, getindex.toString(), Toast.LENGTH_SHORT).show()
                 val getDateTime: LocalDateTime = getTime(getStringItem)
                 val getItem = Item(getindex, getStringItem[1], getDateTime, "first input")
                 getArrayList.add(getItem)
@@ -224,8 +218,8 @@ class MainActivity : AppCompatActivity()
         val myStringList = stringList.toTypedArray()
         mainPrefs.edit().putString(key, TextUtils.join("‚‗‚", myStringList)).apply()
     }
-    private fun getListString(key: String?): java.util.ArrayList<String> {
-        return ArrayList(Arrays.asList(*TextUtils.split(mainPrefs.getString(key, ""),"‚‗‚")))
+    private fun getListString(key: String?): ArrayList<String> {
+        return ArrayList(listOf(*TextUtils.split(mainPrefs.getString(key, ""),"‚‗‚")))
     }
 
     //HIDE KEYBOARD
