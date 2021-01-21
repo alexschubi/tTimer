@@ -10,6 +10,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.text.set
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 import java.time.LocalDateTime
@@ -21,6 +22,7 @@ import kotlin.system.exitProcess
 public var delmode: Boolean = false
 public var addmode: Boolean = false
 public lateinit var mainPrefs: SharedPreferences
+public  val getArrayList = ArrayList<Item>()
 
 class MainActivity : AppCompatActivity()
 {
@@ -35,10 +37,12 @@ class MainActivity : AppCompatActivity()
     var addDate: String = ""
     var addTime: String = ""
     //Arrays Adapter
-    private val getArrayList = ArrayList<Item>()
+    //private val getArrayList = ArrayList<Item>()
     val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var adapter: RVadapter
+
+    //TODO recycler-view adding and deleting left and right from this, open with left/rifgt swipe (visibility-GONE)
 
     //START
     override fun onCreate(savedInstanceState: Bundle?)
@@ -46,8 +50,8 @@ class MainActivity : AppCompatActivity()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         this.layer2.visibility = View.INVISIBLE //TODO use fragments
-        //https://devofandroid.blogspot.com/2018/03/add-back-button-to-action-bar-android.html
         this.layer1.visibility = View.VISIBLE
+        //https://devofandroid.blogspot.com/2018/03/add-back-button-to-action-bar-android.html
         timePicker.setIs24HourView(true)
 
         linearLayoutManager = LinearLayoutManager(this)
@@ -63,6 +67,7 @@ class MainActivity : AppCompatActivity()
             addmode = true
 
         }
+
         //DELMODE
         b_del.setOnClickListener() {
             if(delmode == true){
@@ -113,8 +118,6 @@ class MainActivity : AppCompatActivity()
         var index = mainPrefs.getInt("index", 0)
         index++
 
-
-
         addText = tb_add_text.text.toString()
         addDate = datePicker.dayOfMonth.toString() + "." + (datePicker.month+1) + "." + datePicker.year
         addTime = timePicker.hour.toString() + ":" + timePicker.minute.toString()
@@ -150,7 +153,7 @@ class MainActivity : AppCompatActivity()
         if (getArrayList.isEmpty()){
             Toast.makeText(this, "No Items saved", Toast.LENGTH_SHORT)
             }
-        adapter = RVadapter(getArrayList, delmode)
+        adapter = RVadapter(getArrayList)
         recyclerViewItems.adapter = adapter
     }
 
@@ -171,6 +174,19 @@ class MainActivity : AppCompatActivity()
              }
         }
     }
+
+    fun editItem(index: Int){
+        layer2.visibility = View.VISIBLE
+        layer1.visibility = View.INVISIBLE
+        addmode = true
+        tb_add_text.setText(getArrayList[index].Text)
+
+        datePicker.updateDate(getArrayList[index].Date.year, getArrayList[index].Date.monthValue, getArrayList[index].Date.dayOfMonth)
+        timePicker.hour = getArrayList[index].Date.hour
+        timePicker.minute = getArrayList[index].Date.minute
+
+    }
+
     fun getSpanString(item: Int) {
         var testOutLine: String = ""
         val currentDateTime = LocalDateTime.now()

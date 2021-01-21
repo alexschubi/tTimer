@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/BaseLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/main_back"
@@ -11,7 +12,7 @@
         android:id="@+id/layer1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
+        android:visibility="visible"
         app:constraint_referenced_ids="linearLayout_v_main,b_del,b_add"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -20,7 +21,7 @@
         android:id="@+id/layer2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="visible"
+        android:visibility="gone"
         app:constraint_referenced_ids="scrollView2,b_add_time"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -148,6 +149,7 @@
                 android:datePickerMode="calendar"
                 android:dayOfWeekBackground="@color/item_text"
                 android:headerBackground="@color/text_back"
+                android:layoutMode="clipBounds"
                 android:minDate="01/01/2020"
                 android:startYear="2020"
                 android:theme="@style/DatePicker_dark" />
