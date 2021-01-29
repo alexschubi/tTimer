@@ -164,11 +164,11 @@ class MainActivity : AppCompatActivity()
             while (getindex > 0) {
 
                 var getStringItem = getListString("Item $getindex")
-                Toast.makeText(this, getStringItem.toString(), Toast.LENGTH_LONG).show()
-                Toast.makeText(this, getindex.toString(), Toast.LENGTH_SHORT).show()
-                val getDateTime: LocalDateTime = getTime(getStringItem)
-                val getItem = Item(getindex, getStringItem[1], getDateTime, "first input")
-                getArrayList.add(getItem)
+                if(!getStringItem.isEmpty()){
+                    val getDateTime: LocalDateTime = getTime(getStringItem)
+                    val getItem = Item(getStringItem[0].toInt(), getStringItem[1], getDateTime, "first input")
+                    getArrayList.add(getItem)
+                }
                 refreshTime()
                  getindex += -1
              }
@@ -179,8 +179,8 @@ class MainActivity : AppCompatActivity()
         layer2.visibility = View.VISIBLE
         layer1.visibility = View.INVISIBLE
         addmode = true
-        tb_add_text.setText(getArrayList[index].Text)
 
+        tb_add_text.setText(getArrayList[index].Text)
         datePicker.updateDate(getArrayList[index].Date.year, getArrayList[index].Date.monthValue, getArrayList[index].Date.dayOfMonth)
         timePicker.hour = getArrayList[index].Date.hour
         timePicker.minute = getArrayList[index].Date.minute
