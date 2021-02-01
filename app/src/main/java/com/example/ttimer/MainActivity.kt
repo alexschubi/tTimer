@@ -73,16 +73,13 @@ class MainActivity : AppCompatActivity()
             if(delmode == true){
                 b_del.background.setTint(getColor(R.color.button_back))
                 getDB()
+                timer.start()
                 delmode = false
             }else{
+                timer.cancel()
                 b_del.background.setTint(getColor(R.color.button_select))
                 delmode = true
             }
-
-            /*mainPrefs.edit().clear().apply()
-            getDB()
-            //TODO delete single item
-            Toast.makeText(this, "Dataset Cleared", Toast.LENGTH_SHORT).show()*/
         }
     }
 
@@ -97,7 +94,7 @@ class MainActivity : AppCompatActivity()
     }
 
     //TIMER to refresh DB
-    private val timer = object: CountDownTimer( 1 * 60 * 60 * 1000, 1 * 20 * 1000){ //hour*min*sec*millisec
+    private val timer = object: CountDownTimer( 1 * 60 * 60 * 1000, 1 * 5 * 1000){ //hour*min*sec*millisec
         override fun onTick(millisUntilFinished: Long){
             refreshTime()
         }

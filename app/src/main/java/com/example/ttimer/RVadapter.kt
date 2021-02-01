@@ -33,7 +33,7 @@ class RVadapter(private val rVArrayList: ArrayList<Item>) : RecyclerView.Adapter
         holder.itemView.tv_item_text.text = currentItem.Text
         holder.itemView.tv_item_span.text = currentItem.Span
         holder.itemView.tv_item_datetime.text = currentItem.Date.format(DateTimeFormatter.ofPattern("dd.MM.uu HH:mm"))
-        holder.itemView.id =currentItem.Index
+        holder.itemView.id = currentItem.Index
 
 
     }
@@ -46,15 +46,10 @@ class RVadapter(private val rVArrayList: ArrayList<Item>) : RecyclerView.Adapter
         private var view: View = itemView
         private var item: Item? = null
 
-
-        init { itemView.setOnClickListener(this) }
-
         override fun onClick(itemView: View) {//TODO getDB after delteing
-            val index = adapterPosition
             val prefIndex = itemView.id
             if(delmode) {
                 mainPrefs.edit().remove("Item $prefIndex").apply()
-                mainPrefs.edit().putInt("index", mainPrefs.getInt("index", 0) - 1 ).apply()
                 Toast.makeText( itemView.context, "Item $prefIndex deleted", Toast.LENGTH_SHORT).show()
             }else{
                 Toast.makeText( itemView.context, "Item Pref $prefIndex clicked", Toast.LENGTH_SHORT).show()
