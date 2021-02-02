@@ -1,15 +1,22 @@
 package com.example.ttimer
 
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
 import android.content.SharedPreferences
 import android.icu.util.Calendar
+import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.os.Message
 import android.text.TextUtils
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.text.set
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
@@ -42,14 +49,17 @@ class MainActivity : AppCompatActivity()
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var adapter: RVadapter
 
-    //TODO recycler-view adding and deleting left and right from this, open with left/rifgt swipe (visibility-GONE)
+
+    //TODO subroutine for timer
+    //TODO display notifictions if timer reached
 
     //START
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        this.layer2.visibility = View.INVISIBLE //TODO use fragments
+        this.layer2.visibility = View.INVISIBLE
+        //TODO use Fragments
         this.layer1.visibility = View.VISIBLE
         //https://devofandroid.blogspot.com/2018/03/add-back-button-to-action-bar-android.html
         timePicker.setIs24HourView(true)
@@ -104,9 +114,22 @@ class MainActivity : AppCompatActivity()
             exitProcess(-1)
         }
     }
-
-
-    // TODO recycler View
+    private fun createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = "timerReachedChannel"
+            val descriptionText = "If the tTimer-Timer of an Item is Reached"
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel("tTimer", name, importance).apply {
+                description = descriptionText
+            }
+            // Register the channel with the system
+            val notificationManager: NotificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
 
     //-------------------ADDITEM
 
@@ -192,7 +215,18 @@ class MainActivity : AppCompatActivity()
                 0 -> when (getArrayList[item].Date.dayOfYear - currentDateTime.dayOfYear) {
                     0 -> when (getArrayList[item].Date.hour - currentDateTime.hour) {
                         0 -> when (getArrayList[item].Date.minute - currentDateTime.minute) {
-                            0 -> testOutLine += "Now"
+                            0 -> {testOutLine += "Now"
+                                var builder = NotificationCompat.Builder(this, "tTimer")
+                                    .setSmallIcon(R.drawable.ttimer_logo)
+                                    .setContentTitle("tTimer")
+                                    .setContentText(getArrayList[item].Text)
+                                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+
+                                with(NotificationManagerCompat.from(this)) {
+                                    // notificationId is a unique int for each notification that you must define
+                                    notify(getArrayList[item].Index, builder.build())
+                                }
+                            }
                             1 -> testOutLine += "1 Minute"
                             else -> testOutLine += (getArrayList[item].Date.minute - currentDateTime.minute).toString() + " Minutes "
                         }

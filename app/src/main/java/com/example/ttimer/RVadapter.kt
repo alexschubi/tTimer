@@ -46,9 +46,10 @@ class RVadapter(private val rVArrayList: ArrayList<Item>) : RecyclerView.Adapter
         private var view: View = itemView
         private var item: Item? = null
 
-        override fun onClick(itemView: View) {//TODO getDB after delteing
+        override fun onClick(itemView: View) {
             val prefIndex = itemView.id
-            if(delmode) {
+            if(delmode) { //TODO select deleting and keep items
+                itemView.setBackgroundResource(R.color.button_select)
                 mainPrefs.edit().remove("Item $prefIndex").apply()
                 Toast.makeText( itemView.context, "Item $prefIndex deleted", Toast.LENGTH_SHORT).show()
             }else{
