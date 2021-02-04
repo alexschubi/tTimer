@@ -48,6 +48,7 @@ class MainActivity : AppCompatActivity()
     val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var adapter: RVadapter
+    private var notificationManager: NotificationManager? = null
 
 
     //TODO subroutine for timer
@@ -70,15 +71,13 @@ class MainActivity : AppCompatActivity()
         mainPrefs = getPreferences(MODE_PRIVATE)
         getDB()
         timer.start()
-        //-------------ADDING
+        //-------------ADDMODE
         b_add.setOnClickListener() {
             this.layer1.visibility = View.INVISIBLE
             this.layer2.visibility = View.VISIBLE
             addmode = true
-
         }
-
-        //DELMODE
+        //-------------DELMODE
         b_del.setOnClickListener() {
             if(delmode == true){
                 b_del.background.setTint(getColor(R.color.button_back))
@@ -91,6 +90,23 @@ class MainActivity : AppCompatActivity()
                 delmode = true
             }
         }
+        //Create NotificationChannel
+         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+             val channel = NotificationChannel(
+                 applicationContext.packageName,
+                 "Timer reached",
+                 NotificationManager.IMPORTANCE_DEFAULT
+             ).apply {
+                 description = "descriptionText"
+                 enableLights(true)
+                 canShowBadge()
+             }
+             /* val channel = NotificationManagerCompat.from(this)
+                     .createNotificationChannel(NotificationChannel("${applicationContext.packageName}-tTimer",
+                         "Ttimer", NotificationManager.IMPORTANCE_DEFAULT).apply { description = "tTimer-Notification-Channel" })*/
+             notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+             notificationManager?.createNotificationChannel(channel)
+         }
     }
 
     override fun onBackPressed(){
@@ -112,22 +128,6 @@ class MainActivity : AppCompatActivity()
             Toast.makeText(applicationContext, "timer finished", Toast.LENGTH_SHORT).show()
             moveTaskToBack(true)
             exitProcess(-1)
-        }
-    }
-    private fun createNotificationChannel() {
-        // Create the NotificationChannel, but only on API 26+ because
-        // the NotificationChannel class is new and not in the support library
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = "timerReachedChannel"
-            val descriptionText = "If the tTimer-Timer of an Item is Reached"
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel("tTimer", name, importance).apply {
-                description = descriptionText
-            }
-            // Register the channel with the system
-            val notificationManager: NotificationManager =
-                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
         }
     }
 
@@ -215,18 +215,7 @@ class MainActivity : AppCompatActivity()
                 0 -> when (getArrayList[item].Date.dayOfYear - currentDateTime.dayOfYear) {
                     0 -> when (getArrayList[item].Date.hour - currentDateTime.hour) {
                         0 -> when (getArrayList[item].Date.minute - currentDateTime.minute) {
-                            0 -> {testOutLine += "Now"
-                                var builder = NotificationCompat.Builder(this, "tTimer")
-                                    .setSmallIcon(R.drawable.ttimer_logo)
-                                    .setContentTitle("tTimer")
-                                    .setContentText(getArrayList[item].Text)
-                                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-
-                                with(NotificationManagerCompat.from(this)) {
-                                    // notificationId is a unique int for each notification that you must define
-                                    notify(getArrayList[item].Index, builder.build())
-                                }
-                            }
+                            0 -> testOutLine += "Now"
                             1 -> testOutLine += "1 Minute"
                             else -> testOutLine += (getArrayList[item].Date.minute - currentDateTime.minute).toString() + " Minutes "
                         }
@@ -241,6 +230,20 @@ class MainActivity : AppCompatActivity()
             }
         } else {
             testOutLine += "Date is in the past"
+
+                val builder = NotificationCompat.Builder(applicationContext, getArrayList[item].Index.toString()).apply{
+                    setChannelId(applicationContext.packageName)
+                    setSmallIcon(R.drawable.ttimer_logo)
+                    setContentTitle("Timer reached")
+                    //setContentText(getArrayList[item].Text)
+                    setStyle(NotificationCompat.BigTextStyle().bigText(getArrayList[item].Text))
+                    priority = NotificationCompat.PRIORITY_DEFAULT
+                    setAutoCancel(true)
+                }
+            //notificationManager?.notify(getArrayList[item].Index, builder.build())
+
+            NotificationManagerCompat.from(this).notify(getArrayList[item].Index, builder.build())
+
         }
         getArrayList[item].Span = testOutLine
     }
