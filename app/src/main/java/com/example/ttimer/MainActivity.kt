@@ -1,28 +1,24 @@
 package com.example.ttimer
 
-import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.content.SharedPreferences
-import android.icu.util.Calendar
 import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.os.Message
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.text.set
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.system.exitProcess
 
@@ -40,9 +36,10 @@ class MainActivity : AppCompatActivity()
     //Preferences
     //public lateinit var mainPrefs: SharedPreferences
     // VARs VALs
-    var addText: String = ""
-    var addDate: String = ""
-    var addTime: String = ""
+    private var addText: String = ""
+    private var addDate: String = ""
+    private var addTime: String = ""
+    private var addNotified: Boolean = false
     //Arrays Adapter
     //private val getArrayList = ArrayList<Item>()
     val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
@@ -131,8 +128,8 @@ class MainActivity : AppCompatActivity()
         }
     }
 
-    //-------------------ADDITEM
 
+    //-------------------ADDITEM
     fun addItem(view: View) {
 
         var index = mainPrefs.getInt("index", 0)
@@ -144,12 +141,13 @@ class MainActivity : AppCompatActivity()
 
         val addItemString = arrayListOf<String>(
             index.toString(),
-            addText.toString(),
+            addText,
             datePicker.dayOfMonth.toString(),
             (datePicker.month + 1).toString(),
             datePicker.year.toString(),
             putTime(timePicker.hour),
-            putTime(timePicker.minute)
+            putTime(timePicker.minute),
+            addNotified.toString()
         )
         //Save in tinyDB
         // https://github.com/kcochibili/TinyDB--Android-Shared-Preferences-Turbo
@@ -166,36 +164,38 @@ class MainActivity : AppCompatActivity()
         this.layer2.visibility = View.INVISIBLE
     }
 
-    public fun refreshTime() {
+    fun refreshTime() {
         for(item in getArrayList.indices) {
             getSpanString(item)
         }
         if (getArrayList.isEmpty()){
-            Toast.makeText(this, "No Items saved", Toast.LENGTH_SHORT)
+            Toast.makeText(this, "No Items saved", Toast.LENGTH_SHORT).show()
             }
         adapter = RVadapter(getArrayList)
         recyclerViewItems.adapter = adapter
     }
 
-    fun getDB() {
+    private fun getDB() {
         getArrayList.clear()
         var getindex = mainPrefs.getInt("index", 0)
         if (getindex > 0) {
             while (getindex > 0) {
 
-                var getStringItem = getListString("Item $getindex")
-                if(!getStringItem.isEmpty()){
+                val getStringItem = getListString("Item $getindex")
+                if(getStringItem.isNotEmpty()){
                     val getDateTime: LocalDateTime = getTime(getStringItem)
-                    val getItem = Item(getStringItem[0].toInt(), getStringItem[1], getDateTime, "first input")
+                    val getItem = Item(getStringItem[0].toInt(), getStringItem[1], getDateTime, "first input", getStringItem[7].toBoolean())
                     getArrayList.add(getItem)
                 }
-                refreshTime()
-                 getindex += -1
+                Log.d("saved Items count", getindex.toString())
+                getindex += -1
              }
+            refreshTime()
+            Log.d("saved Items break", "BREAK")
         }
     }
 
-    fun editItem(index: Int){
+    fun editItem(index: Int){ //TBD
         layer2.visibility = View.VISIBLE
         layer1.visibility = View.INVISIBLE
         addmode = true
@@ -207,7 +207,7 @@ class MainActivity : AppCompatActivity()
 
     }
 
-    fun getSpanString(item: Int) {
+    private fun getSpanString(item: Int) {
         var testOutLine: String = ""
         val currentDateTime = LocalDateTime.now()
         if (getArrayList[item].Date.isAfter(currentDateTime)) {
@@ -231,7 +231,11 @@ class MainActivity : AppCompatActivity()
         } else {
             testOutLine += "Date is in the past"
 
-                val builder = NotificationCompat.Builder(applicationContext, getArrayList[item].Index.toString()).apply{
+            if(!getArrayList[item].Notified) {
+                val builder = NotificationCompat.Builder(
+                    applicationContext,
+                    getArrayList[item].Index.toString()
+                ).apply {
                     setChannelId(applicationContext.packageName)
                     setSmallIcon(R.drawable.ttimer_logo)
                     setContentTitle("Timer reached")
@@ -240,26 +244,36 @@ class MainActivity : AppCompatActivity()
                     priority = NotificationCompat.PRIORITY_DEFAULT
                     setAutoCancel(true)
                 }
-            //notificationManager?.notify(getArrayList[item].Index, builder.build())
+                NotificationManagerCompat.from(this)
+                    .notify(getArrayList[item].Index, builder.build())
 
-            NotificationManagerCompat.from(this).notify(getArrayList[item].Index, builder.build())
+                //TODO change notified in prefs
+                Log.d("Items", getArrayList.indices.toString())
+                val currentItemString = getListString("Item ${item+1}")
+                Log.d("notify Item", "$currentItemString  - ${item+1}")
+                currentItemString[7] = true.toString()
+                putListString("Item ${item+1}", currentItemString)
+                //getArrayList[item].Noified = true
+            }else{
+                Log.d("already notified Item", (item).toString())
+            }
 
         }
         getArrayList[item].Span = testOutLine
     }
 
     private fun getTime(getItem: ArrayList<String>): LocalDateTime{
-        var getDay: Int = getItem[2].toInt()
-        var getMonth: Int = getItem[3].toInt()
-        var getYear: Int = getItem[4].toInt()
-        var getHour: Int = getItem[5].toInt()
-        var getMinute: Int = getItem[6].toInt()
+        val getDay: Int = getItem[2].toInt()
+        val getMonth: Int = getItem[3].toInt()
+        val getYear: Int = getItem[4].toInt()
+        val getHour: Int = getItem[5].toInt()
+        val getMinute: Int = getItem[6].toInt()
         return LocalDateTime.of(getYear, getMonth, getDay, getHour, getMinute)
     }
 
     private fun putTime(time: Int): String {
         var stringMinute = ""
-        if (time<10){ stringMinute = "0" + time.toString() }
+        if (time<10){ stringMinute = "0$time" }
         else{ stringMinute = time.toString() }
         return stringMinute
     }
@@ -273,8 +287,8 @@ class MainActivity : AppCompatActivity()
     }
 
     //HIDE KEYBOARD
-    fun MainActivity.hideKeyboard() { hideKeyboard(currentFocus ?: View(this)) }
-    fun Context.hideKeyboard(view: View) {
+    private fun MainActivity.hideKeyboard() { hideKeyboard(currentFocus ?: View(this)) }
+    private fun Context.hideKeyboard(view: View) {
         val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
