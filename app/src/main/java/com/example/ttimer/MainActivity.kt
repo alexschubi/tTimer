@@ -117,7 +117,7 @@ class MainActivity : AppCompatActivity()
     }
 
     //TIMER to refresh DB
-    private val timer = object: CountDownTimer( 1 * 60 * 60 * 1000, 1 * 5 * 1000){ //hour*min*sec*millisec
+    private val timer = object: CountDownTimer( 1 * 60 * 60 * 1000, 1 * 10 * 1000){ //hour*min*sec*millisec
         override fun onTick(millisUntilFinished: Long){
             refreshTime()
         }
@@ -168,6 +168,7 @@ class MainActivity : AppCompatActivity()
         for(item in getArrayList.indices) {
             getSpanString(item)
         }
+        Log.d("getArrayList.indices", getArrayList.indices.toString())
         if (getArrayList.isEmpty()){
             Toast.makeText(this, "No Items saved", Toast.LENGTH_SHORT).show()
             }
@@ -248,14 +249,16 @@ class MainActivity : AppCompatActivity()
                     .notify(getArrayList[item].Index, builder.build())
 
                 //TODO change notified in prefs
-                Log.d("Items", getArrayList.indices.toString())
                 val currentItemString = getListString("Item ${item+1}")
-                Log.d("notify Item", "$currentItemString  - ${item+1}")
-                currentItemString[7] = true.toString()
-                putListString("Item ${item+1}", currentItemString)
-                //getArrayList[item].Noified = true
+                if(currentItemString.isNotEmpty()) {
+                    Log.d("notify Item", "${currentItemString[0]}  - ${item + 1}")
+                    currentItemString[7] = true.toString()
+                    putListString("Item ${item + 1}", currentItemString)
+                    getArrayList[item].Notified = true
+                }
             }else{
-                Log.d("already notified Item", (item).toString())
+                val currentItemString = getListString("Item ${item+1}")
+                Log.d("already notified Item", currentItemString[0] + " " + currentItemString[7])
             }
 
         }
