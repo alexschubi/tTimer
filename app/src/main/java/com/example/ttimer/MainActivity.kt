@@ -4,6 +4,9 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
 import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -49,7 +52,6 @@ class MainActivity : AppCompatActivity()
 
 
     //TODO subroutine for timer
-    //TODO display notifictions if timer reached
 
     //START
     override fun onCreate(savedInstanceState: Bundle?)
@@ -119,7 +121,8 @@ class MainActivity : AppCompatActivity()
     //TIMER to refresh DB
     private val timer = object: CountDownTimer( 1 * 60 * 60 * 1000, 1 * 10 * 1000){ //hour*min*sec*millisec
         override fun onTick(millisUntilFinished: Long){
-            refreshTime()
+            //refreshTime()
+            getDB()
         }
         override fun onFinish() {
             Toast.makeText(applicationContext, "timer finished", Toast.LENGTH_SHORT).show()
@@ -132,7 +135,8 @@ class MainActivity : AppCompatActivity()
     //-------------------ADDITEM
     fun addItem(view: View) {
 
-        var index = mainPrefs.getInt("index", 0)
+        //var index = mainPrefs.getInt("index", 0)
+        var index = mainPrefs.all.size
         index++
 
         addText = tb_add_text.text.toString()
@@ -154,7 +158,7 @@ class MainActivity : AppCompatActivity()
         //converted to Kotlin and works somehow
 
         putListString("Item $index", addItemString)
-        mainPrefs.edit().putInt("index", index).apply()
+        //mainPrefs.edit().putInt("index", index).apply()
 
         //CLOSE addView
         getDB()
@@ -164,7 +168,7 @@ class MainActivity : AppCompatActivity()
         this.layer2.visibility = View.INVISIBLE
     }
 
-    fun refreshTime() {
+    private fun refreshTime() {
         for(item in getArrayList.indices) {
             getSpanString(item)
         }
@@ -172,13 +176,13 @@ class MainActivity : AppCompatActivity()
         if (getArrayList.isEmpty()){
             Toast.makeText(this, "No Items saved", Toast.LENGTH_SHORT).show()
             }
-        adapter = RVadapter(getArrayList)
-        recyclerViewItems.adapter = adapter
+        recyclerViewItems.adapter = RVadapter(getArrayList)
     }
 
     private fun getDB() {
         getArrayList.clear()
-        var getindex = mainPrefs.getInt("index", 0)
+        var getindex = mainPrefs.all.size
+        Log.d("Preferences", "contain: ${mainPrefs.all.size} Items")
         if (getindex > 0) {
             while (getindex > 0) {
 
@@ -188,11 +192,9 @@ class MainActivity : AppCompatActivity()
                     val getItem = Item(getStringItem[0].toInt(), getStringItem[1], getDateTime, "first input", getStringItem[7].toBoolean())
                     getArrayList.add(getItem)
                 }
-                Log.d("saved Items count", getindex.toString())
                 getindex += -1
              }
             refreshTime()
-            Log.d("saved Items break", "BREAK")
         }
     }
 
@@ -232,16 +234,26 @@ class MainActivity : AppCompatActivity()
         } else {
             testOutLine += "Date is in the past"
 
-            if(!getArrayList[item].Notified) {
+            val currentItemString = getListString("Item ${item+1}")
+            if(!currentItemString[7].toBoolean()){
+            //if(!getArrayList[item].Notified) {
                 val builder = NotificationCompat.Builder(
                     applicationContext,
                     getArrayList[item].Index.toString()
                 ).apply {
                     setChannelId(applicationContext.packageName)
                     setSmallIcon(R.drawable.ttimer_logo)
+                    setLargeIcon(
+                        BitmapFactory.decodeResource(
+                            applicationContext.resources,
+                            R.drawable.ttimer_logo
+                        )
+                    )
                     setContentTitle("Timer reached")
-                    //setContentText(getArrayList[item].Text)
-                    setStyle(NotificationCompat.BigTextStyle().bigText(getArrayList[item].Text))
+                    setStyle(
+                        NotificationCompat.BigTextStyle()
+                            .bigText(currentItemString[0] + currentItemString[1])
+                    )
                     priority = NotificationCompat.PRIORITY_DEFAULT
                     setAutoCancel(true)
                 }
@@ -249,13 +261,15 @@ class MainActivity : AppCompatActivity()
                     .notify(getArrayList[item].Index, builder.build())
 
                 //TODO change notified in prefs
-                val currentItemString = getListString("Item ${item+1}")
-                if(currentItemString.isNotEmpty()) {
+                //val currentItemString = getListString("Item ${item + 1}")
+
+                //if (currentItemString.isNotEmpty()) {
                     Log.d("notify Item", "${currentItemString[0]}  - ${item + 1}")
                     currentItemString[7] = true.toString()
                     putListString("Item ${item + 1}", currentItemString)
-                    getArrayList[item].Notified = true
-                }
+                    //getArrayList[item].Notified = true
+                //}
+
             }else{
                 val currentItemString = getListString("Item ${item+1}")
                 Log.d("already notified Item", currentItemString[0] + " " + currentItemString[7])
