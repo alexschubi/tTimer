@@ -42,7 +42,6 @@ class RVadapter(private val rVArrayList: ArrayList<Item>) : RecyclerView.Adapter
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         init { itemView.setOnClickListener(this) }
-        //private val delmode: Boolean = true
         private var view: View = itemView
         private var item: Item? = null
 

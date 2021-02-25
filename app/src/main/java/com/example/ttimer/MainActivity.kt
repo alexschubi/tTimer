@@ -28,7 +28,7 @@ import kotlin.system.exitProcess
 public var delmode: Boolean = false
 public var addmode: Boolean = false
 public lateinit var mainPrefs: SharedPreferences
-public  val getArrayList = ArrayList<Item>()
+public val getArrayList = mutableListOf<Item>()
 
 class MainActivity : AppCompatActivity()
 {
@@ -79,10 +79,10 @@ class MainActivity : AppCompatActivity()
         //-------------DELMODE
         b_del.setOnClickListener() {
             if(delmode == true){
+                delmode = false
                 b_del.background.setTint(getColor(R.color.button_back))
                 getDB()
                 timer.start()
-                delmode = false
             }else{
                 timer.cancel()
                 b_del.background.setTint(getColor(R.color.button_select))
@@ -121,8 +121,8 @@ class MainActivity : AppCompatActivity()
     //TIMER to refresh DB
     private val timer = object: CountDownTimer( 1 * 60 * 60 * 1000, 1 * 10 * 1000){ //hour*min*sec*millisec
         override fun onTick(millisUntilFinished: Long){
-            //refreshTime()
-            getDB()
+            refreshTime()
+            //getDB()
         }
         override fun onFinish() {
             Toast.makeText(applicationContext, "timer finished", Toast.LENGTH_SHORT).show()
@@ -168,7 +168,7 @@ class MainActivity : AppCompatActivity()
         this.layer2.visibility = View.INVISIBLE
     }
 
-    private fun refreshTime() {
+    fun refreshTime() {
         for(item in getArrayList.indices) {
             getSpanString(item)
         }
@@ -176,7 +176,8 @@ class MainActivity : AppCompatActivity()
         if (getArrayList.isEmpty()){
             Toast.makeText(this, "No Items saved", Toast.LENGTH_SHORT).show()
             }
-        recyclerViewItems.adapter = RVadapter(getArrayList)
+        adapter = RVadapter(getArrayList as ArrayList<Item>)
+        recyclerViewItems.adapter = adapter
     }
 
     private fun getDB() {
@@ -234,9 +235,7 @@ class MainActivity : AppCompatActivity()
         } else {
             testOutLine += "Date is in the past"
 
-            val currentItemString = getListString("Item ${item+1}")
-            if(!currentItemString[7].toBoolean()){
-            //if(!getArrayList[item].Notified) {
+            if(!getArrayList[item].Notified) {
                 val builder = NotificationCompat.Builder(
                     applicationContext,
                     getArrayList[item].Index.toString()
@@ -250,10 +249,8 @@ class MainActivity : AppCompatActivity()
                         )
                     )
                     setContentTitle("Timer reached")
-                    setStyle(
-                        NotificationCompat.BigTextStyle()
-                            .bigText(currentItemString[0] + currentItemString[1])
-                    )
+                    //setContentText(getArrayList[item].Text)
+                    setStyle(NotificationCompat.BigTextStyle().bigText(getArrayList[item].Text))
                     priority = NotificationCompat.PRIORITY_DEFAULT
                     setAutoCancel(true)
                 }
@@ -261,18 +258,16 @@ class MainActivity : AppCompatActivity()
                     .notify(getArrayList[item].Index, builder.build())
 
                 //TODO change notified in prefs
-                //val currentItemString = getListString("Item ${item + 1}")
-
-                //if (currentItemString.isNotEmpty()) {
+                val currentItemString = getListString("Item ${item+1}")
+                if(currentItemString.isNotEmpty()) {
                     Log.d("notify Item", "${currentItemString[0]}  - ${item + 1}")
                     currentItemString[7] = true.toString()
                     putListString("Item ${item + 1}", currentItemString)
-                    //getArrayList[item].Notified = true
-                //}
-
+                    getArrayList[item].Notified = true
+                }
             }else{
                 val currentItemString = getListString("Item ${item+1}")
-                Log.d("already notified Item", currentItemString[0] + " " + currentItemString[7])
+                Log.d("already notified Item", "${getArrayList[item].Index} ${getArrayList[item].Notified}")
             }
 
         }
