@@ -42,7 +42,6 @@ class MainActivity : AppCompatActivity()
     private var addText: String = ""
     private var addDate: String = ""
     private var addTime: String = ""
-    private var addNotified: Boolean = false
     //Arrays Adapter
     //private val getArrayList = ArrayList<Item>()
     val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
@@ -52,6 +51,9 @@ class MainActivity : AppCompatActivity()
 
 
     //TODO subroutine for timer
+    //globalscope.launch {
+    // runonuithread{}
+    // }
 
     //START
     override fun onCreate(savedInstanceState: Bundle?)
@@ -66,6 +68,7 @@ class MainActivity : AppCompatActivity()
 
         linearLayoutManager = LinearLayoutManager(this)
         recyclerViewItems.layoutManager = linearLayoutManager
+        recyclerViewItems.adapter = RVadapter(getArrayList)
 
         mainPrefs = getPreferences(MODE_PRIVATE)
         getDB()
@@ -151,7 +154,7 @@ class MainActivity : AppCompatActivity()
             datePicker.year.toString(),
             putTime(timePicker.hour),
             putTime(timePicker.minute),
-            addNotified.toString()
+            false.toString()
         )
         //Save in tinyDB
         // https://github.com/kcochibili/TinyDB--Android-Shared-Preferences-Turbo
@@ -169,14 +172,16 @@ class MainActivity : AppCompatActivity()
     }
 
     private fun refreshTime() {
-        for(item in getArrayList.indices) {
-            getSpanString(item)
-        }
-        Log.d("getArrayList.indices", getArrayList.indices.toString())
         if (getArrayList.isEmpty()){
             Toast.makeText(this, "No Items saved", Toast.LENGTH_SHORT).show()
+        } else {
+            for(item in getArrayList.indices) {
+                getSpanString(item)
             }
-        recyclerViewItems.adapter = RVadapter(getArrayList)
+        }
+        Log.d("getArrayList.indices", getArrayList.indices.toString())
+        //recyclerViewItems.adapter = RVadapter(getArrayList) //TODO use notifie-ddataset-changed
+        recyclerViewItems.adapter?.notifyDataSetChanged()
     }
 
     private fun getDB() {
@@ -211,6 +216,7 @@ class MainActivity : AppCompatActivity()
     }
 
     private fun getSpanString(item: Int) {
+        val currentItemString = getListString("Item ${item+1}")
         var testOutLine: String = ""
         val currentDateTime = LocalDateTime.now()
         if (getArrayList[item].Date.isAfter(currentDateTime)) {
@@ -234,48 +240,49 @@ class MainActivity : AppCompatActivity()
         } else {
             testOutLine += "Date is in the past"
 
-            val currentItemString = getListString("Item ${item+1}")
-            if(!currentItemString[7].toBoolean()){
-            //if(!getArrayList[item].Notified) {
-                val builder = NotificationCompat.Builder(
-                    applicationContext,
-                    getArrayList[item].Index.toString()
-                ).apply {
-                    setChannelId(applicationContext.packageName)
-                    setSmallIcon(R.drawable.ttimer_logo)
-                    setLargeIcon(
-                        BitmapFactory.decodeResource(
-                            applicationContext.resources,
-                            R.drawable.ttimer_logo
+            //val currentItemString = getListString("Item ${item+1}")
+            if(!currentItemString[7].toBoolean()){ //if not Notified
+                Log.d("Item.notified", currentItemString[0] + " " + currentItemString[7])
+                if(!getArrayList[item].Notified) {
+                    val builder = NotificationCompat.Builder(
+                        applicationContext,
+                        getArrayList[item].Index.toString()
+                    ).apply {
+                        setChannelId(applicationContext.packageName)
+                        setSmallIcon(R.drawable.ttimer_notification)
+                        setLargeIcon(
+                            BitmapFactory.decodeResource(
+                                applicationContext.resources,
+                                R.drawable.ttimer_logo
+                            )
                         )
-                    )
-                    setContentTitle("Timer reached")
-                    setStyle(
-                        NotificationCompat.BigTextStyle()
-                            .bigText(currentItemString[0] + currentItemString[1])
-                    )
-                    priority = NotificationCompat.PRIORITY_DEFAULT
-                    setAutoCancel(true)
+                        setContentTitle("Timer reached")
+                        setStyle(
+                            NotificationCompat.BigTextStyle()
+                                .bigText(currentItemString[0] + currentItemString[1])
+                        )
+                        priority = NotificationCompat.PRIORITY_DEFAULT
+                        setAutoCancel(true)
+                    }
+                    NotificationManagerCompat.from(this)
+                        .notify(getArrayList[item].Index, builder.build())
+
+                    //TODO change notified in prefs
+                    //val currentItemString = getListString("Item ${item + 1}")
+
+                    //if (currentItemString.isNotEmpty()) {
+                        Log.d("notifying Item", "${currentItemString[0]}  - ${item + 1}")
+                        currentItemString[7] = true.toString()
+                        putListString("Item ${item + 1}", currentItemString)
+                        //getArrayList[item].Notified = true
                 }
-                NotificationManagerCompat.from(this)
-                    .notify(getArrayList[item].Index, builder.build())
-
-                //TODO change notified in prefs
-                //val currentItemString = getListString("Item ${item + 1}")
-
-                //if (currentItemString.isNotEmpty()) {
-                    Log.d("notify Item", "${currentItemString[0]}  - ${item + 1}")
-                    currentItemString[7] = true.toString()
-                    putListString("Item ${item + 1}", currentItemString)
-                    //getArrayList[item].Notified = true
-                //}
-
-            }else{
-                val currentItemString = getListString("Item ${item+1}")
-                Log.d("already notified Item", currentItemString[0] + " " + currentItemString[7])
+            }else{ //if notified
+                //val currentItemString = getListString("Item ${item+1}")
+                Log.d("Item.notified", currentItemString[0] + " " + currentItemString[7])
             }
 
         }
+        Log.d("Item.notified", "${item+1}" + " - " +currentItemString[7])
         getArrayList[item].Span = testOutLine
     }
 

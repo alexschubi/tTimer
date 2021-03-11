@@ -17,7 +17,8 @@ import kotlinx.android.synthetic.main.recycler_view.view.*
 import java.time.format.DateTimeFormatter
 import kotlin.coroutines.coroutineContext
 
-class RVadapter(private val rVArrayList: ArrayList<Item>) : RecyclerView.Adapter<RVadapter.ViewHolder>() {
+
+class RVadapter(private val rVArrayList: ArrayList<Item>) : RecyclerView.Adapter<RVadapter.ViewHolder>(){
     //https://www.raywenderlich.com/1560485-android-recyclerview-tutorial-with-kotlin
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -34,8 +35,6 @@ class RVadapter(private val rVArrayList: ArrayList<Item>) : RecyclerView.Adapter
         holder.itemView.tv_item_span.text = currentItem.Span
         holder.itemView.tv_item_datetime.text = currentItem.Date.format(DateTimeFormatter.ofPattern("dd.MM.uu HH:mm"))
         holder.itemView.id = currentItem.Index
-
-
     }
 
     override fun getItemCount() = rVArrayList.size
@@ -48,7 +47,8 @@ class RVadapter(private val rVArrayList: ArrayList<Item>) : RecyclerView.Adapter
 
         override fun onClick(itemView: View) {
             val prefIndex = itemView.id
-            if(delmode) { //TODO select deleting and keep items
+            if(delmode) {
+                //TODO select deleting and keep items
                 itemView.setBackgroundResource(R.color.button_select)
                 mainPrefs.edit().remove("Item $prefIndex").apply()
                 Toast.makeText( itemView.context, "Item $prefIndex deleted", Toast.LENGTH_SHORT).show()
@@ -64,11 +64,6 @@ class RVadapter(private val rVArrayList: ArrayList<Item>) : RecyclerView.Adapter
                 itemView.timePicker.hour = getArrayList[index].Date.hour
                 itemView.timePicker.minute = getArrayList[index].Date.minute*/
             }
-        }
-
-        companion object {
-            //5????????????????????
-            private val ITEM_KEY = "ITEM"
         }
     }
 }
