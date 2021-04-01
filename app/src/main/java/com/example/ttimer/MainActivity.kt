@@ -1,14 +1,12 @@
 package com.example.ttimer
 
 import android.app.AlarmManager
-import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.TextUtils
@@ -21,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 import java.time.LocalDateTime
 import java.time.ZoneId
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.ArrayList
@@ -96,7 +95,7 @@ class MainActivity : AppCompatActivity()
             }
         }
         //Create NotificationChannel
-         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
              val channel = NotificationChannel(
                  applicationContext.packageName,
                  "Timer reached",
@@ -106,12 +105,12 @@ class MainActivity : AppCompatActivity()
                  enableLights(true)
                  canShowBadge()
              }
-             /* val channel = NotificationManagerCompat.from(this)
+             *//* val channel = NotificationManagerCompat.from(this)
                      .createNotificationChannel(NotificationChannel("${applicationContext.packageName}-tTimer",
-                         "Ttimer", NotificationManager.IMPORTANCE_DEFAULT).apply { description = "tTimer-Notification-Channel" })*/
+                         "Ttimer", NotificationManager.IMPORTANCE_DEFAULT).apply { description = "tTimer-Notification-Channel" })*//*
              notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
              notificationManager?.createNotificationChannel(channel)
-         }
+         }*/
     }
 
     override fun onBackPressed(){
@@ -299,26 +298,32 @@ class MainActivity : AppCompatActivity()
     }
 
     private fun makeNotification(item: Int) {
-        val zonedItemDateTime = getTime(getListString("Item ${item}")).atZone(ZoneId.systemDefault())
-        val triggerTime: Long = zonedItemDateTime.toEpochSecond()
+        val zonedItemDateTime = getTime(getListString("Item $item")).atZone(ZoneId.systemDefault())
+        val triggerTime: Long = zonedItemDateTime.toEpochSecond() - ZonedDateTime.now().toEpochSecond()
         val alarmManager = this.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val intent = Intent(this, MyAlarm::class.java)
+        val intent = Intent(this, AlarmReceiver::class.java).putExtra("item", item)
         val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0)
-        alarmManager.setRepeating(
+        alarmManager.setExact(
             AlarmManager.RTC_WAKEUP,
             triggerTime,
-            AlarmManager.INTERVAL_DAY,
             pendingIntent
         )
-        Log.d("AlarmManager.madeAlarm", "Item: $item")
+        Log.d("AlarmManager.doAlarm", "Item: $item in $triggerTime seconds")
 
     }
-    private class MyAlarm : BroadcastReceiver() {
+
+    class AlarmReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            Log.d("AlarmManager", "Alarm just fired")
+            val item: Int = intent.getIntExtra("item", 0)
+            Log.d("Intend.Extra", "Item: $item")
+            Log.d("AlarmManager", "Item $item Timer Reached")
+            val notificationUtils = NotificationUtils(context)
+            val notification = notificationUtils.getNotificationBuilder(item-1).build()
+            notificationUtils.getManager().notify(item, notification)
         }
     }
 
+//Calculating FUNCTIONS
     private fun getTime(getItem: ArrayList<String>): LocalDateTime{
         val getDay: Int = getItem[2].toInt()
         val getMonth: Int = getItem[3].toInt()
@@ -339,7 +344,7 @@ class MainActivity : AppCompatActivity()
         val myStringList = stringList.toTypedArray()
         mainPrefs.edit().putString(key, TextUtils.join("‚‗‚", myStringList)).apply()
     }
-    private fun getListString(key: String?): ArrayList<String> {
+    fun getListString(key: String?): ArrayList<String> {
         return ArrayList(listOf(*TextUtils.split(mainPrefs.getString(key, ""), "‚‗‚")))
     }
 
