@@ -14,6 +14,7 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat.getSystemService
+import android.content.SharedPreferences
 
 class NotificationUtils(base: Context) : ContextWrapper(base) {
     private var notificationManager: NotificationManager? = null
@@ -46,15 +47,14 @@ class NotificationUtils(base: Context) : ContextWrapper(base) {
         return notificationManager as NotificationManager
     }
 
-    fun getNotificationBuilder(item: Int): NotificationCompat.Builder{
-        val currentItemString = MainActivity().getListString("Item ${item + 1}")
+    fun getNotificationBuilder(currentItemString: ArrayList<String>): NotificationCompat.Builder{
         val intent = Intent(this, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
         val pendingIntent = PendingIntent.getActivity(this, 0, intent, 0)
         val builder = NotificationCompat.Builder(
             applicationContext,
-            getArrayList[item].Index.toString()
+            currentItemString[0]
         ).apply {
             setChannelId(applicationContext.packageName)
             setSmallIcon(R.drawable.ttimer_notification)

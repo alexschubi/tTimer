@@ -33,23 +33,15 @@ public  val getArrayList = ArrayList<Item>()
 
 class MainActivity : AppCompatActivity()
 {
-    //VARIABLES
-    //Global vars
-    //public var delmode: Boolean = false
-    //public var addmode: Boolean = false
-    //Preferences
-    //public lateinit var mainPrefs: SharedPreferences
     // VARs VALs
     private var addText: String = ""
     private var addDate: String = ""
     private var addTime: String = ""
     private var timeZone: TimeZone = TimeZone.getTimeZone(ZoneId.systemDefault())
     //Arrays Adapter
-    //private val getArrayList = ArrayList<Item>()
     val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var adapter: RVadapter
-    private var notificationManager: NotificationManager? = null
 
 
     //TODO subroutine for timer
@@ -164,7 +156,11 @@ class MainActivity : AppCompatActivity()
 
         putListString("Item $index", addItemString)
         //mainPrefs.edit().putInt("index", index).apply()
-        makeNotification(index)
+        if(getTime(addItemString).isAfter(LocalDateTime.now())){
+            makeNotification(addItemString)
+        } else {
+            Toast.makeText(this, "Item$index is in past", Toast.LENGTH_SHORT).show()
+        }
         //CLOSE addView
         getDB()
         hideKeyboard()
@@ -182,7 +178,7 @@ class MainActivity : AppCompatActivity()
 
             }
         }
-        //Log.d("getArrayList.indices", getArrayList.indices.toString())
+        Log.d("Items", getArrayList.indices.toString())
         //recyclerViewItems.adapter = RVadapter(getArrayList)
         recyclerViewItems.adapter?.notifyDataSetChanged()
     }
@@ -297,29 +293,29 @@ class MainActivity : AppCompatActivity()
         getArrayList[item].Span = testOutLine
     }
 
-    private fun makeNotification(item: Int) {
-        val zonedItemDateTime = getTime(getListString("Item $item")).atZone(ZoneId.systemDefault())
-        val triggerTime: Long = zonedItemDateTime.toEpochSecond() - ZonedDateTime.now().toEpochSecond()
+    private fun makeNotification(currentItemString: ArrayList<String>) {
+        //val currentItemString: ArrayList<String> = getListString("Item ${item}")
+        val zonedItemDateTime = getTime(currentItemString).atZone(ZoneId.systemDefault())
+        val triggerTime: Long = (zonedItemDateTime.toEpochSecond() - ZonedDateTime.now().toEpochSecond())*1000
         val alarmManager = this.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val intent = Intent(this, AlarmReceiver::class.java).putExtra("item", item)
+        val intent = Intent(this, AlarmReceiver::class.java).putStringArrayListExtra("currentItemString", currentItemString)
         val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0)
         alarmManager.setExact(
             AlarmManager.RTC_WAKEUP,
             triggerTime,
             pendingIntent
         )
-        Log.d("AlarmManager.doAlarm", "Item: $item in $triggerTime seconds")
-
+        Log.d("AlarmManager", "doAlarm Item: ${currentItemString[0]} in $triggerTime milliSeconds")
     }
 
     class AlarmReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            val item: Int = intent.getIntExtra("item", 0)
-            Log.d("Intend.Extra", "Item: $item")
-            Log.d("AlarmManager", "Item $item Timer Reached")
+            val currentItemString: ArrayList<String> = intent.getStringArrayListExtra("currentItemString") as ArrayList<String>
+            Log.d("AlarmManager", "Item ${currentItemString?.get(0)} Timer Reached")
             val notificationUtils = NotificationUtils(context)
-            val notification = notificationUtils.getNotificationBuilder(item-1).build()
-            notificationUtils.getManager().notify(item, notification)
+            val notification = notificationUtils.getNotificationBuilder(currentItemString).build()
+            notificationUtils.getManager().notify((currentItemString[0].toInt()), notification)
+            this.goAsync()
         }
     }
 
