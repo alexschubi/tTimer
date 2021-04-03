@@ -315,7 +315,8 @@ class MainActivity : AppCompatActivity()
             val notificationUtils = NotificationUtils(context)
             val notification = notificationUtils.getNotificationBuilder(currentItemString).build()
             notificationUtils.getManager().notify((currentItemString[0].toInt()), notification)
-            this.goAsync()
+            PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT).cancel()
+            //this.goAsync()
         }
     }
 
