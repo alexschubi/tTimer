@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:constraint_referenced_ids="scrollView2,b_add_time"
+        app:constraint_referenced_ids="scrollView2,b_add_time,b_add_final"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -46,10 +46,10 @@
 
             <TextView
                 android:id="@+id/tv_title"
-                android:layout_width="@dimen/size_title"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Title"
+                android:text="Index"
                 android:textAlignment="center"
                 android:textAllCaps="false"
                 android:textColor="@color/header_text"
@@ -58,20 +58,20 @@
 
             <TextView
                 android:id="@+id/tv_date"
-                android:layout_width="@dimen/size_date"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Date"
+                android:text="Destination"
                 android:textAlignment="center"
                 android:textColor="@color/header_text"
                 android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/tv_time"
-                android:layout_width="@dimen/size_time"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Time"
+                android:text="Remaining"
                 android:textAlignment="center"
                 android:textAllCaps="false"
                 android:textColor="@color/header_text"
@@ -141,7 +141,7 @@
             <DatePicker
                 android:id="@+id/datePicker"
                 style="@android:style/Widget.DatePicker"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="4dp"
@@ -164,20 +164,22 @@
                 android:theme="@style/DatePicker_dark"
                 android:timePickerMode="spinner" />
 
-            <Button
-                android:id="@+id/b_add_final"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@color/item_back"
-                android:clickable="true"
-                android:onClick="addItem"
-                android:text="Add"
-                android:textColor="@color/button_text"
-                android:textSize="24sp" />
-
         </LinearLayout>
     </ScrollView>
+
+    <Button
+        android:id="@+id/b_add_final"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:background="@color/item_back"
+        android:clickable="true"
+        android:onClick="addItem"
+        android:text="Add"
+        android:textColor="@color/button_text"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="4dp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/b_del"
