@@ -57,7 +57,7 @@ class NotificationUtils(base: Context) : ContextWrapper(base) {
             currentItemString[0]
         ).apply {
             setChannelId(applicationContext.packageName)
-            setSmallIcon(R.drawable.ttimer_notification)
+            setSmallIcon(R.drawable.ttimer_notification_pic)
             setContentIntent(pendingIntent)
             setLargeIcon(
                 BitmapFactory.decodeResource(

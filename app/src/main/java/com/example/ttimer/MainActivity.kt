@@ -178,7 +178,8 @@ class MainActivity : AppCompatActivity()
 
             }
         }
-        Log.d("Items", getArrayList.indices.toString())
+
+        //Log.d("Items", getArrayList.indices.toString())
         //recyclerViewItems.adapter = RVadapter(getArrayList)
         recyclerViewItems.adapter?.notifyDataSetChanged()
     }
@@ -248,64 +249,25 @@ class MainActivity : AppCompatActivity()
             }
         } else {
             testOutLine += "Date is in the past"
-            /*
-            if(!currentItemString[7].toBoolean()){ //if not Notified
-                Log.d("Item.notified", currentItemString[0] + " " + currentItemString[7])
-                if(!getArrayList[item].Notified) {
-                    val builder = NotificationCompat.Builder(
-                        applicationContext,
-                        getArrayList[item].Index.toString()
-                    ).apply {
-                        setChannelId(applicationContext.packageName)
-                        setSmallIcon(R.drawable.ttimer_notification)
-                        setLargeIcon(
-                            BitmapFactory.decodeResource(
-                                applicationContext.resources,
-                                R.drawable.ttimer_logo
-                            )
-                        )
-                        setContentTitle("Timer reached")
-                        setStyle(
-                            NotificationCompat.BigTextStyle()
-                                .bigText(currentItemString[0] + currentItemString[1])
-                        )
-                        priority = NotificationCompat.PRIORITY_DEFAULT
-                        setAutoCancel(true)
-                    }
-                    NotificationManagerCompat.from(this)
-                        .notify(getArrayList[item].Index, builder.build())
-
-                    //TODO change notified in prefs
-
-                    //if (currentItemString.isNotEmpty()) {
-                        Log.d("notifying Item", "${currentItemString[0]}  - ${item + 1}")
-                        currentItemString[7] = true.toString()
-                        putListString("Item ${item + 1}", currentItemString)
-                        //getArrayList[item].Notified = true
-                }
-            }else{ //if notified
-                //val currentItemString = getListString("Item ${item+1}")
-                Log.d("Item.notified", currentItemString[0] + " " + currentItemString[7])
-            }
-            */
         }
-        //Log.d("Item.notified", "${item+1}" + " - " +currentItemString[7])
         getArrayList[item].Span = testOutLine
     }
 
     private fun makeNotification(currentItemString: ArrayList<String>) {
-        //val currentItemString: ArrayList<String> = getListString("Item ${item}")
         val zonedItemDateTime = getTime(currentItemString).atZone(ZoneId.systemDefault())
-        val triggerTime: Long = (zonedItemDateTime.toEpochSecond() - ZonedDateTime.now().toEpochSecond())*1000
         val alarmManager = this.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(this, AlarmReceiver::class.java).putStringArrayListExtra("currentItemString", currentItemString)
         val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0)
-        alarmManager.setExact(
+        alarmManager.setRepeating(
             AlarmManager.RTC_WAKEUP,
-            triggerTime,
+            zonedItemDateTime.toInstant().toEpochMilli(),
+            AlarmManager.INTERVAL_FIFTEEN_MINUTES,
             pendingIntent
         )
-        Log.d("AlarmManager", "doAlarm Item: ${currentItemString[0]} in $triggerTime milliSeconds")
+        Log.d(
+            "AlarmManager",
+            "doAlarm Item: ${currentItemString[0]} in ${(zonedItemDateTime.toInstant().minusMillis(ZonedDateTime.now().toInstant().toEpochMilli())).toEpochMilli()} milliSeconds"
+        )
     }
 
     class AlarmReceiver : BroadcastReceiver() {
@@ -316,7 +278,7 @@ class MainActivity : AppCompatActivity()
             val notification = notificationUtils.getNotificationBuilder(currentItemString).build()
             notificationUtils.getManager().notify((currentItemString[0].toInt()), notification)
             PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT).cancel()
-            //this.goAsync()
+            this.goAsync()
         }
     }
 
