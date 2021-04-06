@@ -1,14 +1,13 @@
 package com.example.ttimer
 
 import android.app.AlarmManager
-import android.app.NotificationManager
 import android.app.PendingIntent
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
+import android.content.*
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.telecom.ConnectionRequest
+import android.telecom.ConnectionService
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
@@ -59,6 +58,12 @@ class MainActivity : AppCompatActivity()
         this.layer1.visibility = View.VISIBLE
         //https://devofandroid.blogspot.com/2018/03/add-back-button-to-action-bar-android.html
         timePicker.setIs24HourView(true)
+
+        /*val alarmReceiver = AlarmReceiver()
+        val bcFilter = IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION).apply {
+            addAction(Intent.ACTION_BOOT_COMPLETED)
+        }
+        registerReceiver(alarmReceiver, bcFilter)*/
 
         linearLayoutManager = LinearLayoutManager(this)
         recyclerViewItems.layoutManager = linearLayoutManager
@@ -257,28 +262,34 @@ class MainActivity : AppCompatActivity()
         val zonedItemDateTime = getTime(currentItemString).atZone(ZoneId.systemDefault())
         val alarmManager = this.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(this, AlarmReceiver::class.java).putStringArrayListExtra("currentItemString", currentItemString)
-        val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0)
-        alarmManager.setRepeating(
+        val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_ONE_SHOT)
+        alarmManager.setExact(
             AlarmManager.RTC_WAKEUP,
-            zonedItemDateTime.toInstant().toEpochMilli(),
-            AlarmManager.INTERVAL_FIFTEEN_MINUTES,
+            zonedItemDateTime.toInstant().toEpochMilli()-50000,
             pendingIntent
         )
         Log.d(
             "AlarmManager",
-            "doAlarm Item: ${currentItemString[0]} in ${(zonedItemDateTime.toInstant().minusMillis(ZonedDateTime.now().toInstant().toEpochMilli())).toEpochMilli()} milliSeconds"
+            "doAlarm Item: ${currentItemString[0]} in " +
+                    "${(zonedItemDateTime.toInstant().minusMillis
+                        (ZonedDateTime.now().toInstant().toEpochMilli())).toEpochMilli()} milliSeconds"
         )
-    }
 
-    class AlarmReceiver : BroadcastReceiver() {
+    }
+    open class AlarmReceiver : BroadcastReceiver() {
+        //TODO multiple alarms dont stack
+        //TODO Broadcast receiver have to work in background
         override fun onReceive(context: Context, intent: Intent) {
+            val pendResult = this.goAsync()
             val currentItemString: ArrayList<String> = intent.getStringArrayListExtra("currentItemString") as ArrayList<String>
             Log.d("AlarmManager", "Item ${currentItemString?.get(0)} Timer Reached")
             val notificationUtils = NotificationUtils(context)
             val notification = notificationUtils.getNotificationBuilder(currentItemString).build()
             notificationUtils.getManager().notify((currentItemString[0].toInt()), notification)
-            PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT).cancel()
-            this.goAsync()
+            try { PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT).cancel()}finally {
+                Log.d("PendingIntent", "already canceled")
+            }
+            pendResult.finish()
         }
     }
 
