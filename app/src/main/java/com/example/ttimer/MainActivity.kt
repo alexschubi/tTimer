@@ -265,17 +265,14 @@ class MainActivity : AppCompatActivity()
         val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_ONE_SHOT)
         alarmManager.setExact(
             AlarmManager.RTC_WAKEUP,
-            zonedItemDateTime.toInstant().toEpochMilli()-50000,
+            zonedItemDateTime.toInstant().toEpochMilli(),
             pendingIntent
         )
-        Log.d(
-            "AlarmManager",
-            "doAlarm Item: ${currentItemString[0]} in " +
+        Log.d("AlarmManager", "doAlarm Item: ${currentItemString[0]} in " +
                     "${(zonedItemDateTime.toInstant().minusMillis
-                        (ZonedDateTime.now().toInstant().toEpochMilli())).toEpochMilli()} milliSeconds"
-        )
-
+                        (ZonedDateTime.now().toInstant().toEpochMilli())).toEpochMilli()} milliSeconds")
     }
+
     open class AlarmReceiver : BroadcastReceiver() {
         //TODO multiple alarms dont stack
         //TODO Broadcast receiver have to work in background
