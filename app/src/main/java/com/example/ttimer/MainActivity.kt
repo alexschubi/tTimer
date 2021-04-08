@@ -1,20 +1,16 @@
 package com.example.ttimer
 
 import android.app.AlarmManager
-import android.app.NotificationManager
 import android.app.PendingIntent
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
+import android.content.*
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 import java.time.LocalDateTime
@@ -37,11 +33,9 @@ class MainActivity : AppCompatActivity()
     private var addText: String = ""
     private var addDate: String = ""
     private var addTime: String = ""
-    private var timeZone: TimeZone = TimeZone.getTimeZone(ZoneId.systemDefault())
     //Arrays Adapter
-    val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
+    private val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
     private lateinit var linearLayoutManager: LinearLayoutManager
-    private lateinit var adapter: RVadapter
 
 
     //TODO subroutine for timer
@@ -57,85 +51,66 @@ class MainActivity : AppCompatActivity()
         this.layer2.visibility = View.INVISIBLE
         //TODO use Fragments
         this.layer1.visibility = View.VISIBLE
-        //https://devofandroid.blogspot.com/2018/03/add-back-button-to-action-bar-android.html
         timePicker.setIs24HourView(true)
 
         linearLayoutManager = LinearLayoutManager(this)
         recyclerViewItems.layoutManager = linearLayoutManager
-        recyclerViewItems.adapter = RVadapter(getArrayList)
+        var adapter = RvAdapter(getArrayList)
+        recyclerViewItems.adapter = adapter
+        ItemTouchHelper(SwipeToDelete(adapter)).attachToRecyclerView(recyclerViewItems)
+
 
         mainPrefs = getPreferences(MODE_PRIVATE)
-        getDB()
         timer.start()
+        Functions().getDB(this)
         //-------------ADDMODE
         b_add.setOnClickListener() {
             this.layer1.visibility = View.INVISIBLE
             this.layer2.visibility = View.VISIBLE
             addmode = true
         }
+        b_add_final.setOnClickListener(){addItem()}
         //-------------DELMODE
         b_del.setOnClickListener() {
-            if(delmode == true){
+            Functions().getDB(this)
+            /*if(delmode == true){
                 b_del.background.setTint(getColor(R.color.button_back))
-                getDB()
+                Functions().getDB(this)
+                recyclerViewItems.adapter?.notifyDataSetChanged()
                 timer.start()
                 delmode = false
             }else{
                 timer.cancel()
                 b_del.background.setTint(getColor(R.color.button_select))
                 delmode = true
-            }
+            }*/
         }
-        //Create NotificationChannel
-        /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-             val channel = NotificationChannel(
-                 applicationContext.packageName,
-                 "Timer reached",
-                 NotificationManager.IMPORTANCE_DEFAULT
-             ).apply {
-                 description = "descriptionText"
-                 enableLights(true)
-                 canShowBadge()
-             }
-             *//* val channel = NotificationManagerCompat.from(this)
-                     .createNotificationChannel(NotificationChannel("${applicationContext.packageName}-tTimer",
-                         "Ttimer", NotificationManager.IMPORTANCE_DEFAULT).apply { description = "tTimer-Notification-Channel" })*//*
-             notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-             notificationManager?.createNotificationChannel(channel)
-         }*/
     }
-
     override fun onBackPressed(){
         if (addmode){
-            getDB()
+            Functions().getDB(this)
+            recyclerViewItems.adapter?.notifyDataSetChanged()
             hideKeyboard()
             addmode = false
             this.layer1.visibility = View.VISIBLE
             this.layer2.visibility = View.INVISIBLE
         }
     }
-
-    //TIMER to refresh DB
     private val timer = object: CountDownTimer(1 * 60 * 60 * 1000, 1 * 10 * 1000){ //hour*min*sec*millisec
         override fun onTick(millisUntilFinished: Long){
-            refreshTime()
-            //getDB()
+            Functions().refreshTime(this@MainActivity)
+            recyclerViewItems.adapter?.notifyDataSetChanged()
         }
         override fun onFinish() {
-            Toast.makeText(applicationContext, "timer finished", Toast.LENGTH_SHORT).show()
+            Toast.makeText(applicationContext, "AFK?", Toast.LENGTH_SHORT).show()
             moveTaskToBack(true)
             exitProcess(-1)
         }
     }
-
-
     //-------------------ADDITEM
-    fun addItem(view: View) {
-
-        //var index = mainPrefs.getInt("index", 0)
+    private fun addItem() {
         var index = mainPrefs.all.size
         index++
-
         addText = tb_add_text.text.toString()
         addDate = datePicker.dayOfMonth.toString() + "." + (datePicker.month+1) + "." + datePicker.year
         addTime = timePicker.hour.toString() + ":" + timePicker.minute.toString()
@@ -146,45 +121,38 @@ class MainActivity : AppCompatActivity()
             datePicker.dayOfMonth.toString(),
             (datePicker.month + 1).toString(),
             datePicker.year.toString(),
-            putTime(timePicker.hour),
-            putTime(timePicker.minute),
+            Functions().putTime(timePicker.hour),
+            Functions().putTime(timePicker.minute),
             false.toString()
         )
-        //Save in tinyDB
-        // https://github.com/kcochibili/TinyDB--Android-Shared-Preferences-Turbo
-        //converted to Kotlin and works somehow
-
-        putListString("Item $index", addItemString)
-        //mainPrefs.edit().putInt("index", index).apply()
-        if(getTime(addItemString).isAfter(LocalDateTime.now())){
+        Functions().putListString("Item $index", addItemString)
+        if(Functions().getTime(addItemString).isAfter(LocalDateTime.now())){
             makeNotification(addItemString)
         } else {
             Toast.makeText(this, "Item$index is in past", Toast.LENGTH_SHORT).show()
         }
         //CLOSE addView
-        getDB()
+        Functions().getDB(this)
+        recyclerViewItems.adapter?.notifyDataSetChanged()
+        Log.d("SharedPreferences", "added Item$index")
         hideKeyboard()
         addmode = false
         this.layer1.visibility = View.VISIBLE
         this.layer2.visibility = View.INVISIBLE
     }
 
-    private fun refreshTime() {
+    /*private fun refreshTime() {
         if (getArrayList.isEmpty()){
             Toast.makeText(this, "No Items saved", Toast.LENGTH_SHORT).show()
         } else {
             for(item in getArrayList.indices) {
                 getSpanString(item)
-
             }
         }
-
-        //Log.d("Items", getArrayList.indices.toString())
-        //recyclerViewItems.adapter = RVadapter(getArrayList)
         recyclerViewItems.adapter?.notifyDataSetChanged()
-    }
+    }*/
 
-    private fun getDB() {
+    /*private fun getDB() {
         getArrayList.clear()
         var getindex = mainPrefs.all.size
         Log.d("Preferences", "contain: ${mainPrefs.all.size} Items")
@@ -207,7 +175,7 @@ class MainActivity : AppCompatActivity()
              }
             refreshTime()
         }
-    }
+    }*/
 
     fun editItem(index: Int){ //TBD
         layer2.visibility = View.VISIBLE
@@ -225,7 +193,8 @@ class MainActivity : AppCompatActivity()
 
     }
 
-    private fun getSpanString(item: Int) {
+
+    /*private fun getSpanString(item: Int) {
         val currentItemString = getListString("Item ${item + 1}")
         var testOutLine: String = ""
         val currentDateTime = LocalDateTime.now()
@@ -251,39 +220,40 @@ class MainActivity : AppCompatActivity()
             testOutLine += "Date is in the past"
         }
         getArrayList[item].Span = testOutLine
-    }
+    }*/
 
     private fun makeNotification(currentItemString: ArrayList<String>) {
-        val zonedItemDateTime = getTime(currentItemString).atZone(ZoneId.systemDefault())
+        val zonedItemDateTime = Functions().getTime(currentItemString).atZone(ZoneId.systemDefault())
         val alarmManager = this.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(this, AlarmReceiver::class.java).putStringArrayListExtra("currentItemString", currentItemString)
-        val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0)
-        alarmManager.setRepeating(
+        val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_ONE_SHOT)
+        alarmManager.setExact(
             AlarmManager.RTC_WAKEUP,
             zonedItemDateTime.toInstant().toEpochMilli(),
-            AlarmManager.INTERVAL_FIFTEEN_MINUTES,
             pendingIntent
         )
-        Log.d(
-            "AlarmManager",
-            "doAlarm Item: ${currentItemString[0]} in ${(zonedItemDateTime.toInstant().minusMillis(ZonedDateTime.now().toInstant().toEpochMilli())).toEpochMilli()} milliSeconds"
-        )
+        Log.d("AlarmManager", "doAlarm Item: ${currentItemString[0]} in " +
+                    "${(zonedItemDateTime.toInstant().minusMillis
+                        (ZonedDateTime.now().toInstant().toEpochMilli())).toEpochMilli()} milliSeconds")
     }
-
-    class AlarmReceiver : BroadcastReceiver() {
+    open class AlarmReceiver : BroadcastReceiver() {
+        //TODO multiple alarms dont stack
+        //TODO Broadcast receiver have to work in background
         override fun onReceive(context: Context, intent: Intent) {
+            val pendResult = this.goAsync()
             val currentItemString: ArrayList<String> = intent.getStringArrayListExtra("currentItemString") as ArrayList<String>
             Log.d("AlarmManager", "Item ${currentItemString?.get(0)} Timer Reached")
             val notificationUtils = NotificationUtils(context)
             val notification = notificationUtils.getNotificationBuilder(currentItemString).build()
             notificationUtils.getManager().notify((currentItemString[0].toInt()), notification)
-            PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT).cancel()
-            this.goAsync()
+            try { PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT).cancel()}finally {
+                Log.d("PendingIntent", "already canceled")
+            }
+            pendResult.finish()
         }
     }
-
 //Calculating FUNCTIONS
-    private fun getTime(getItem: ArrayList<String>): LocalDateTime{
+    /*private fun getTime(getItem: ArrayList<String>): LocalDateTime{
         val getDay: Int = getItem[2].toInt()
         val getMonth: Int = getItem[3].toInt()
         val getYear: Int = getItem[4].toInt()
@@ -305,7 +275,7 @@ class MainActivity : AppCompatActivity()
     }
     fun getListString(key: String?): ArrayList<String> {
         return ArrayList(listOf(*TextUtils.split(mainPrefs.getString(key, ""), "‚‗‚")))
-    }
+    }*/
 
     //HIDE KEYBOARD
     private fun MainActivity.hideKeyboard() { hideKeyboard(currentFocus ?: View(this)) }
