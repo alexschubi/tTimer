@@ -52,6 +52,7 @@ class Functions {
             }
             refreshTime(context)
         }
+        Log.d("getArrayList", getArrayList.toString())
     }
     fun refreshTime(context: Context) {
         if (getArrayList.isEmpty()){

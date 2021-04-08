@@ -8,12 +8,10 @@ import android.os.CountDownTimer
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.SimpleAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -57,7 +55,7 @@ class MainActivity : AppCompatActivity()
 
         linearLayoutManager = LinearLayoutManager(this)
         recyclerViewItems.layoutManager = linearLayoutManager
-        var adapter = RVadapter(getArrayList)
+        var adapter = RvAdapter(getArrayList)
         recyclerViewItems.adapter = adapter
         ItemTouchHelper(SwipeToDelete(adapter)).attachToRecyclerView(recyclerViewItems)
 
@@ -74,7 +72,8 @@ class MainActivity : AppCompatActivity()
         b_add_final.setOnClickListener(){addItem()}
         //-------------DELMODE
         b_del.setOnClickListener() {
-            if(delmode == true){
+            Functions().getDB(this)
+            /*if(delmode == true){
                 b_del.background.setTint(getColor(R.color.button_back))
                 Functions().getDB(this)
                 recyclerViewItems.adapter?.notifyDataSetChanged()
@@ -84,7 +83,7 @@ class MainActivity : AppCompatActivity()
                 timer.cancel()
                 b_del.background.setTint(getColor(R.color.button_select))
                 delmode = true
-            }
+            }*/
         }
     }
     override fun onBackPressed(){
