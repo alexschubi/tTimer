@@ -9,7 +9,7 @@ buildscript {
         //maven { url 'https://dl.bintray.com/android/android-tools' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.1'
+        classpath 'com.android.tools.build:gradle:4.1.3'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
 
