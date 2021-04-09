@@ -5,6 +5,7 @@ import android.util.Log
 import android.widget.Toast
 import java.time.LocalDateTime
 import android.content.*
+import java.security.AccessController.getContext
 
 class Functions {
     fun getTime(getItem: ArrayList<String>): LocalDateTime {
@@ -29,7 +30,7 @@ class Functions {
         return ArrayList(listOf(*TextUtils.split(mainPrefs.getString(PrefKey, ""), "‚‗‚")))
     }
 
-    fun getDB(context: Context) {
+    fun getDB() {
         getArrayList.clear()
         var getindex = mainPrefs.all.size
         Log.d("Preferences", "contain: ${mainPrefs.all.size} Items")
@@ -50,13 +51,13 @@ class Functions {
                 }
                 getindex += -1
             }
-            refreshTime(context)
+            refreshTime()
         }
         Log.d("getArrayList", getArrayList.toString())
     }
-    fun refreshTime(context: Context) {
+    fun refreshTime() {
         if (getArrayList.isEmpty()){
-            Toast.makeText(context, "No Items saved", Toast.LENGTH_SHORT).show()
+            Toast.makeText(mContext, "No Items saved", Toast.LENGTH_SHORT).show()
         } else {
             for(item in getArrayList.indices) {
                 getSpanString(item)
@@ -64,7 +65,7 @@ class Functions {
         }
     }
 
-    fun getSpanString(item: Int) {
+    private fun getSpanString(item: Int) {
         val currentItemString = getListString("Item ${item + 1}")
         var testOutLine: String = ""
         val currentDateTime = LocalDateTime.now()

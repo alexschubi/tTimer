@@ -26,6 +26,7 @@ public var delmode: Boolean = false
 public var addmode: Boolean = false
 public lateinit var mainPrefs: SharedPreferences
 public  val getArrayList = ArrayList<Item>()
+lateinit var mContext: Context
 
 class MainActivity : AppCompatActivity()
 {
@@ -46,6 +47,7 @@ class MainActivity : AppCompatActivity()
     //START
     override fun onCreate(savedInstanceState: Bundle?)
     {
+        mContext = this
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         this.layer2.visibility = View.INVISIBLE
@@ -62,7 +64,7 @@ class MainActivity : AppCompatActivity()
 
         mainPrefs = getPreferences(MODE_PRIVATE)
         timer.start()
-        Functions().getDB(this)
+        Functions().getDB()
         //-------------ADDMODE
         b_add.setOnClickListener() {
             this.layer1.visibility = View.INVISIBLE
@@ -70,25 +72,10 @@ class MainActivity : AppCompatActivity()
             addmode = true
         }
         b_add_final.setOnClickListener(){addItem()}
-        //-------------DELMODE
-        b_del.setOnClickListener() {
-            Functions().getDB(this)
-            /*if(delmode == true){
-                b_del.background.setTint(getColor(R.color.button_back))
-                Functions().getDB(this)
-                recyclerViewItems.adapter?.notifyDataSetChanged()
-                timer.start()
-                delmode = false
-            }else{
-                timer.cancel()
-                b_del.background.setTint(getColor(R.color.button_select))
-                delmode = true
-            }*/
-        }
     }
     override fun onBackPressed(){
         if (addmode){
-            Functions().getDB(this)
+            Functions().getDB()
             recyclerViewItems.adapter?.notifyDataSetChanged()
             hideKeyboard()
             addmode = false
@@ -98,7 +85,7 @@ class MainActivity : AppCompatActivity()
     }
     private val timer = object: CountDownTimer(1 * 60 * 60 * 1000, 1 * 10 * 1000){ //hour*min*sec*millisec
         override fun onTick(millisUntilFinished: Long){
-            Functions().refreshTime(this@MainActivity)
+            Functions().refreshTime()
             recyclerViewItems.adapter?.notifyDataSetChanged()
         }
         override fun onFinish() {
@@ -132,7 +119,7 @@ class MainActivity : AppCompatActivity()
             Toast.makeText(this, "Item$index is in past", Toast.LENGTH_SHORT).show()
         }
         //CLOSE addView
-        Functions().getDB(this)
+        Functions().getDB()
         recyclerViewItems.adapter?.notifyDataSetChanged()
         Log.d("SharedPreferences", "added Item$index")
         hideKeyboard()
