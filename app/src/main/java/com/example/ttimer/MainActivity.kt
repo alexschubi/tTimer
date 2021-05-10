@@ -10,6 +10,8 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
@@ -50,28 +52,18 @@ class MainActivity : AppCompatActivity()
         mContext = this
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        this.layer2.visibility = View.INVISIBLE
-        //TODO use Fragments
-        this.layer1.visibility = View.VISIBLE
-        timePicker.setIs24HourView(true)
-
         linearLayoutManager = LinearLayoutManager(this)
         recyclerViewItems.layoutManager = linearLayoutManager
         var adapter = RvAdapter(getArrayList)
         recyclerViewItems.adapter = adapter
         ItemTouchHelper(SwipeToDelete(adapter)).attachToRecyclerView(recyclerViewItems)
-
-
         mainPrefs = getPreferences(MODE_PRIVATE)
         timer.start()
         Functions().getDB()
-        //-------------ADDMODE
         b_add.setOnClickListener() {
-            this.layer1.visibility = View.INVISIBLE
-            this.layer2.visibility = View.VISIBLE
+            openAdding()
             addmode = true
         }
-        b_add_final.setOnClickListener(){addItem()}
     }
     override fun onBackPressed(){
         if (addmode){
@@ -79,8 +71,6 @@ class MainActivity : AppCompatActivity()
             recyclerViewItems.adapter?.notifyDataSetChanged()
             hideKeyboard()
             addmode = false
-            this.layer1.visibility = View.VISIBLE
-            this.layer2.visibility = View.INVISIBLE
         }
     }
     private val timer = object: CountDownTimer(1 * 60 * 60 * 1000, 1 * 10 * 1000){ //hour*min*sec*millisec
@@ -95,7 +85,8 @@ class MainActivity : AppCompatActivity()
         }
     }
     //-------------------ADDITEM
-    private fun addItem() {
+    /*private fun addItem() {
+        fragment_add_item.newInstance("","")
         var index = mainPrefs.all.size
         index++
         addText = tb_add_text.text.toString()
@@ -116,7 +107,7 @@ class MainActivity : AppCompatActivity()
         if(Functions().getTime(addItemString).isAfter(LocalDateTime.now())){
             makeNotification(addItemString)
         } else {
-            Toast.makeText(this, "Item$index is in past", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(this, "Item$index is in past", Toast.LENGTH_SHORT).show()
         }
         //CLOSE addView
         Functions().getDB()
@@ -126,7 +117,7 @@ class MainActivity : AppCompatActivity()
         addmode = false
         this.layer1.visibility = View.VISIBLE
         this.layer2.visibility = View.INVISIBLE
-    }
+    }*/
 
     /*private fun refreshTime() {
         if (getArrayList.isEmpty()){
@@ -164,7 +155,7 @@ class MainActivity : AppCompatActivity()
         }
     }*/
 
-    fun editItem(index: Int){ //TBD
+    /*fun editItem(index: Int){ //TBD
         layer2.visibility = View.VISIBLE
         layer1.visibility = View.INVISIBLE
         addmode = true
@@ -178,7 +169,7 @@ class MainActivity : AppCompatActivity()
         timePicker.hour = getArrayList[index].Date.hour
         timePicker.minute = getArrayList[index].Date.minute
 
-    }
+    }*/
 
 
     /*private fun getSpanString(item: Int) {
@@ -270,5 +261,18 @@ class MainActivity : AppCompatActivity()
         val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
- //END
+
+    fun openAdding() {
+        Log.d("FragmentManger", "create fragment_add_item")
+        var addFragment: Fragment = fragment_add_item.newInstance("","")
+
+        supportFragmentManager
+            .beginTransaction()
+            .add(addFragment,"addFragment")
+            .setReorderingAllowed(true)
+            .commit()
+
+        DialogFragment().show(supportFragmentManager, "addFragment")
+    }
+    //END
 }

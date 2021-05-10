@@ -8,24 +8,6 @@
     android:background="@color/main_back"
     tools:context=".MainActivity">
 
-    <androidx.constraintlayout.helper.widget.Layer
-        android:id="@+id/layer1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:constraint_referenced_ids="linearLayout_v_main,b_add"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.constraintlayout.helper.widget.Layer
-        android:id="@+id/layer2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="visible"
-        app:constraint_referenced_ids="scrollView2,b_add_time,b_add_final"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <LinearLayout
         android:id="@+id/linearLayout_v_main"
         android:layout_width="0dp"
@@ -79,104 +61,25 @@
 
         </LinearLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewItems"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:padding="4dp"
-            android:scrollbars="vertical"
-            tools:listitem="@layout/recycler_view">
+            android:layout_height="wrap_content">
 
-        </androidx.recyclerview.widget.RecyclerView>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewItems"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:padding="4dp"
+                android:scrollbars="vertical"
+                tools:listitem="@layout/recycler_view">
+
+            </androidx.recyclerview.widget.RecyclerView>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 
     </LinearLayout>
 
-    <ScrollView
-        android:id="@+id/scrollView2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <LinearLayout
-            android:id="@+id/linearLayout_v_add"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <EditText
-                android:id="@+id/tb_add_text"
-                style="@style/Widget.Design.TextInputLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@color/text_back"
-                android:ems="10"
-                android:hint="Text"
-                android:inputType="none|textMultiLine"
-                android:padding="4dp"
-                android:textColor="@color/main_text"
-                android:textSize="24sp" />
-
-            <DatePicker
-                android:id="@+id/datePicker"
-                style="@android:style/Widget.DatePicker"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="4dp"
-                android:calendarTextColor="@color/item_text"
-                android:datePickerMode="calendar"
-                android:dayOfWeekBackground="@color/item_text"
-                android:headerBackground="@color/text_back"
-                android:layoutMode="clipBounds"
-                android:minDate="01/01/2020"
-                android:startYear="2020"
-                android:theme="@style/DatePicker_dark" />
-
-            <TimePicker
-                android:id="@+id/timePicker"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:headerBackground="@color/text_back"
-                android:numbersSelectorColor="@color/item_back"
-                android:theme="@style/DatePicker_dark"
-                android:timePickerMode="spinner" />
-
-        </LinearLayout>
-    </ScrollView>
-
-    <Button
-        android:id="@+id/b_add_final"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="4dp"
-        android:background="@color/item_back"
-        android:clickable="true"
-        android:onClick="addItem"
-        android:text="Add"
-        android:textColor="@color/button_text"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteX="4dp" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/b_add_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:backgroundTint="@color/button_back"
-        android:clickable="true"
-        android:tint="@color/button_text"
-        app:layout_constraintBottom_toTopOf="@+id/b_add"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_recent_history"
-        app:useCompatPadding="false" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/b_add"
@@ -186,6 +89,7 @@
         android:layout_marginBottom="8dp"
         android:backgroundTint="@color/button_back"
         android:clickable="true"
+        android:onClick="openAdding"
         android:tint="@color/button_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

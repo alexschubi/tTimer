@@ -40,6 +40,7 @@ class RvAdapter(private val rVArrayList: ArrayList<Item>) : RecyclerView.Adapter
     fun deleteItem(position: Int) {
         rVArrayList.removeAt(position)
         notifyItemRemoved(position)
+        this.notifyDataSetChanged()
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
@@ -60,11 +61,11 @@ class SwipeToDelete(var adapter: RvAdapter) : ItemTouchHelper.SimpleCallback(0, 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         var position = viewHolder.adapterPosition
         val item = viewHolder.itemView.id
+        Log.d("RecyclerView.swiped","adapterpos $position = ID $item")
         adapter.deleteItem(position)
         mainPrefs.edit().remove("Item $item").apply()
         Functions().getDB()
         Toast.makeText(viewHolder.itemView.context, "Item $item deleted", Toast.LENGTH_SHORT).show()
-        Log.d("RecyclerView.swiped","adapterpos $position = ID $item")
         Log.d("SharedPreferences", "deleted Item $item")
     }
 

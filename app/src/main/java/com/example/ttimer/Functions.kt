@@ -16,10 +16,12 @@ class Functions {
         val getMinute: Int = getItem[6].toInt()
         return LocalDateTime.of(getYear, getMonth, getDay, getHour, getMinute)
     }
-    fun putTime(time: Int): String {
+    fun putTime(time: Int?): String {
         var stringMinute = ""
-        if (time<10){ stringMinute = "0$time" }
-        else{ stringMinute = time.toString() }
+        if (time != null) {
+            if (time<10){ stringMinute = "0$time" }
+            else{ stringMinute = time.toString() }
+        }
         return stringMinute
     }
     fun putListString(PrefKey: String?, stringList: ArrayList<String>) {
@@ -57,7 +59,7 @@ class Functions {
     }
     fun refreshTime() {
         if (getArrayList.isEmpty()){
-            Toast.makeText(mContext, "No Items saved", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(mContext, "No Items saved", Toast.LENGTH_SHORT).show()
         } else {
             for(item in getArrayList.indices) {
                 getSpanString(item)
