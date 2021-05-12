@@ -13,6 +13,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_add_item.*
+import kotlinx.android.synthetic.main.fragment_item_list.*
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZonedDateTime

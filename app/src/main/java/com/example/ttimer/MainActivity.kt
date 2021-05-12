@@ -12,9 +12,12 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_add_item.*
+import kotlinx.android.synthetic.main.fragment_item_list.*
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -29,6 +32,7 @@ public var addmode: Boolean = false
 public lateinit var mainPrefs: SharedPreferences
 public  val getArrayList = ArrayList<Item>()
 lateinit var mContext: Context
+lateinit var suppFragManager: FragmentManager
 
 class MainActivity : AppCompatActivity()
 {
@@ -38,7 +42,7 @@ class MainActivity : AppCompatActivity()
     private var addTime: String = ""
     //Arrays Adapter
     private val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
-    private lateinit var linearLayoutManager: LinearLayoutManager
+    //private lateinit var linearLayoutManager: LinearLayoutManager
 
 
     //TODO subroutine for timer
@@ -51,24 +55,26 @@ class MainActivity : AppCompatActivity()
     {
         mContext = this
         super.onCreate(savedInstanceState)
+        suppFragManager = supportFragmentManager
         setContentView(R.layout.activity_main)
-        linearLayoutManager = LinearLayoutManager(this)
-        recyclerViewItems.layoutManager = linearLayoutManager
+        /*linearLayoutManager = LinearLayoutManager(this)
+        this.recyclerViewItems.layoutManager = linearLayoutManager
         var adapter = RvAdapter(getArrayList)
-        recyclerViewItems.adapter = adapter
-        ItemTouchHelper(SwipeToDelete(adapter)).attachToRecyclerView(recyclerViewItems)
+        this.recyclerViewItems.adapter = adapter
+        ItemTouchHelper(SwipeToDelete(adapter)).attachToRecyclerView(this.recyclerViewItems)*/
         mainPrefs = getPreferences(MODE_PRIVATE)
         timer.start()
         Functions().getDB()
-        b_add.setOnClickListener() {
+        /*b_add.setOnClickListener() {
             openAdding()
             addmode = true
-        }
+        }*/
+
     }
     override fun onBackPressed(){
         if (addmode){
             Functions().getDB()
-            recyclerViewItems.adapter?.notifyDataSetChanged()
+            this.recyclerViewItems.adapter?.notifyDataSetChanged()
             hideKeyboard()
             addmode = false
         }
@@ -76,7 +82,7 @@ class MainActivity : AppCompatActivity()
     private val timer = object: CountDownTimer(1 * 60 * 60 * 1000, 1 * 10 * 1000){ //hour*min*sec*millisec
         override fun onTick(millisUntilFinished: Long){
             Functions().refreshTime()
-            recyclerViewItems.adapter?.notifyDataSetChanged()
+            //this.recyclerViewItems.adapter?.notifyDataSetChanged() TODO maybe reapply later
         }
         override fun onFinish() {
             Toast.makeText(applicationContext, "AFK?", Toast.LENGTH_SHORT).show()
@@ -202,7 +208,7 @@ class MainActivity : AppCompatActivity()
 
     private fun makeNotification(currentItemString: ArrayList<String>) {
         val zonedItemDateTime = Functions().getTime(currentItemString).atZone(ZoneId.systemDefault())
-        val alarmManager = this.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val alarmManager = this.getSystemService(ALARM_SERVICE) as AlarmManager
         val intent = Intent(this, AlarmReceiver::class.java).putStringArrayListExtra("currentItemString", currentItemString)
         val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_ONE_SHOT)
         alarmManager.setExact(
@@ -258,11 +264,10 @@ class MainActivity : AppCompatActivity()
     //HIDE KEYBOARD
     private fun MainActivity.hideKeyboard() { hideKeyboard(currentFocus ?: View(this)) }
     private fun Context.hideKeyboard(view: View) {
-        val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
-
-    fun openAdding() {
+    /*fun openAdding() {
         Log.d("FragmentManger", "create fragment_add_item")
         var addFragment: Fragment = fragment_add_item.newInstance("","")
 
@@ -273,6 +278,6 @@ class MainActivity : AppCompatActivity()
             .commit()
 
         DialogFragment().show(supportFragmentManager, "addFragment")
-    }
+    }*/
     //END
 }
