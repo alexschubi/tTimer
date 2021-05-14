@@ -7,16 +7,18 @@
 
     <fragment
         android:id="@+id/ItemList"
+        android:name="com.example.ttimer.fragment_item_list"
         tools:layout="@layout/fragment_item_list">
         <action
             android:id="@+id/action_ItemList_to_AddItem"
-            app:destination="@id/AddItem"/>
+            app:destination="@id/AddItem" />
     </fragment>
     <fragment
         android:id="@+id/AddItem"
+        android:name="com.example.ttimer.fragment_add_item"
         tools:layout="@layout/fragment_add_item">
         <action
             android:id="@+id/action_AddItem_to_ItemList"
-            app:destination="@id/ItemList"/>
+            app:destination="@id/ItemList" />
     </fragment>
 </navigation>

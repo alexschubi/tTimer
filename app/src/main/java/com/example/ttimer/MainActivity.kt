@@ -1,10 +1,12 @@
 package com.example.ttimer
 
+import android.app.Activity
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.*
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.util.AttributeSet
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -13,6 +15,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.navigation.NavController
+import androidx.navigation.NavGraph
+import androidx.navigation.Navigation
+import androidx.navigation.Navigator
+import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
@@ -33,6 +40,7 @@ public lateinit var mainPrefs: SharedPreferences
 public  val getArrayList = ArrayList<Item>()
 lateinit var mContext: Context
 lateinit var suppFragManager: FragmentManager
+//lateinit var navController: NavController
 
 class MainActivity : AppCompatActivity()
 {
@@ -56,21 +64,15 @@ class MainActivity : AppCompatActivity()
         mContext = this
         super.onCreate(savedInstanceState)
         suppFragManager = supportFragmentManager
+        //navController = (suppFragManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController
+        //navController.setGraph(R.navigation.nav_graph)
+
         setContentView(R.layout.activity_main)
-        /*linearLayoutManager = LinearLayoutManager(this)
-        this.recyclerViewItems.layoutManager = linearLayoutManager
-        var adapter = RvAdapter(getArrayList)
-        this.recyclerViewItems.adapter = adapter
-        ItemTouchHelper(SwipeToDelete(adapter)).attachToRecyclerView(this.recyclerViewItems)*/
         mainPrefs = getPreferences(MODE_PRIVATE)
         timer.start()
         Functions().getDB()
-        /*b_add.setOnClickListener() {
-            openAdding()
-            addmode = true
-        }*/
-
     }
+
     override fun onBackPressed(){
         if (addmode){
             Functions().getDB()
@@ -222,7 +224,6 @@ class MainActivity : AppCompatActivity()
     }
     open class AlarmReceiver : BroadcastReceiver() {
         //TODO multiple alarms dont stack
-        //TODO Broadcast receiver have to work in background
         override fun onReceive(context: Context, intent: Intent) {
             val pendResult = this.goAsync()
             val currentItemString: ArrayList<String> = intent.getStringArrayListExtra("currentItemString") as ArrayList<String>

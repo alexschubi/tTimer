@@ -11,9 +11,13 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.DialogFragment
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_add_item.*
+import kotlinx.android.synthetic.main.fragment_add_item.view.*
 import kotlinx.android.synthetic.main.fragment_item_list.*
+import kotlinx.android.synthetic.main.fragment_item_list.view.*
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -41,11 +45,7 @@ class fragment_add_item : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
-        requireActivity()
-        activity?.timePicker?.setIs24HourView(true)
         Log.d("FragmentManger", "Fragment created")
-        activity?.b_add_final?.setOnClickListener(){addItem()}
-
     }
 
     override fun onCreateView(
@@ -56,8 +56,10 @@ class fragment_add_item : Fragment() {
         return inflater.inflate(R.layout.fragment_add_item, container, false)
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        view.timePicker.setIs24HourView(true)
+        view.b_add_final.setOnClickListener { addItem()}
     }
 
     private fun addItem() {
@@ -88,7 +90,8 @@ class fragment_add_item : Fragment() {
         Log.d("SharedPreferences", "added Item$index")
         this.view?.let { context?.hideKeyboard(it) }
         addmode = false
-        activity?.supportFragmentManager?.beginTransaction()?.remove(this)?.commit()
+        Log.d("FragmentManger", "create fragment_item_list...")
+        NavHostFragment.findNavController(this).navigate(R.id.action_AddItem_to_ItemList)
     }
 
     private fun makeNotification(currentItemString: ArrayList<String>) {

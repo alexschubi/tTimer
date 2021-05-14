@@ -6,15 +6,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.*
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_item_list.*
+import kotlinx.android.synthetic.main.fragment_item_list.view.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
-private lateinit var linearLayoutManager: LinearLayoutManager
+
 
 
 /**
@@ -26,23 +33,13 @@ class fragment_item_list : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private lateinit var linearLayoutManager: LinearLayoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
-        }
-        linearLayoutManager = LinearLayoutManager(mContext)
-        this.activity?.recyclerViewItems?.layoutManager = linearLayoutManager
-        val adapter = RvAdapter(getArrayList)
-        this.activity?.recyclerViewItems?.adapter = adapter
-        ItemTouchHelper(SwipeToDelete(adapter)).attachToRecyclerView(this.recyclerViewItems)
-
-
-        this.activity?.b_add?.setOnClickListener() {
-            openAdding()
-            addmode = true
         }
     }
 
@@ -52,6 +49,22 @@ class fragment_item_list : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_item_list, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        linearLayoutManager = LinearLayoutManager(mContext)
+        view.recyclerViewItems.layoutManager = linearLayoutManager
+        val adapter = RvAdapter(getArrayList)
+        view.recyclerViewItems.adapter = adapter
+        ItemTouchHelper(SwipeToDelete(adapter)).attachToRecyclerView(this.recyclerViewItems)
+
+        view.b_add.setOnClickListener {
+            addmode = true
+            Log.d("FragmentManger", "create fragment_add_item...")
+            NavHostFragment.findNavController(this).navigate(R.id.action_ItemList_to_AddItem)
+        }
     }
 
     companion object {
@@ -74,17 +87,4 @@ class fragment_item_list : Fragment() {
             }
     }
 
-    fun openAdding() {
-        Log.d("FragmentManger", "create fragment_add_item")
-        var addFragment: Fragment = fragment_add_item.newInstance("","")
-
-
-        suppFragManager
-            .beginTransaction()
-            .add(addFragment,"addFragment")
-            .setReorderingAllowed(true)
-            .commit()
-
-        DialogFragment().show(suppFragManager, "addFragment")
-    }
 }
