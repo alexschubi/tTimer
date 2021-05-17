@@ -33,14 +33,11 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.system.exitProcess
 
-
-public var delmode: Boolean = false
-public var addmode: Boolean = false
 public lateinit var mainPrefs: SharedPreferences
+lateinit var suppPrefs: SharedPreferences
 public  val getArrayList = ArrayList<Item>()
 lateinit var mContext: Context
 lateinit var suppFragManager: FragmentManager
-//lateinit var navController: NavController
 
 class MainActivity : AppCompatActivity()
 {
@@ -50,9 +47,6 @@ class MainActivity : AppCompatActivity()
     private var addTime: String = ""
     //Arrays Adapter
     private val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
-    //private lateinit var linearLayoutManager: LinearLayoutManager
-
-
     //TODO subroutine for timer
     //globalscope.launch {
     // runonuithread{}
@@ -64,23 +58,13 @@ class MainActivity : AppCompatActivity()
         mContext = this
         super.onCreate(savedInstanceState)
         suppFragManager = supportFragmentManager
-        //navController = (suppFragManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController
-        //navController.setGraph(R.navigation.nav_graph)
-
         setContentView(R.layout.activity_main)
         mainPrefs = getPreferences(MODE_PRIVATE)
+        suppPrefs = getPreferences(MODE_PRIVATE)
         timer.start()
         Functions().getDB()
     }
 
-    override fun onBackPressed(){
-        if (addmode){
-            Functions().getDB()
-            this.recyclerViewItems.adapter?.notifyDataSetChanged()
-            hideKeyboard()
-            addmode = false
-        }
-    }
     private val timer = object: CountDownTimer(1 * 60 * 60 * 1000, 1 * 10 * 1000){ //hour*min*sec*millisec
         override fun onTick(millisUntilFinished: Long){
             Functions().refreshTime()

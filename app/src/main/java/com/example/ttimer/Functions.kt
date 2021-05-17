@@ -20,8 +20,11 @@ class Functions {
     fun putTime(time: Int?): String {
         var stringMinute = ""
         if (time != null) {
-            if (time<10){ stringMinute = "0$time" }
-            else{ stringMinute = time.toString() }
+            stringMinute = if (time<10){
+                "0$time"
+            } else{
+                time.toString()
+            }
         }
         return stringMinute
     }
@@ -35,24 +38,27 @@ class Functions {
 
     fun getDB() {
         getArrayList.clear()
-        var getindex = mainPrefs.all.size
-        Log.d("Preferences", "contain: ${mainPrefs.all.size} Items")
-        if (getindex > 0) {
+        var getindex = suppPrefs.getInt("ItemAmount", 0)
+        Log.d("Preferences", "${mainPrefs.all.size} Items saved")
+        Log.d("Preferences", suppPrefs.getInt("ItemAmount", 0).toString() + " Items registered")
+        if (getindex >= 0) {
             while (getindex > 0) {
-
                 val getStringItem = getListString("Item $getindex")
-                if(getStringItem.isNotEmpty()){
+                if(!getStringItem[8].toBoolean()){
                     val getDateTime: LocalDateTime = getTime(getStringItem)
                     val getItem = Item(
                         getStringItem[0].toInt(),
                         getStringItem[1],
                         getDateTime,
                         "first input",
-                        getStringItem[7].toBoolean()
+                        getStringItem[7].toBoolean(),
+                        false
                     )
                     getArrayList.add(getItem)
+                } else{
+                    //getArrayList.add(Item(getindex, "", LocalDateTime.now(), "", true, true))
                 }
-                getindex += -1
+                getindex--
             }
             refreshTime()
         }
@@ -60,7 +66,7 @@ class Functions {
     }
     fun refreshTime() {
         if (getArrayList.isEmpty()){
-            //Toast.makeText(mContext, "No Items saved", Toast.LENGTH_SHORT).show()
+            Log.d("Preferences", "No Items saved")
         } else {
             for(item in getArrayList.indices) {
                 getSpanString(item)
@@ -95,11 +101,4 @@ class Functions {
         }
         getArrayList[item].Span = testOutLine
     }
-
-    fun deleteItem(context: Context, item: Int) {
-        mainPrefs.edit().remove("Item $item").apply()
-        Log.d("SharedPreferences", "deleted Item $item")
-        Toast.makeText(context, "Item $item deleted", Toast.LENGTH_SHORT).show()
-    }
-
 }

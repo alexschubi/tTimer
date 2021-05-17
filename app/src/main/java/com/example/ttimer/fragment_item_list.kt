@@ -61,9 +61,13 @@ class fragment_item_list : Fragment() {
         ItemTouchHelper(SwipeToDelete(adapter)).attachToRecyclerView(this.recyclerViewItems)
 
         view.b_add.setOnClickListener {
-            addmode = true
             Log.d("FragmentManger", "create fragment_add_item...")
             NavHostFragment.findNavController(this).navigate(R.id.action_ItemList_to_AddItem)
+        }
+        swipe_refresh_layout.setOnRefreshListener {
+            Functions().getDB()
+            recyclerViewItems.adapter?.notifyDataSetChanged()
+            swipe_refresh_layout.isRefreshing = false
         }
     }
 

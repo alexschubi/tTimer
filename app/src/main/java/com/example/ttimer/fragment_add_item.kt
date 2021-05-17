@@ -63,7 +63,8 @@ class fragment_add_item : Fragment() {
     }
 
     private fun addItem() {
-        var index = mainPrefs.all.size
+        var index = suppPrefs.getInt("ItemAmount", 0)
+        Log.d("Preferences", suppPrefs.getInt("ItemAmount", 0).toString() + "Items registered")
         index++
         addDate = datePicker.dayOfMonth.toString() + "." + (datePicker.month+1) + "." + datePicker.year
         addTime = timePicker.hour.toString() + ":" + timePicker.minute.toString()
@@ -76,9 +77,13 @@ class fragment_add_item : Fragment() {
             activity?.datePicker?.year.toString(),
             Functions().putTime(activity?.timePicker?.hour),
             Functions().putTime(activity?.timePicker?.minute),
+            false.toString(),
             false.toString()
         )
+
         Functions().putListString("Item $index", addItemString)
+        suppPrefs.edit().putInt ("ItemAmount",suppPrefs.getInt("ItemAmount", 0) + 1 ).apply()
+
         if(Functions().getTime(addItemString).isAfter(LocalDateTime.now())){
             makeNotification(addItemString)
         } else {
@@ -86,10 +91,8 @@ class fragment_add_item : Fragment() {
         }
         //CLOSE addView
         Functions().getDB()
-        recyclerViewItems.adapter?.notifyDataSetChanged()
         Log.d("SharedPreferences", "added Item$index")
         this.view?.let { context?.hideKeyboard(it) }
-        addmode = false
         Log.d("FragmentManger", "create fragment_item_list...")
         NavHostFragment.findNavController(this).navigate(R.id.action_AddItem_to_ItemList)
     }

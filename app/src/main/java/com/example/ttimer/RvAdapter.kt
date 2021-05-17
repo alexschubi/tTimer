@@ -38,7 +38,8 @@ class RvAdapter(private val rVArrayList: ArrayList<Item>) : RecyclerView.Adapter
     override fun getItemCount() = rVArrayList.size
 
     fun deleteItem(position: Int) {
-        rVArrayList.removeAt(position)
+        //rVArrayList.removeAt(position)
+        Functions().getDB()
         notifyItemRemoved(position)
         this.notifyDataSetChanged()
     }
@@ -61,12 +62,19 @@ class SwipeToDelete(var adapter: RvAdapter) : ItemTouchHelper.SimpleCallback(0, 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         var position = viewHolder.adapterPosition
         val item = viewHolder.itemView.id
-        Log.d("RecyclerView.swiped","adapterpos $position = ID $item")
-        adapter.deleteItem(position)
-        mainPrefs.edit().remove("Item $item").apply()
+        Log.d("RecyclerView.swiped","adapterpos $position = item.id $item")
+        //adapter.notifyItemRemoved(position)
+
+        var editItem = Functions().getListString("Item $item")
+        editItem[8] = true.toString()
+        Functions().putListString("Item $item", editItem)
+        Log.d("Preferences", "changed Item $item to deleted")
         Functions().getDB()
+
+        adapter.notifyDataSetChanged()
         Toast.makeText(viewHolder.itemView.context, "Item $item deleted", Toast.LENGTH_SHORT).show()
         Log.d("SharedPreferences", "deleted Item $item")
+        Log.d("MainPrefs.size", mainPrefs.all.size.toString() + "items")
     }
 
     override fun onChildDraw(
