@@ -1,7 +1,9 @@
 package com.example.ttimer
 
 import android.app.AlarmManager
+import android.app.DatePickerDialog
 import android.app.PendingIntent
+import android.app.TimePickerDialog
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -36,8 +38,8 @@ class fragment_add_item : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    private var addDate: String = ""
-    private var addTime: String = ""
+    var addDateTime: LocalDateTime = LocalDateTime.now()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,15 +61,16 @@ class fragment_add_item : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.timePicker.setIs24HourView(true)
-        view.b_add_final.setOnClickListener { addItem()}
+        view.b_add_final.setOnClickListener { addItem() }
+        view.b_add_time.setOnClickListener { addDateTime() }
     }
 
     private fun addItem() {
         var index = suppPrefs.getInt("ItemAmount", 0)
         Log.d("Preferences", suppPrefs.getInt("ItemAmount", 0).toString() + "Items registered")
         index++
-        addDate = datePicker.dayOfMonth.toString() + "." + (datePicker.month+1) + "." + datePicker.year
-        addTime = timePicker.hour.toString() + ":" + timePicker.minute.toString()
+        var addDateString = datePicker.dayOfMonth.toString() + "." + (datePicker.month+1) + "." + datePicker.year
+        var addTimeString = timePicker.hour.toString() + ":" + timePicker.minute.toString()
 
         val addItemString = arrayListOf<String>(
             index.toString(),
@@ -127,6 +130,39 @@ class fragment_add_item : Fragment() {
             pendResult.finish()
         }
     }
+    private fun addDateTime() {
+        var tMinute: Int
+        var tHour: Int
+        var tDay: Int
+        var tMonth: Int
+        var tYear: Int
+
+        val datePickerDialog = DatePickerDialog(this.requireContext(),
+            { view, year, month, dayOfMonth ->
+                Log.d("DatePicker","got Date $dayOfMonth.$month.$year")
+
+            },
+            2021, //TODO use actual Date and Time
+            1,
+            1)
+        datePickerDialog.setOnDateSetListener { view, year, month, dayOfMonth -> }
+        datePickerDialog.show()
+
+        val timePickerDialog = TimePickerDialog(this.context,
+            R.style.DatePicker_dark,
+            { view, hourOfDay, minute ->
+                Log.d("TimePicker", "got Time $hourOfDay:$minute")
+                tMinute = minute
+                tHour = hourOfDay
+            },
+            8,
+            0,
+            true)
+        timePickerDialog.show()
+
+
+    }
+
     private fun MainActivity.hideKeyboard() { hideKeyboard(currentFocus ?: View(this)) }
     private fun Context.hideKeyboard(view: View) {
         val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
