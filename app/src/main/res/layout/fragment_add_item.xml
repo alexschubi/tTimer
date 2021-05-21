@@ -37,7 +37,51 @@
                 android:textColor="@color/main_text"
                 android:textSize="24sp" />
 
-            <DatePicker
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_date_time"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="4dp"
+                android:background="@color/text_back"
+                android:clickable="false"
+                android:padding="4dp">
+
+                <TextView
+                    android:id="@+id/tv_addDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:text="01.01.0001"
+                    android:textColor="@color/item_text"
+                    android:textSize="24sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_addTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:text="00:00"
+                    android:textColor="@color/item_text"
+                    android:textSize="24sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <Button
+                android:id="@+id/b_add_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@color/button_back"
+                android:text="Add Notification"
+                android:textColor="@color/button_text"
+                android:textSize="18sp" />
+
+            <!--<DatePicker
                 android:id="@+id/datePicker"
                 style="@android:style/Widget.DatePicker"
                 android:layout_width="wrap_content"
@@ -61,7 +105,7 @@
                 android:headerBackground="@color/text_back"
                 android:numbersSelectorColor="@color/item_back"
                 android:theme="@style/DatePicker_dark"
-                android:timePickerMode="spinner" />
+                android:timePickerMode="spinner" />-->
 
         </LinearLayout>
     </ScrollView>
@@ -73,7 +117,7 @@
         android:layout_margin="4dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:background="@color/item_back"
+        android:background="@color/button_back"
         android:clickable="true"
         android:text="Add"
         android:textColor="@color/button_text"
@@ -81,19 +125,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/b_add_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:backgroundTint="@color/button_back"
-        android:clickable="true"
-        android:tint="@color/button_text"
-        app:layout_constraintBottom_toTopOf="@+id/b_add_final"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_recent_history"
-        app:useCompatPadding="false" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

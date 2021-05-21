@@ -9,13 +9,19 @@ import java.security.AccessController.getContext
 import java.util.*
 
 class Functions {
-    fun getTime(getItem: ArrayList<String>): LocalDateTime {
-        val getDay: Int = getItem[2].toInt()
-        val getMonth: Int = getItem[3].toInt()
-        val getYear: Int = getItem[4].toInt()
-        val getHour: Int = getItem[5].toInt()
-        val getMinute: Int = getItem[6].toInt()
-        return LocalDateTime.of(getYear, getMonth, getDay, getHour, getMinute)
+    fun getTime(getItem: ArrayList<String>): LocalDateTime? {
+        var tempDateTime: LocalDateTime? = null
+        if (getItem[3].toIntOrNull() == null) {
+            tempDateTime = null
+        } else {
+            val getDay: Int = getItem[2].toInt()
+            val getMonth: Int = getItem[3].toInt()
+            val getYear: Int = getItem[4].toInt()
+            val getHour: Int = getItem[5].toInt()
+            val getMinute: Int = getItem[6].toInt()
+            tempDateTime = LocalDateTime.of(getYear, getMonth, getDay, getHour, getMinute)
+        }
+        return tempDateTime
     }
     fun putTime(time: Int?): String {
         var stringMinute = ""
@@ -36,7 +42,7 @@ class Functions {
         return ArrayList(listOf(*TextUtils.split(mainPrefs.getString(PrefKey, ""), "‚‗‚")))
     }
 
-    fun getDB() {
+    fun getDB() { //TODO get Span ERROR
         getArrayList.clear()
         var getindex = suppPrefs.getInt("ItemAmount", 0)
         Log.d("Preferences", "${mainPrefs.all.size} Items saved")
@@ -45,12 +51,11 @@ class Functions {
             while (getindex > 0) {
                 val getStringItem = getListString("Item $getindex")
                 if(!getStringItem[8].toBoolean()){
-                    val getDateTime: LocalDateTime = getTime(getStringItem)
                     val getItem = Item(
                         getStringItem[0].toInt(),
                         getStringItem[1],
-                        getDateTime,
-                        "first input",
+                        getTime(getStringItem),
+                        null,
                         getStringItem[7].toBoolean(),
                         false
                     )
@@ -69,7 +74,10 @@ class Functions {
             Log.d("Preferences", "No Items saved")
         } else {
             for(item in getArrayList.indices) {
-                getSpanString(item)
+                if (getArrayList[item].Date !== null) {
+                    Log.d("Item","get Span of Item $item")
+                    getSpanString(item)
+                }
             }
         }
     }
@@ -78,7 +86,7 @@ class Functions {
         val currentItemString = getListString("Item ${item + 1}")
         var testOutLine: String = ""
         val currentDateTime = LocalDateTime.now()
-        if (getArrayList[item].Date == null) {
+        if (getArrayList[item].Date !== null) {
             if (getArrayList[item].Date!!.isAfter(currentDateTime)) {
                 when (getArrayList[item].Date!!.year - currentDateTime.year) {
                     0 -> when (getArrayList[item].Date!!.dayOfYear - currentDateTime.dayOfYear) {
@@ -101,7 +109,6 @@ class Functions {
                 testOutLine += "Date is in the past"
             }
         }
-
         getArrayList[item].Span = testOutLine
     }
 }

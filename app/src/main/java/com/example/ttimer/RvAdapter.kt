@@ -28,10 +28,15 @@ class RvAdapter(private val rVArrayList: ArrayList<Item>) : RecyclerView.Adapter
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentItem = rVArrayList.asReversed()[position]
 
+        if (currentItem.Date == null) {
+            holder.itemView.tv_item_span.visibility = View.INVISIBLE
+            holder.itemView.tv_item_datetime.visibility = View.INVISIBLE
+        } else {
+            holder.itemView.tv_item_span.text = currentItem.Span
+            holder.itemView.tv_item_datetime.text = currentItem.Date!!.format(DateTimeFormatter.ofPattern("dd.MM.uuuu HH:mm"))
+        }
         holder.itemView.tv_item_index.text = currentItem.Index.toString()
         holder.itemView.tv_item_text.text = currentItem.Text
-        holder.itemView.tv_item_span.text = currentItem.Span
-        holder.itemView.tv_item_datetime.text = currentItem.Date!!.format(DateTimeFormatter.ofPattern("dd.MM.uu HH:mm"))
         holder.itemView.id = currentItem.Index
     }
 

@@ -7,6 +7,7 @@ import android.app.TimePickerDialog
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -23,6 +24,7 @@ import kotlinx.android.synthetic.main.fragment_item_list.view.*
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -38,7 +40,7 @@ class fragment_add_item : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    var addDateTime: LocalDateTime = LocalDateTime.now()
+    var addDateTime: LocalDateTime? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,7 +62,8 @@ class fragment_add_item : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        view.timePicker.setIs24HourView(true)
+
+        if (addDateTime == null) { cl_date_time.visibility = View.GONE }
         view.b_add_final.setOnClickListener { addItem() }
         view.b_add_time.setOnClickListener { addDateTime() }
     }
@@ -69,41 +72,56 @@ class fragment_add_item : Fragment() {
         var index = suppPrefs.getInt("ItemAmount", 0)
         Log.d("Preferences", suppPrefs.getInt("ItemAmount", 0).toString() + "Items registered")
         index++
-        var addDateString = datePicker.dayOfMonth.toString() + "." + (datePicker.month+1) + "." + datePicker.year
-        var addTimeString = timePicker.hour.toString() + ":" + timePicker.minute.toString()
-
-        val addItemString = arrayListOf<String>(
-            index.toString(),
-            activity?.tb_add_text?.text.toString(),
-            activity?.datePicker?.dayOfMonth.toString(),
-            (activity?.datePicker?.month?.plus(1)).toString(),
-            activity?.datePicker?.year.toString(),
-            Functions().putTime(activity?.timePicker?.hour),
-            Functions().putTime(activity?.timePicker?.minute),
-            false.toString(),
-            false.toString()
-        )
+//TODO replace with dialogs
+        val addItemString: ArrayList<String>
+        if(addDateTime == null) {
+            addItemString = arrayListOf<String>(
+                index.toString(),
+                activity?.tb_add_text?.text.toString(),
+                "",//Day
+                "",//Month
+                "",//Year
+                "",//Hour
+                "",//Minute
+                false.toString(), //Notified
+                false.toString() //Deleted
+            )
+        } else {
+            addItemString = arrayListOf<String>(
+                index.toString(),
+                activity?.tb_add_text?.text.toString(),
+                addDateTime!!.dayOfMonth.toString(),
+                addDateTime!!.monthValue.toString(),
+                addDateTime!!.year.toString(),
+                addDateTime!!.hour.toString(),
+                addDateTime!!.minute.toString(),
+                false.toString(),
+                false.toString()
+            )
+        }
 
         Functions().putListString("Item $index", addItemString)
         suppPrefs.edit().putInt ("ItemAmount",suppPrefs.getInt("ItemAmount", 0) + 1 ).apply()
+        Log.d("Preferences", "added Item: " + addItemString.toString())
 
-        if(Functions().getTime(addItemString).isAfter(LocalDateTime.now())){
+        Log.d("Notification", "Item $index has Notification at " + addDateTime!!.format(
+            DateTimeFormatter.ofPattern("dd.MM.uuuu HH:mm")))
+        if(addDateTime!!.isAfter(LocalDateTime.now())) {
             makeNotification(addItemString)
         } else {
-            //Toast.makeText(this, "Item$index is in past", Toast.LENGTH_SHORT).show()
+            Log.d("Notification", "No Notification wanted or in Past")
         }
         //CLOSE addView
         Functions().getDB()
-        Log.d("SharedPreferences", "added Item$index")
         this.view?.let { context?.hideKeyboard(it) }
         Log.d("FragmentManger", "create fragment_item_list...")
         NavHostFragment.findNavController(this).navigate(R.id.action_AddItem_to_ItemList)
     }
 
     private fun makeNotification(currentItemString: ArrayList<String>) {
-        val zonedItemDateTime = Functions().getTime(currentItemString).atZone(ZoneId.systemDefault())
+        val zonedItemDateTime = Functions().getTime(currentItemString)!!.atZone(ZoneId.systemDefault())
         val alarmManager = mContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val intent = Intent(mContext, AlarmReceiver::class.java).putStringArrayListExtra("currentItemString", currentItemString)
+        val intent = Intent(mContext, MainActivity.AlarmReceiver::class.java).putStringArrayListExtra("currentItemString", currentItemString)
         val pendingIntent = PendingIntent.getBroadcast(mContext, 0, intent, PendingIntent.FLAG_ONE_SHOT)
         alarmManager.setExact(
             AlarmManager.RTC_WAKEUP,
@@ -114,7 +132,7 @@ class fragment_add_item : Fragment() {
                 "${(zonedItemDateTime.toInstant().minusMillis
                     (ZonedDateTime.now().toInstant().toEpochMilli())).toEpochMilli()} milliSeconds")
     }
-    open class AlarmReceiver : BroadcastReceiver() {
+    /*open class AlarmReceiver : BroadcastReceiver() {
         //TODO multiple alarms dont stack
         //TODO Broadcast receiver have to work in background
         override fun onReceive(context: Context, intent: Intent) {
@@ -129,38 +147,46 @@ class fragment_add_item : Fragment() {
             }
             pendResult.finish()
         }
-    }
+    }*/
     private fun addDateTime() {
-        var tMinute: Int
-        var tHour: Int
-        var tDay: Int
-        var tMonth: Int
-        var tYear: Int
-
-        val datePickerDialog = DatePickerDialog(this.requireContext(),
-            { view, year, month, dayOfMonth ->
-                Log.d("DatePicker","got Date $dayOfMonth.$month.$year")
-
-            },
-            2021, //TODO use actual Date and Time
-            1,
-            1)
-        datePickerDialog.setOnDateSetListener { view, year, month, dayOfMonth -> }
-        datePickerDialog.show()
+        val actualDateTime = LocalDateTime.now()
+        var tMinute: Int = actualDateTime.minute
+        var tHour: Int = actualDateTime.hour
+        var tDay: Int = actualDateTime.dayOfMonth
+        var tMonth: Int = actualDateTime.monthValue
+        var tYear: Int = actualDateTime.year
 
         val timePickerDialog = TimePickerDialog(this.context,
-            R.style.DatePicker_dark,
+            R.style.ThemeOverlay_MaterialComponents_Dialog_Alert,
             { view, hourOfDay, minute ->
                 Log.d("TimePicker", "got Time $hourOfDay:$minute")
                 tMinute = minute
                 tHour = hourOfDay
+
+                addDateTime = LocalDateTime.of(tYear, tMonth, tDay, tHour, tMinute)
+                Log.d("addDateTime", "LocalDateTime $tHour:$tMinute $tDay.$tMonth.$tYear set")
+                tv_addDate.text = tDay.toString() + "." + tMonth.toString() + "." + tYear.toString()
+                tv_addTime.text = Functions().putTime(tHour) + ":" + Functions().putTime(tMinute)
+                cl_date_time.visibility = View.VISIBLE
             },
             8,
             0,
             true)
-        timePickerDialog.show()
 
+        val datePickerDialog = DatePickerDialog(this.requireContext(),
+            R.style.ThemeOverlay_MaterialComponents_Dialog_Alert,
+            { view, year, month, dayOfMonth ->
+                Log.d("DatePicker","got Date $dayOfMonth.$month.$year")
+                tDay = dayOfMonth
+                tMonth = month + 1
+                tYear = year
 
+                timePickerDialog.show()
+            },
+            2021, //TODO use actual Date and Time
+            1,
+            1)
+        datePickerDialog.show()
     }
 
     private fun MainActivity.hideKeyboard() { hideKeyboard(currentFocus ?: View(this)) }
