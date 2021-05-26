@@ -1,50 +1,30 @@
 package com.example.ttimer
 
-import android.app.Activity
-import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.*
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.util.AttributeSet
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.navigation.NavController
-import androidx.navigation.NavGraph
-import androidx.navigation.Navigation
-import androidx.navigation.Navigator
-import androidx.navigation.fragment.NavHostFragment
-import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_add_item.*
-import kotlinx.android.synthetic.main.fragment_item_list.*
-import java.time.LocalDateTime
-import java.time.ZoneId
-import java.time.ZonedDateTime
+import com.google.firebase.FirebaseApp
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import java.time.format.DateTimeFormatter
-import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.system.exitProcess
 
-public lateinit var mainPrefs: SharedPreferences
+lateinit var mainPrefs: SharedPreferences
 lateinit var suppPrefs: SharedPreferences
-public  val getArrayList = ArrayList<Item>()
+val getArrayList = ArrayList<Item>()
 lateinit var mContext: Context
 lateinit var suppFragManager: FragmentManager
 
 class MainActivity : AppCompatActivity()
 {
-    // VARs VALs
-    private var addText: String = ""
-    private var addDate: String = ""
-    private var addTime: String = ""
     //Arrays Adapter
     private val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
     //TODO subroutine for timer
@@ -55,6 +35,17 @@ class MainActivity : AppCompatActivity()
     //START
     override fun onCreate(savedInstanceState: Bundle?)
     {
+        val firebaseAnalytics = FirebaseAnalytics.getInstance(this)
+        val firebaseCrashlytics = FirebaseCrashlytics.getInstance()
+        FirebaseApp.initializeApp(this)
+        if(BuildConfig.DEBUG){
+            firebaseCrashlytics.setCrashlyticsCollectionEnabled(false)
+            firebaseAnalytics.setAnalyticsCollectionEnabled(false)
+            Log.i("Analytics", "Analytics off")
+        } else {
+            Log.i("Analytics", "Analytics on")
+        }
+
         mContext = this
         super.onCreate(savedInstanceState)
         suppFragManager = supportFragmentManager
@@ -78,11 +69,11 @@ class MainActivity : AppCompatActivity()
     }
 
     open class AlarmReceiver : BroadcastReceiver() {
-        //TODO multiple alarms dont stack
+        //TODO multiple alarms don't stack
         override fun onReceive(context: Context, intent: Intent) {
             val pendResult = this.goAsync()
             val currentItemString: ArrayList<String> = intent.getStringArrayListExtra("currentItemString") as ArrayList<String>
-            Log.d("AlarmManager", "Item ${currentItemString?.get(0)} Timer Reached")
+            Log.d("AlarmManager", "Item ${currentItemString[0]} Timer Reached")
             val notificationUtils = NotificationUtils(context)
             val notification = notificationUtils.getNotificationBuilder(currentItemString).build()
             notificationUtils.getManager().notify((currentItemString[0].toInt()), notification)

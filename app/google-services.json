@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "14703758014",
+    "project_id": "ttimer-52e0f",
+    "storage_bucket": "ttimer-52e0f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:14703758014:android:e59a8016073c51f48eecef",
+        "android_client_info": {
+          "package_name": "com.example.ttimer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "14703758014-es9gf13artc9guimvh809kasf4tifrnk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAD2s9Gl6ehnQXCi-8Apsg0bsuyU9r_HOc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "14703758014-es9gf13artc9guimvh809kasf4tifrnk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

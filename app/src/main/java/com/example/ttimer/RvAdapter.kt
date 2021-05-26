@@ -33,7 +33,7 @@ class RvAdapter(private val rVArrayList: ArrayList<Item>) : RecyclerView.Adapter
             holder.itemView.tv_item_datetime.visibility = View.INVISIBLE
         } else {
             holder.itemView.tv_item_span.text = currentItem.Span
-            holder.itemView.tv_item_datetime.text = currentItem.Date!!.format(DateTimeFormatter.ofPattern("dd.MM.uuuu HH:mm"))
+            holder.itemView.tv_item_datetime.text = currentItem.Date.format(DateTimeFormatter.ofPattern("dd.MM.uuuu HH:mm"))
         }
         holder.itemView.tv_item_index.text = currentItem.Index.toString()
         holder.itemView.tv_item_text.text = currentItem.Text
@@ -65,12 +65,12 @@ class SwipeToDelete(var adapter: RvAdapter) : ItemTouchHelper.SimpleCallback(0, 
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        var position = viewHolder.adapterPosition
+        val position = viewHolder.adapterPosition
         val item = viewHolder.itemView.id
         Log.d("RecyclerView.swiped","adapterpos $position = item.id $item")
         //adapter.notifyItemRemoved(position)
 
-        var editItem = Functions().getListString("Item $item")
+        val editItem = Functions().getListString("Item $item")
         editItem[8] = true.toString()
         Functions().putListString("Item $item", editItem)
         Log.d("Preferences", "changed Item $item to deleted")
@@ -92,7 +92,7 @@ class SwipeToDelete(var adapter: RvAdapter) : ItemTouchHelper.SimpleCallback(0, 
         isCurrentlyActive: Boolean
     ) {
         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-        var background = ColorDrawable()
+        val background = ColorDrawable()
         background.color = Color.RED
         background.setBounds(viewHolder.itemView.right+dX.toInt(), viewHolder.itemView.top, viewHolder.itemView.right, viewHolder.itemView.bottom)
         background.draw(c)

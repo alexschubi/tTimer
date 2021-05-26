@@ -1,6 +1,5 @@
 package com.example.ttimer
 
-import android.annotation.TargetApi
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -8,13 +7,8 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
 import android.graphics.BitmapFactory
-import android.graphics.Color
-import android.media.RingtoneManager
 import android.os.Build
 import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat.getSystemService
-import android.content.SharedPreferences
 
 class NotificationUtils(base: Context) : ContextWrapper(base) {
     private var notificationManager: NotificationManager? = null
@@ -47,12 +41,14 @@ class NotificationUtils(base: Context) : ContextWrapper(base) {
         return notificationManager as NotificationManager
     }
 
-    fun getNotificationBuilder(currentItemString: ArrayList<String>): NotificationCompat.Builder{
+    fun getNotificationBuilder(currentItemString: ArrayList<String>): NotificationCompat.Builder {
         val intent = Intent(this, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
         val pendingIntent = PendingIntent.getActivity(this, 0, intent, 0)
-        val builder = NotificationCompat.Builder(
+        //NotificationManagerCompat.from(this)
+        //    .notify(getArrayList[item].Index, builder.build())
+        return NotificationCompat.Builder(
             applicationContext,
             currentItemString[0]
         ).apply {
@@ -73,8 +69,5 @@ class NotificationUtils(base: Context) : ContextWrapper(base) {
             priority = NotificationCompat.PRIORITY_DEFAULT
             setAutoCancel(true)
         }
-        //NotificationManagerCompat.from(this)
-        //    .notify(getArrayList[item].Index, builder.build())
-        return builder
     }
 }
