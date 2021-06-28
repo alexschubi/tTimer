@@ -64,7 +64,7 @@ class NotificationUtils(base: Context) : ContextWrapper(base) {
             setContentTitle("Timer reached")
             setStyle(
                 NotificationCompat.BigTextStyle()
-                    .bigText(currentItemString[0] + currentItemString[1])
+                    .bigText(currentItemString[1])
             )
             priority = NotificationCompat.PRIORITY_DEFAULT
             setAutoCancel(true)

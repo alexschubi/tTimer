@@ -21,6 +21,11 @@
         <action
             android:id="@+id/action_AddItem_to_ItemList"
             app:destination="@id/ItemList"
-            app:enterAnim="@anim/nav_default_pop_exit_anim" />
+            app:enterAnim="@anim/nav_default_pop_exit_anim" >
+        </action>
+        <argument
+            android:name="itemArg"
+            app:argType="integer"
+            android:defaultValue="0" />
     </fragment>
 </navigation>

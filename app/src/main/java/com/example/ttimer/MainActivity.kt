@@ -69,7 +69,6 @@ class MainActivity : AppCompatActivity()
     }
 
     open class AlarmReceiver : BroadcastReceiver() {
-        //TODO multiple alarms don't stack
         override fun onReceive(context: Context, intent: Intent) {
             val pendResult = this.goAsync()
             val currentItemString: ArrayList<String> = intent.getStringArrayListExtra("currentItemString") as ArrayList<String>

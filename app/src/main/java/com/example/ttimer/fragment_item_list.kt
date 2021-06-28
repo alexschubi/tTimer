@@ -57,8 +57,8 @@ class fragment_item_list : Fragment() {
         var adapter = RvAdapter( MainActivity(), getArrayList, object: RvAdapter.ContentListener{
             override fun onItemClicked(item: Item) {
                 super.onItemClicked(item)
-
                 Toast.makeText(mContext, "editing Item $item", Toast.LENGTH_SHORT).show()
+                NavHostFragment.findNavController(this@fragment_item_list).navigate(R.id.action_ItemList_to_AddItem)
             }
         })
         view.recyclerViewItems.adapter = adapter

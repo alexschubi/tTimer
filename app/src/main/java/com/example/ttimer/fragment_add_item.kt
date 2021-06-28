@@ -31,7 +31,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [fragment_add_item.newInstance] factory method to
  * create an instance of this fragment.
  */
-class fragment_add_item : Fragment() {
+class fragment_add_item(val item: Item?) : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -51,6 +51,7 @@ class fragment_add_item : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_add_item, container, false)
     }
 
@@ -63,9 +64,11 @@ class fragment_add_item : Fragment() {
     }
 
     private fun addItem() {
+        //TODO fix Problem when submitting a new item with no text and notification
         var index = suppPrefs.getInt("ItemAmount", 0)
         Log.d("Preferences", suppPrefs.getInt("ItemAmount", 0).toString() + "Items registered")
         index++
+//TODO replace with dialogs
         val addItemString: ArrayList<String>
         if(addDateTime == null) {
             addItemString = arrayListOf<String>(
@@ -127,7 +130,7 @@ class fragment_add_item : Fragment() {
                     (ZonedDateTime.now().toInstant().toEpochMilli())).toEpochMilli()} milliSeconds")
     }
     /*open class AlarmReceiver : BroadcastReceiver() {
-        //TODO multiple alarms dont stack
+        //TODO multiple alarms don't stack
         //TODO Broadcast receiver have to work in background
         override fun onReceive(context: Context, intent: Intent) {
             val pendResult = this.goAsync()
@@ -163,8 +166,8 @@ class fragment_add_item : Fragment() {
                 tv_addTime.text = Functions().putTime(tHour) + ":" + Functions().putTime(tMinute)
                 cl_date_time.visibility = View.VISIBLE
             },
-            8,
-            0,
+            tHour,
+            tMinute,
             true)
 
         val datePickerDialog = DatePickerDialog(this.requireContext(),
@@ -177,9 +180,9 @@ class fragment_add_item : Fragment() {
 
                 timePickerDialog.show()
             },
-            2021, //TODO use actual Date and Time
-            1,
-            1)
+            tYear,
+            tMonth - 1,
+            tDay)
         datePickerDialog.show()
         b_add_time.text = "Edit Notification"
     }
@@ -201,11 +204,10 @@ class fragment_add_item : Fragment() {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            fragment_add_item().apply {
+        fun newInstance(param1: Item) =
+            fragment_add_item(item = null).apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
                 }
             }
     }
