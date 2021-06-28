@@ -11,7 +11,8 @@
         tools:layout="@layout/fragment_item_list">
         <action
             android:id="@+id/action_ItemList_to_AddItem"
-            app:destination="@id/AddItem" />
+            app:destination="@id/AddItem"
+            app:enterAnim="@anim/nav_default_pop_enter_anim" />
     </fragment>
     <fragment
         android:id="@+id/AddItem"
@@ -19,6 +20,7 @@
         tools:layout="@layout/fragment_add_item">
         <action
             android:id="@+id/action_AddItem_to_ItemList"
-            app:destination="@id/ItemList" />
+            app:destination="@id/ItemList"
+            app:enterAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
 </navigation>

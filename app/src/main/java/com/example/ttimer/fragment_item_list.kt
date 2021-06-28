@@ -1,10 +1,12 @@
 package com.example.ttimer
 
+import android.net.sip.SipSession
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -39,7 +41,8 @@ class fragment_item_list : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
@@ -51,9 +54,16 @@ class fragment_item_list : Fragment() {
 
         linearLayoutManager = LinearLayoutManager(mContext)
         view.recyclerViewItems.layoutManager = linearLayoutManager
-        val adapter = RvAdapter(getArrayList)
+        var adapter = RvAdapter( MainActivity(), getArrayList, object: RvAdapter.ContentListener{
+            override fun onItemClicked(item: Item) {
+                super.onItemClicked(item)
+
+                Toast.makeText(mContext, "editing Item $item", Toast.LENGTH_SHORT).show()
+            }
+        })
         view.recyclerViewItems.adapter = adapter
         ItemTouchHelper(SwipeToDelete(adapter)).attachToRecyclerView(this.recyclerViewItems)
+        ItemTouchHelper(SwipeToEdit(adapter, getArrayList)).attachToRecyclerView(this.recyclerViewItems)
 
         view.b_add.setOnClickListener {
             Log.d("FragmentManger", "create fragment_add_item...")
@@ -65,7 +75,9 @@ class fragment_item_list : Fragment() {
             swipe_refresh_layout.isRefreshing = false
         }
     }
+    fun editItem(){}
 
+    //override fun onItemClicked(item: Item) {}
     companion object {
         /**
          * Use this factory method to create a new instance of
@@ -85,5 +97,4 @@ class fragment_item_list : Fragment() {
                 }
             }
     }
-
 }

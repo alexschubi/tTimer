@@ -51,14 +51,13 @@ class fragment_add_item : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_add_item, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (addDateTime == null) { cl_date_time.visibility = View.GONE }
+        if (addDateTime == null) { cl_date_time.visibility = View.GONE } else {b_add_time.text = "Edit Notification"}
         view.b_add_final.setOnClickListener { addItem() }
         view.b_add_time.setOnClickListener { addDateTime() }
     }
@@ -67,7 +66,6 @@ class fragment_add_item : Fragment() {
         var index = suppPrefs.getInt("ItemAmount", 0)
         Log.d("Preferences", suppPrefs.getInt("ItemAmount", 0).toString() + "Items registered")
         index++
-//TODO replace with dialogs
         val addItemString: ArrayList<String>
         if(addDateTime == null) {
             addItemString = arrayListOf<String>(
@@ -99,10 +97,11 @@ class fragment_add_item : Fragment() {
         suppPrefs.edit().putInt ("ItemAmount",suppPrefs.getInt("ItemAmount", 0) + 1 ).apply()
         Log.d("Preferences", "added Item: " + addItemString.toString())
 
-        Log.d("Notification", "Item $index has Notification at " + addDateTime!!.format(
-            DateTimeFormatter.ofPattern("dd.MM.uuuu HH:mm")))
+
         if(addDateTime!!.isAfter(LocalDateTime.now())) {
             makeNotification(addItemString)
+            Log.d("Notification", "Item $index has Notification at " + addDateTime!!.format(
+                DateTimeFormatter.ofPattern("dd.MM.uuuu HH:mm")))
         } else {
             Log.d("Notification", "No Notification wanted or in Past")
         }
@@ -182,6 +181,7 @@ class fragment_add_item : Fragment() {
             1,
             1)
         datePickerDialog.show()
+        b_add_time.text = "Edit Notification"
     }
 
     private fun MainActivity.hideKeyboard() { hideKeyboard(currentFocus ?: View(this)) }
