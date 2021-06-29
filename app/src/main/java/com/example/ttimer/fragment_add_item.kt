@@ -25,26 +25,14 @@ import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.zip.Inflater
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-//private const val ARG_PARAM1 = "param1"
-//private const val ARG_PARAM2 = "param2"
-
 class fragment_add_item: Fragment() {
-    // TODO: Rename and change types of parameters
-    //private var param1: String? = null
     private val args: fragment_add_itemArgs by navArgs<fragment_add_itemArgs>()
     private var binding: View? = null
     var addDateTime: LocalDateTime? = null
     var editItem: Item? = null
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        /*arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }*/
         Log.d("FragmentManger", "Fragment created")
     }
 
@@ -58,21 +46,11 @@ class fragment_add_item: Fragment() {
             editItem = item
             binding?.tb_add_text?.setText(item?.Text)
             addDateTime = editItem?.Date
-           /* if (item?.Date != null) {
-                addDateTime = editItem?.Date
-                tv_addDate?.text = item.Date!!.format(DateTimeFormatter.ofPattern("dd.MM.uuuu HH:mm"))
-                tv_addTime?.text = item.Date!!.format(DateTimeFormatter.ofPattern("dd.MM.uuuu HH:mm"))
-                cl_date_time?.visibility = View.VISIBLE
-               // binding?.tv_addDate?.text = item.Date!!.format(DateTimeFormatter.ofPattern("dd.MM.uuuu HH:mm"))
-               // binding?.tv_addTime?.text = item.Date!!.format(DateTimeFormatter.ofPattern("dd.MM.uuuu HH:mm"))
-               // binding?.cl_date_time?.visibility = View.VISIBLE
-            }*/
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         if (addDateTime == null) {
             cl_date_time.visibility = View.GONE
         }
@@ -122,7 +100,6 @@ class fragment_add_item: Fragment() {
                 false.toString()
             )
         }
-
         Functions().putListString("Item $index", addItemString)
         if(editItem == null){suppPrefs.edit().putInt ("ItemAmount",suppPrefs.getInt("ItemAmount", 0) + 1 ).apply()}
         Log.d("Preferences", "added Item: " + addItemString.toString())
@@ -154,22 +131,7 @@ class fragment_add_item: Fragment() {
                 "${(zonedItemDateTime.toInstant().minusMillis
                     (ZonedDateTime.now().toInstant().toEpochMilli())).toEpochMilli()} milliSeconds")
     }
-    /*open class AlarmReceiver : BroadcastReceiver() {
-        //TODO multiple alarms don't stack
-        //TODO Broadcast receiver have to work in background
-        override fun onReceive(context: Context, intent: Intent) {
-            val pendResult = this.goAsync()
-            val currentItemString: ArrayList<String> = intent.getStringArrayListExtra("currentItemString") as ArrayList<String>
-            Log.d("AlarmManager", "Item ${currentItemString?.get(0)} Timer Reached")
-            val notificationUtils = NotificationUtils(context)
-            val notification = notificationUtils.getNotificationBuilder(currentItemString).build()
-            notificationUtils.getManager().notify((currentItemString[0].toInt()), notification)
-            try { PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT).cancel()}finally {
-                Log.d("PendingIntent", "already canceled")
-            }
-            pendResult.finish()
-        }
-    }*/
+
     private fun addDateTime() {
         val actualDateTime = LocalDateTime.now()
         var tMinute: Int = actualDateTime.minute
@@ -194,7 +156,6 @@ class fragment_add_item: Fragment() {
             tHour,
             tMinute,
             true)
-
         val datePickerDialog = DatePickerDialog(this.requireContext(),
             R.style.ThemeOverlay_MaterialComponents_Dialog_Alert,
             { view, year, month, dayOfMonth ->
@@ -213,27 +174,9 @@ class fragment_add_item: Fragment() {
     }
 
     private fun MainActivity.hideKeyboard() { hideKeyboard(currentFocus ?: View(this)) }
+
     private fun Context.hideKeyboard(view: View) {
         val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
-
-    /*companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment fragment_add_item.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: Item) =
-            fragment_add_item(item = null).apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                }
-            }
-    }*/
 }

@@ -23,7 +23,7 @@ class Functions {
         }
         return tempDateTime
     }
-    fun putTime(time: Int?): String {
+    /*fun putTime(time: Int?): String {
         var stringMinute = ""
         if (time != null) {
             stringMinute = if (time<10){
@@ -33,11 +33,12 @@ class Functions {
             }
         }
         return stringMinute
-    }
+    }*/
     fun putListString(PrefKey: String?, stringList: ArrayList<String>) {
         val myStringList = stringList.toTypedArray()
         mainPrefs.edit().putString(PrefKey, TextUtils.join("‚‗‚", myStringList)).apply()
     }
+
     fun getListString(PrefKey: String?): ArrayList<String> {
         return ArrayList(listOf(*TextUtils.split(mainPrefs.getString(PrefKey, ""), "‚‗‚")))
     }
@@ -60,8 +61,6 @@ class Functions {
                         false
                     )
                     getArrayList.add(getItem)
-                } else{
-                    //getArrayList.add(Item(getindex, "", LocalDateTime.now(), "", true, true))
                 }
                 getindex--
             }
@@ -69,6 +68,7 @@ class Functions {
         }
         Log.d("getArrayList", getArrayList.toString())
     }
+
     fun refreshTime() {
         if (getArrayList.isEmpty()){
             Log.d("Preferences", "No Items saved")
@@ -83,7 +83,7 @@ class Functions {
     }
 
     private fun getSpanString(item: Int) {
-        val currentItemString = getListString("Item ${item + 1}")
+        //val currentItemString = getListString("Item ${item + 1}")
         var testOutLine: String = ""
         val currentDateTime = LocalDateTime.now()
         if (getArrayList[item].Date !== null) {

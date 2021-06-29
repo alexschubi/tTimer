@@ -46,8 +46,6 @@ class NotificationUtils(base: Context) : ContextWrapper(base) {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
         val pendingIntent = PendingIntent.getActivity(this, 0, intent, 0)
-        //NotificationManagerCompat.from(this)
-        //    .notify(getArrayList[item].Index, builder.build())
         return NotificationCompat.Builder(
             applicationContext,
             currentItemString[0]

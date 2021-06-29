@@ -22,7 +22,6 @@ import kotlin.coroutines.coroutineContext
 
 
 class RvAdapter constructor(private val activity: MainActivity, private val rVArrayList: List<Item>, val listener: ContentListener) : RecyclerView.Adapter<RvAdapter.ViewHolder>(){
-    //https://www.raywenderlich.com/1560485-android-recyclerview-tutorial-with-kotlin
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.recycler_view, parent, false)
@@ -31,24 +30,11 @@ class RvAdapter constructor(private val activity: MainActivity, private val rVAr
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(rVArrayList, listener)
-
-        /*val currentItem = rVArrayList.asReversed()[position]
-        if (currentItem.Date == null) {
-            holder.itemView.tv_item_span.visibility = View.INVISIBLE
-            holder.itemView.tv_item_datetime.visibility = View.INVISIBLE
-        } else {
-            holder.itemView.tv_item_span.text = currentItem.Span
-            holder.itemView.tv_item_datetime.text = currentItem.Date.format(DateTimeFormatter.ofPattern("dd.MM.uuuu HH:mm"))
-        }
-        holder.itemView.tv_item_index.text = currentItem.Index.toString()
-        holder.itemView.tv_item_text.text = currentItem.Text
-        holder.itemView.id = currentItem.Index*/
     }
 
     override fun getItemCount() = rVArrayList.size
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)/*, View.OnClickListener */{
-        //init { itemView.setOnClickListener(this) }
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         fun bind (rVArrayList: List<Item>, listener: ContentListener){
             val currentItem = rVArrayList[adapterPosition]
             if (currentItem.Date == null) {
@@ -61,14 +47,10 @@ class RvAdapter constructor(private val activity: MainActivity, private val rVAr
             itemView.tv_item_index.text = currentItem.Index.toString()
             itemView.tv_item_text.text = currentItem.Text
             itemView.id = currentItem.Index
-
-            itemView.setOnClickListener{
-                listener.onItemClicked(rVArrayList[adapterPosition])
-            }
         }
     }
 
-    public interface ContentListener {
+    interface ContentListener {
         fun onItemClicked(item: Item) {}
     }
 }
@@ -85,14 +67,11 @@ class SwipeToDelete(var adapter: RvAdapter) : ItemTouchHelper.SimpleCallback(0, 
         val position = viewHolder.adapterPosition
         val item = viewHolder.itemView.id
         Log.d("RecyclerView.swiped","adapterpos $position = item.id $item")
-        //adapter.notifyItemRemoved(position)
-
         val editItem = Functions().getListString("Item $item")
         editItem[8] = true.toString()
         Functions().putListString("Item $item", editItem)
         Log.d("Preferences", "changed Item $item to deleted")
         Functions().getDB()
-
         adapter.notifyDataSetChanged()
         Toast.makeText(viewHolder.itemView.context, "Item $item deleted", Toast.LENGTH_SHORT).show()
         Log.d("SharedPreferences", "deleted Item $item")
@@ -120,9 +99,9 @@ class SwipeToDelete(var adapter: RvAdapter) : ItemTouchHelper.SimpleCallback(0, 
         val sbitmp = bitmp.scale(viewHolder.itemView.height, viewHolder.itemView.height, true)
         c.drawBitmap(sbitmp , (viewHolder.itemView.right - viewHolder.itemView.height).toFloat(), viewHolder.itemView.top.toFloat(), null)
     }
-
 }
-//TODO visualization and deactivate clickOnItem
+//TODO visualization
+//TODO reversed editing items error
 class SwipeToEdit(var adapter: RvAdapter, var rVArrayList: ArrayList<Item>) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT){
     override fun onMove(
         recyclerView: RecyclerView,
@@ -132,11 +111,12 @@ class SwipeToEdit(var adapter: RvAdapter, var rVArrayList: ArrayList<Item>) : It
         return false
     }
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        adapter.listener.onItemClicked(rVArrayList.get(viewHolder.adapterPosition))
+        val item = viewHolder.itemView.id
+        adapter.listener.onItemClicked(rVArrayList.get(item))
         Log.d("","")
         Log.d("FragmentManger", "create fragment_add_item...")
         //NavHostFragment.findNavController().navigate(R.id.action_ItemList_to_AddItem)
-        Toast.makeText(viewHolder.itemView.context, "Item ${viewHolder.adapterPosition} editing", Toast.LENGTH_SHORT).show()
+        Toast.makeText(viewHolder.itemView.context, "Item $item editing", Toast.LENGTH_SHORT).show()
     }
     override fun onChildDraw(
         c: Canvas,
