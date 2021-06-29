@@ -1,14 +1,18 @@
 package com.example.ttimer
 
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Color
+import android.graphics.*
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.ScaleDrawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.scale
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -107,8 +111,14 @@ class SwipeToDelete(var adapter: RvAdapter) : ItemTouchHelper.SimpleCallback(0, 
         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
         val background = ColorDrawable()
         background.color = Color.RED
-        background.setBounds(viewHolder.itemView.right+dX.toInt(), viewHolder.itemView.top, viewHolder.itemView.right, viewHolder.itemView.bottom)
+        background.setBounds(viewHolder.itemView.right+dX.toInt(),
+            viewHolder.itemView.top,
+            viewHolder.itemView.right,
+            viewHolder.itemView.bottom)
         background.draw(c)
+        val bitmp = BitmapFactory.decodeResource(mContext.resources,android.R.drawable.ic_menu_delete)
+        val sbitmp = bitmp.scale(viewHolder.itemView.height, viewHolder.itemView.height, true)
+        c.drawBitmap(sbitmp , (viewHolder.itemView.right - viewHolder.itemView.height).toFloat(), viewHolder.itemView.top.toFloat(), null)
     }
 
 }
@@ -139,10 +149,17 @@ class SwipeToEdit(var adapter: RvAdapter, var rVArrayList: ArrayList<Item>) : It
     ) {
         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
         val background = ColorDrawable()
-        background.color = Color.RED
-        background.setBounds(viewHolder.itemView.right+dX.toInt(), viewHolder.itemView.top, viewHolder.itemView.right, viewHolder.itemView.bottom)
-        background.draw(c)
+        background.color = Color.GREEN
+        background.setBounds(
+            viewHolder.itemView.left,
+            viewHolder.itemView.top,
+            (viewHolder.itemView.left+dX).toInt(),
+            viewHolder.itemView.bottom
+        )
+        background.draw(c) //TODO use materialDesign and other colors
+        val bitmp = BitmapFactory.decodeResource(mContext.resources,android.R.drawable.ic_menu_edit)
+        val sbitmp = bitmp.scale(viewHolder.itemView.height, viewHolder.itemView.height, true)
+        c.drawBitmap(sbitmp , viewHolder.itemView.left.toFloat(), viewHolder.itemView.top.toFloat(), null)
     }
-
 }
 
