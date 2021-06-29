@@ -17,12 +17,11 @@ import java.time.format.DateTimeFormatter
 import kotlin.coroutines.coroutineContext
 
 
-class RvAdapter constructor(private val activity: MainActivity, private val rVArrayList: ArrayList<Item>, val listener: ContentListener) : RecyclerView.Adapter<RvAdapter.ViewHolder>(){
+class RvAdapter constructor(private val activity: MainActivity, private val rVArrayList: List<Item>, val listener: ContentListener) : RecyclerView.Adapter<RvAdapter.ViewHolder>(){
     //https://www.raywenderlich.com/1560485-android-recyclerview-tutorial-with-kotlin
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.recycler_view, parent, false)
-
         return ViewHolder(itemView)
     }
 
@@ -46,8 +45,8 @@ class RvAdapter constructor(private val activity: MainActivity, private val rVAr
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)/*, View.OnClickListener */{
         //init { itemView.setOnClickListener(this) }
-        fun bind (rVArrayList: ArrayList<Item>, listener: ContentListener){
-            val currentItem = rVArrayList.asReversed()[adapterPosition]
+        fun bind (rVArrayList: List<Item>, listener: ContentListener){
+            val currentItem = rVArrayList[adapterPosition]
             if (currentItem.Date == null) {
                 itemView.tv_item_span.visibility = View.INVISIBLE
                 itemView.tv_item_datetime.visibility = View.INVISIBLE
@@ -60,10 +59,9 @@ class RvAdapter constructor(private val activity: MainActivity, private val rVAr
             itemView.id = currentItem.Index
 
             itemView.setOnClickListener{
-                listener.onItemClicked(rVArrayList.get(adapterPosition))
+                listener.onItemClicked(rVArrayList[adapterPosition])
             }
         }
-        //override fun onClick(itemView: View) {}
     }
 
     public interface ContentListener {
@@ -114,6 +112,7 @@ class SwipeToDelete(var adapter: RvAdapter) : ItemTouchHelper.SimpleCallback(0, 
     }
 
 }
+//TODO visualization and deactivate clickOnItem
 class SwipeToEdit(var adapter: RvAdapter, var rVArrayList: ArrayList<Item>) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT){
     override fun onMove(
         recyclerView: RecyclerView,
@@ -122,7 +121,6 @@ class SwipeToEdit(var adapter: RvAdapter, var rVArrayList: ArrayList<Item>) : It
     ): Boolean {
         return false
     }
-
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         adapter.listener.onItemClicked(rVArrayList.get(viewHolder.adapterPosition))
         Log.d("","")
@@ -130,7 +128,6 @@ class SwipeToEdit(var adapter: RvAdapter, var rVArrayList: ArrayList<Item>) : It
         //NavHostFragment.findNavController().navigate(R.id.action_ItemList_to_AddItem)
         Toast.makeText(viewHolder.itemView.context, "Item ${viewHolder.adapterPosition} editing", Toast.LENGTH_SHORT).show()
     }
-
     override fun onChildDraw(
         c: Canvas,
         recyclerView: RecyclerView,

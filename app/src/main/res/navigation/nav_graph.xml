@@ -24,8 +24,9 @@
             app:enterAnim="@anim/nav_default_pop_exit_anim" >
         </action>
         <argument
-            android:name="itemArg"
-            app:argType="integer"
-            android:defaultValue="0" />
+            android:name="itemArgument"
+            app:argType="com.example.ttimer.Item"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
 </navigation>

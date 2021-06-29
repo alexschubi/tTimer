@@ -1,5 +1,6 @@
 package com.example.ttimer
 
+import android.graphics.Path
 import android.net.sip.SipSession
 import android.os.Bundle
 import android.util.Log
@@ -28,16 +29,16 @@ private const val ARG_PARAM2 = "param2"
  */
 class fragment_item_list : Fragment() {
     // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    //private var param1: String? = null
+    //private var param2: String? = null
     private lateinit var linearLayoutManager: LinearLayoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
+        /*arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
-        }
+        }*/
     }
 
     override fun onCreateView(
@@ -54,11 +55,12 @@ class fragment_item_list : Fragment() {
 
         linearLayoutManager = LinearLayoutManager(mContext)
         view.recyclerViewItems.layoutManager = linearLayoutManager
-        var adapter = RvAdapter( MainActivity(), getArrayList, object: RvAdapter.ContentListener{
+        val castArrayList: List<Item> = getArrayList.asReversed() as List<Item>
+        var adapter = RvAdapter( MainActivity(), castArrayList, object: RvAdapter.ContentListener{
             override fun onItemClicked(item: Item) {
                 super.onItemClicked(item)
-                Toast.makeText(mContext, "editing Item $item", Toast.LENGTH_SHORT).show()
-                NavHostFragment.findNavController(this@fragment_item_list).navigate(R.id.action_ItemList_to_AddItem)
+                Toast.makeText(mContext, "editing Item ${item.Index}", Toast.LENGTH_SHORT).show()
+                NavHostFragment.findNavController(this@fragment_item_list).navigate(fragment_item_listDirections.actionItemListToAddItem(item))
             }
         })
         view.recyclerViewItems.adapter = adapter
@@ -75,10 +77,9 @@ class fragment_item_list : Fragment() {
             swipe_refresh_layout.isRefreshing = false
         }
     }
-    fun editItem(){}
 
     //override fun onItemClicked(item: Item) {}
-    companion object {
+   /* companion object {
         /**
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
@@ -96,5 +97,5 @@ class fragment_item_list : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
-    }
+    }*/
 }
