@@ -29,11 +29,10 @@ class fragment_add_item: Fragment() {
     private val args: fragment_add_itemArgs by navArgs<fragment_add_itemArgs>()
     private var binding: View? = null
     var addDateTime: LocalDateTime? = null
-    var editItem: Item? = null
+    private var editItem: Item? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d("FragmentManger", "Fragment created")
     }
 
     override fun onCreateView(
@@ -42,10 +41,9 @@ class fragment_add_item: Fragment() {
     ): View? {
         binding = inflater.inflate(R.layout.fragment_add_item, container, false)
         return binding.apply {
-            val item = args.itemArgument
-            editItem = item
-            binding?.tb_add_text?.setText(item?.Text)
-            addDateTime = editItem?.Date
+            editItem = args.itemArgument
+            binding?.tb_add_text?.setText(editItem?.Text)
+            if(editItem?.Date != null) { addDateTime = editItem?.Date }
         }
     }
 
@@ -60,6 +58,9 @@ class fragment_add_item: Fragment() {
             tv_addTime.text = addDateTime!!.format(DateTimeFormatter.ofPattern("HH:mm"))
             cl_date_time.visibility = View.VISIBLE
         }
+        if(editItem !=null) {
+            b_add_final.tag = "submit change"
+        }
         view.b_add_final.setOnClickListener { addItem() }
         view.b_add_time.setOnClickListener { addDateTime() }
     }
@@ -71,14 +72,15 @@ class fragment_add_item: Fragment() {
             Log.d("Preferences", suppPrefs.getInt("ItemAmount", 0).toString() + "Items registered")
             index++
         } else {
-            index = editItem!!.Index
+            index = editItem?.Index!!
         }
+        Log.d("AddItem","editing Item $index")
         //TODO fix Problem when submitting a new item with no text and notification
         val addItemString: ArrayList<String>
         if(addDateTime == null) {
             addItemString = arrayListOf<String>(
-                index.toString(),
-                activity?.tb_add_text?.text.toString(),
+                index.toString(),//Index
+                activity?.tb_add_text?.text.toString(),//Text
                 "",//Day
                 "",//Month
                 "",//Year
@@ -113,7 +115,6 @@ class fragment_add_item: Fragment() {
         //CLOSE addView
         Functions().getDB()
         this.view?.let { context?.hideKeyboard(it) }
-        Log.d("FragmentManger", "create fragment_item_list...")
         NavHostFragment.findNavController(this).navigate(R.id.action_AddItem_to_ItemList)
     }
 

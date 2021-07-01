@@ -1,24 +1,17 @@
 package com.example.ttimer
 
-import android.content.Context
 import android.graphics.*
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
-import android.graphics.drawable.ScaleDrawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.core.graphics.scale
-import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.recycler_view.view.*
 import java.time.format.DateTimeFormatter
-import kotlin.coroutines.coroutineContext
 
 
 class RvAdapter constructor(private val activity: MainActivity, private val rVArrayList: List<Item>, val listener: ContentListener) : RecyclerView.Adapter<RvAdapter.ViewHolder>(){
@@ -36,7 +29,7 @@ class RvAdapter constructor(private val activity: MainActivity, private val rVAr
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         fun bind (rVArrayList: List<Item>, listener: ContentListener){
-            val currentItem = rVArrayList[adapterPosition]
+            val currentItem = rVArrayList[absoluteAdapterPosition]
             if (currentItem.Date == null) {
                 itemView.tv_item_span.visibility = View.INVISIBLE
                 itemView.tv_item_datetime.visibility = View.INVISIBLE
@@ -111,8 +104,8 @@ class SwipeToEdit(var adapter: RvAdapter, var rVArrayList: ArrayList<Item>) : It
         return false
     }
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        val item = viewHolder.itemView.id
-        adapter.listener.onItemClicked(rVArrayList.get(item))
+        val item = viewHolder.adapterPosition
+        adapter.listener.onItemClicked(rVArrayList.asReversed().get(item))
         Log.d("","")
         Log.d("FragmentManger", "create fragment_add_item...")
         //NavHostFragment.findNavController().navigate(R.id.action_ItemList_to_AddItem)

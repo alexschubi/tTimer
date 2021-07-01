@@ -1,7 +1,5 @@
 package com.example.ttimer
 
-import android.graphics.Path
-import android.net.sip.SipSession
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,6 +12,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_item_list.*
 import kotlinx.android.synthetic.main.fragment_item_list.view.*
+import java.util.ArrayList
 
 class fragment_item_list : Fragment() {
     private lateinit var linearLayoutManager: LinearLayoutManager
@@ -47,7 +46,6 @@ class fragment_item_list : Fragment() {
         ItemTouchHelper(SwipeToEdit(adapter, getArrayList)).attachToRecyclerView(this.recyclerViewItems)
 
         view.b_add.setOnClickListener {
-            Log.d("FragmentManger", "create fragment_add_item...")
             NavHostFragment.findNavController(this).navigate(R.id.action_ItemList_to_AddItem)
         }
         swipe_refresh_layout.setOnRefreshListener {
