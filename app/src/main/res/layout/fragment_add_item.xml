@@ -47,7 +47,7 @@
                 android:padding="4dp">
 
                 <TextView
-                    android:id="@+id/tv_addDate"
+                    android:id="@+id/tv_addDateTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:clickable="false"
@@ -58,11 +58,11 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/tv_addTime"
+                    android:id="@+id/tv_addTimeSpan"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:clickable="false"
-                    android:text="00:00"
+                    android:text="in 200 minutes"
                     android:textColor="@color/item_text"
                     android:textSize="24sp"
                     app:layout_constraintEnd_toEndOf="parent"

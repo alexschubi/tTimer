@@ -35,7 +35,7 @@ class RvAdapter constructor(private val activity: MainActivity, private val rVAr
                 itemView.tv_item_datetime.visibility = View.INVISIBLE
             } else {
                 itemView.tv_item_span.text = currentItem.Span
-                itemView.tv_item_datetime.text = currentItem.Date.format(DateTimeFormatter.ofPattern("dd.MM.uuuu HH:mm"))
+                itemView.tv_item_datetime.text = currentItem.Date!!.format(DateTimeFormatter.ofPattern("dd.MM.uuuu HH:mm"))
             }
             itemView.tv_item_index.text = currentItem.Index.toString()
             itemView.tv_item_text.text = currentItem.Text
@@ -57,7 +57,7 @@ class SwipeToDelete(var adapter: RvAdapter) : ItemTouchHelper.SimpleCallback(0, 
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        val position = viewHolder.adapterPosition
+        val position = viewHolder.absoluteAdapterPosition
         val item = viewHolder.itemView.id
         Log.d("RecyclerView.swiped","adapterpos $position = item.id $item")
         val editItem = Functions().getListString("Item $item")
@@ -104,7 +104,7 @@ class SwipeToEdit(var adapter: RvAdapter, var rVArrayList: ArrayList<Item>) : It
         return false
     }
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        val item = viewHolder.adapterPosition
+        val item = viewHolder.absoluteAdapterPosition
         adapter.listener.onItemClicked(rVArrayList.asReversed().get(item))
         Log.d("","")
         Log.d("FragmentManger", "create fragment_add_item...")

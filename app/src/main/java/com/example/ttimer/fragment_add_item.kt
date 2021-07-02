@@ -7,29 +7,30 @@ import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.renderscript.ScriptGroup
-import android.text.Editable
+import android.os.CountDownTimer
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.navArgs
 import kotlinx.android.synthetic.main.fragment_add_item.*
 import kotlinx.android.synthetic.main.fragment_add_item.view.*
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
-import java.util.zip.Inflater
+import kotlin.system.exitProcess
 
 class fragment_add_item: Fragment() {
     private val args: fragment_add_itemArgs by navArgs<fragment_add_itemArgs>()
     private var binding: View? = null
-    var addDateTime: LocalDateTime? = null
-    private var editItem: Item? = null
+    private var editItem: Item = Item(-1,"", null, null,false, false)
+    private var getItem: Item? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,25 +42,28 @@ class fragment_add_item: Fragment() {
     ): View? {
         binding = inflater.inflate(R.layout.fragment_add_item, container, false)
         return binding.apply {
-            editItem = args.itemArgument
-            binding?.tb_add_text?.setText(editItem?.Text)
-            if(editItem?.Date != null) { addDateTime = editItem?.Date }
+            getItem = args.itemArgument
+            binding?.tb_add_text?.setText(editItem.Text)
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (addDateTime == null) {
+        tv_addTimeSpan.text = ""
+        if (getItem!=null) {
+            editItem = getItem!!
+            b_add_final.text = "Save"
+        }
+        timer.start()
+
+        if (editItem.Date == null) {
             cl_date_time.visibility = View.GONE
-        }
-        else {
+        } else {
             b_add_time.text = "Edit Notification"
-            tv_addDate.text = addDateTime!!.format(DateTimeFormatter.ofPattern("dd.MM.uuuu"))
-            tv_addTime.text = addDateTime!!.format(DateTimeFormatter.ofPattern("HH:mm"))
+            tv_addDateTime.text = editItem.Date!!.format(DateTimeFormatter.ofPattern("dd.MM.uuuu HH:mm"))
+            if(editItem.Date!! > LocalDateTime.now()) { tv_addTimeSpan.text = editItem.Span
+            }
             cl_date_time.visibility = View.VISIBLE
-        }
-        if(editItem !=null) {
-            b_add_final.tag = "submit change"
         }
         view.b_add_final.setOnClickListener { addItem() }
         view.b_add_time.setOnClickListener { addDateTime() }
@@ -67,17 +71,16 @@ class fragment_add_item: Fragment() {
 
     private fun addItem() {
         var index: Int
-        if (editItem == null){
+        if (editItem.Index == -1){
             index = suppPrefs.getInt("ItemAmount", 0)
             Log.d("Preferences", suppPrefs.getInt("ItemAmount", 0).toString() + "Items registered")
             index++
         } else {
-            index = editItem?.Index!!
+            index = editItem.Index
         }
         Log.d("AddItem","editing Item $index")
-        //TODO fix Problem when submitting a new item with no text and notification
         val addItemString: ArrayList<String>
-        if(addDateTime == null) {
+        if(editItem.Date == null) {
             addItemString = arrayListOf<String>(
                 index.toString(),//Index
                 activity?.tb_add_text?.text.toString(),//Text
@@ -93,21 +96,21 @@ class fragment_add_item: Fragment() {
             addItemString = arrayListOf<String>(
                 index.toString(),
                 activity?.tb_add_text?.text.toString(),
-                addDateTime!!.dayOfMonth.toString(),
-                addDateTime!!.monthValue.toString(),
-                addDateTime!!.year.toString(),
-                addDateTime!!.hour.toString(),
-                addDateTime!!.minute.toString(),
+                editItem.Date!!.dayOfMonth.toString(),
+                editItem.Date!!.monthValue.toString(),
+                editItem.Date!!.year.toString(),
+                editItem.Date!!.hour.toString(),
+                editItem.Date!!.minute.toString(),
                 false.toString(),
                 false.toString()
             )
         }
         Functions().putListString("Item $index", addItemString)
-        if(editItem == null){suppPrefs.edit().putInt ("ItemAmount",suppPrefs.getInt("ItemAmount", 0) + 1 ).apply()}
+        if(editItem.Index == -1) {suppPrefs.edit().putInt ("ItemAmount",suppPrefs.getInt("ItemAmount", 0) + 1 ).apply()}
         Log.d("Preferences", "added Item: " + addItemString.toString())
-        if(addDateTime!=null && addDateTime!!.isAfter(LocalDateTime.now())) {
+        if(editItem.Date !=null && editItem.Date!!.isAfter(LocalDateTime.now())) {
             makeNotification(addItemString)
-            Log.d("Notification", "Item $index has Notification at " + addDateTime!!.format(
+            Log.d("Notification", "Item $index has Notification at " + editItem.Date!!.format(
                 DateTimeFormatter.ofPattern("dd.MM.uuuu HH:mm")))
         } else {
             Log.d("Notification", "No Notification wanted or in Past")
@@ -134,7 +137,9 @@ class fragment_add_item: Fragment() {
     }
 
     private fun addDateTime() {
-        val actualDateTime = LocalDateTime.now()
+        var actualDateTime = LocalDateTime.now()
+        if (editItem.Date != null) {actualDateTime = editItem.Date}
+        var newItemDate: LocalDateTime
         var tMinute: Int = actualDateTime.minute
         var tHour: Int = actualDateTime.hour
         var tDay: Int = actualDateTime.dayOfMonth
@@ -147,12 +152,16 @@ class fragment_add_item: Fragment() {
                 Log.d("TimePicker", "got Time $hourOfDay:$minute")
                 tMinute = minute
                 tHour = hourOfDay
-                addDateTime = LocalDateTime.of(tYear, tMonth, tDay, tHour, tMinute)
-                Log.d("addDateTime", "LocalDateTime $tHour:$tMinute $tDay.$tMonth.$tYear set")
+                newItemDate = LocalDateTime.of(tYear, tMonth, tDay, tHour, tMinute)
                 b_add_time.text = "Edit Notification"
-                tv_addDate.text = addDateTime!!.format(DateTimeFormatter.ofPattern("dd.MM.uuuu"))
-                tv_addTime.text = addDateTime!!.format(DateTimeFormatter.ofPattern("HH:mm"))
+                tv_addDateTime.text = newItemDate.format(DateTimeFormatter.ofPattern("dd.MM.uuuu HH:mm"))
+                tv_addTimeSpan.text = Functions().getSpanString(newItemDate)
                 cl_date_time.visibility = View.VISIBLE
+
+                editItem.Span = Functions().getSpanString(newItemDate)
+                editItem.Date = newItemDate
+                Log.d("addDateTime", "LocalDateTime ${editItem.Date!!.format(DateTimeFormatter.ofPattern("dd.MM.uuuu HH:mm"))} set")
+                //exit here
             },
             tHour,
             tMinute,
@@ -171,7 +180,15 @@ class fragment_add_item: Fragment() {
             tMonth - 1,
             tDay)
         datePickerDialog.show()
-        b_add_time.text = "Edit Notification"
+    }
+    private val timer = object: CountDownTimer(1 * 60 * 60 * 1000, 1 * 10 * 1000){ //hour*min*sec*millisec
+        override fun onTick(millisUntilFinished: Long){
+            if (editItem.Date != null ) {tv_addTimeSpan.text = Functions().getSpanString(editItem.Date!!)}
+        }
+        override fun onFinish() {
+            Toast.makeText(mContext, "AFK?", Toast.LENGTH_SHORT).show()
+            exitProcess(-1)
+        }
     }
 
     private fun MainActivity.hideKeyboard() { hideKeyboard(currentFocus ?: View(this)) }
@@ -179,5 +196,10 @@ class fragment_add_item: Fragment() {
     private fun Context.hideKeyboard(view: View) {
         val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        timer.cancel()
     }
 }

@@ -6,7 +6,7 @@ import java.time.LocalDateTime
 @Parcelize
 data class Item(val Index: Int,
                 val Text: String,
-                val Date: LocalDateTime?,
+                var Date: LocalDateTime?,
                 var Span: String?,
                 var Notified: Boolean,
                 var Deleted: Boolean

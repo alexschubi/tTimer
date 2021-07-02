@@ -85,10 +85,8 @@
             app:reverseLayout="false"
             app:stackFromEnd="true"
             tools:listitem="@layout/recycler_view">
-
         </androidx.recyclerview.widget.RecyclerView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/b_add"
@@ -101,7 +99,7 @@
         android:tint="@color/button_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_input_add"
+        app:srcCompat="@drawable/outline_add_24"
         app:useCompatPadding="false" />
 
 

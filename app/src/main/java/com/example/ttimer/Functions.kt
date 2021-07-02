@@ -74,41 +74,38 @@ class Functions {
             Log.d("Preferences", "No Items saved")
         } else {
             for(item in getArrayList.indices) {
-                if (getArrayList[item].Date !== null) {
-                    Log.d("Item","get Span of Item $item")
-                    getSpanString(item)
+                if (getArrayList[item].Date != null) {
+                    getArrayList[item].Span = getSpanString(getArrayList[item].Date!!)
+                    Log.d("Item","got Span of Item $item @ "+ getArrayList[item].Span)
                 }
             }
         }
     }
 
-    private fun getSpanString(item: Int) {
-        //val currentItemString = getListString("Item ${item + 1}")
+    fun getSpanString(itemDateTime: LocalDateTime): String{
         var testOutLine: String = ""
         val currentDateTime = LocalDateTime.now()
-        if (getArrayList[item].Date !== null) {
-            if (getArrayList[item].Date!!.isAfter(currentDateTime)) {
-                when (getArrayList[item].Date!!.year - currentDateTime.year) {
-                    0 -> when (getArrayList[item].Date!!.dayOfYear - currentDateTime.dayOfYear) {
-                        0 -> when (getArrayList[item].Date!!.hour - currentDateTime.hour) {
-                            0 -> when (getArrayList[item].Date!!.minute - currentDateTime.minute) {
+            if (itemDateTime.isAfter(currentDateTime)) {
+                when (itemDateTime.year - currentDateTime.year) {
+                    0 -> when (itemDateTime.dayOfYear - currentDateTime.dayOfYear) {
+                        0 -> when (itemDateTime.hour - currentDateTime.hour) {
+                            0 -> when (itemDateTime.minute - currentDateTime.minute) {
                                 0 -> testOutLine += "Now"
                                 1 -> testOutLine += "1 Minute"
-                                else -> testOutLine += (getArrayList[item].Date!!.minute - currentDateTime.minute).toString() + " Minutes "
+                                else -> testOutLine += (itemDateTime.minute - currentDateTime.minute).toString() + " Minutes "
                             }
                             1 -> testOutLine += "1 Hour"
-                            else -> testOutLine += (getArrayList[item].Date!!.hour - currentDateTime.hour).toString() + " Hours "
+                            else -> testOutLine += (itemDateTime.hour - currentDateTime.hour).toString() + " Hours "
                         }
                         1 -> testOutLine += "tomorrow"
-                        else -> testOutLine += (getArrayList[item].Date!!.dayOfYear - currentDateTime.dayOfYear).toString() + " Days "
+                        else -> testOutLine += (itemDateTime.dayOfYear - currentDateTime.dayOfYear).toString() + " Days "
                     }
                     1 -> testOutLine += "Next Year "
-                    else -> testOutLine += (getArrayList[item].Date!!.year - currentDateTime.year).toString() + " Years "
+                    else -> testOutLine += (itemDateTime.year - currentDateTime.year).toString() + " Years "
                 }
             } else {
-                testOutLine += "Date is in the past"
+                testOutLine += "gone"
             }
-        }
-        getArrayList[item].Span = testOutLine
+        return testOutLine
     }
 }
