@@ -94,7 +94,6 @@ class SwipeToDelete(var adapter: RvAdapter) : ItemTouchHelper.SimpleCallback(0, 
     }
 }
 //TODO visualization
-//TODO reversed editing items error
 class SwipeToEdit(var adapter: RvAdapter, var rVArrayList: ArrayList<Item>) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT){
     override fun onMove(
         recyclerView: RecyclerView,
@@ -129,7 +128,7 @@ class SwipeToEdit(var adapter: RvAdapter, var rVArrayList: ArrayList<Item>) : It
             (viewHolder.itemView.left+dX).toInt(),
             viewHolder.itemView.bottom
         )
-        background.draw(c) //TODO use materialDesign and other colors
+        background.draw(c)
         val bitmp = BitmapFactory.decodeResource(mContext.resources,android.R.drawable.ic_menu_edit)
         val sbitmp = bitmp.scale(viewHolder.itemView.height, viewHolder.itemView.height, true)
         c.drawBitmap(sbitmp , viewHolder.itemView.left.toFloat(), viewHolder.itemView.top.toFloat(), null)

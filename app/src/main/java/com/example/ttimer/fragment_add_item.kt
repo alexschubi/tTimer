@@ -19,7 +19,6 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.navArgs
 import kotlinx.android.synthetic.main.fragment_add_item.*
 import kotlinx.android.synthetic.main.fragment_add_item.view.*
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -57,16 +56,87 @@ class fragment_add_item: Fragment() {
         timer.start()
 
         if (editItem.Date == null) {
+            b_add_time.visibility = View.VISIBLE
             cl_date_time.visibility = View.GONE
+            tl_plusTime.visibility = View.GONE
+            b_del_time.visibility = View.GONE
+            view.b_add_time.setOnClickListener { addDateTime() }
         } else {
+            refreshDateTime()
+            cl_date_time.setOnClickListener { addDateTime() }
             b_add_time.text = "Edit Notification"
-            tv_addDateTime.text = editItem.Date!!.format(DateTimeFormatter.ofPattern("dd.MM.uuuu HH:mm"))
-            if(editItem.Date!! > LocalDateTime.now()) { tv_addTimeSpan.text = editItem.Span
-            }
+            b_add_time.visibility = View.GONE
+            b_del_time.visibility = View.VISIBLE
             cl_date_time.visibility = View.VISIBLE
+            tl_plusTime.visibility = View.VISIBLE
         }
+        //Minutes
+        view.b_minus15minute.setOnClickListener {
+            Log.d("DateTime","+7 Days")
+            editItem.Date = editItem.Date!!.minusMinutes(15)
+            refreshDateTime()
+        }
+        view.b_minus5minute.setOnClickListener {
+            Log.d("DateTime","+7 Days")
+            editItem.Date = editItem.Date!!.minusMinutes(5)
+            refreshDateTime()
+        }
+        view.b_plus15minute.setOnClickListener {
+            Log.d("DateTime","+15 Minutes")
+            editItem.Date = editItem.Date!!.plusMinutes(15)
+            refreshDateTime()
+        }
+        view.b_plus5minute.setOnClickListener {
+            Log.d("DateTime","+5 Minutes")
+            editItem.Date = editItem.Date!!.plusMinutes(5)
+            refreshDateTime()
+        }
+        //Hours
+        view.b_minus12hour.setOnClickListener {
+            Log.d("DateTime","-12 Hours")
+            editItem.Date = editItem.Date!!.minusHours(12)
+            refreshDateTime()
+        }
+        view.b_minus1hour.setOnClickListener {
+            Log.d("DateTime","-1 Hour")
+            editItem.Date = editItem.Date!!.minusHours(1)
+            refreshDateTime()
+        }
+        view.b_plus12hour.setOnClickListener {
+            Log.d("DateTime","+12 Hour")
+            editItem.Date = editItem.Date!!.plusHours(12)
+            refreshDateTime()
+        }
+        view.b_plus1hour.setOnClickListener {
+            Log.d("DateTime","+1 Hour")
+            editItem.Date = editItem.Date!!.plusHours(1)
+            refreshDateTime()
+        }
+        //Days
+        view.b_minus7day.setOnClickListener {
+            Log.d("DateTime","-7 Days")
+            editItem.Date = editItem.Date!!.minusDays(7)
+            refreshDateTime()
+        }
+        view.b_minus1day.setOnClickListener {
+            Log.d("DateTime","-1 Day")
+            editItem.Date = editItem.Date!!.minusDays(1)
+            refreshDateTime()
+        }
+        view.b_plus7day.setOnClickListener {
+            Log.d("DateTime","+7 Days")
+            editItem.Date = editItem.Date!!.plusDays(7)
+            refreshDateTime()
+        }
+        view.b_plus1day.setOnClickListener {
+            Log.d("DateTime","+1 Day")
+            editItem.Date = editItem.Date!!.plusDays(1)
+            refreshDateTime()
+        }
+
         view.b_add_final.setOnClickListener { addItem() }
-        view.b_add_time.setOnClickListener { addDateTime() }
+        view.b_del_time.setOnClickListener { delDateTime() }
+        //view.b_add_time.setOnClickListener { addDateTime() }
     }
 
     private fun addItem() {
@@ -154,12 +224,17 @@ class fragment_add_item: Fragment() {
                 tHour = hourOfDay
                 newItemDate = LocalDateTime.of(tYear, tMonth, tDay, tHour, tMinute)
                 b_add_time.text = "Edit Notification"
-                tv_addDateTime.text = newItemDate.format(DateTimeFormatter.ofPattern("dd.MM.uuuu HH:mm"))
-                tv_addTimeSpan.text = Functions().getSpanString(newItemDate)
+                //tv_addDateTime.text = newItemDate.format(DateTimeFormatter.ofPattern("dd.MM.uuuu HH:mm"))
+                //tv_addTimeSpan.text = Functions().getSpanString(newItemDate)
+                cl_date_time.setOnClickListener { addDateTime() }
+                b_add_time.visibility = View.GONE
+                b_del_time.visibility = View.VISIBLE
+                tl_plusTime.visibility = View.VISIBLE
                 cl_date_time.visibility = View.VISIBLE
 
                 editItem.Span = Functions().getSpanString(newItemDate)
                 editItem.Date = newItemDate
+                refreshDateTime()
                 Log.d("addDateTime", "LocalDateTime ${editItem.Date!!.format(DateTimeFormatter.ofPattern("dd.MM.uuuu HH:mm"))} set")
                 //exit here
             },
@@ -181,9 +256,28 @@ class fragment_add_item: Fragment() {
             tDay)
         datePickerDialog.show()
     }
+    private fun delDateTime(){
+        editItem.Date = null
+        editItem.Span = null
+        b_add_time.text = "Add Notification"
+        b_add_time.visibility = View.VISIBLE
+        cl_date_time.visibility = View.GONE
+        tl_plusTime.visibility = View.GONE
+        b_del_time.visibility = View.GONE
+        b_add_time.setOnClickListener { addDateTime() }
+
+    }
+
+    private fun refreshDateTime(){
+        tv_addTimeSpan.text = Functions().getSpanString(editItem.Date!!)
+        tv_addDateTime.text = editItem.Date!!.format(DateTimeFormatter.ofPattern("dd.MM.uuuu HH:mm"))
+    }
+
     private val timer = object: CountDownTimer(1 * 60 * 60 * 1000, 1 * 10 * 1000){ //hour*min*sec*millisec
         override fun onTick(millisUntilFinished: Long){
-            if (editItem.Date != null ) {tv_addTimeSpan.text = Functions().getSpanString(editItem.Date!!)}
+            if (editItem.Date != null ) {
+                refreshDateTime()
+            }
         }
         override fun onFinish() {
             Toast.makeText(mContext, "AFK?", Toast.LENGTH_SHORT).show()

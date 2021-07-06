@@ -43,7 +43,7 @@ class Functions {
         return ArrayList(listOf(*TextUtils.split(mainPrefs.getString(PrefKey, ""), "‚‗‚")))
     }
 
-    fun getDB() { //TODO get Span ERROR
+    fun getDB() {
         getArrayList.clear()
         var getindex = suppPrefs.getInt("ItemAmount", 0)
         Log.d("Preferences", "${mainPrefs.all.size} Items saved")
@@ -94,7 +94,7 @@ class Functions {
                                 1 -> testOutLine += "1 Minute"
                                 else -> testOutLine += (itemDateTime.minute - currentDateTime.minute).toString() + " Minutes "
                             }
-                            1 -> testOutLine += "1 Hour"
+                            1 -> testOutLine += "next Hour"
                             else -> testOutLine += (itemDateTime.hour - currentDateTime.hour).toString() + " Hours "
                         }
                         1 -> testOutLine += "tomorrow"

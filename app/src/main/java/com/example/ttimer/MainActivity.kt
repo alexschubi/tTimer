@@ -27,10 +27,6 @@ class MainActivity : AppCompatActivity()
 {
     //Arrays Adapter
     private val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
-    //TODO subroutine for timer
-    //globalscope.launch {
-    // runonuithread{}
-    // }
 
     //START
     override fun onCreate(savedInstanceState: Bundle?)

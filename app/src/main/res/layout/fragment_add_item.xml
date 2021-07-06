@@ -69,6 +69,120 @@
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <TableLayout
+                android:id="@+id/tl_plusTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TableRow
+                    android:id="@+id/tlr_minute"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center">
+
+                    <Button
+                        android:id="@+id/b_minus15minute"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-15min"
+                        android:textAllCaps="false" />
+
+                    <Button
+                        android:id="@+id/b_minus5minute"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-5min"
+                        android:textAllCaps="false" />
+
+                    <Button
+                        android:id="@+id/b_plus5minute"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="+5min"
+                        android:textAllCaps="false" />
+
+                    <Button
+                        android:id="@+id/b_plus15minute"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="+15min"
+                        android:textAllCaps="false" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/tlr_day"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+
+                    <Button
+                        android:id="@+id/b_minus7day"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-7day"
+                        android:textAllCaps="false" />
+
+                    <Button
+                        android:id="@+id/b_minus1day"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-1day"
+                        android:textAllCaps="false" />
+
+                    <Button
+                        android:id="@+id/b_plus1day"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="+1day"
+                        android:textAllCaps="false" />
+
+                    <Button
+                        android:id="@+id/b_plus7day"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="+7day"
+                        android:textAllCaps="false" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/tlr_hour"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+
+                    <Button
+                        android:id="@+id/b_minus12hour"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-12h"
+                        android:textAllCaps="false" />
+
+                    <Button
+                        android:id="@+id/b_minus1hour"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-1h"
+                        android:textAllCaps="false" />
+
+                    <Button
+                        android:id="@+id/b_plus1hour"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="+1h"
+                        android:textAllCaps="false" />
+
+                    <Button
+                        android:id="@+id/b_plus12hour"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="+12h"
+                        android:textAllCaps="false" />
+                </TableRow>
+
+            </TableLayout>
+
             <Button
                 android:id="@+id/b_add_time"
                 android:layout_width="match_parent"
@@ -78,6 +192,20 @@
                 android:layout_marginEnd="8dp"
                 android:background="@color/button_back"
                 android:text="Add Notification"
+                android:textAllCaps="false"
+                android:textColor="@color/button_text"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/b_del_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@color/button_select"
+                android:text="Delete Notification"
+                android:textAllCaps="false"
                 android:textColor="@color/button_text"
                 android:textSize="18sp" />
 
@@ -120,6 +248,7 @@
         android:background="@color/button_back"
         android:clickable="true"
         android:text="Add"
+        android:textAllCaps="false"
         android:textColor="@color/button_text"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
