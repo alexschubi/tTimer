@@ -8,10 +8,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_item_list.*
 import kotlinx.android.synthetic.main.fragment_item_list.view.*
+import kotlinx.android.synthetic.main.main_toolbar.*
 import java.util.ArrayList
 
 class fragment_item_list : Fragment() {
@@ -26,6 +28,7 @@ class fragment_item_list : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        suppActionBar.setHomeButtonEnabled(true)
         return inflater.inflate(R.layout.fragment_item_list, container, false)
     }
 
@@ -53,5 +56,6 @@ class fragment_item_list : Fragment() {
             recyclerViewItems.adapter?.notifyDataSetChanged()
             swipe_refresh_layout.isRefreshing = false
         }
+        //b_settings.setOnClickListener(){ parentFragment?.findNavController()?.navigate(R.id.action_ItemList_to_fragment_settings) }
     }
 }

@@ -43,7 +43,6 @@ class fragment_add_item: Fragment() {
         binding = inflater.inflate(R.layout.fragment_add_item, container, false)
         return binding.apply {
             getItem = args.itemArgument
-            binding?.tb_add_text?.setText(editItem.Text)
         }
     }
 
@@ -59,6 +58,7 @@ class fragment_add_item: Fragment() {
         if (editItem.Date == null) {
             cl_date_time.visibility = View.GONE
         } else {
+            tb_add_text.setText(editItem.Text)
             b_add_time.text = "Edit Notification"
             tv_addDateTime.text = editItem.Date!!.format(DateTimeFormatter.ofPattern("dd.MM.uuuu HH:mm"))
             if(editItem.Date!! > LocalDateTime.now()) { tv_addTimeSpan.text = editItem.Span
