@@ -14,13 +14,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.navArgs
 import kotlinx.android.synthetic.main.fragment_add_item.*
 import kotlinx.android.synthetic.main.fragment_add_item.view.*
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -44,7 +43,6 @@ class fragment_add_item: Fragment() {
         binding = inflater.inflate(R.layout.fragment_add_item, container, false)
         return binding.apply {
             getItem = args.itemArgument
-            binding?.tb_add_text?.setText(editItem.Text)
         }
     }
 
@@ -230,17 +228,12 @@ class fragment_add_item: Fragment() {
                 tHour = hourOfDay
                 newItemDate = LocalDateTime.of(tYear, tMonth, tDay, tHour, tMinute)
                 b_add_time.text = "Edit Notification"
-                //tv_addDateTime.text = newItemDate.format(DateTimeFormatter.ofPattern("dd.MM.uuuu HH:mm"))
-                //tv_addTimeSpan.text = Functions().getSpanString(newItemDate)
-                cl_date_time.setOnClickListener { addDateTime() }
-                b_add_time.visibility = View.GONE
-                b_del_time.visibility = View.VISIBLE
-                tl_plusTime.visibility = View.VISIBLE
+                tv_addDateTime.text = newItemDate.format(DateTimeFormatter.ofPattern("dd.MM.uuuu HH:mm"))
+                tv_addTimeSpan.text = Functions().getSpanString(newItemDate)
                 cl_date_time.visibility = View.VISIBLE
 
                 editItem.Span = Functions().getSpanString(newItemDate)
                 editItem.Date = newItemDate
-                refreshDateTime()
                 Log.d("addDateTime", "LocalDateTime ${editItem.Date!!.format(DateTimeFormatter.ofPattern("dd.MM.uuuu HH:mm"))} set")
                 //exit here
             },

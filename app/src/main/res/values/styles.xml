@@ -1,7 +1,10 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+    <style name="AppTheme" parent="Theme.AppCompat">
+        <item name="contentInsetStart">0dp</item>
+        <item name="contentInsetEnd">0dp</item>
+        <item name="contentInsetLeft">0dp</item>
+        <item name="contentInsetRight">0dp</item>
     </style>
     <style name="DatePicker_dark">
         <item name="colorControlActivated">@color/item_back</item>
@@ -11,5 +14,4 @@
         <item name="android:textColorSecondary">@color/item_text</item>    <!--days of the week-->
 
     </style>
-
 </resources>

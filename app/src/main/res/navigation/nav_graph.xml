@@ -13,6 +13,9 @@
             android:id="@+id/action_ItemList_to_AddItem"
             app:destination="@id/AddItem"
             app:enterAnim="@anim/nav_default_pop_enter_anim" />
+        <action
+            android:id="@+id/action_ItemList_to_fragment_settings"
+            app:destination="@id/fragment_settings" />
     </fragment>
     <fragment
         android:id="@+id/AddItem"
@@ -28,5 +31,13 @@
             app:argType="com.example.ttimer.Item"
             app:nullable="true"
             android:defaultValue="@null" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_settings"
+        android:name="com.example.ttimer.fragment_settings"
+        android:label="fragment_settings" >
+        <action
+            android:id="@+id/action_fragment_settings_to_ItemList"
+            app:destination="@id/ItemList" />
     </fragment>
 </navigation>

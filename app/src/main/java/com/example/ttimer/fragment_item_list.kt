@@ -1,15 +1,20 @@
 package com.example.ttimer
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_item_list.*
 import kotlinx.android.synthetic.main.fragment_item_list.view.*
+import kotlinx.android.synthetic.main.main_toolbar.*
+import java.util.ArrayList
 
 class fragment_item_list : Fragment() {
     private lateinit var linearLayoutManager: LinearLayoutManager
@@ -23,19 +28,19 @@ class fragment_item_list : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        suppActionBar.setHomeButtonEnabled(true)
         return inflater.inflate(R.layout.fragment_item_list, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
         linearLayoutManager = LinearLayoutManager(mContext)
         view.recyclerViewItems.layoutManager = linearLayoutManager
         val castArrayList: List<Item> = getArrayList.asReversed() as List<Item>
         var adapter = RvAdapter( MainActivity(), castArrayList, object: RvAdapter.ContentListener{
             override fun onItemClicked(item: Item) {
                 super.onItemClicked(item)
+                Toast.makeText(mContext, "editing Item ${item.Index}", Toast.LENGTH_SHORT).show()
                 NavHostFragment.findNavController(this@fragment_item_list).navigate(fragment_item_listDirections.actionItemListToAddItem(item))
             }
         })
@@ -51,5 +56,6 @@ class fragment_item_list : Fragment() {
             recyclerViewItems.adapter?.notifyDataSetChanged()
             swipe_refresh_layout.isRefreshing = false
         }
+        //b_settings.setOnClickListener(){ parentFragment?.findNavController()?.navigate(R.id.action_ItemList_to_fragment_settings) }
     }
 }
