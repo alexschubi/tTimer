@@ -1,14 +1,21 @@
 package com.example.ttimer
 
+import android.app.Activity
 import android.text.TextUtils
 import android.util.Log
 import android.widget.Toast
 import java.time.LocalDateTime
 import android.content.*
+import android.content.Context.INPUT_METHOD_SERVICE
+import android.view.View
+import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
 import java.security.AccessController.getContext
 import java.util.*
 
 class Functions {
+
     fun getTime(getItem: ArrayList<String>): LocalDateTime? {
         var tempDateTime: LocalDateTime? = null
         if (getItem[3].toIntOrNull() == null) {
@@ -107,5 +114,12 @@ class Functions {
                 testOutLine += "gone"
             }
         return testOutLine
+    }
+
+    fun showKeyboard(view: View) {
+        inputMethodManager.showSoftInput(view, 0)
+    }
+    fun hideKeyboard(view: View) {
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 }

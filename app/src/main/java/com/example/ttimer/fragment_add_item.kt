@@ -14,6 +14,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.navArgs
@@ -55,6 +57,7 @@ class fragment_add_item: Fragment() {
         }
         timer.start()
 
+        tb_add_text.setText(editItem.Text)
         if (editItem.Date == null) {
             b_add_time.visibility = View.VISIBLE
             cl_date_time.visibility = View.GONE
@@ -137,6 +140,9 @@ class fragment_add_item: Fragment() {
         view.b_add_final.setOnClickListener { addItem() }
         view.b_del_time.setOnClickListener { delDateTime() }
         //view.b_add_time.setOnClickListener { addDateTime() }
+        tb_add_text.isFocusableInTouchMode = true
+        tb_add_text.requestFocus()
+        inputMethodManager.showSoftInput(tb_add_text, 0)
     }
 
     private fun addItem() {
@@ -187,7 +193,7 @@ class fragment_add_item: Fragment() {
         }
         //CLOSE addView
         Functions().getDB()
-        this.view?.let { context?.hideKeyboard(it) }
+        this.view?.let { inputMethodManager.hideSoftInputFromWindow(view?.windowToken, 0) }
         NavHostFragment.findNavController(this).navigate(R.id.action_AddItem_to_ItemList)
     }
 
@@ -285,15 +291,10 @@ class fragment_add_item: Fragment() {
         }
     }
 
-    private fun MainActivity.hideKeyboard() { hideKeyboard(currentFocus ?: View(this)) }
-
-    private fun Context.hideKeyboard(view: View) {
-        val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()
         timer.cancel()
     }
+
 }

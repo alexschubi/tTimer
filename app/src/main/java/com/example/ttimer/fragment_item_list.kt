@@ -28,6 +28,8 @@ class fragment_item_list : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
         linearLayoutManager = LinearLayoutManager(mContext)
         view.recyclerViewItems.layoutManager = linearLayoutManager
         val castArrayList: List<Item> = getArrayList.asReversed() as List<Item>
