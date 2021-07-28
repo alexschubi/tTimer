@@ -1,27 +1,36 @@
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.preference.PreferenceScreen  xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/main_back">
+    android:background="@color/main_back"
+    android:padding="8dp">
 
-    <PreferenceCategory app:title="@string/messages_header">
+    <androidx.preference.PreferenceCategory
+        android:layout_margin="4dp"
+        android:background="@color/text_back"
+        android:theme="@style/Preferences_category"
+        app:title="Notifications">
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="pref_notificaions"
+            android:theme="@style/Preferences_item"
+            android:title="pref_notificaions" />
+    </androidx.preference.PreferenceCategory>
+
+    <androidx.preference.PreferenceCategory
+        android:background="@color/text_back"
+        android:theme="@style/Preferences_category"
+        app:title="Sync">
         <SwitchPreference
             android:defaultValue="false"
-            android:key="pref_messages"
-            android:title="Switch preference" />
-    </PreferenceCategory>
-
-    <PreferenceCategory app:title="@string/sync_header">
-
-        <SwitchPreferenceCompat
             app:key="pref_sync_enable"
-            app:title="@string/sync_title" />
-
+            android:theme="@style/Preferences_item"
+            app:title="pref_sync_enable" />
         <EditTextPreference
             android:defaultValue="false"
             android:key="pref_sync_service"
             android:selectAllOnFocus="true"
             android:singleLine="true"
-            android:title="Edit text preference" />
+            android:theme="@style/Preferences_item"
+            android:title="pref_sync_service" />
+    </androidx.preference.PreferenceCategory>
 
-    </PreferenceCategory>
-
-</PreferenceScreen>
+</androidx.preference.PreferenceScreen>

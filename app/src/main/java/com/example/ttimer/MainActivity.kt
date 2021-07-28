@@ -8,7 +8,6 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
-import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -22,10 +21,11 @@ import kotlin.system.exitProcess
 
 lateinit var mainPrefs: SharedPreferences
 lateinit var suppPrefs: SharedPreferences
-val getArrayList = ArrayList<Item>()
 lateinit var mContext: Context
 lateinit var suppFragManager: FragmentManager
 lateinit var suppActionBar: androidx.appcompat.app.ActionBar
+lateinit var inputMethodManager: InputMethodManager
+val getArrayList = ArrayList<Item>()
 
 class MainActivity : AppCompatActivity()
 {
@@ -46,12 +46,12 @@ class MainActivity : AppCompatActivity()
             Log.i("Analytics", "Analytics on")
         }
 
-        mContext = this
         super.onCreate(savedInstanceState)
+        mContext = this
+        inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
         suppActionBar = supportActionBar!!
         suppActionBar.setCustomView(R.layout.main_toolbar)
         suppActionBar.setDisplayShowCustomEnabled(true)
-
         suppFragManager = supportFragmentManager
 
         setContentView(R.layout.activity_main)
@@ -62,7 +62,6 @@ class MainActivity : AppCompatActivity()
 
         b_settings.setOnClickListener(){suppFragManager.beginTransaction().replace(R.id.BaseLayout, fragment_settings()).commit()}
     }
-
     private val timer = object: CountDownTimer(1 * 60 * 60 * 1000, 1 * 10 * 1000){ //hour*min*sec*millisec
         override fun onTick(millisUntilFinished: Long){
             Functions().refreshTime()
@@ -87,11 +86,5 @@ class MainActivity : AppCompatActivity()
             }
             pendResult.finish()
         }
-    }
-    //HIDE KEYBOARD
-    private fun MainActivity.hideKeyboard() { hideKeyboard(currentFocus ?: View(this)) }
-    private fun Context.hideKeyboard(view: View) {
-        val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 }

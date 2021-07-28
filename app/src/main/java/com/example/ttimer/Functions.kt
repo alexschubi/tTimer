@@ -88,7 +88,7 @@ class Functions {
             }
         }
     }
-
+//TODO better span texting
     fun getSpanString(itemDateTime: LocalDateTime): String{
         var testOutLine: String = ""
         val currentDateTime = LocalDateTime.now()

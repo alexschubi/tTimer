@@ -14,4 +14,13 @@
         <item name="android:textColorSecondary">@color/item_text</item>    <!--days of the week-->
 
     </style>
+    <style name="Preferences_item" parent="Preference">
+
+    </style>
+    <style name="Preferences_category" parent="Preference.Category">
+        <item name="background">@color/item_back</item>
+
+    </style>
+    <style name="Preference_screen" parent="Preference.PreferenceScreen">
+    </style>
 </resources>

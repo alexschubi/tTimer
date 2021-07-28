@@ -40,7 +40,7 @@ class RvAdapter constructor(private val activity: MainActivity, private val rVAr
             itemView.tv_item_index.text = currentItem.Index.toString()
             itemView.tv_item_text.text = currentItem.Text
             itemView.id = currentItem.Index
-        }
+        }//TODO simplify Items
     }
 
     interface ContentListener {
