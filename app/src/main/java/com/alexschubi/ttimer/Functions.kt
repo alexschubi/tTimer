@@ -1,17 +1,10 @@
-package com.example.ttimer
+package com.alexschubi.ttimer
 
-import android.app.Activity
 import android.text.TextUtils
 import android.util.Log
-import android.widget.Toast
 import java.time.LocalDateTime
-import android.content.*
-import android.content.Context.INPUT_METHOD_SERVICE
 import android.view.View
-import android.view.inputmethod.InputMethodManager
-import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getSystemService
-import java.security.AccessController.getContext
+import androidx.preference.PreferenceManager
 import java.util.*
 
 class Functions {
@@ -121,5 +114,15 @@ class Functions {
     }
     fun hideKeyboard(view: View) {
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+
+    fun applyFirebase(){
+        prefNotificationsenabled = PreferenceManager.getDefaultSharedPreferences(mContext).getBoolean("pref_notificaions_enabled", true)
+        prefSyncEnabled = PreferenceManager.getDefaultSharedPreferences(mContext).getBoolean("pref_sync_enable", true)
+        prefSendFirebaseenabled = PreferenceManager.getDefaultSharedPreferences(mContext).getBoolean("pref_firebase_enabled", false)
+        prefSyncConnection = PreferenceManager.getDefaultSharedPreferences(mContext).getString("pref_sync_connection", "").toString()
+        firebaseCrashlytics.setCrashlyticsCollectionEnabled(prefSendFirebaseenabled)
+        firebaseAnalytics.setAnalyticsCollectionEnabled(prefSendFirebaseenabled)
+        Log.i("Analytics", "Analytics " + prefSendFirebaseenabled.toString())
     }
 }

@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "14703758014",
-    "project_id": "ttimer-52e0f",
-    "storage_bucket": "ttimer-52e0f.appspot.com"
+    "project_number": "445551445345",
+    "project_id": "ttimer-9c191",
+    "storage_bucket": "ttimer-9c191.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:14703758014:android:e59a8016073c51f48eecef",
+        "mobilesdk_app_id": "1:445551445345:android:8ffa23c981a25a3c44b120",
         "android_client_info": {
-          "package_name": "com.example.ttimer"
+          "package_name": "com.alexschubi.ttimer"
         }
       },
       "oauth_client": [
         {
-          "client_id": "14703758014-es9gf13artc9guimvh809kasf4tifrnk.apps.googleusercontent.com",
+          "client_id": "445551445345-8s3g7ogpmj8l9oq59vg1pha6gfkjtm3c.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAD2s9Gl6ehnQXCi-8Apsg0bsuyU9r_HOc"
+          "current_key": "AIzaSyBJPIEFMtNsOZif6XUKohhkrgSgvjZk7Qg"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "14703758014-es9gf13artc9guimvh809kasf4tifrnk.apps.googleusercontent.com",
+              "client_id": "445551445345-8s3g7ogpmj8l9oq59vg1pha6gfkjtm3c.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

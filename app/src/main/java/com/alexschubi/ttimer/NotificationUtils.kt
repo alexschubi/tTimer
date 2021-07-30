@@ -1,4 +1,4 @@
-package com.example.ttimer
+package com.alexschubi.ttimer
 
 import android.app.NotificationChannel
 import android.app.NotificationManager

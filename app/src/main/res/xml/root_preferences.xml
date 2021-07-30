@@ -1,36 +1,40 @@
-<androidx.preference.PreferenceScreen  xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/main_back"
-    android:padding="8dp">
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.preference.PreferenceCategory
-        android:layout_margin="4dp"
-        android:background="@color/text_back"
-        android:theme="@style/Preferences_category"
-        app:title="Notifications">
-        <SwitchPreference
-            android:defaultValue="true"
-            android:key="pref_notificaions"
-            android:theme="@style/Preferences_item"
-            android:title="pref_notificaions" />
-    </androidx.preference.PreferenceCategory>
-
-    <androidx.preference.PreferenceCategory
-        android:background="@color/text_back"
         android:theme="@style/Preferences_category"
         app:title="Sync">
         <SwitchPreference
             android:defaultValue="false"
-            app:key="pref_sync_enable"
             android:theme="@style/Preferences_item"
+            app:key="pref_sync_enable"
             app:title="pref_sync_enable" />
         <EditTextPreference
-            android:defaultValue="false"
-            android:key="pref_sync_service"
+            android:defaultValue=""
+            android:key="pref_sync_connection"
             android:selectAllOnFocus="true"
             android:singleLine="true"
             android:theme="@style/Preferences_item"
-            android:title="pref_sync_service" />
+            android:title="pref_sync_connection" />
+    </androidx.preference.PreferenceCategory>
+
+    <androidx.preference.PreferenceCategory
+        app:title="Send User Statistics"
+        android:theme="@style/Preferences_category">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="pref_firebase_enabled"
+            android:title="pref_firebase_enabled"/>
+    </androidx.preference.PreferenceCategory>
+
+    <androidx.preference.PreferenceCategory
+        android:theme="@style/Preferences_category"
+        app:title="Notifications">
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="pref_notificaions_enabled"
+            android:theme="@style/Preferences_item"
+            android:title="pref_notificaions" />
     </androidx.preference.PreferenceCategory>
 
 </androidx.preference.PreferenceScreen>

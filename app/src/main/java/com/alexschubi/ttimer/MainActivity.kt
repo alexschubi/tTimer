@@ -1,4 +1,4 @@
-package com.example.ttimer
+package com.alexschubi.ttimer
 
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
@@ -8,23 +8,39 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
+import android.view.MenuItem
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import com.google.firebase.FirebaseApp
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.main_toolbar.*
+import kotlinx.android.synthetic.main.main_toolbar.view.*
 import java.time.format.DateTimeFormatter
+import java.util.prefs.Preferences
 import kotlin.system.exitProcess
 
 lateinit var mainPrefs: SharedPreferences
 lateinit var suppPrefs: SharedPreferences
 lateinit var mContext: Context
 lateinit var suppFragManager: FragmentManager
-lateinit var suppActionBar: androidx.appcompat.app.ActionBar
+lateinit var suppActionBar: ActionBar
 lateinit var inputMethodManager: InputMethodManager
+lateinit var firebaseAnalytics: FirebaseAnalytics
+lateinit var firebaseCrashlytics: FirebaseCrashlytics
+
+var prefNotificationsenabled: Boolean = true
+var prefSyncEnabled: Boolean = false
+var prefSyncConnection: String = ""
+var prefSendFirebaseenabled: Boolean = false
+
 val getArrayList = ArrayList<Item>()
 
 class MainActivity : AppCompatActivity()
@@ -33,34 +49,35 @@ class MainActivity : AppCompatActivity()
     private val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
 
     //START
-    override fun onCreate(savedInstanceState: Bundle?)
-    {
-        val firebaseAnalytics = FirebaseAnalytics.getInstance(this)
-        val firebaseCrashlytics = FirebaseCrashlytics.getInstance()
-        FirebaseApp.initializeApp(this)
-        if(BuildConfig.DEBUG){
-            firebaseCrashlytics.setCrashlyticsCollectionEnabled(false)
-            firebaseAnalytics.setAnalyticsCollectionEnabled(false)
-            Log.i("Analytics", "Analytics off")
-        } else {
-            Log.i("Analytics", "Analytics on")
-        }
-
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mContext = this
         inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+
         suppActionBar = supportActionBar!!
         suppActionBar.setCustomView(R.layout.main_toolbar)
         suppActionBar.setDisplayShowCustomEnabled(true)
+        suppActionBar.customView.b_settings.visibility = View.VISIBLE
+        suppActionBar.customView.b_back.visibility = View.GONE
         suppFragManager = supportFragmentManager
 
         setContentView(R.layout.activity_main)
         mainPrefs = getPreferences(MODE_PRIVATE)
         suppPrefs = getPreferences(MODE_PRIVATE)
+
+        FirebaseApp.initializeApp(this)
+        firebaseAnalytics = FirebaseAnalytics.getInstance(mContext)
+        firebaseCrashlytics = FirebaseCrashlytics.getInstance()
+        Functions().applyFirebase()
+
         timer.start()
         Functions().getDB()
 
-        b_settings.setOnClickListener(){suppFragManager.beginTransaction().replace(R.id.BaseLayout, fragment_settings()).commit()}
+        b_settings.setOnClickListener(){
+            NavHostFragment.findNavController(nav_host_fragment).navigate(R.id.action_ItemList_to_fragment_settings)
+            suppActionBar.customView.b_settings.visibility = View.GONE
+            suppActionBar.customView.b_back.visibility = View.VISIBLE
+        }
     }
     private val timer = object: CountDownTimer(1 * 60 * 60 * 1000, 1 * 10 * 1000){ //hour*min*sec*millisec
         override fun onTick(millisUntilFinished: Long){
@@ -87,4 +104,16 @@ class MainActivity : AppCompatActivity()
             pendResult.finish()
         }
     }
+
+/*    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.b_back -> {
+                NavHostFragment.findNavController(nav_host_fragment).navigate(R.id.action_fragment_settings_to_ItemList)
+                suppActionBar.customView.b_settings.visibility = View.VISIBLE
+                suppActionBar.customView.b_back.visibility = View.GONE
+                return true
+            }
+        }
+        return super.onContextItemSelected(item)
+    }*/
 }

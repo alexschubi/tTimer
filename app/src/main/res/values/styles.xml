@@ -15,12 +15,13 @@
 
     </style>
     <style name="Preferences_item" parent="Preference">
-
+        <item name="colorAccent">@color/button_select</item>
     </style>
     <style name="Preferences_category" parent="Preference.Category">
+        <item name="colorAccent">@color/item_back</item>
         <item name="background">@color/item_back</item>
-
     </style>
     <style name="Preference_screen" parent="Preference.PreferenceScreen">
+
     </style>
 </resources>
