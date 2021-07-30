@@ -16,8 +16,10 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.navArgs
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_add_item.*
 import kotlinx.android.synthetic.main.fragment_add_item.view.*
+import kotlinx.android.synthetic.main.main_toolbar.view.*
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -135,7 +137,14 @@ class fragment_add_item: Fragment() {
 
         view.b_add_final.setOnClickListener { addItem() }
         view.b_del_time.setOnClickListener { delDateTime() }
-        //view.b_add_time.setOnClickListener { addDateTime() }
+        suppActionBar.customView.b_settings.visibility = View.GONE
+        suppActionBar.customView.b_back.visibility = View.VISIBLE
+        suppActionBar.customView.b_back.setOnClickListener() {
+            NavHostFragment.findNavController(nav_host_fragment).navigate(R.id.action_AddItem_to_ItemList)
+            suppActionBar.customView.b_settings.visibility = View.VISIBLE
+            suppActionBar.customView.b_back.visibility = View.GONE
+        }
+
         tb_add_text.isFocusableInTouchMode = true
         tb_add_text.requestFocus()
         inputMethodManager.showSoftInput(tb_add_text, 0)
@@ -219,7 +228,7 @@ class fragment_add_item: Fragment() {
         var tYear: Int = actualDateTime.year
 
         val timePickerDialog = TimePickerDialog(this.context,
-            R.style.ThemeOverlay_MaterialComponents_Dialog_Alert,
+            R.style.Theme_AppCompat_DayNight_Dialog,
             { view, hourOfDay, minute ->
                 Log.d("TimePicker", "got Time $hourOfDay:$minute")
                 tMinute = minute
@@ -229,6 +238,8 @@ class fragment_add_item: Fragment() {
                 tv_addDateTime.text = newItemDate.format(DateTimeFormatter.ofPattern("dd.MM.uuuu HH:mm"))
                 tv_addTimeSpan.text = Functions().getSpanString(newItemDate)
                 cl_date_time.visibility = View.VISIBLE
+                tl_plusTime.visibility = View.VISIBLE
+                b_del_time.visibility = View.VISIBLE
 
                 editItem.Span = Functions().getSpanString(newItemDate)
                 editItem.Date = newItemDate
@@ -239,7 +250,8 @@ class fragment_add_item: Fragment() {
             tMinute,
             true)
         val datePickerDialog = DatePickerDialog(this.requireContext(),
-            R.style.ThemeOverlay_MaterialComponents_Dialog_Alert,
+            R.style.Theme_AppCompat_DayNight_Dialog
+            ,
             { view, year, month, dayOfMonth ->
                 Log.d("DatePicker","got Date $dayOfMonth.$month.$year")
                 tDay = dayOfMonth

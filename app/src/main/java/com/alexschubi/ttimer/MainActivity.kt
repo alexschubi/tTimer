@@ -60,6 +60,8 @@ class MainActivity : AppCompatActivity()
         suppActionBar.customView.b_settings.visibility = View.VISIBLE
         suppActionBar.customView.b_back.visibility = View.GONE
         suppFragManager = supportFragmentManager
+        //TODO actionbar-menu can be clicked
+        //TODO use actionbar for addIttem too
 
         setContentView(R.layout.activity_main)
         mainPrefs = getPreferences(MODE_PRIVATE)
