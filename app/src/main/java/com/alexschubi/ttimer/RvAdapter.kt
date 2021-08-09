@@ -108,7 +108,7 @@ class SwipeToEdit(var adapter: RvAdapter, var rVArrayList: ArrayList<Item>) : It
         Log.d("","")
         Log.d("FragmentManger", "create fragment_add_item...")
         //NavHostFragment.findNavController().navigate(R.id.action_ItemList_to_AddItem)
-        Toast.makeText(viewHolder.itemView.context, "Item $item editing", Toast.LENGTH_SHORT).show()
+        //Toast.makeText(viewHolder.itemView.context, "Item $item editing", Toast.LENGTH_SHORT).show()
     }
     override fun onChildDraw(
         c: Canvas,

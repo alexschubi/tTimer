@@ -10,4 +10,26 @@
     <color name="button_back">#233A83</color>
     <color name="button_text">#FFFFFF</color>
     <color name="button_select">#CD0505</color>
+
+
+    <color name="tt_back_dark">#2196F3</color>
+    <color name="tt_back">#2196F3</color>
+    <color name="tt_back_light">#2196F3</color>
+
+    <color name="tt_mid_dark">#2196F3</color>
+    <color name="tt_mid">#2196F3</color>
+    <color name="tt_mid_light">#2196F3</color>
+
+    <color name="tt_front_dark">#2196F3</color>
+    <color name="tt_front">#2196F3</color>
+    <color name="tt_front_light">#2196F3</color>
+
+    <color name="tt_delete">#2196F3</color>
+    <color name="tt_add">#2196F3</color>
+
+    <color name="tt_text_dark">#2196F3</color>
+    <color name="tt_text">#2196F3</color>
+    <color name="tt_text_light">#2196F3</color>
+
+
 </resources>

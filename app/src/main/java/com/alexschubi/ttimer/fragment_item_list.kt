@@ -37,7 +37,7 @@ class fragment_item_list : Fragment() {
         var adapter = RvAdapter( MainActivity(), castArrayList, object: RvAdapter.ContentListener{
             override fun onItemClicked(item: Item) {
                 super.onItemClicked(item)
-                Toast.makeText(mContext, "editing Item ${item.Index}", Toast.LENGTH_SHORT).show()
+                //Toast.makeText(mContext, "editing Item ${item.Index}", Toast.LENGTH_SHORT).show()
                 NavHostFragment.findNavController(this@fragment_item_list).navigate(fragment_item_listDirections.actionItemListToAddItem(item))
             }
         })

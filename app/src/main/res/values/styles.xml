@@ -6,22 +6,36 @@
         <item name="contentInsetLeft">0dp</item>
         <item name="contentInsetRight">0dp</item>
     </style>
-    <style name="DatePicker_dark">
+
+    <style name="DatePicker_dark" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:background">@color/main_back</item>
+
         <item name="colorControlActivated">@color/item_back</item>
-        <item name="android:selectableItemBackgroundBorderless">@color/text_back</item>
-        <item name="colorControlHighlight">@color/button_select</item>
+        <item name="android:selectableItemBackgroundBorderless">@color/item_text</item>
+        <item name="colorControlHighlight">@color/item_back</item>
         <item name="android:textColorPrimary">@color/header_text</item> <!--days of the month-->
         <item name="android:textColorSecondary">@color/item_text</item>    <!--days of the week-->
-
     </style>
+
+    <style name="TimePicker_dark" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:background">@color/main_back</item>
+        <item name="android:numbersBackgroundColor">@color/header_back</item>
+        <item name="android:numbersSelectorColor">@color/button_back</item>
+        <item name="android:textColorPrimary">@color/header_text</item>
+        <item name="android:textColorSecondary">@color/item_text</item>
+    </style>
+
     <style name="Preferences_item" parent="Preference">
         <item name="colorAccent">@color/button_select</item>
     </style>
+
     <style name="Preferences_category" parent="Preference.Category">
         <item name="colorAccent">@color/item_back</item>
         <item name="background">@color/item_back</item>
     </style>
+
     <style name="Preference_screen" parent="Preference.PreferenceScreen">
 
     </style>
+
 </resources>

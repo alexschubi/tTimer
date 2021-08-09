@@ -56,16 +56,15 @@ class fragment_add_item: Fragment() {
         timer.start()
 
         tb_add_text.setText(editItem.Text)
+        view.b_add_time.setOnClickListener { addDateTime() }
+        cl_date_time.setOnClickListener { addDateTime() }
         if (editItem.Date == null) {
             b_add_time.visibility = View.VISIBLE
             cl_date_time.visibility = View.GONE
             tl_plusTime.visibility = View.GONE
             b_del_time.visibility = View.GONE
-            view.b_add_time.setOnClickListener { addDateTime() }
         } else {
             refreshDateTime()
-            cl_date_time.setOnClickListener { addDateTime() }
-            b_add_time.text = "Edit Notification"
             b_add_time.visibility = View.GONE
             b_del_time.visibility = View.VISIBLE
             cl_date_time.visibility = View.VISIBLE
@@ -200,6 +199,8 @@ class fragment_add_item: Fragment() {
         Functions().getDB()
         this.view?.let { inputMethodManager.hideSoftInputFromWindow(view?.windowToken, 0) }
         NavHostFragment.findNavController(this).navigate(R.id.action_AddItem_to_ItemList)
+        suppActionBar.customView.b_settings.visibility = View.VISIBLE
+        suppActionBar.customView.b_back.visibility = View.GONE
     }
 
     private fun makeNotification(currentItemString: ArrayList<String>) {
@@ -226,7 +227,8 @@ class fragment_add_item: Fragment() {
         var tDay: Int = actualDateTime.dayOfMonth
         var tMonth: Int = actualDateTime.monthValue
         var tYear: Int = actualDateTime.year
-
+ //TODO use material timepicker datepicker
+        //TODO set colors
         val timePickerDialog = TimePickerDialog(this.context,
             R.style.Theme_AppCompat_DayNight_Dialog,
             { view, hourOfDay, minute ->
@@ -234,12 +236,12 @@ class fragment_add_item: Fragment() {
                 tMinute = minute
                 tHour = hourOfDay
                 newItemDate = LocalDateTime.of(tYear, tMonth, tDay, tHour, tMinute)
-                b_add_time.text = "Edit Notification"
                 tv_addDateTime.text = newItemDate.format(DateTimeFormatter.ofPattern("dd.MM.uuuu HH:mm"))
                 tv_addTimeSpan.text = Functions().getSpanString(newItemDate)
+                b_add_time.visibility = View.GONE
+                b_del_time.visibility = View.VISIBLE
                 cl_date_time.visibility = View.VISIBLE
                 tl_plusTime.visibility = View.VISIBLE
-                b_del_time.visibility = View.VISIBLE
 
                 editItem.Span = Functions().getSpanString(newItemDate)
                 editItem.Date = newItemDate
@@ -293,7 +295,6 @@ class fragment_add_item: Fragment() {
             exitProcess(-1)
         }
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
