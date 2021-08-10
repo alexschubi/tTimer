@@ -56,7 +56,7 @@ class fragment_add_item: Fragment() {
         timer.start()
 
         tb_add_text.setText(editItem.Text)
-        view.b_add_time.setOnClickListener { addDateTime() }
+        view.b_add_time.setOnClickListener { addCurrentDateTime() }
         cl_date_time.setOnClickListener { addDateTime() }
         if (editItem.Date == null) {
             b_add_time.visibility = View.VISIBLE
@@ -227,10 +227,10 @@ class fragment_add_item: Fragment() {
         var tDay: Int = actualDateTime.dayOfMonth
         var tMonth: Int = actualDateTime.monthValue
         var tYear: Int = actualDateTime.year
- //TODO use material timepicker datepicker
+        //TODO use material timepicker datepicker
         //TODO set colors
         val timePickerDialog = TimePickerDialog(this.context,
-            R.style.Theme_AppCompat_DayNight_Dialog,
+            R.style.Theme_AppCompat_Light_Dialog,
             { view, hourOfDay, minute ->
                 Log.d("TimePicker", "got Time $hourOfDay:$minute")
                 tMinute = minute
@@ -252,7 +252,7 @@ class fragment_add_item: Fragment() {
             tMinute,
             true)
         val datePickerDialog = DatePickerDialog(this.requireContext(),
-            R.style.Theme_AppCompat_DayNight_Dialog
+            R.style.Theme_AppCompat_Light_Dialog
             ,
             { view, year, month, dayOfMonth ->
                 Log.d("DatePicker","got Date $dayOfMonth.$month.$year")
@@ -266,6 +266,19 @@ class fragment_add_item: Fragment() {
             tMonth - 1,
             tDay)
         datePickerDialog.show()
+    }
+    private fun addCurrentDateTime() {
+        var actualDateTime = LocalDateTime.now()
+        if (editItem.Date != null) {actualDateTime = editItem.Date}
+        tv_addDateTime.text = actualDateTime.format(DateTimeFormatter.ofPattern("dd.MM.uuuu HH:mm"))
+        tv_addTimeSpan.text = Functions().getSpanString(actualDateTime)
+        b_add_time.visibility = View.GONE
+        b_del_time.visibility = View.VISIBLE
+        cl_date_time.visibility = View.VISIBLE
+        tl_plusTime.visibility = View.VISIBLE
+        editItem.Span = Functions().getSpanString(actualDateTime)
+        editItem.Date = actualDateTime
+        Log.d("addDateTime", "LocalDateTime ${editItem.Date!!.format(DateTimeFormatter.ofPattern("dd.MM.uuuu HH:mm"))} set")
     }
     private fun delDateTime(){
         editItem.Date = null

@@ -87,20 +87,17 @@ class Functions {
         val currentDateTime = LocalDateTime.now()
             if (itemDateTime.isAfter(currentDateTime)) {
                 when (itemDateTime.year - currentDateTime.year) {
-                    0 -> when (itemDateTime.dayOfYear - currentDateTime.dayOfYear) {
-                        0 -> when (itemDateTime.hour - currentDateTime.hour) {
-                            0 -> when (itemDateTime.minute - currentDateTime.minute) {
+                    0, 1 -> when (itemDateTime.dayOfYear - currentDateTime.dayOfYear) {
+                        0, 1 -> when (itemDateTime.hour - currentDateTime.hour) {
+                            0, 1 -> when (itemDateTime.minute - currentDateTime.minute) {
                                 0 -> testOutLine += "Now"
                                 1 -> testOutLine += "1 Minute"
                                 else -> testOutLine += (itemDateTime.minute - currentDateTime.minute).toString() + " Minutes "
                             }
-                            1 -> testOutLine += "next Hour"
                             else -> testOutLine += (itemDateTime.hour - currentDateTime.hour).toString() + " Hours "
                         }
-                        1 -> testOutLine += "tomorrow"
                         else -> testOutLine += (itemDateTime.dayOfYear - currentDateTime.dayOfYear).toString() + " Days "
                     }
-                    1 -> testOutLine += "Next Year "
                     else -> testOutLine += (itemDateTime.year - currentDateTime.year).toString() + " Years "
                 }
             } else {
