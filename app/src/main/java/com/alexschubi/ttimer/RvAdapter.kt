@@ -31,8 +31,8 @@ class RvAdapter constructor(private val activity: MainActivity, private val rVAr
         fun bind (rVArrayList: List<Item>, listener: ContentListener){
             val currentItem = rVArrayList[absoluteAdapterPosition]
             if (currentItem.Date == null) {
-                itemView.tv_item_span.visibility = View.INVISIBLE
-                itemView.tv_item_datetime.visibility = View.INVISIBLE
+                itemView.tv_item_span.visibility = View.GONE
+                itemView.tv_item_datetime.visibility = View.GONE
             } else {
                 itemView.tv_item_span.text = currentItem.Span
                 itemView.tv_item_datetime.text = currentItem.Date!!.format(DateTimeFormatter.ofPattern("dd.MM.uuuu HH:mm"))
