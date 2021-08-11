@@ -5,6 +5,7 @@ import android.util.Log
 import java.time.LocalDateTime
 import android.view.View
 import androidx.preference.PreferenceManager
+import java.time.Year
 import java.util.*
 
 class Functions {
@@ -87,18 +88,24 @@ class Functions {
         val currentDateTime = LocalDateTime.now()
             if (itemDateTime.isAfter(currentDateTime)) {
                 when (itemDateTime.year - currentDateTime.year) {
-                    0, 1 -> when (itemDateTime.dayOfYear - currentDateTime.dayOfYear) {
-                        0, 1 -> when (itemDateTime.hour - currentDateTime.hour) {
-                            0, 1 -> when (itemDateTime.minute - currentDateTime.minute) {
+                    0 -> when (itemDateTime.dayOfYear - currentDateTime.dayOfYear) {
+                        0 -> when (itemDateTime.hour - currentDateTime.hour) {
+                            0 -> when (itemDateTime.minute - currentDateTime.minute) {
                                 0 -> testOutLine += "Now"
                                 1 -> testOutLine += "1 Minute"
-                                else -> testOutLine += (itemDateTime.minute - currentDateTime.minute).toString() + " Minutes "
+                                else -> testOutLine += (itemDateTime.minute - currentDateTime.minute).toString() + " Minutes"
                             }
-                            else -> testOutLine += (itemDateTime.hour - currentDateTime.hour).toString() + " Hours "
+                            1 -> testOutLine += ((itemDateTime.minute - currentDateTime.minute) + 60).toString() + " Minutes"
+                            else -> testOutLine += (itemDateTime.hour - currentDateTime.hour).toString() + " Hours"
                         }
-                        else -> testOutLine += (itemDateTime.dayOfYear - currentDateTime.dayOfYear).toString() + " Days "
+                        1 -> testOutLine += ((itemDateTime.hour - currentDateTime.hour) + 24).toString() + " Hours"
+                        else -> testOutLine += (itemDateTime.dayOfYear - currentDateTime.dayOfYear).toString() + " Days"
                     }
-                    else -> testOutLine += (itemDateTime.year - currentDateTime.year).toString() + " Years "
+                    1 -> when(Year.now().isLeap) {//Leap-Year
+                        true -> testOutLine += ((itemDateTime.dayOfYear - currentDateTime.dayOfYear) + 366).toString() + " Days"
+                        false -> testOutLine += ((itemDateTime.dayOfYear - currentDateTime.dayOfYear) + 365).toString() + " Days"
+                    }
+                    else -> testOutLine += (itemDateTime.year - currentDateTime.year).toString() + " Years"
                 }
             } else {
                 testOutLine += "gone"
