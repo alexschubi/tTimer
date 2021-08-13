@@ -6,6 +6,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.View.GONE
 import android.view.View.INVISIBLE
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.constraintlayout.widget.ConstraintSet.GONE
 import androidx.navigation.fragment.NavHostFragment
 import androidx.preference.PreferenceFragmentCompat
@@ -28,4 +29,5 @@ class fragment_settings : PreferenceFragmentCompat() {
             Functions().applyFirebase()
         }
     }
+
 }

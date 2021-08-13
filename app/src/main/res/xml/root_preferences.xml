@@ -3,8 +3,23 @@
 
     <androidx.preference.PreferenceCategory
         android:theme="@style/Preferences_category"
+        app:title="Theme">
+        <ListPreference
+            android:id="@+id/pref_theme"
+            android:defaultValue="true"
+            android:entries="@array/pref_theme_modes_names"
+            android:entryValues="@array/pref_theme_modes_values"
+            android:theme="@style/Preferences_item"
+            app:key="pref_theme"
+            app:title="pref_theme" />
+
+    </androidx.preference.PreferenceCategory>
+
+    <androidx.preference.PreferenceCategory
+        android:theme="@style/Preferences_category"
         app:title="Sync">
         <SwitchPreference
+            android:id="@+id/pref_sync_enabled"
             android:defaultValue="false"
             android:theme="@style/Preferences_item"
             app:key="pref_sync_enable"
@@ -32,9 +47,9 @@
         app:title="Notifications">
         <SwitchPreference
             android:defaultValue="true"
-            android:key="pref_notificaions_enabled"
+            android:key="pref_notifications_enabled"
             android:theme="@style/Preferences_item"
-            android:title="pref_notificaions" />
+            android:title="pref_notifications" />
     </androidx.preference.PreferenceCategory>
 
 </androidx.preference.PreferenceScreen>

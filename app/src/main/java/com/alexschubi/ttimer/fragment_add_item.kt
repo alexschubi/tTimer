@@ -54,10 +54,12 @@ class fragment_add_item: Fragment() {
             b_add_final.text = "Save"
         }
         timer.start()
-
-        tb_add_text.setText(editItem.Text)
         view.b_add_time.setOnClickListener { addCurrentDateTime() }
         cl_date_time.setOnClickListener { addDateTime() }
+        view.b_del_time.setOnClickListener { delDateTime() }
+        view.b_add_final.setOnClickListener { addItem() }
+
+        tb_add_text.setText(editItem.Text)
         if (editItem.Date == null) {
             b_add_time.visibility = View.VISIBLE
             cl_date_time.visibility = View.GONE
@@ -134,8 +136,6 @@ class fragment_add_item: Fragment() {
             refreshDateTime()
         }
 
-        view.b_add_final.setOnClickListener { addItem() }
-        view.b_del_time.setOnClickListener { delDateTime() }
         suppActionBar.customView.b_settings.visibility = View.GONE
         suppActionBar.customView.b_back.visibility = View.VISIBLE
         suppActionBar.customView.b_back.setOnClickListener() {
@@ -283,13 +283,10 @@ class fragment_add_item: Fragment() {
     private fun delDateTime(){
         editItem.Date = null
         editItem.Span = null
-        b_add_time.text = "Add Notification"
         b_add_time.visibility = View.VISIBLE
         cl_date_time.visibility = View.GONE
         tl_plusTime.visibility = View.GONE
         b_del_time.visibility = View.GONE
-        b_add_time.setOnClickListener { addDateTime() }
-
     }
 
     private fun refreshDateTime(){
