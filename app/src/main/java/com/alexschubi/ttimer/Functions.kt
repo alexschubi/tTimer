@@ -1,9 +1,11 @@
 package com.alexschubi.ttimer
 
+import android.graphics.Color
 import android.text.TextUtils
 import android.util.Log
 import java.time.LocalDateTime
 import android.view.View
+import androidx.core.graphics.toColor
 import androidx.preference.PreferenceManager
 import java.time.Year
 import java.util.*
@@ -59,7 +61,8 @@ class Functions {
                         getTime(getStringItem),
                         null,
                         getStringItem[7].toBoolean(),
-                        false
+                        false,
+                        getStringItem[9]
                     )
                     getArrayList.add(getItem)
                 }

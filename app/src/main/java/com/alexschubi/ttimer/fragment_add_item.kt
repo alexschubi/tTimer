@@ -12,6 +12,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioButton
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
@@ -29,7 +30,7 @@ import kotlin.system.exitProcess
 class fragment_add_item: Fragment() {
     private val args: fragment_add_itemArgs by navArgs<fragment_add_itemArgs>()
     private var binding: View? = null
-    private var editItem: Item = Item(-1,"", null, null,false, false)
+    private var editItem: Item = Item(-1,"", null, null,false, false, "")
     private var getItem: Item? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -149,8 +150,23 @@ class fragment_add_item: Fragment() {
         inputMethodManager.showSoftInput(tb_add_text, 0)
     }
 
+    //TODO colors for Items
     private fun addItem() {
         var index: Int
+        var color = ""
+        var colorButton: RadioButton = view?.findViewById<RadioButton>(rg_color.checkedRadioButtonId)!!
+        when (this.view?.findViewById<RadioButton>(colorButton.id)?.id) {
+            rb_purple.id -> color = "purple"
+            rb_red.id -> color = "red"
+            rb_orange.id -> color = "orange"
+            rb_yellow.id -> color = "yellow"
+            rb_green.id -> color = "green"
+            rb_blue.id -> color = "blue"
+        }
+        Log.d("radio Button", " color set to $color")
+        Log.d("radioButton", colorButton.id.toString())
+        Log.i("addItem", "Color = " + view?.findViewById<RadioButton>(rg_color.checkedRadioButtonId)?.buttonTintList?.defaultColor.toString())
+
         if (editItem.Index == -1){
             index = suppPrefs.getInt("ItemAmount", 0)
             Log.d("Preferences", suppPrefs.getInt("ItemAmount", 0).toString() + "Items registered")
@@ -170,7 +186,8 @@ class fragment_add_item: Fragment() {
                 "",//Hour
                 "",//Minute
                 false.toString(), //Notified
-                false.toString() //Deleted
+                false.toString(), //Deleted
+                color
             )
         } else {
             addItemString = arrayListOf<String>(
@@ -182,7 +199,8 @@ class fragment_add_item: Fragment() {
                 editItem.Date!!.hour.toString(),
                 editItem.Date!!.minute.toString(),
                 false.toString(),
-                false.toString()
+                false.toString(),
+                color
             )
         }
         Functions().putListString("Item $index", addItemString)

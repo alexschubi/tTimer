@@ -1,15 +1,20 @@
 package com.alexschubi.ttimer
 
+import android.annotation.SuppressLint
 import android.graphics.*
 import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioButton
 import android.widget.Toast
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.graphics.scale
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.fragment_add_item.*
 import kotlinx.android.synthetic.main.recycler_view.view.*
 import java.time.format.DateTimeFormatter
 
@@ -39,6 +44,14 @@ class RvAdapter constructor(private val activity: MainActivity, private val rVAr
             }
             itemView.tv_item_index.text = currentItem.Index.toString()
             itemView.tv_item_text.text = currentItem.Text
+            when (currentItem.Color) {
+                "blue"-> itemView.constrainLayout_Item.setBackgroundResource(R.color.item_blue)
+                "green" -> itemView.constrainLayout_Item.setBackgroundResource(R.color.item_green)
+                "yellow" -> itemView.constrainLayout_Item.setBackgroundResource(R.color.item_yellow)
+                "orange" -> itemView.constrainLayout_Item.setBackgroundResource(R.color.item_orange)
+                "red" -> itemView.constrainLayout_Item.setBackgroundResource(R.color.item_red)
+                "purple" -> itemView.constrainLayout_Item.setBackgroundResource(R.color.item_purple)
+            }
             itemView.id = currentItem.Index
         }//TODO simplify Items
     }

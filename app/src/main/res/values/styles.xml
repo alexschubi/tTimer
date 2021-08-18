@@ -35,7 +35,31 @@
     </style>
 
     <style name="Preference_screen" parent="Preference.PreferenceScreen">
+    </style>
 
+    <style name="RadioButton_blue">
+        <item name="backgroundColor">@color/item_blue</item>
+        <item name="android:textColor">@color/tt_text_light</item>
+    </style>
+    <style name="RadioButton_green">
+        <item name="backgroundColor">@color/item_green</item>
+        <item name="android:textColor">@color/tt_text_dark</item>
+    </style>
+    <style name="RadioButton_yellow">
+        <item name="backgroundColor">@color/item_yellow</item>
+        <item name="android:textColor">@color/tt_text_dark</item>
+    </style>
+    <style name="RadioButton_orange">
+        <item name="backgroundColor">@color/item_orange</item>
+        <item name="android:textColor">@color/tt_text_dark</item>
+    </style>
+    <style name="RadioButton_red">
+        <item name="backgroundColor">@color/item_red</item>
+        <item name="android:textColor">@color/tt_text_dark</item>
+    </style>
+    <style name="RadioButton_purple">
+        <item name="backgroundColor">@color/item_purple</item>
+        <item name="android:textColor">@color/tt_text_light</item>
     </style>
 
 </resources>

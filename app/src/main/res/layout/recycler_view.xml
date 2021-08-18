@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
-    android:background="@color/item_back"
     android:padding="4dp">
 
 
@@ -17,7 +16,6 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="4dp"
         android:hint="Index123"
-        android:textColor="@color/item_text"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -31,7 +29,6 @@
         android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
         android:hint="TimeSpan"
-        android:textColor="@color/item_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_conversion_absoluteHeight="19dp"
@@ -45,7 +42,6 @@
         android:layout_marginTop="4dp"
         android:hint="Date123"
         android:textAlignment="center"
-        android:textColor="@color/item_text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_conversion_absoluteHeight="19dp"
@@ -58,7 +54,6 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
-        android:textColor="@color/item_text"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

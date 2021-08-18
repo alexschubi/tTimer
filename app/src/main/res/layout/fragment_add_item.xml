@@ -41,7 +41,8 @@
                 android:id="@+id/cl_date_time"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="4dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
                 android:background="@color/text_back"
                 android:clickable="false"
                 android:padding="4dp">
@@ -73,42 +74,95 @@
                 android:id="@+id/tl_plusTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="4dp"
                 android:gravity="center"
                 android:orientation="vertical">
 
                 <TableRow
                     android:id="@+id/tlr_minute"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:gravity="center">
 
                     <Button
                         android:id="@+id/b_minus15minute"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_margin="2dp"
+                        android:background="@color/text_back"
+                        android:gravity="center"
+                        android:maxWidth="100dp"
+                        android:maxHeight="36dp"
+                        android:minWidth="10dp"
+                        android:minHeight="10dp"
+                        android:paddingStart="8dp"
+                        android:paddingTop="4dp"
+                        android:paddingEnd="8dp"
+                        android:paddingBottom="4dp"
                         android:text="-15min"
-                        android:textAllCaps="false" />
+                        android:textAllCaps="false"
+                        android:textColor="@color/item_text"
+                        android:textSize="16sp" />
 
                     <Button
                         android:id="@+id/b_minus5minute"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_margin="2dp"
+                        android:background="@color/text_back"
+                        android:gravity="center"
+                        android:maxWidth="100dp"
+                        android:maxHeight="36dp"
+                        android:minWidth="10dp"
+                        android:minHeight="10dp"
+                        android:paddingStart="8dp"
+                        android:paddingTop="4dp"
+                        android:paddingEnd="8dp"
+                        android:paddingBottom="4dp"
                         android:text="-5min"
-                        android:textAllCaps="false" />
+                        android:textAllCaps="false"
+                        android:textColor="@color/item_text"
+                        android:textSize="16sp" />
 
                     <Button
                         android:id="@+id/b_plus5minute"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_margin="2dp"
+                        android:background="@color/text_back"
+                        android:gravity="center"
+                        android:maxWidth="100dp"
+                        android:maxHeight="36dp"
+                        android:minWidth="10dp"
+                        android:minHeight="10dp"
+                        android:paddingStart="8dp"
+                        android:paddingTop="4dp"
+                        android:paddingEnd="8dp"
+                        android:paddingBottom="4dp"
                         android:text="+5min"
-                        android:textAllCaps="false" />
+                        android:textAllCaps="false"
+                        android:textColor="@color/item_text"
+                        android:textSize="16sp" />
 
                     <Button
                         android:id="@+id/b_plus15minute"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_margin="2dp"
+                        android:background="@color/text_back"
+                        android:gravity="center"
+                        android:maxWidth="100dp"
+                        android:maxHeight="36dp"
+                        android:minWidth="10dp"
+                        android:minHeight="10dp"
+                        android:paddingStart="8dp"
+                        android:paddingTop="4dp"
+                        android:paddingEnd="8dp"
+                        android:paddingBottom="4dp"
                         android:text="+15min"
-                        android:textAllCaps="false" />
+                        android:textAllCaps="false"
+                        android:textColor="@color/item_text"
+                        android:textSize="16sp" />
                 </TableRow>
 
                 <TableRow
@@ -119,31 +173,83 @@
 
                     <Button
                         android:id="@+id/b_minus7day"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_margin="2dp"
+                        android:background="@color/text_back"
+                        android:gravity="center"
+                        android:maxWidth="100dp"
+                        android:maxHeight="36dp"
+                        android:minWidth="10dp"
+                        android:minHeight="10dp"
+                        android:paddingStart="8dp"
+                        android:paddingTop="4dp"
+                        android:paddingEnd="8dp"
+                        android:paddingBottom="4dp"
                         android:text="-7day"
-                        android:textAllCaps="false" />
+                        android:textAllCaps="false"
+                        android:textColor="@color/item_text"
+                        android:textSize="16sp" />
 
                     <Button
                         android:id="@+id/b_minus1day"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_margin="2dp"
+                        android:background="@color/text_back"
+                        android:gravity="center"
+                        android:maxWidth="100dp"
+                        android:maxHeight="36dp"
+                        android:minWidth="10dp"
+                        android:minHeight="10dp"
+                        android:paddingStart="8dp"
+                        android:paddingTop="4dp"
+                        android:paddingEnd="8dp"
+                        android:paddingBottom="4dp"
                         android:text="-1day"
-                        android:textAllCaps="false" />
+                        android:textAllCaps="false"
+                        android:textColor="@color/item_text"
+                        android:textSize="16sp" />
 
                     <Button
                         android:id="@+id/b_plus1day"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_margin="2dp"
+                        android:background="@color/text_back"
+                        android:gravity="center"
+                        android:maxWidth="100dp"
+                        android:maxHeight="36dp"
+                        android:minWidth="10dp"
+                        android:minHeight="10dp"
+                        android:paddingStart="8dp"
+                        android:paddingTop="4dp"
+                        android:paddingEnd="8dp"
+                        android:paddingBottom="4dp"
                         android:text="+1day"
-                        android:textAllCaps="false" />
+                        android:textAllCaps="false"
+                        android:textColor="@color/item_text"
+                        android:textSize="16sp" />
 
                     <Button
                         android:id="@+id/b_plus7day"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_margin="2dp"
+                        android:background="@color/text_back"
+                        android:gravity="center"
+                        android:maxWidth="100dp"
+                        android:maxHeight="36dp"
+                        android:minWidth="10dp"
+                        android:minHeight="10dp"
+                        android:paddingStart="8dp"
+                        android:paddingTop="4dp"
+                        android:paddingEnd="8dp"
+                        android:paddingBottom="4dp"
                         android:text="+7day"
-                        android:textAllCaps="false" />
+                        android:textAllCaps="false"
+                        android:textColor="@color/item_text"
+                        android:textSize="16sp" />
                 </TableRow>
 
                 <TableRow
@@ -154,31 +260,83 @@
 
                     <Button
                         android:id="@+id/b_minus12hour"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_margin="2dp"
+                        android:background="@color/text_back"
+                        android:gravity="center"
+                        android:maxWidth="100dp"
+                        android:maxHeight="36dp"
+                        android:minWidth="10dp"
+                        android:minHeight="10dp"
+                        android:paddingStart="8dp"
+                        android:paddingTop="4dp"
+                        android:paddingEnd="8dp"
+                        android:paddingBottom="4dp"
                         android:text="-12h"
-                        android:textAllCaps="false" />
+                        android:textAllCaps="false"
+                        android:textColor="@color/item_text"
+                        android:textSize="16sp" />
 
                     <Button
                         android:id="@+id/b_minus1hour"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_margin="2dp"
+                        android:background="@color/text_back"
+                        android:gravity="center"
+                        android:maxWidth="100dp"
+                        android:maxHeight="36dp"
+                        android:minWidth="10dp"
+                        android:minHeight="10dp"
+                        android:paddingStart="8dp"
+                        android:paddingTop="4dp"
+                        android:paddingEnd="8dp"
+                        android:paddingBottom="4dp"
                         android:text="-1h"
-                        android:textAllCaps="false" />
+                        android:textAllCaps="false"
+                        android:textColor="@color/item_text"
+                        android:textSize="16sp" />
 
                     <Button
                         android:id="@+id/b_plus1hour"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_margin="2dp"
+                        android:background="@color/text_back"
+                        android:gravity="center"
+                        android:maxWidth="100dp"
+                        android:maxHeight="36dp"
+                        android:minWidth="10dp"
+                        android:minHeight="10dp"
+                        android:paddingStart="8dp"
+                        android:paddingTop="4dp"
+                        android:paddingEnd="8dp"
+                        android:paddingBottom="4dp"
                         android:text="+1h"
-                        android:textAllCaps="false" />
+                        android:textAllCaps="false"
+                        android:textColor="@color/item_text"
+                        android:textSize="16sp" />
 
                     <Button
                         android:id="@+id/b_plus12hour"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_margin="2dp"
+                        android:background="@color/text_back"
+                        android:gravity="center"
+                        android:maxWidth="100dp"
+                        android:maxHeight="36dp"
+                        android:minWidth="10dp"
+                        android:minHeight="10dp"
+                        android:paddingStart="8dp"
+                        android:paddingTop="4dp"
+                        android:paddingEnd="8dp"
+                        android:paddingBottom="4dp"
                         android:text="+12h"
-                        android:textAllCaps="false" />
+                        android:textAllCaps="false"
+                        android:textColor="@color/item_text"
+                        android:textSize="16sp" />
                 </TableRow>
 
             </TableLayout>
@@ -187,9 +345,9 @@
                 android:id="@+id/b_add_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="4dp"
                 android:background="@color/button_back"
                 android:text="Add Notification"
                 android:textAllCaps="false"
@@ -200,14 +358,98 @@
                 android:id="@+id/b_del_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="4dp"
                 android:background="@color/button_select"
                 android:text="Delete Notification"
                 android:textAllCaps="false"
                 android:textColor="@color/button_text"
                 android:textSize="18sp" />
+
+            <RadioGroup
+                android:id="@+id/rg_color"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="4dp"
+                android:checkedButton="@id/rb_purple"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:textAlignment="center">
+
+                <RadioButton
+                    android:id="@+id/rb_blue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:button="?android:attr/listChoiceIndicatorMultiple"
+                    android:buttonTint="@color/item_blue"
+                    android:editable="false"
+                    android:scaleX="1.5"
+                    android:scaleY="1.5" />
+
+                <RadioButton
+                    android:id="@+id/rb_green"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:button="?android:attr/listChoiceIndicatorMultiple"
+                    android:buttonTint="@color/item_green"
+                    android:editable="false"
+                    android:scaleX="1.5"
+                    android:scaleY="1.5" />
+
+                <RadioButton
+                    android:id="@+id/rb_yellow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:button="?android:attr/listChoiceIndicatorMultiple"
+                    android:buttonTint="@color/item_yellow"
+                    android:editable="false"
+                    android:scaleX="1.5"
+                    android:scaleY="1.5" />
+
+                <RadioButton
+                    android:id="@+id/rb_orange"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:button="?android:attr/listChoiceIndicatorMultiple"
+                    android:buttonTint="@color/item_orange"
+                    android:editable="false"
+                    android:scaleX="1.5"
+                    android:scaleY="1.5" />
+
+                <RadioButton
+                    android:id="@+id/rb_red"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:button="?android:attr/listChoiceIndicatorMultiple"
+                    android:buttonTint="@color/item_red"
+                    android:scaleX="1.5"
+                    android:scaleY="1.5" />
+
+                <RadioButton
+                    android:id="@+id/rb_purple"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:button="?android:attr/listChoiceIndicatorMultiple"
+                    android:buttonTint="@color/item_purple"
+                    android:scaleX="1.5"
+                    android:scaleY="1.5" />
+
+            </RadioGroup>
 
             <!--<DatePicker
                 android:id="@+id/datePicker"
