@@ -12,6 +12,7 @@ import android.widget.RadioButton
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.graphics.scale
+import androidx.core.view.isNotEmpty
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_add_item.*
@@ -78,7 +79,7 @@ class SwipeToDelete(var adapter: RvAdapter) : ItemTouchHelper.SimpleCallback(0, 
         Functions().putListString("Item $item", editItem)
         Log.d("Preferences", "changed Item $item to deleted")
         Functions().getDB()
-        adapter.notifyDataSetChanged()
+        adapter.notifyItemRemoved(position)
         Toast.makeText(viewHolder.itemView.context, "Item $item deleted", Toast.LENGTH_SHORT).show()
         Log.d("SharedPreferences", "deleted Item $item")
         Log.d("MainPrefs.size", mainPrefs.all.size.toString() + "items")

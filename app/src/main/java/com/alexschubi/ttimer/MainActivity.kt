@@ -106,6 +106,12 @@ class MainActivity : AppCompatActivity()
         }
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        suppActionBar.customView.b_settings.visibility = View.VISIBLE
+        suppActionBar.customView.b_back.visibility = View.GONE
+    }
+
 /*    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.b_back -> {

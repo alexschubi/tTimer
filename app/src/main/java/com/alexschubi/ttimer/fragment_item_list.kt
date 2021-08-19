@@ -1,6 +1,7 @@
 package com.alexschubi.ttimer
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -50,7 +51,8 @@ class fragment_item_list : Fragment() {
         }
         swipe_refresh_layout.setOnRefreshListener {
             Functions().getDB()
-            recyclerViewItems.adapter?.notifyDataSetChanged()
+            Log.d("ItemList", "getDB()")
+            //recyclerViewItems.adapter?.notifyDataSetChanged()
             swipe_refresh_layout.isRefreshing = false
         }
         //b_settings.setOnClickListener(){ parentFragment?.findNavController()?.navigate(R.id.action_ItemList_to_fragment_settings) }
