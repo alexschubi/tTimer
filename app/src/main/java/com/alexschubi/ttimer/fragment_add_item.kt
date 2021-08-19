@@ -21,6 +21,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_add_item.*
 import kotlinx.android.synthetic.main.fragment_add_item.view.*
 import kotlinx.android.synthetic.main.main_toolbar.view.*
+import kotlinx.android.synthetic.main.recycler_view.view.*
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -61,6 +62,15 @@ class fragment_add_item: Fragment() {
         view.b_add_final.setOnClickListener { addItem() }
 
         tb_add_text.setText(editItem.Text)
+        when (editItem.Color) {
+            "blue"-> rg_color.check(rb_blue.id)
+            "green" -> rg_color.check(rb_green.id)
+            "yellow" -> rg_color.check(rb_yellow.id)
+            "orange" -> rg_color.check(rb_orange.id)
+            "red" -> rg_color.check(rb_red.id)
+            "purple" -> rg_color.check(rb_purple.id)
+        }
+
         if (editItem.Date == null) {
             b_add_time.visibility = View.VISIBLE
             cl_date_time.visibility = View.GONE
@@ -215,6 +225,7 @@ class fragment_add_item: Fragment() {
         }
         //CLOSE addView
         Functions().getDB()
+        timer.cancel()
         this.view?.let { inputMethodManager.hideSoftInputFromWindow(view?.windowToken, 0) }
         NavHostFragment.findNavController(this).navigate(R.id.action_AddItem_to_ItemList)
         suppActionBar.customView.b_settings.visibility = View.VISIBLE
@@ -320,7 +331,7 @@ class fragment_add_item: Fragment() {
         }
         override fun onFinish() {
             Toast.makeText(mContext, "AFK?", Toast.LENGTH_SHORT).show()
-            exitProcess(-1)
+            this.start()
         }
     }
 
@@ -329,4 +340,13 @@ class fragment_add_item: Fragment() {
         timer.cancel()
     }
 
+    override fun onPause() {
+        super.onPause()
+        timer.cancel()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        timer.start()
+    }
 }

@@ -46,12 +46,12 @@ class RvAdapter constructor(private val activity: MainActivity, private val rVAr
             itemView.tv_item_index.text = currentItem.Index.toString()
             itemView.tv_item_text.text = currentItem.Text
             when (currentItem.Color) {
-                "blue"-> itemView.constrainLayout_Item.setBackgroundResource(R.color.item_blue)
-                "green" -> itemView.constrainLayout_Item.setBackgroundResource(R.color.item_green)
-                "yellow" -> itemView.constrainLayout_Item.setBackgroundResource(R.color.item_yellow)
-                "orange" -> itemView.constrainLayout_Item.setBackgroundResource(R.color.item_orange)
-                "red" -> itemView.constrainLayout_Item.setBackgroundResource(R.color.item_red)
-                "purple" -> itemView.constrainLayout_Item.setBackgroundResource(R.color.item_purple)
+                "blue"-> itemView.setBackgroundResource(R.color.item_blue)
+                "green" -> itemView.setBackgroundResource(R.color.item_green)
+                "yellow" -> itemView.setBackgroundResource(R.color.item_yellow)
+                "orange" -> itemView.setBackgroundResource(R.color.item_orange)
+                "red" -> itemView.setBackgroundResource(R.color.item_red)
+                "purple" -> itemView.setBackgroundResource(R.color.item_purple)
             }
             itemView.id = currentItem.Index
         }//TODO simplify Items

@@ -52,7 +52,7 @@ class fragment_item_list : Fragment() {
         swipe_refresh_layout.setOnRefreshListener {
             Functions().getDB()
             Log.d("ItemList", "getDB()")
-            //recyclerViewItems.adapter?.notifyDataSetChanged()
+            recyclerViewItems.adapter?.notifyDataSetChanged()
             swipe_refresh_layout.isRefreshing = false
         }
         //b_settings.setOnClickListener(){ parentFragment?.findNavController()?.navigate(R.id.action_ItemList_to_fragment_settings) }
