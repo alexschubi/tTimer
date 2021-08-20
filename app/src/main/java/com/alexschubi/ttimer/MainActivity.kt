@@ -83,7 +83,7 @@ class MainActivity : AppCompatActivity()
     private val timer = object: CountDownTimer(1 * 60 * 60 * 1000, 1 * 10 * 1000){ //hour*min*sec*millisec
         override fun onTick(millisUntilFinished: Long){
             Functions().refreshTime()
-        }
+        }//TODO use coroutine
         override fun onFinish() {
             Toast.makeText(applicationContext, "AFK?", Toast.LENGTH_SHORT).show()
             moveTaskToBack(true)

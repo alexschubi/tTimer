@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/main_back"
+    android:background="@color/tt_back"
     tools:context=".fragment_add_item">
 
     <ScrollView
@@ -29,12 +29,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
-                android:background="@color/text_back"
+                android:background="@color/tt_back_light"
                 android:ems="10"
                 android:hint="Text"
                 android:inputType="none|textMultiLine"
                 android:padding="4dp"
-                android:textColor="@color/main_text"
+                android:text="nmbnmbnm"
+                android:textColor="@color/tt_text_light"
                 android:textSize="24sp" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -43,7 +44,6 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="4dp"
                 android:layout_marginEnd="4dp"
-                android:background="@color/text_back"
                 android:clickable="false"
                 android:padding="4dp">
 
@@ -53,7 +53,7 @@
                     android:layout_height="wrap_content"
                     android:clickable="false"
                     android:text="01.01.0001"
-                    android:textColor="@color/item_text"
+                    android:textColor="@color/tt_text_light"
                     android:textSize="24sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -64,7 +64,7 @@
                     android:layout_height="wrap_content"
                     android:clickable="false"
                     android:text="in 200 minutes"
-                    android:textColor="@color/item_text"
+                    android:textColor="@color/tt_text_light"
                     android:textSize="24sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -89,7 +89,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="2dp"
-                        android:background="@color/text_back"
+                        android:background="@color/tt_back_light"
                         android:gravity="center"
                         android:maxWidth="100dp"
                         android:maxHeight="36dp"
@@ -101,7 +101,7 @@
                         android:paddingBottom="4dp"
                         android:text="-15min"
                         android:textAllCaps="false"
-                        android:textColor="@color/item_text"
+                        android:textColor="@color/tt_text_light"
                         android:textSize="16sp" />
 
                     <Button
@@ -109,7 +109,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="2dp"
-                        android:background="@color/text_back"
+                        android:background="@color/tt_back_light"
                         android:gravity="center"
                         android:maxWidth="100dp"
                         android:maxHeight="36dp"
@@ -121,7 +121,7 @@
                         android:paddingBottom="4dp"
                         android:text="-5min"
                         android:textAllCaps="false"
-                        android:textColor="@color/item_text"
+                        android:textColor="@color/tt_text_light"
                         android:textSize="16sp" />
 
                     <Button
@@ -129,7 +129,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="2dp"
-                        android:background="@color/text_back"
+                        android:background="@color/tt_back_light"
                         android:gravity="center"
                         android:maxWidth="100dp"
                         android:maxHeight="36dp"
@@ -141,7 +141,7 @@
                         android:paddingBottom="4dp"
                         android:text="+5min"
                         android:textAllCaps="false"
-                        android:textColor="@color/item_text"
+                        android:textColor="@color/tt_text_light"
                         android:textSize="16sp" />
 
                     <Button
@@ -149,7 +149,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="2dp"
-                        android:background="@color/text_back"
+                        android:background="@color/tt_back_light"
                         android:gravity="center"
                         android:maxWidth="100dp"
                         android:maxHeight="36dp"
@@ -161,7 +161,7 @@
                         android:paddingBottom="4dp"
                         android:text="+15min"
                         android:textAllCaps="false"
-                        android:textColor="@color/item_text"
+                        android:textColor="@color/tt_text_light"
                         android:textSize="16sp" />
                 </TableRow>
 
@@ -176,7 +176,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="2dp"
-                        android:background="@color/text_back"
+                        android:background="@color/tt_back_light"
                         android:gravity="center"
                         android:maxWidth="100dp"
                         android:maxHeight="36dp"
@@ -188,7 +188,7 @@
                         android:paddingBottom="4dp"
                         android:text="-7day"
                         android:textAllCaps="false"
-                        android:textColor="@color/item_text"
+                        android:textColor="@color/tt_text_light"
                         android:textSize="16sp" />
 
                     <Button
@@ -196,7 +196,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="2dp"
-                        android:background="@color/text_back"
+                        android:background="@color/tt_back_light"
                         android:gravity="center"
                         android:maxWidth="100dp"
                         android:maxHeight="36dp"
@@ -208,7 +208,7 @@
                         android:paddingBottom="4dp"
                         android:text="-1day"
                         android:textAllCaps="false"
-                        android:textColor="@color/item_text"
+                        android:textColor="@color/tt_text_light"
                         android:textSize="16sp" />
 
                     <Button
@@ -216,7 +216,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="2dp"
-                        android:background="@color/text_back"
+                        android:background="@color/tt_back_light"
                         android:gravity="center"
                         android:maxWidth="100dp"
                         android:maxHeight="36dp"
@@ -228,7 +228,7 @@
                         android:paddingBottom="4dp"
                         android:text="+1day"
                         android:textAllCaps="false"
-                        android:textColor="@color/item_text"
+                        android:textColor="@color/tt_text_light"
                         android:textSize="16sp" />
 
                     <Button
@@ -236,7 +236,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="2dp"
-                        android:background="@color/text_back"
+                        android:background="@color/tt_back_light"
                         android:gravity="center"
                         android:maxWidth="100dp"
                         android:maxHeight="36dp"
@@ -248,7 +248,7 @@
                         android:paddingBottom="4dp"
                         android:text="+7day"
                         android:textAllCaps="false"
-                        android:textColor="@color/item_text"
+                        android:textColor="@color/tt_text_light"
                         android:textSize="16sp" />
                 </TableRow>
 
@@ -263,7 +263,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="2dp"
-                        android:background="@color/text_back"
+                        android:background="@color/tt_back_light"
                         android:gravity="center"
                         android:maxWidth="100dp"
                         android:maxHeight="36dp"
@@ -275,7 +275,7 @@
                         android:paddingBottom="4dp"
                         android:text="-12h"
                         android:textAllCaps="false"
-                        android:textColor="@color/item_text"
+                        android:textColor="@color/tt_text_light"
                         android:textSize="16sp" />
 
                     <Button
@@ -283,7 +283,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="2dp"
-                        android:background="@color/text_back"
+                        android:background="@color/tt_back_light"
                         android:gravity="center"
                         android:maxWidth="100dp"
                         android:maxHeight="36dp"
@@ -295,7 +295,7 @@
                         android:paddingBottom="4dp"
                         android:text="-1h"
                         android:textAllCaps="false"
-                        android:textColor="@color/item_text"
+                        android:textColor="@color/tt_text_light"
                         android:textSize="16sp" />
 
                     <Button
@@ -303,7 +303,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="2dp"
-                        android:background="@color/text_back"
+                        android:background="@color/tt_back_light"
                         android:gravity="center"
                         android:maxWidth="100dp"
                         android:maxHeight="36dp"
@@ -315,7 +315,7 @@
                         android:paddingBottom="4dp"
                         android:text="+1h"
                         android:textAllCaps="false"
-                        android:textColor="@color/item_text"
+                        android:textColor="@color/tt_text_light"
                         android:textSize="16sp" />
 
                     <Button
@@ -323,7 +323,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="2dp"
-                        android:background="@color/text_back"
+                        android:background="@color/tt_back_light"
                         android:gravity="center"
                         android:maxWidth="100dp"
                         android:maxHeight="36dp"
@@ -335,7 +335,7 @@
                         android:paddingBottom="4dp"
                         android:text="+12h"
                         android:textAllCaps="false"
-                        android:textColor="@color/item_text"
+                        android:textColor="@color/tt_text_light"
                         android:textSize="16sp" />
                 </TableRow>
 
@@ -348,10 +348,10 @@
                 android:layout_marginStart="4dp"
                 android:layout_marginEnd="4dp"
                 android:layout_marginBottom="4dp"
-                android:background="@color/button_back"
+                android:background="@color/tt_add"
                 android:text="Add Notification"
                 android:textAllCaps="false"
-                android:textColor="@color/button_text"
+                android:textColor="@color/tt_text_light"
                 android:textSize="18sp" />
 
             <Button
@@ -361,10 +361,10 @@
                 android:layout_marginStart="4dp"
                 android:layout_marginEnd="4dp"
                 android:layout_marginBottom="4dp"
-                android:background="@color/button_select"
+                android:background="@color/tt_delete"
                 android:text="Delete Notification"
                 android:textAllCaps="false"
-                android:textColor="@color/button_text"
+                android:textColor="@color/tt_text_light"
                 android:textSize="18sp" />
 
             <RadioGroup
@@ -387,7 +387,6 @@
                     android:layout_marginRight="2dp"
                     android:button="?android:attr/listChoiceIndicatorMultiple"
                     android:buttonTint="@color/item_blue"
-                    android:editable="false"
                     android:scaleX="1.5"
                     android:scaleY="1.5" />
 
@@ -399,7 +398,6 @@
                     android:layout_marginRight="2dp"
                     android:button="?android:attr/listChoiceIndicatorMultiple"
                     android:buttonTint="@color/item_green"
-                    android:editable="false"
                     android:scaleX="1.5"
                     android:scaleY="1.5" />
 
@@ -411,7 +409,6 @@
                     android:layout_marginRight="2dp"
                     android:button="?android:attr/listChoiceIndicatorMultiple"
                     android:buttonTint="@color/item_yellow"
-                    android:editable="false"
                     android:scaleX="1.5"
                     android:scaleY="1.5" />
 
@@ -423,7 +420,6 @@
                     android:layout_marginRight="2dp"
                     android:button="?android:attr/listChoiceIndicatorMultiple"
                     android:buttonTint="@color/item_orange"
-                    android:editable="false"
                     android:scaleX="1.5"
                     android:scaleY="1.5" />
 
@@ -450,33 +446,6 @@
                     android:scaleY="1.5" />
 
             </RadioGroup>
-
-            <!--<DatePicker
-                android:id="@+id/datePicker"
-                style="@android:style/Widget.DatePicker"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="4dp"
-                android:calendarTextColor="@color/item_text"
-                android:datePickerMode="calendar"
-                android:dayOfWeekBackground="@color/item_text"
-                android:headerBackground="@color/text_back"
-                android:layoutMode="clipBounds"
-                android:minDate="01/01/2020"
-                android:startYear="2020"
-                android:theme="@style/DatePicker_dark" />
-
-            <TimePicker
-                android:id="@+id/timePicker"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:headerBackground="@color/text_back"
-                android:numbersSelectorColor="@color/item_back"
-                android:theme="@style/DatePicker_dark"
-                android:timePickerMode="spinner" />-->
-
         </LinearLayout>
     </ScrollView>
 
@@ -487,11 +456,11 @@
         android:layout_margin="4dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:background="@color/button_back"
+        android:background="@color/tt_add"
         android:clickable="true"
         android:text="Add"
         android:textAllCaps="false"
-        android:textColor="@color/button_text"
+        android:textColor="@color/tt_text_light"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

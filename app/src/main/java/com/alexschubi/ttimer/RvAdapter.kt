@@ -1,7 +1,9 @@
 package com.alexschubi.ttimer
 
 import android.annotation.SuppressLint
+import android.content.res.Resources
 import android.graphics.*
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.util.Log
@@ -11,6 +13,10 @@ import android.view.ViewGroup
 import android.widget.RadioButton
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.BitmapCompat
+import androidx.core.graphics.drawable.toBitmap
+import androidx.core.graphics.drawable.toDrawable
 import androidx.core.graphics.scale
 import androidx.core.view.isNotEmpty
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -54,7 +60,7 @@ class RvAdapter constructor(private val activity: MainActivity, private val rVAr
                 "purple" -> itemView.setBackgroundResource(R.color.item_purple)
             }
             itemView.id = currentItem.Index
-        }//TODO simplify Items
+        }
     }
 
     interface ContentListener {
@@ -96,7 +102,7 @@ class SwipeToDelete(var adapter: RvAdapter) : ItemTouchHelper.SimpleCallback(0, 
     ) {
         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
         val background = ColorDrawable()
-        background.color = Color.RED
+        background.color = ContextCompat.getColor(mContext, R.color.tt_back_light)
         background.setBounds(viewHolder.itemView.right+dX.toInt(),
             viewHolder.itemView.top,
             viewHolder.itemView.right,
@@ -135,7 +141,7 @@ class SwipeToEdit(var adapter: RvAdapter, var rVArrayList: ArrayList<Item>) : It
     ) {
         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
         val background = ColorDrawable()
-        background.color = Color.GREEN
+        background.color = ContextCompat.getColor(mContext, R.color.tt_back_light)
         background.setBounds(
             viewHolder.itemView.left,
             viewHolder.itemView.top,
