@@ -7,12 +7,13 @@ import java.time.LocalDateTime
 import android.view.View
 import androidx.core.graphics.toColor
 import androidx.preference.PreferenceManager
+import kotlinx.android.synthetic.main.fragment_add_item.*
 import java.time.Year
 import java.util.*
 
 class Functions {
 
-    fun getTime(getItem: ArrayList<String>): LocalDateTime? {
+    fun getTimeOfArray(getItem: ArrayList<String>): LocalDateTime? {
         var tempDateTime: LocalDateTime? = null
         if (getItem[3].toIntOrNull() == null) {
             tempDateTime = null
@@ -26,17 +27,6 @@ class Functions {
         }
         return tempDateTime
     }
-    /*fun putTime(time: Int?): String {
-        var stringMinute = ""
-        if (time != null) {
-            stringMinute = if (time<10){
-                "0$time"
-            } else{
-                time.toString()
-            }
-        }
-        return stringMinute
-    }*/
     fun putListString(PrefKey: String?, stringList: ArrayList<String>) {
         val myStringList = stringList.toTypedArray()
         mainPrefs.edit().putString(PrefKey, TextUtils.join("‚‗‚", myStringList)).apply()
@@ -54,11 +44,12 @@ class Functions {
         if (getindex >= 0) {
             while (getindex > 0) {
                 val getStringItem = getListString("Item $getindex")
+                Log.d("Preferences", "get Item " + getStringItem)
                 if(!getStringItem[8].toBoolean()){
                     val getItem = Item(
                         getStringItem[0].toInt(),
                         getStringItem[1],
-                        getTime(getStringItem),
+                        getTimeOfArray(getStringItem),
                         null,
                         getStringItem[7].toBoolean(),
                         false,
@@ -68,6 +59,7 @@ class Functions {
                 }
                 getindex--
             }
+
             refreshTime()
         }
         Log.d("getArrayList", getArrayList.toString())
@@ -75,17 +67,18 @@ class Functions {
 
     fun refreshTime() {
         if (getArrayList.isEmpty()){
-            Log.d("Preferences", "No Items saved")
+            Log.d("Preferences.refresh", "No Items saved")
         } else {
             for(item in getArrayList.indices) {
                 if (getArrayList[item].Date != null) {
                     getArrayList[item].Span = getSpanString(getArrayList[item].Date!!)
                     Log.d("Item","got Span of Item $item @ "+ getArrayList[item].Span)
+
                 }
             }
         }
     }
-//TODO better span texting
+    //TODO better span texting
     fun getSpanString(itemDateTime: LocalDateTime): String{
         var testOutLine: String = ""
         val currentDateTime = LocalDateTime.now()
@@ -114,6 +107,47 @@ class Functions {
                 testOutLine += "gone"
             }
         return testOutLine
+    }
+
+    fun saveItem(editItem: Item){
+        if(editItem.Index == -1) {
+            editItem.Index = suppPrefs.getInt("ItemAmount", 0) + 1
+            suppPrefs.edit().putInt("ItemAmount",editItem.Index).apply()
+        }
+        Log.d("Preferences.save", "ItemAmount is " + suppPrefs.getInt("ItemAmount", 0).toString())
+        putListString("Item ${editItem.Index}", getItemArray(editItem))
+    }
+    fun getItemArray(editItem: Item): ArrayList<String> {
+        val addItemString: ArrayList<String>
+        if(editItem.Date == null) {
+            addItemString = arrayListOf<String>(
+                editItem.Index.toString(),
+                editItem.Text,
+                "",//Day
+                "",//Month
+                "",//Year
+                "",//Hour
+                "",//Minute
+                false.toString(), //Notified
+                false.toString(), //Deleted
+                editItem.Color
+            )
+        } else {
+            addItemString = arrayListOf<String>(
+                editItem.Index.toString(),
+                editItem.Text,
+                editItem.Date!!.dayOfMonth.toString(),
+                editItem.Date!!.monthValue.toString(),
+                editItem.Date!!.year.toString(),
+                editItem.Date!!.hour.toString(),
+                editItem.Date!!.minute.toString(),
+                false.toString(),
+                false.toString(),
+                editItem.Color
+            )
+        }
+        Log.d("Preferences.save", "added Item: " + addItemString.toString())
+        return addItemString
     }
 
     fun showKeyboard(view: View) {

@@ -8,7 +8,6 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
-import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -16,15 +15,15 @@ import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import com.google.firebase.FirebaseApp
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_item_list.*
 import kotlinx.android.synthetic.main.main_toolbar.*
 import kotlinx.android.synthetic.main.main_toolbar.view.*
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.prefs.Preferences
 import kotlin.system.exitProcess
 
 lateinit var mainPrefs: SharedPreferences
@@ -70,8 +69,6 @@ class MainActivity : AppCompatActivity()
         firebaseAnalytics = FirebaseAnalytics.getInstance(mContext)
         firebaseCrashlytics = FirebaseCrashlytics.getInstance()
         Functions().applyFirebase()
-
-        timer.start()
         Functions().getDB()
 
         b_settings.setOnClickListener(){
@@ -80,30 +77,79 @@ class MainActivity : AppCompatActivity()
             suppActionBar.customView.b_back.visibility = View.VISIBLE
         }
     }
-    private val timer = object: CountDownTimer(1 * 60 * 60 * 1000, 1 * 10 * 1000){ //hour*min*sec*millisec
-        override fun onTick(millisUntilFinished: Long){
-            Functions().refreshTime()
-        }//TODO use coroutine
-        override fun onFinish() {
-            Toast.makeText(applicationContext, "AFK?", Toast.LENGTH_SHORT).show()
-            moveTaskToBack(true)
-            exitProcess(-1)
-        }
-    }
 
-    open class AlarmReceiver : BroadcastReceiver() {
+//TODO stacking Notifications
+    open class NotificationReceiver : BroadcastReceiver() {//TODO triggering delayed like 4min.
         override fun onReceive(context: Context, intent: Intent) {
             val pendResult = this.goAsync()
-            val currentItemString: ArrayList<String> = intent.getStringArrayListExtra("currentItemString") as ArrayList<String>
-            Log.d("AlarmManager", "Item ${currentItemString[0]} Timer Reached")
+            Log.d("NotificationReceiver", "triggered")
+            mainPrefs = context.getSharedPreferences("mainPrefs", MODE_PRIVATE)
+            suppPrefs = context.getSharedPreferences("suppPrefs", MODE_PRIVATE)
+            val snoozeTime = 600000 //1Min=60*1000
+
+            val editItemArray = intent.extras!!.getStringArrayList("ItemArray")!!
+            //Log.d("NotificationReceiver", "get saved Item $editItemIndex")
+            //val editItemArray: ArrayList<String> = Functions().getListString("Item $editItemIndex")
+            Log.d("NotificationReceiver", "convert $editItemArray to Item")
+            var editItem = Item(
+                editItemArray[0].toInt(),
+                editItemArray[1],
+                Functions().getTimeOfArray(editItemArray),
+                null,
+                editItemArray[7].toBoolean(),
+                editItemArray[8].toBoolean(),
+                editItemArray[9]
+            )
+            Log.d("NotificationReceiver", "got Item " + editItem.toString())
+
             val notificationUtils = NotificationUtils(context)
-            val notification = notificationUtils.getNotificationBuilder(currentItemString).build()
-            notificationUtils.getManager().notify((currentItemString[0].toInt()), notification)
-            try { PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT).cancel()}finally {
-                Log.d("PendingIntent", "already canceled")
+            if (editItemArray != null) {
+                val notification = notificationUtils.getNotificationBuilder(editItemArray).build()
+                notificationUtils.getManager().notify((editItemArray[0].toInt()), notification)
+                try { PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT).cancel()}finally {
+                    Log.d("PendingIntent", "already canceled")
+                }
+
             }
             pendResult.finish()
         }
+    }
+    open class NotificationSnoozeReceiver: BroadcastReceiver(){//TODO not showing ass button
+        override fun onReceive(context: Context, intent: Intent) {
+            Log.d("NotificationSnoozeReceiver", "trigged")
+            val pendResult = this.goAsync()
+            mainPrefs = context.getSharedPreferences("mainPrefs", MODE_PRIVATE)
+            suppPrefs = context.getSharedPreferences("suppPrefs", MODE_PRIVATE)
+            val editItemArray = intent.extras!!.getStringArrayList("ItemArray")!!
+            Log.d("NotificationSnoozeReceiver", "convert $editItemArray to Item")
+            var editItem = Item(
+                editItemArray[0].toInt(),
+                editItemArray[1],
+                Functions().getTimeOfArray(editItemArray),
+                null,
+                editItemArray[7].toBoolean(),
+                editItemArray[8].toBoolean(),
+                editItemArray[9]
+            )
+            Log.d("NotificationSnoozeReceiver", "got Item " + editItem.toString())
+            editItem.Date = LocalDateTime.now().plusMinutes(10)
+            Functions().saveItem(editItem)
+
+            val notificationUtils = NotificationUtils(context)
+            if(editItem.Date !=null && editItem.Date!!.isAfter(LocalDateTime.now())) {
+                NotificationUtils(mContext).makeNotification(editItem)
+                Log.d("Notification", "Item ${editItem.Index} has Notification at " + editItem.Date!!.format(
+                    DateTimeFormatter.ofPattern("dd.MM.uuuu HH:mm")))
+            }
+            Log.i("AlarmMangaer", "notify Item ${editItem.Index} in " + editItem.Date!!.format(
+                DateTimeFormatter.ofPattern("dd.MM.uuuu HH:mm")))
+        }
+    }
+    open class NotificationDismissReceiver : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            Log.d("NotificationDismissReceiver", "triggered")
+        }
+
     }
 
     override fun onBackPressed() {

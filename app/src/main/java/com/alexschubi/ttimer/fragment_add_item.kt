@@ -74,14 +74,18 @@ class fragment_add_item: Fragment() {
         if (editItem.Date == null) {
             b_add_time.visibility = View.VISIBLE
             cl_date_time.visibility = View.GONE
-            tl_plusTime.visibility = View.GONE
+            ll_day.visibility =  View.GONE
+            ll_hour.visibility = View.GONE
+            ll_minute.visibility = View.GONE
             b_del_time.visibility = View.GONE
         } else {
             refreshDateTime()
             b_add_time.visibility = View.GONE
             b_del_time.visibility = View.VISIBLE
             cl_date_time.visibility = View.VISIBLE
-            tl_plusTime.visibility = View.VISIBLE
+            ll_day.visibility =  View.VISIBLE
+            ll_hour.visibility = View.VISIBLE
+            ll_minute.visibility = View.VISIBLE
         }
         //Minutes
         view.b_minus15minute.setOnClickListener {
@@ -160,65 +164,26 @@ class fragment_add_item: Fragment() {
         inputMethodManager.showSoftInput(tb_add_text, 0)
     }
 
-    //TODO colors for Items
     private fun addItem() {
         var index: Int
         var color = ""
         var colorButton: RadioButton = view?.findViewById<RadioButton>(rg_color.checkedRadioButtonId)!!
         when (this.view?.findViewById<RadioButton>(colorButton.id)?.id) {
-            rb_purple.id -> color = "purple"
-            rb_red.id -> color = "red"
-            rb_orange.id -> color = "orange"
-            rb_yellow.id -> color = "yellow"
-            rb_green.id -> color = "green"
-            rb_blue.id -> color = "blue"
+            rb_purple.id -> editItem.Color = "purple"
+            rb_red.id -> editItem.Color = "red"
+            rb_orange.id -> editItem.Color = "orange"
+            rb_yellow.id -> editItem.Color = "yellow"
+            rb_green.id -> editItem.Color = "green"
+            rb_blue.id -> editItem.Color = "blue"
         }
-        Log.d("radio Button", " color set to $color")
-        Log.d("radioButton", colorButton.id.toString())
-        Log.i("addItem", "Color = " + view?.findViewById<RadioButton>(rg_color.checkedRadioButtonId)?.buttonTintList?.defaultColor.toString())
+        Log.d("radio Button", " color set to ${editItem.Color}")
+        editItem.Text = tb_add_text.text.toString()
+        Functions().saveItem(editItem)
 
-        if (editItem.Index == -1){
-            index = suppPrefs.getInt("ItemAmount", 0)
-            Log.d("Preferences", suppPrefs.getInt("ItemAmount", 0).toString() + "Items registered")
-            index++
-        } else {
-            index = editItem.Index
-        }
-        Log.d("AddItem","editing Item $index")
-        val addItemString: ArrayList<String>
-        if(editItem.Date == null) {
-            addItemString = arrayListOf<String>(
-                index.toString(),//Index
-                activity?.tb_add_text?.text.toString(),//Text
-                "",//Day
-                "",//Month
-                "",//Year
-                "",//Hour
-                "",//Minute
-                false.toString(), //Notified
-                false.toString(), //Deleted
-                color
-            )
-        } else {
-            addItemString = arrayListOf<String>(
-                index.toString(),
-                activity?.tb_add_text?.text.toString(),
-                editItem.Date!!.dayOfMonth.toString(),
-                editItem.Date!!.monthValue.toString(),
-                editItem.Date!!.year.toString(),
-                editItem.Date!!.hour.toString(),
-                editItem.Date!!.minute.toString(),
-                false.toString(),
-                false.toString(),
-                color
-            )
-        }
-        Functions().putListString("Item $index", addItemString)
-        if(editItem.Index == -1) {suppPrefs.edit().putInt ("ItemAmount",suppPrefs.getInt("ItemAmount", 0) + 1 ).apply()}
-        Log.d("Preferences", "added Item: " + addItemString.toString())
         if(editItem.Date !=null && editItem.Date!!.isAfter(LocalDateTime.now())) {
-            makeNotification(addItemString)
-            Log.d("Notification", "Item $index has Notification at " + editItem.Date!!.format(
+            Log.d("addItem", "try add Notification")
+            NotificationUtils(mContext).makeNotification(editItem)
+            Log.d("Notification", "Item ${editItem.Index} has Notification at " + editItem.Date!!.format(
                 DateTimeFormatter.ofPattern("dd.MM.uuuu HH:mm")))
         } else {
             Log.d("Notification", "No Notification wanted or in Past")
@@ -230,21 +195,6 @@ class fragment_add_item: Fragment() {
         NavHostFragment.findNavController(this).navigate(R.id.action_AddItem_to_ItemList)
         suppActionBar.customView.b_settings.visibility = View.VISIBLE
         suppActionBar.customView.b_back.visibility = View.GONE
-    }
-
-    private fun makeNotification(currentItemString: ArrayList<String>) {
-        val zonedItemDateTime = Functions().getTime(currentItemString)!!.atZone(ZoneId.systemDefault())
-        val alarmManager = mContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val intent = Intent(mContext, MainActivity.AlarmReceiver::class.java).putStringArrayListExtra("currentItemString", currentItemString)
-        val pendingIntent = PendingIntent.getBroadcast(mContext, 0, intent, PendingIntent.FLAG_ONE_SHOT)
-        alarmManager.setExact(
-            AlarmManager.RTC_WAKEUP,
-            zonedItemDateTime.toInstant().toEpochMilli(),
-            pendingIntent
-        )
-        Log.d("AlarmManager", "doAlarm Item: ${currentItemString[0]} in " +
-                "${(zonedItemDateTime.toInstant().minusMillis
-                    (ZonedDateTime.now().toInstant().toEpochMilli())).toEpochMilli()} milliSeconds")
     }
 
     private fun addDateTime() {
@@ -270,7 +220,9 @@ class fragment_add_item: Fragment() {
                 b_add_time.visibility = View.GONE
                 b_del_time.visibility = View.VISIBLE
                 cl_date_time.visibility = View.VISIBLE
-                tl_plusTime.visibility = View.VISIBLE
+                ll_day.visibility =  View.VISIBLE
+                ll_hour.visibility = View.VISIBLE
+                ll_minute.visibility = View.VISIBLE
 
                 editItem.Span = Functions().getSpanString(newItemDate)
                 editItem.Date = newItemDate
@@ -304,7 +256,9 @@ class fragment_add_item: Fragment() {
         b_add_time.visibility = View.GONE
         b_del_time.visibility = View.VISIBLE
         cl_date_time.visibility = View.VISIBLE
-        tl_plusTime.visibility = View.VISIBLE
+        ll_day.visibility =  View.VISIBLE
+        ll_hour.visibility = View.VISIBLE
+        ll_minute.visibility = View.VISIBLE
         editItem.Span = Functions().getSpanString(actualDateTime)
         editItem.Date = actualDateTime
         Log.d("addDateTime", "LocalDateTime ${editItem.Date!!.format(DateTimeFormatter.ofPattern("dd.MM.uuuu HH:mm"))} set")
@@ -314,7 +268,9 @@ class fragment_add_item: Fragment() {
         editItem.Span = null
         b_add_time.visibility = View.VISIBLE
         cl_date_time.visibility = View.GONE
-        tl_plusTime.visibility = View.GONE
+        ll_day.visibility =  View.GONE
+        ll_hour.visibility = View.GONE
+        ll_minute.visibility = View.GONE
         b_del_time.visibility = View.GONE
     }
 

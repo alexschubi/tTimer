@@ -1,6 +1,7 @@
 package com.alexschubi.ttimer
 
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_item_list.*
 import kotlinx.android.synthetic.main.fragment_item_list.view.*
 import kotlinx.android.synthetic.main.main_toolbar.*
+import kotlin.system.exitProcess
 
 class fragment_item_list : Fragment() {
     private lateinit var linearLayoutManager: LinearLayoutManager
@@ -45,6 +47,7 @@ class fragment_item_list : Fragment() {
         view.recyclerViewItems.adapter = adapter
         ItemTouchHelper(SwipeToDelete(adapter)).attachToRecyclerView(this.recyclerViewItems)
         ItemTouchHelper(SwipeToEdit(adapter, getArrayList)).attachToRecyclerView(this.recyclerViewItems)
+        timer.start()
 
         view.b_add.setOnClickListener {
             NavHostFragment.findNavController(this).navigate(R.id.action_ItemList_to_AddItem)
@@ -56,5 +59,21 @@ class fragment_item_list : Fragment() {
             swipe_refresh_layout.isRefreshing = false
         }
         //b_settings.setOnClickListener(){ parentFragment?.findNavController()?.navigate(R.id.action_ItemList_to_fragment_settings) }
+    }
+
+    private val timer = object: CountDownTimer(1 * 60 * 60 * 1000, 1 * 10 * 1000){ //hour*min*sec*millisec
+        override fun onTick(millisUntilFinished: Long){
+            Functions().refreshTime()
+            view?.recyclerViewItems?.adapter?.notifyDataSetChanged()
+        }//TODO use coroutine
+        override fun onFinish() {
+            Toast.makeText(mContext, "AFK?", Toast.LENGTH_SHORT).show()
+            exitProcess(-1)
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        timer.cancel()
     }
 }
