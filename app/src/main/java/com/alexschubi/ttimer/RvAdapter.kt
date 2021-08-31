@@ -23,6 +23,8 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_add_item.*
 import kotlinx.android.synthetic.main.recycler_view.view.*
+import java.time.LocalDateTime
+import java.time.Year
 import java.time.format.DateTimeFormatter
 
 
@@ -47,10 +49,11 @@ class RvAdapter constructor(private val activity: MainActivity, private val rVAr
                 itemView.tv_item_datetime.visibility = View.GONE
             } else {
                 itemView.tv_item_span.text = currentItem.Span
-                itemView.tv_item_datetime.text = currentItem.Date!!.format(DateTimeFormatter.ofPattern("dd.MM.uuuu HH:mm"))
+                itemView.tv_item_datetime.text = currentItem.Date!!.format(DateTimeFormatter.ofPattern("EE dd.MM.uuuu HH:mm"))
             }
-            itemView.tv_item_index.text = currentItem.Index.toString()
+            itemView.tv_item_index.text = currentItem.Span
             itemView.tv_item_text.text = currentItem.Text
+
             when (currentItem.Color) {
                 "blue"-> itemView.setBackgroundResource(R.color.item_blue)
                 "green" -> itemView.setBackgroundResource(R.color.item_green)

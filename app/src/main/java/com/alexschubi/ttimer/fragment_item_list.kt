@@ -53,6 +53,7 @@ class fragment_item_list : Fragment() {
             NavHostFragment.findNavController(this).navigate(R.id.action_ItemList_to_AddItem)
         }
         swipe_refresh_layout.setOnRefreshListener {
+
             Functions().getDB()
             Log.d("ItemList", "getDB()")
             recyclerViewItems.adapter?.notifyDataSetChanged()

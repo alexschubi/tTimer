@@ -45,7 +45,7 @@ val getArrayList = ArrayList<Item>()
 class MainActivity : AppCompatActivity()
 {
     //Arrays Adapter
-    private val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
+    private val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("EE dd.MM.yyyy HH:mm")
 
     //START
     override fun onCreate(savedInstanceState: Bundle?) {
