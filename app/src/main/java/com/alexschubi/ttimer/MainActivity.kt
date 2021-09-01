@@ -78,8 +78,7 @@ class MainActivity : AppCompatActivity()
         }
     }
 
-//TODO stacking Notifications
-    open class NotificationReceiver : BroadcastReceiver() {//TODO triggering delayed like 4min.
+    open class NotificationReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             val pendResult = this.goAsync()
             Log.d("NotificationReceiver", "triggered")
@@ -105,7 +104,7 @@ class MainActivity : AppCompatActivity()
             val notificationUtils = NotificationUtils(context)
             if (editItemArray != null) {
                 val notification = notificationUtils.getNotificationBuilder(editItemArray).build()
-                notificationUtils.getManager().notify((editItemArray[0].toInt()), notification)
+                notificationUtils.getManager().notify(editItem.Index, notification)
                 try { PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT).cancel()}finally {
                     Log.d("PendingIntent", "already canceled")
                 }

@@ -94,20 +94,18 @@ class NotificationUtils(base: Context) : ContextWrapper(base) {
         }
     }
 
-    fun makeNotification(editItem: Item) {
+    fun makeNotification(editItem: Item) {//TODO cancel notification when readded or deleted
         val zonedItemDateTime = editItem.Date!!.atZone(ZoneId.systemDefault())
         val alarmManager = mContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val intent = Intent(mContext, MainActivity.NotificationReceiver::class.java)
-            .putExtra("ItemArray", Functions().getItemArray(editItem))
-        val pendingIntent = PendingIntent.getBroadcast(mContext, 0, intent, PendingIntent.FLAG_ONE_SHOT)
+        val intent = Intent(mContext, MainActivity.NotificationReceiver::class.java).putExtra("ItemArray", Functions().getItemArray(editItem))
+        val pendingIntent = PendingIntent.getBroadcast(mContext, editItem.Index, intent, PendingIntent.FLAG_ONE_SHOT)
         alarmManager.setExact(
             AlarmManager.RTC_WAKEUP,
             zonedItemDateTime.toInstant().toEpochMilli(),
             pendingIntent
         )
         Log.d("AlarmManager", "doAlarm Item: ${editItem.Index} in " +
-                "${(zonedItemDateTime.toInstant().minusMillis
-                    (ZonedDateTime.now().toInstant().toEpochMilli())).toEpochMilli()} milliSeconds")
+                "${(zonedItemDateTime.toInstant().minusMillis(ZonedDateTime.now().toInstant().toEpochMilli())).toEpochMilli()} milliSeconds with" + pendingIntent.toString())
     }
 
 }
