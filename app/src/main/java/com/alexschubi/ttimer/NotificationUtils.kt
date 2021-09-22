@@ -53,7 +53,6 @@ class NotificationUtils(base: Context) : ContextWrapper(base) {
         val pendingIntent = PendingIntent.getActivity(this, 0, intent, 0)
 
         val snoozeintent = Intent(this, MainActivity.NotificationSnoozeReceiver::class.java).apply {
-            setAction("SNOOZE")
             putExtra(EXTRA_NOTIFICATION_ID, 0)
         }
         val snoozePendingIntent = PendingIntent.getActivity(this, 0, snoozeintent, 0)

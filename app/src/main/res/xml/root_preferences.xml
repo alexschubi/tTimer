@@ -1,12 +1,14 @@
-<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<androidx.preference.PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:title="Preferences">
 
     <androidx.preference.PreferenceCategory
-        android:theme="@style/Preferences_category"
+        android:theme="@style/AppTheme"
         app:title="Theme">
         <ListPreference
             android:id="@+id/pref_theme"
-            android:defaultValue="true"
+            android:defaultValue="Default"
             android:entries="@array/pref_theme_modes_names"
             android:entryValues="@array/pref_theme_modes_values"
             android:theme="@style/Preferences_item"
@@ -49,7 +51,28 @@
             android:defaultValue="true"
             android:key="pref_notifications_enabled"
             android:theme="@style/Preferences_item"
-            android:title="pref_notifications" />
+            android:title="pref_notifications_enabled" />
     </androidx.preference.PreferenceCategory>
+
+    <androidx.preference.PreferenceCategory
+        android:theme="@style/Preferences_category"
+        app:title="Information">
+        <Preference
+            android:key="pref_static_field_key"
+            android:selectable="false"
+            android:persistent="false"
+            android:title="Version"
+            android:summary="@string/app_version">
+        </Preference>
+        <Preference
+            android:key="about"
+            android:title="About"
+            android:selectable="false"
+            android:persistent="false"
+            android:summary="@string/about_text"
+            app:summary="@string/about_text">
+        </Preference>
+    </androidx.preference.PreferenceCategory>
+
 
 </androidx.preference.PreferenceScreen>

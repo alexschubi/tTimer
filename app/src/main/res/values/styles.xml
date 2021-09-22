@@ -16,7 +16,6 @@
         <item name="android:textColorPrimary">@color/tt_text</item>
         <item name="android:textColorSecondary">@color/tt_text_light</item>
     </style>
-
     <style name="TimePicker_dark" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:background">@color/tt_back_light</item>
         <item name="android:numbersBackgroundColor">@color/tt_back_dark</item>
@@ -24,19 +23,15 @@
         <item name="android:textColorPrimary">@color/tt_text</item>
         <item name="android:textColorSecondary">@color/tt_text_light</item>
     </style>
-
     <style name="Preferences_item" parent="Preference">
         <item name="colorAccent">@color/tt_back</item>
     </style>
-
     <style name="Preferences_category" parent="Preference.Category">
         <item name="colorAccent">@color/tt_back</item>
         <item name="background">@color/tt_back_light</item>
     </style>
-
     <style name="Preference_screen" parent="Preference.PreferenceScreen">
     </style>
-
     <style name="RadioButton_blue">
         <item name="backgroundColor">@color/item_blue</item>
         <item name="android:textColor">@color/tt_text_light</item>
@@ -60,6 +55,16 @@
     <style name="RadioButton_purple">
         <item name="backgroundColor">@color/item_purple</item>
         <item name="android:textColor">@color/tt_text_light</item>
+    </style>
+
+    <style name="AppTheme_Default" parent="AppTheme">
+        <item name="android:colorBackground">@color/tt_back</item>
+    </style>
+    <style name="AppTheme_Dark" parent="AppTheme">
+        <item name="android:colorBackground">@color/test_3</item>
+    </style>
+    <style name="AppTheme_Light" parent="AppTheme">
+        <item name="android:colorBackground">@color/test_2</item>
     </style>
 
 </resources>

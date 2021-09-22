@@ -1,10 +1,13 @@
 package com.alexschubi.ttimer
 
+import android.app.Application
+import android.content.res.Resources
 import android.graphics.Color
 import android.text.TextUtils
 import android.util.Log
 import java.time.LocalDateTime
 import android.view.View
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.toColor
 import androidx.preference.PreferenceManager
 import kotlinx.android.synthetic.main.fragment_add_item.*
@@ -158,12 +161,49 @@ class Functions {
     }
 
     fun applyFirebase(){
-        prefNotificationsenabled = PreferenceManager.getDefaultSharedPreferences(mContext).getBoolean("pref_notificaions_enabled", true)
-        prefSyncEnabled = PreferenceManager.getDefaultSharedPreferences(mContext).getBoolean("pref_sync_enable", true)
-        prefSendFirebaseenabled = PreferenceManager.getDefaultSharedPreferences(mContext).getBoolean("pref_firebase_enabled", false)
-        prefSyncConnection = PreferenceManager.getDefaultSharedPreferences(mContext).getString("pref_sync_connection", "").toString()
+        val prefNotificationsenabled = PreferenceManager.getDefaultSharedPreferences(mContext).getBoolean("pref_notificaions_enabled", true)
+        val prefSyncEnabled = PreferenceManager.getDefaultSharedPreferences(mContext).getBoolean("pref_sync_enable", true)
+        val prefSyncConnection = PreferenceManager.getDefaultSharedPreferences(mContext).getString("pref_sync_connection", "").toString()
+
+        val prefSendFirebaseenabled = PreferenceManager.getDefaultSharedPreferences(mContext).getBoolean("pref_firebase_enabled", false)
         firebaseCrashlytics.setCrashlyticsCollectionEnabled(prefSendFirebaseenabled)
         firebaseAnalytics.setAnalyticsCollectionEnabled(prefSendFirebaseenabled)
         Log.i("Analytics", "Analytics " + prefSendFirebaseenabled.toString())
+    }
+    fun applyTheme(){
+        val prefTheme = PreferenceManager.getDefaultSharedPreferences(mContext).getString("pref_theme", "default")
+        var themeId: Int?
+        when(prefTheme){
+            "default" -> themeId = R.style.AppTheme_Default
+            "light" -> {
+                themeId = R.style.AppTheme_Light
+
+            }
+            "dark" -> themeId = R.style.AppTheme_Dark//TODO wrong
+            "followSystem" -> themeId = R.style.AppTheme_Dark
+            "followSunset" -> themeId = R.style.AppTheme_Dark
+            else -> themeId = null
+        }
+        if (themeId != null) {
+            mapplication.theme.applyStyle(themeId, true)
+            mapplication.setTheme(themeId)
+            Log.i("Theme", "set to $prefTheme")
+        }
+    }
+    fun getTheme(): Int? {
+        val prefTheme = PreferenceManager.getDefaultSharedPreferences(mContext).getString("pref_theme", "dark")
+        var themeId: Int?
+        when(prefTheme){
+            "default" -> themeId = R.style.AppTheme_Default
+            "light" -> {
+                themeId = R.style.Theme_MaterialComponents
+
+            }
+            "dark" -> themeId = R.style.Theme_MaterialComponents_DayNight//TODO wrong
+            "followSystem" -> themeId = R.style.Theme_MaterialComponents_DayNight
+            "followSunset" -> themeId = R.style.Theme_MaterialComponents_DayNight
+            else -> themeId = null
+        }
+        return themeId
     }
 }

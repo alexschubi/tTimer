@@ -262,7 +262,7 @@ class fragment_add_item: Fragment() {
             tDay)
         datePickerDialog.show()
     }
-    private fun addDateTime(dateTime: LocalDateTime) { //TODO get standart times from preferences
+    private fun addDateTime(dateTime: LocalDateTime) {
         tv_addDateTime.text = dateTime.format(DateTimeFormatter.ofPattern("EE dd.MM.uuuu HH:mm"))
         tv_addTimeSpan.text = Functions().getSpanString(dateTime)
         b_del_time.visibility = View.VISIBLE

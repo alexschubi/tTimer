@@ -20,4 +20,9 @@
     <color name="item_orange">#FF9800</color>
     <color name="item_red">#F43636</color>
     <color name="item_purple">#7048B8</color>
+
+    <color name="test_1">#F56FFF</color>
+    <color name="test_2">#EE00FF</color>
+    <color name="test_3">#4C0051</color>
+    <color name="test_4">#7C4C80</color>
 </resources>

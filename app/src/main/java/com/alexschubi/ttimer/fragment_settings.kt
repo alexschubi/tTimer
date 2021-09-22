@@ -2,6 +2,7 @@ package com.alexschubi.ttimer
 
 import android.opengl.Visibility
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.View.GONE
@@ -22,12 +23,28 @@ class fragment_settings : PreferenceFragmentCompat() {
         suppActionBar.customView.b_settings.visibility = View.GONE
         suppActionBar.customView.b_back.visibility = View.VISIBLE
 
+        preferenceScreen.sharedPreferences.registerOnSharedPreferenceChangeListener { sharedPreferences, key ->
+            if (key == "pref_firebase_enabled") {
+                Functions().applyFirebase()
+                Log.d("Preferences", "applied Firebase settings")
+            }
+            if (key == "pref_sync_enabled") {
+                Log.d("Preferences", "applied Sync settings")
+            }
+            if (key == "pref_notifications_enabled") {
+                Log.d("Preferences", "applied notification settings")
+            }
+            if (key == "pref_theme") {
+                Functions().applyTheme()
+                Log.d("Preferences", "applied Theme settings")
+            }
+        }
+
         suppActionBar.customView.b_back.setOnClickListener() {
             NavHostFragment.findNavController(nav_host_fragment).navigate(R.id.action_fragment_settings_to_ItemList)
             suppActionBar.customView.b_settings.visibility = View.VISIBLE
             suppActionBar.customView.b_back.visibility = View.GONE
-            Functions().applyFirebase()
         }
     }
-
+    
 }
