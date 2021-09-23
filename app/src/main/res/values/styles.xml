@@ -1,6 +1,6 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat">
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight">
         <item name="contentInsetStart">0dp</item>
         <item name="contentInsetEnd">0dp</item>
         <item name="contentInsetLeft">0dp</item>
@@ -26,11 +26,11 @@
     <style name="Preferences_item" parent="Preference">
         <item name="colorAccent">@color/tt_back</item>
     </style>
-    <style name="Preferences_category" parent="Preference.Category">
+    <style name="Preferences_category" parent="Preference">
         <item name="colorAccent">@color/tt_back</item>
         <item name="background">@color/tt_back_light</item>
     </style>
-    <style name="Preference_screen" parent="Preference.PreferenceScreen">
+    <style name="Preference_screen" parent="Preference">
     </style>
     <style name="RadioButton_blue">
         <item name="backgroundColor">@color/item_blue</item>
@@ -55,16 +55,6 @@
     <style name="RadioButton_purple">
         <item name="backgroundColor">@color/item_purple</item>
         <item name="android:textColor">@color/tt_text_light</item>
-    </style>
-
-    <style name="AppTheme_Default" parent="AppTheme">
-        <item name="android:colorBackground">@color/tt_back</item>
-    </style>
-    <style name="AppTheme_Dark" parent="AppTheme">
-        <item name="android:colorBackground">@color/test_3</item>
-    </style>
-    <style name="AppTheme_Light" parent="AppTheme">
-        <item name="android:colorBackground">@color/test_2</item>
     </style>
 
 </resources>

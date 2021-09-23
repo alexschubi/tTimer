@@ -16,18 +16,17 @@
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
 
     <string-array name="pref_theme_modes_names">
-        <item>Default</item>
+        <item>Follow System</item>
+        <item>Follow Battery</item>
         <item>Light</item>
         <item>Dark</item>
-        <item>Follow System</item>
-        <item>Follow Sunset</item>
     </string-array>
     <string-array name="pref_theme_modes_values">
-        <item>default</item>
+        <item>followSystem</item>
+        <item>followBattery</item>
         <item>light</item>
         <item>dark</item>
-        <item>followSystem</item>
-        <item>followSunset</item>
+
     </string-array>
 
     <string name="app_version">1.0</string>

@@ -1,16 +1,11 @@
 package com.alexschubi.ttimer
 
-import android.app.Application
-import android.content.res.Resources
-import android.graphics.Color
 import android.text.TextUtils
 import android.util.Log
 import java.time.LocalDateTime
 import android.view.View
-import androidx.core.content.res.ResourcesCompat
-import androidx.core.graphics.toColor
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
-import kotlinx.android.synthetic.main.fragment_add_item.*
 import java.time.Year
 import java.util.*
 
@@ -171,39 +166,15 @@ class Functions {
         Log.i("Analytics", "Analytics " + prefSendFirebaseenabled.toString())
     }
     fun applyTheme(){
-        val prefTheme = PreferenceManager.getDefaultSharedPreferences(mContext).getString("pref_theme", "default")
-        var themeId: Int?
+        val prefTheme = PreferenceManager.getDefaultSharedPreferences(mContext).getString("pref_theme", "followSystem")
         when(prefTheme){
-            "default" -> themeId = R.style.AppTheme_Default
-            "light" -> {
-                themeId = R.style.AppTheme_Light
-
-            }
-            "dark" -> themeId = R.style.AppTheme_Dark//TODO wrong
-            "followSystem" -> themeId = R.style.AppTheme_Dark
-            "followSunset" -> themeId = R.style.AppTheme_Dark
-            else -> themeId = null
+            "default" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_UNSPECIFIED)
+            "light" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            "dark" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            "followSystem" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+            "followBattery" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY)
         }
-        if (themeId != null) {
-            mapplication.theme.applyStyle(themeId, true)
-            mapplication.setTheme(themeId)
-            Log.i("Theme", "set to $prefTheme")
-        }
+        Log.i("Theme", "set to $prefTheme")
     }
-    fun getTheme(): Int? {
-        val prefTheme = PreferenceManager.getDefaultSharedPreferences(mContext).getString("pref_theme", "dark")
-        var themeId: Int?
-        when(prefTheme){
-            "default" -> themeId = R.style.AppTheme_Default
-            "light" -> {
-                themeId = R.style.Theme_MaterialComponents
 
-            }
-            "dark" -> themeId = R.style.Theme_MaterialComponents_DayNight//TODO wrong
-            "followSystem" -> themeId = R.style.Theme_MaterialComponents_DayNight
-            "followSunset" -> themeId = R.style.Theme_MaterialComponents_DayNight
-            else -> themeId = null
-        }
-        return themeId
-    }
 }

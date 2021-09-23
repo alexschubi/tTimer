@@ -51,26 +51,34 @@
 
                 <TextView
                     android:id="@+id/tv_addDateTime"
-                    android:layout_width="wrap_content"
+                    style="@style/Widget.MaterialComponents.TextView"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:clickable="false"
-                    android:text="01.01.0001"
+                    android:paddingStart="4dp"
+                    android:text="01.01.0001 00:00 Wedensday"
                     android:textColor="@color/tt_text_light"
                     android:textSize="20sp"
                     android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@+id/tv_addTimeSpan"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintWidth_percent="0.66" />
 
                 <TextView
                     android:id="@+id/tv_addTimeSpan"
-                    android:layout_width="wrap_content"
+                    style="@style/Widget.MaterialComponents.TextView"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:clickable="false"
+                    android:paddingEnd="4dp"
                     android:text="in 200 minutes"
+                    android:textAlignment="textEnd"
                     android:textColor="@color/tt_text_light"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/tv_addDateTime"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -91,55 +99,79 @@
 
                     <Button
                         android:id="@+id/b_minus15minute"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="2dp"
                         android:layout_weight="1"
+                        android:autoSizeMaxTextSize="100sp"
+                        android:autoSizeMinTextSize="12sp"
+                        android:autoSizeStepGranularity="1sp"
+                        android:autoSizeTextType="uniform"
+                        android:autoText="false"
                         android:background="@color/tt_back_light"
+                        android:insetLeft="-15dp"
+                        android:insetRight="-15dp"
                         android:minWidth="200dip"
                         android:minHeight="35dip"
                         android:text="-15min"
-                        android:textAllCaps="false"
-                        android:textSize="18dp" />
+                        android:textAllCaps="false" />
 
                     <Button
                         android:id="@+id/b_minus5minute"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="2dp"
                         android:layout_weight="1"
+                        android:autoSizeMaxTextSize="100sp"
+                        android:autoSizeMinTextSize="12sp"
+                        android:autoSizeStepGranularity="1sp"
+                        android:autoSizeTextType="uniform"
+                        android:autoText="false"
                         android:background="@color/tt_back_light"
+                        android:insetLeft="-15dp"
+                        android:insetRight="-15dp"
                         android:minWidth="200dip"
                         android:minHeight="35dip"
                         android:text="-5min"
-                        android:textAllCaps="false"
-                        android:textSize="18dp" />
+                        android:textAllCaps="false" />
 
                     <Button
                         android:id="@+id/b_plus5minute"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="2dp"
                         android:layout_weight="1"
+                        android:autoSizeMaxTextSize="100sp"
+                        android:autoSizeMinTextSize="12sp"
+                        android:autoSizeStepGranularity="1sp"
+                        android:autoSizeTextType="uniform"
+                        android:autoText="false"
                         android:background="@color/tt_back_light"
+                        android:insetLeft="-15dp"
+                        android:insetRight="-15dp"
                         android:minWidth="200dip"
                         android:minHeight="35dip"
                         android:text="+5min"
-                        android:textAllCaps="false"
-                        android:textSize="18dp" />
+                        android:textAllCaps="false" />
 
                     <Button
                         android:id="@+id/b_plus15minute"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="2dp"
                         android:layout_weight="1"
+                        android:autoSizeMaxTextSize="100sp"
+                        android:autoSizeMinTextSize="12sp"
+                        android:autoSizeStepGranularity="1sp"
+                        android:autoSizeTextType="uniform"
+                        android:autoText="false"
                         android:background="@color/tt_back_light"
+                        android:insetLeft="-15dp"
+                        android:insetRight="-15dp"
                         android:minWidth="200dip"
                         android:minHeight="35dip"
                         android:text="+15min"
-                        android:textAllCaps="false"
-                        android:textSize="18dp" />
+                        android:textAllCaps="false" />
 
                 </LinearLayout>
 
@@ -151,55 +183,79 @@
 
                     <Button
                         android:id="@+id/b_minus12hour"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="2dp"
                         android:layout_weight="1"
+                        android:autoSizeMaxTextSize="100sp"
+                        android:autoSizeMinTextSize="12sp"
+                        android:autoSizeStepGranularity="1sp"
+                        android:autoSizeTextType="uniform"
+                        android:autoText="false"
                         android:background="@color/tt_back_light"
+                        android:insetLeft="-15dp"
+                        android:insetRight="-15dp"
                         android:minWidth="200dip"
                         android:minHeight="35dip"
                         android:text="-12h"
-                        android:textAllCaps="false"
-                        android:textSize="18dp" />
+                        android:textAllCaps="false" />
 
                     <Button
                         android:id="@+id/b_minus1hour"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="2dp"
                         android:layout_weight="1"
+                        android:autoSizeMaxTextSize="100sp"
+                        android:autoSizeMinTextSize="12sp"
+                        android:autoSizeStepGranularity="1sp"
+                        android:autoSizeTextType="uniform"
+                        android:autoText="false"
                         android:background="@color/tt_back_light"
+                        android:insetLeft="-15dp"
+                        android:insetRight="-15dp"
                         android:minWidth="200dip"
                         android:minHeight="35dip"
                         android:text="-1h"
-                        android:textAllCaps="false"
-                        android:textSize="18dp" />
+                        android:textAllCaps="false" />
 
                     <Button
                         android:id="@+id/b_plus1hour"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="2dp"
                         android:layout_weight="1"
+                        android:autoSizeMaxTextSize="100sp"
+                        android:autoSizeMinTextSize="12sp"
+                        android:autoSizeStepGranularity="1sp"
+                        android:autoSizeTextType="uniform"
+                        android:autoText="false"
                         android:background="@color/tt_back_light"
+                        android:insetLeft="-15dp"
+                        android:insetRight="-15dp"
                         android:minWidth="200dip"
                         android:minHeight="35dip"
                         android:text="+1h"
-                        android:textAllCaps="false"
-                        android:textSize="18dp" />
+                        android:textAllCaps="false" />
 
                     <Button
                         android:id="@+id/b_plus12hour"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="2dp"
                         android:layout_weight="1"
+                        android:autoSizeMaxTextSize="100sp"
+                        android:autoSizeMinTextSize="12sp"
+                        android:autoSizeStepGranularity="1sp"
+                        android:autoSizeTextType="uniform"
+                        android:autoText="false"
                         android:background="@color/tt_back_light"
+                        android:insetLeft="-15dp"
+                        android:insetRight="-15dp"
                         android:minWidth="200dip"
                         android:minHeight="35dip"
                         android:text="+12h"
-                        android:textAllCaps="false"
-                        android:textSize="18dp" />
+                        android:textAllCaps="false" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -210,55 +266,79 @@
 
                     <Button
                         android:id="@+id/b_minus7day"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="2dp"
                         android:layout_weight="1"
+                        android:autoSizeMaxTextSize="100sp"
+                        android:autoSizeMinTextSize="12sp"
+                        android:autoSizeStepGranularity="1sp"
+                        android:autoSizeTextType="uniform"
+                        android:autoText="false"
                         android:background="@color/tt_back_light"
+                        android:insetLeft="-15dp"
+                        android:insetRight="-15dp"
                         android:minWidth="200dip"
                         android:minHeight="35dip"
                         android:text="-7d"
-                        android:textAllCaps="false"
-                        android:textSize="18dp" />
+                        android:textAllCaps="false" />
 
                     <Button
                         android:id="@+id/b_minus1day"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="2dp"
                         android:layout_weight="1"
+                        android:autoSizeMaxTextSize="100sp"
+                        android:autoSizeMinTextSize="12sp"
+                        android:autoSizeStepGranularity="1sp"
+                        android:autoSizeTextType="uniform"
+                        android:autoText="false"
                         android:background="@color/tt_back_light"
+                        android:insetLeft="-15dp"
+                        android:insetRight="-15dp"
                         android:minWidth="200dip"
                         android:minHeight="35dip"
                         android:text="-1d"
-                        android:textAllCaps="false"
-                        android:textSize="18dp" />
+                        android:textAllCaps="false" />
 
                     <Button
                         android:id="@+id/b_plus1day"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="2dp"
                         android:layout_weight="1"
+                        android:autoSizeMaxTextSize="100sp"
+                        android:autoSizeMinTextSize="12sp"
+                        android:autoSizeStepGranularity="1sp"
+                        android:autoSizeTextType="uniform"
+                        android:autoText="false"
                         android:background="@color/tt_back_light"
+                        android:insetLeft="-15dp"
+                        android:insetRight="-15dp"
                         android:minWidth="200dip"
                         android:minHeight="35dip"
                         android:text="+1d"
-                        android:textAllCaps="false"
-                        android:textSize="18dp" />
+                        android:textAllCaps="false" />
 
                     <Button
                         android:id="@+id/b_plus7day"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="2dp"
                         android:layout_weight="1"
+                        android:autoSizeMaxTextSize="100sp"
+                        android:autoSizeMinTextSize="12sp"
+                        android:autoSizeStepGranularity="1sp"
+                        android:autoSizeTextType="uniform"
+                        android:autoText="false"
                         android:background="@color/tt_back_light"
+                        android:insetLeft="-15dp"
+                        android:insetRight="-15dp"
                         android:minWidth="200dip"
                         android:minHeight="35dip"
                         android:text="+7d"
-                        android:textAllCaps="false"
-                        android:textSize="18dp" />
+                        android:textAllCaps="false" />
 
                 </LinearLayout>
 
@@ -266,61 +346,85 @@
                     android:id="@+id/ll_qadd"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="2dp"
+                    android:layout_marginTop="4dp"
                     android:gravity="center"
                     android:orientation="horizontal">
 
                     <Button
                         android:id="@+id/b_add_qtime_now"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="2dp"
                         android:layout_weight="1"
+                        android:autoSizeMaxTextSize="100sp"
+                        android:autoSizeMinTextSize="12sp"
+                        android:autoSizeStepGranularity="1sp"
+                        android:autoSizeTextType="uniform"
+                        android:autoText="false"
                         android:background="@color/tt_back_light"
+                        android:insetLeft="-15dp"
+                        android:insetRight="-15dp"
                         android:minWidth="200dip"
                         android:minHeight="35dip"
                         android:text="now"
-                        android:textAllCaps="false"
-                        android:textSize="18dp" />
+                        android:textAllCaps="false" />
 
                     <Button
                         android:id="@+id/b_add_qtime_1d"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="2dp"
                         android:layout_weight="1"
+                        android:autoSizeMaxTextSize="100sp"
+                        android:autoSizeMinTextSize="12sp"
+                        android:autoSizeStepGranularity="1sp"
+                        android:autoSizeTextType="uniform"
+                        android:autoText="false"
                         android:background="@color/tt_back_light"
+                        android:insetLeft="-15dp"
+                        android:insetRight="-15dp"
                         android:minWidth="200dip"
                         android:minHeight="35dip"
-                        android:text="toworrow"
-                        android:textAllCaps="false"
-                        android:textSize="18dp" />
+                        android:text="tomorrow"
+                        android:textAllCaps="false" />
 
                     <Button
                         android:id="@+id/b_add_qtime_weekend"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="2dp"
                         android:layout_weight="1"
+                        android:autoSizeMaxTextSize="100sp"
+                        android:autoSizeMinTextSize="12sp"
+                        android:autoSizeStepGranularity="1sp"
+                        android:autoSizeTextType="uniform"
+                        android:autoText="false"
                         android:background="@color/tt_back_light"
+                        android:insetLeft="-15dp"
+                        android:insetRight="-15dp"
                         android:minWidth="200dip"
                         android:minHeight="35dip"
                         android:text="weekend"
-                        android:textAllCaps="false"
-                        android:textSize="18dp" />
+                        android:textAllCaps="false" />
 
                     <Button
                         android:id="@+id/b_add_qtime_monthend"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="2dp"
                         android:layout_weight="1"
+                        android:autoSizeMaxTextSize="100sp"
+                        android:autoSizeMinTextSize="12sp"
+                        android:autoSizeStepGranularity="1sp"
+                        android:autoSizeTextType="uniform"
+                        android:autoText="false"
                         android:background="@color/tt_back_light"
+                        android:insetLeft="-15dp"
+                        android:insetRight="-15dp"
                         android:minWidth="200dip"
                         android:minHeight="35dip"
                         android:text="monthend"
-                        android:textAllCaps="false"
-                        android:textSize="18dp" />
+                        android:textAllCaps="false" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -331,7 +435,7 @@
                 android:layout_marginStart="4dp"
                 android:layout_marginEnd="4dp"
                 android:layout_marginBottom="4dp"
-                android:background="@color/tt_delete"
+                android:background="@color/tt_back_light"
                 android:minHeight="35dip"
                 android:text="Delete Notification"
                 android:textAllCaps="false"

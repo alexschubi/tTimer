@@ -67,12 +67,10 @@ class MainActivity : AppCompatActivity()
         firebaseAnalytics = FirebaseAnalytics.getInstance(mContext)
         firebaseCrashlytics = FirebaseCrashlytics.getInstance()
         Functions().applyFirebase()
-        Functions().applyTheme()
         Functions().getDB()
-
-        Functions().getTheme()?.let { setTheme(it) }
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        Functions().applyTheme()
 
         b_settings.setOnClickListener(){
             NavHostFragment.findNavController(nav_host_fragment).navigate(R.id.action_ItemList_to_fragment_settings)

@@ -8,7 +8,7 @@
         app:title="Theme">
         <ListPreference
             android:id="@+id/pref_theme"
-            android:defaultValue="Default"
+            android:defaultValue="followSystem"
             android:entries="@array/pref_theme_modes_names"
             android:entryValues="@array/pref_theme_modes_values"
             android:theme="@style/Preferences_item"
