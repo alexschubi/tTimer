@@ -12,10 +12,12 @@
         <action
             android:id="@+id/action_ItemList_to_AddItem"
             app:destination="@id/AddItem"
-            app:enterAnim="@anim/nav_default_pop_enter_anim" />
+            app:enterAnim="@android:anim/fade_in"
+            app:popUpTo="@id/AddItem" />
         <action
             android:id="@+id/action_ItemList_to_fragment_settings"
-            app:destination="@id/fragment_settings" />
+            app:destination="@id/fragment_settings"
+            app:enterAnim="@android:anim/fade_in" />
     </fragment>
     <fragment
         android:id="@+id/AddItem"
@@ -24,8 +26,7 @@
         <action
             android:id="@+id/action_AddItem_to_ItemList"
             app:destination="@id/ItemList"
-            app:enterAnim="@anim/nav_default_pop_exit_anim" >
-        </action>
+            app:enterAnim="@android:anim/fade_out"></action>
         <argument
             android:name="itemArgument"
             app:argType="com.alexschubi.ttimer.Item"
@@ -38,6 +39,7 @@
         android:label="fragment_settings" >
         <action
             android:id="@+id/action_fragment_settings_to_ItemList"
-            app:destination="@id/ItemList" />
+            app:destination="@id/ItemList"
+            app:enterAnim="@android:anim/fade_out" />
     </fragment>
 </navigation>

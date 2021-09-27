@@ -5,7 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/tt_back"
     tools:context=".fragment_add_item">
 
     <ScrollView
@@ -31,13 +30,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
-                android:background="@color/tt_back_light"
                 android:ems="10"
                 android:hint="Text"
                 android:inputType="none|textMultiLine"
+                android:minHeight="35dip"
                 android:padding="4dp"
                 android:text="nmbnmbnm"
-                android:textColor="@color/tt_text_light"
                 android:textSize="20sp" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -46,36 +44,50 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="4dp"
                 android:layout_marginEnd="4dp"
-                android:clickable="false"
-                android:padding="4dp">
+                android:layout_marginBottom="8dp"
+                android:clickable="false">
 
                 <TextView
                     android:id="@+id/tv_addDateTime"
-                    style="@style/Widget.MaterialComponents.TextView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="2dp"
+                    android:autoSizeMaxTextSize="30sp"
+                    android:autoSizeMinTextSize="16sp"
+                    android:autoSizeStepGranularity="1sp"
+                    android:autoSizeTextType="uniform"
+                    android:background="@drawable/rounded_corner"
                     android:clickable="false"
+                    android:maxLines="1"
+                    android:minHeight="35dip"
                     android:paddingStart="4dp"
-                    android:text="01.01.0001 00:00 Wedensday"
+                    android:text="Wed 01.01.0001 00:00"
                     android:textColor="@color/tt_text_light"
-                    android:textSize="20sp"
+                    android:textSize="22sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toStartOf="@+id/tv_addTimeSpan"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintWidth_percent="0.66" />
+                    app:layout_constraintWidth_percent="0.63" />
 
                 <TextView
                     android:id="@+id/tv_addTimeSpan"
-                    style="@style/Widget.MaterialComponents.TextView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:autoSizeMaxTextSize="30sp"
+                    android:autoSizeMinTextSize="16sp"
+                    android:autoSizeStepGranularity="1sp"
+                    android:autoSizeTextType="uniform"
+                    android:background="@drawable/rounded_corner"
                     android:clickable="false"
+                    android:maxLines="1"
+                    android:minHeight="35dip"
                     android:paddingEnd="4dp"
                     android:text="in 200 minutes"
                     android:textAlignment="textEnd"
                     android:textColor="@color/tt_text_light"
-                    android:textSize="20sp"
+                    android:textSize="22sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/tv_addDateTime"
@@ -108,13 +120,12 @@
                         android:autoSizeStepGranularity="1sp"
                         android:autoSizeTextType="uniform"
                         android:autoText="false"
-                        android:background="@color/tt_back_light"
-                        android:insetLeft="-15dp"
-                        android:insetRight="-15dp"
+                        android:backgroundTint="@null"
                         android:minWidth="200dip"
                         android:minHeight="35dip"
                         android:text="-15min"
-                        android:textAllCaps="false" />
+                        android:textAllCaps="false"
+                        app:cornerRadius="5dp" />
 
                     <Button
                         android:id="@+id/b_minus5minute"
@@ -127,13 +138,12 @@
                         android:autoSizeStepGranularity="1sp"
                         android:autoSizeTextType="uniform"
                         android:autoText="false"
-                        android:background="@color/tt_back_light"
-                        android:insetLeft="-15dp"
-                        android:insetRight="-15dp"
+                        android:backgroundTint="@null"
                         android:minWidth="200dip"
                         android:minHeight="35dip"
                         android:text="-5min"
-                        android:textAllCaps="false" />
+                        android:textAllCaps="false"
+                        app:cornerRadius="5dp" />
 
                     <Button
                         android:id="@+id/b_plus5minute"
@@ -146,13 +156,12 @@
                         android:autoSizeStepGranularity="1sp"
                         android:autoSizeTextType="uniform"
                         android:autoText="false"
-                        android:background="@color/tt_back_light"
-                        android:insetLeft="-15dp"
-                        android:insetRight="-15dp"
+                        android:backgroundTint="@null"
                         android:minWidth="200dip"
                         android:minHeight="35dip"
                         android:text="+5min"
-                        android:textAllCaps="false" />
+                        android:textAllCaps="false"
+                        app:cornerRadius="5dp" />
 
                     <Button
                         android:id="@+id/b_plus15minute"
@@ -165,13 +174,11 @@
                         android:autoSizeStepGranularity="1sp"
                         android:autoSizeTextType="uniform"
                         android:autoText="false"
-                        android:background="@color/tt_back_light"
-                        android:insetLeft="-15dp"
-                        android:insetRight="-15dp"
                         android:minWidth="200dip"
                         android:minHeight="35dip"
                         android:text="+15min"
-                        android:textAllCaps="false" />
+                        android:textAllCaps="false"
+                        app:cornerRadius="5dp" />
 
                 </LinearLayout>
 
@@ -192,13 +199,12 @@
                         android:autoSizeStepGranularity="1sp"
                         android:autoSizeTextType="uniform"
                         android:autoText="false"
-                        android:background="@color/tt_back_light"
-                        android:insetLeft="-15dp"
-                        android:insetRight="-15dp"
+                        android:backgroundTint="@null"
                         android:minWidth="200dip"
                         android:minHeight="35dip"
                         android:text="-12h"
-                        android:textAllCaps="false" />
+                        android:textAllCaps="false"
+                        app:cornerRadius="5dp" />
 
                     <Button
                         android:id="@+id/b_minus1hour"
@@ -211,13 +217,12 @@
                         android:autoSizeStepGranularity="1sp"
                         android:autoSizeTextType="uniform"
                         android:autoText="false"
-                        android:background="@color/tt_back_light"
-                        android:insetLeft="-15dp"
-                        android:insetRight="-15dp"
+                        android:backgroundTint="@null"
                         android:minWidth="200dip"
                         android:minHeight="35dip"
                         android:text="-1h"
-                        android:textAllCaps="false" />
+                        android:textAllCaps="false"
+                        app:cornerRadius="5dp" />
 
                     <Button
                         android:id="@+id/b_plus1hour"
@@ -230,13 +235,12 @@
                         android:autoSizeStepGranularity="1sp"
                         android:autoSizeTextType="uniform"
                         android:autoText="false"
-                        android:background="@color/tt_back_light"
-                        android:insetLeft="-15dp"
-                        android:insetRight="-15dp"
+                        android:backgroundTint="@null"
                         android:minWidth="200dip"
                         android:minHeight="35dip"
                         android:text="+1h"
-                        android:textAllCaps="false" />
+                        android:textAllCaps="false"
+                        app:cornerRadius="5dp" />
 
                     <Button
                         android:id="@+id/b_plus12hour"
@@ -249,13 +253,12 @@
                         android:autoSizeStepGranularity="1sp"
                         android:autoSizeTextType="uniform"
                         android:autoText="false"
-                        android:background="@color/tt_back_light"
-                        android:insetLeft="-15dp"
-                        android:insetRight="-15dp"
+                        android:backgroundTint="@null"
                         android:minWidth="200dip"
                         android:minHeight="35dip"
                         android:text="+12h"
-                        android:textAllCaps="false" />
+                        android:textAllCaps="false"
+                        app:cornerRadius="5dp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -275,13 +278,12 @@
                         android:autoSizeStepGranularity="1sp"
                         android:autoSizeTextType="uniform"
                         android:autoText="false"
-                        android:background="@color/tt_back_light"
-                        android:insetLeft="-15dp"
-                        android:insetRight="-15dp"
+                        android:backgroundTint="@null"
                         android:minWidth="200dip"
                         android:minHeight="35dip"
                         android:text="-7d"
-                        android:textAllCaps="false" />
+                        android:textAllCaps="false"
+                        app:cornerRadius="5dp" />
 
                     <Button
                         android:id="@+id/b_minus1day"
@@ -294,13 +296,12 @@
                         android:autoSizeStepGranularity="1sp"
                         android:autoSizeTextType="uniform"
                         android:autoText="false"
-                        android:background="@color/tt_back_light"
-                        android:insetLeft="-15dp"
-                        android:insetRight="-15dp"
+                        android:backgroundTint="@null"
                         android:minWidth="200dip"
                         android:minHeight="35dip"
                         android:text="-1d"
-                        android:textAllCaps="false" />
+                        android:textAllCaps="false"
+                        app:cornerRadius="5dp" />
 
                     <Button
                         android:id="@+id/b_plus1day"
@@ -313,13 +314,12 @@
                         android:autoSizeStepGranularity="1sp"
                         android:autoSizeTextType="uniform"
                         android:autoText="false"
-                        android:background="@color/tt_back_light"
-                        android:insetLeft="-15dp"
-                        android:insetRight="-15dp"
+                        android:backgroundTint="@null"
                         android:minWidth="200dip"
                         android:minHeight="35dip"
                         android:text="+1d"
-                        android:textAllCaps="false" />
+                        android:textAllCaps="false"
+                        app:cornerRadius="5dp" />
 
                     <Button
                         android:id="@+id/b_plus7day"
@@ -332,13 +332,12 @@
                         android:autoSizeStepGranularity="1sp"
                         android:autoSizeTextType="uniform"
                         android:autoText="false"
-                        android:background="@color/tt_back_light"
-                        android:insetLeft="-15dp"
-                        android:insetRight="-15dp"
+                        android:backgroundTint="@null"
                         android:minWidth="200dip"
                         android:minHeight="35dip"
                         android:text="+7d"
-                        android:textAllCaps="false" />
+                        android:textAllCaps="false"
+                        app:cornerRadius="5dp" />
 
                 </LinearLayout>
 
@@ -361,13 +360,12 @@
                         android:autoSizeStepGranularity="1sp"
                         android:autoSizeTextType="uniform"
                         android:autoText="false"
-                        android:background="@color/tt_back_light"
-                        android:insetLeft="-15dp"
-                        android:insetRight="-15dp"
+                        android:backgroundTint="@null"
                         android:minWidth="200dip"
                         android:minHeight="35dip"
                         android:text="now"
-                        android:textAllCaps="false" />
+                        android:textAllCaps="false"
+                        app:cornerRadius="5dp" />
 
                     <Button
                         android:id="@+id/b_add_qtime_1d"
@@ -380,13 +378,12 @@
                         android:autoSizeStepGranularity="1sp"
                         android:autoSizeTextType="uniform"
                         android:autoText="false"
-                        android:background="@color/tt_back_light"
-                        android:insetLeft="-15dp"
-                        android:insetRight="-15dp"
+                        android:backgroundTint="@null"
                         android:minWidth="200dip"
                         android:minHeight="35dip"
                         android:text="tomorrow"
-                        android:textAllCaps="false" />
+                        android:textAllCaps="false"
+                        app:cornerRadius="5dp" />
 
                     <Button
                         android:id="@+id/b_add_qtime_weekend"
@@ -399,13 +396,12 @@
                         android:autoSizeStepGranularity="1sp"
                         android:autoSizeTextType="uniform"
                         android:autoText="false"
-                        android:background="@color/tt_back_light"
-                        android:insetLeft="-15dp"
-                        android:insetRight="-15dp"
+                        android:backgroundTint="@null"
                         android:minWidth="200dip"
                         android:minHeight="35dip"
                         android:text="weekend"
-                        android:textAllCaps="false" />
+                        android:textAllCaps="false"
+                        app:cornerRadius="5dp" />
 
                     <Button
                         android:id="@+id/b_add_qtime_monthend"
@@ -418,13 +414,12 @@
                         android:autoSizeStepGranularity="1sp"
                         android:autoSizeTextType="uniform"
                         android:autoText="false"
-                        android:background="@color/tt_back_light"
-                        android:insetLeft="-15dp"
-                        android:insetRight="-15dp"
+                        android:backgroundTint="@null"
                         android:minWidth="200dip"
                         android:minHeight="35dip"
                         android:text="monthend"
-                        android:textAllCaps="false" />
+                        android:textAllCaps="false"
+                        app:cornerRadius="5dp" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -435,12 +430,12 @@
                 android:layout_marginStart="4dp"
                 android:layout_marginEnd="4dp"
                 android:layout_marginBottom="4dp"
-                android:background="@color/tt_back_light"
+                android:backgroundTint="@null"
                 android:minHeight="35dip"
                 android:text="Delete Notification"
                 android:textAllCaps="false"
-                android:textColor="@color/tt_text_light"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                app:cornerRadius="5dp" />
 
             <RadioGroup
                 android:id="@+id/rg_color"
@@ -453,6 +448,17 @@
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:textAlignment="center">
+
+                <RadioButton
+                    android:id="@+id/rb_purple"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:button="?android:attr/listChoiceIndicatorMultiple"
+                    android:buttonTint="@color/item_purple"
+                    android:scaleX="1.5"
+                    android:scaleY="1.5" />
 
                 <RadioButton
                     android:id="@+id/rb_blue"
@@ -509,17 +515,6 @@
                     android:scaleX="1.5"
                     android:scaleY="1.5" />
 
-                <RadioButton
-                    android:id="@+id/rb_purple"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="2dp"
-                    android:layout_marginRight="2dp"
-                    android:button="?android:attr/listChoiceIndicatorMultiple"
-                    android:buttonTint="@color/item_purple"
-                    android:scaleX="1.5"
-                    android:scaleY="1.5" />
-
             </RadioGroup>
         </LinearLayout>
     </ScrollView>
@@ -531,11 +526,11 @@
         android:layout_margin="4dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:background="@color/tt_add"
+        android:backgroundTint="@color/tt_add"
         android:clickable="true"
         android:text="Add"
+        android:textAlignment="center"
         android:textAllCaps="false"
-        android:textColor="@color/tt_text_light"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

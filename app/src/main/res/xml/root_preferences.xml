@@ -11,19 +11,16 @@
             android:defaultValue="followSystem"
             android:entries="@array/pref_theme_modes_names"
             android:entryValues="@array/pref_theme_modes_values"
-            android:theme="@style/Preferences_item"
             app:key="pref_theme"
             app:title="pref_theme" />
 
     </androidx.preference.PreferenceCategory>
 
     <androidx.preference.PreferenceCategory
-        android:theme="@style/Preferences_category"
         app:title="Sync">
         <SwitchPreference
             android:id="@+id/pref_sync_enabled"
             android:defaultValue="false"
-            android:theme="@style/Preferences_item"
             app:key="pref_sync_enable"
             app:title="pref_sync_enable" />
         <EditTextPreference
@@ -31,13 +28,11 @@
             android:key="pref_sync_connection"
             android:selectAllOnFocus="true"
             android:singleLine="true"
-            android:theme="@style/Preferences_item"
             android:title="pref_sync_connection" />
     </androidx.preference.PreferenceCategory>
 
     <androidx.preference.PreferenceCategory
-        app:title="Send User Statistics"
-        android:theme="@style/Preferences_category">
+        app:title="Send User Statistics">
         <SwitchPreference
             android:defaultValue="false"
             android:key="pref_firebase_enabled"
@@ -45,17 +40,14 @@
     </androidx.preference.PreferenceCategory>
 
     <androidx.preference.PreferenceCategory
-        android:theme="@style/Preferences_category"
         app:title="Notifications">
         <SwitchPreference
             android:defaultValue="true"
             android:key="pref_notifications_enabled"
-            android:theme="@style/Preferences_item"
             android:title="pref_notifications_enabled" />
     </androidx.preference.PreferenceCategory>
 
     <androidx.preference.PreferenceCategory
-        android:theme="@style/Preferences_category"
         app:title="Information">
         <Preference
             android:key="pref_static_field_key"

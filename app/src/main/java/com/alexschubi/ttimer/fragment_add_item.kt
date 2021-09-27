@@ -22,15 +22,11 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.temporal.TemporalAdjusters
 
-class fragment_add_item: Fragment() {
+class fragment_add_item: Fragment() { //TODO light Theme
     private val args: fragment_add_itemArgs by navArgs<fragment_add_itemArgs>()
     private var binding: View? = null
     private var editItem: Item = Item(-1,"", null, null,false, false, "")
     private var getItem: Item? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -224,7 +220,7 @@ class fragment_add_item: Fragment() {
         var tYear: Int = actualDateTime.year
         //TODO use material timepicker datepicker
         val timePickerDialog = TimePickerDialog(this.context,
-            R.style.Theme_AppCompat_Light_Dialog,
+            R.style.ThemeOverlay_MaterialComponents_MaterialCalendar,
             { view, hourOfDay, minute ->
                 Log.d("TimePicker", "got Time $hourOfDay:$minute")
                 tMinute = minute
@@ -247,7 +243,7 @@ class fragment_add_item: Fragment() {
             tMinute,
             true)
         val datePickerDialog = DatePickerDialog(this.requireContext(),
-            R.style.Theme_AppCompat_Light_Dialog
+            R.style.ThemeOverlay_MaterialComponents_MaterialCalendar
             ,
             { view, year, month, dayOfMonth ->
                 Log.d("DatePicker","got Date $dayOfMonth.$month.$year")

@@ -28,10 +28,10 @@ class fragment_settings : PreferenceFragmentCompat() {
                 Functions().applyFirebase()
                 Log.d("Preferences", "applied Firebase settings")
             }
-            if (key == "pref_sync_enabled") {
+            if (key == "pref_sync_enabled") {//TODO sync
                 Log.d("Preferences", "applied Sync settings")
             }
-            if (key == "pref_notifications_enabled") {
+            if (key == "pref_notifications_enabled") {//TODO notifications
                 Log.d("Preferences", "applied notification settings")
             }
             if (key == "pref_theme") {

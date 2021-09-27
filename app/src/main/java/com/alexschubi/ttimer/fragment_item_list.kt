@@ -19,10 +19,6 @@ import kotlin.system.exitProcess
 class fragment_item_list : Fragment() {
     private lateinit var linearLayoutManager: LinearLayoutManager
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -40,7 +36,7 @@ class fragment_item_list : Fragment() {
         var adapter = RvAdapter( MainActivity(), castArrayList, object: RvAdapter.ContentListener{
             override fun onItemClicked(item: Item) {
                 super.onItemClicked(item)
-                //Toast.makeText(mContext, "editing Item ${item.Index}", Toast.LENGTH_SHORT).show()
+                //TODO sort by color/date
                 NavHostFragment.findNavController(this@fragment_item_list).navigate(fragment_item_listDirections.actionItemListToAddItem(item))
             }
         })
@@ -50,10 +46,14 @@ class fragment_item_list : Fragment() {
         timer.start()
 
         view.b_add.setOnClickListener {
+            //ViewAnimationUtils.createCircularReveal(fragment_add_item().view, b_add.x.toInt(), b_add.y.toInt(), 20F,50F)
             NavHostFragment.findNavController(this).navigate(R.id.action_ItemList_to_AddItem)
         }
+        fab_test_togglecrcl.setExpanded(false)
+        fab_test_togglecrcl.setOnClickListener{
+            fab_test_togglecrcl.setExpanded(!fab_test_togglecrcl.isExpanded)
+        }
         swipe_refresh_layout.setOnRefreshListener {
-
             Functions().getDB()
             Log.d("ItemList", "getDB()")
             recyclerViewItems.adapter?.notifyDataSetChanged()

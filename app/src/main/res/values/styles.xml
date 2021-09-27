@@ -5,6 +5,31 @@
         <item name="contentInsetEnd">0dp</item>
         <item name="contentInsetLeft">0dp</item>
         <item name="contentInsetRight">0dp</item>
+        <item name="materialButtonStyle">@style/tMaterialButton</item>
+        <item name="android:textViewStyle">@style/tTextView</item>
+        <item name="floatingActionButtonStyle">@style/tFloatingButton</item>
+    </style>
+
+    <style name="tMaterialButton">
+        <item name="backgroundTint">@color/tt_back</item>
+        <item name="android:textColor">@color/tt_text_light</item>
+        <item name="android:textAlignment">center</item>
+        <item name="cornerRadius">5dp</item>
+        <item name="autoSizeMaxTextSize">100sp</item>
+        <item name="autoSizeMinTextSize">12sp</item>
+        <item name="autoSizeStepGranularity">1sp</item>
+        <item name="autoSizeTextType">uniform</item>
+        <item name="android:padding">5dp</item>
+    </style>
+    <style name="tTextView" parent="Widget.MaterialComponents.TextView">
+        <item name="android:radius">5dp</item>
+        <item name="cornerRadius">5dp</item>
+        <item name="android:shape">rectangle</item>
+        <item name="background">@drawable/rounded_corner</item>
+    </style>
+    <style name="tFloatingButton" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="backgroundTint">@color/tt_add</item>
+        <item name="tint">@color/tt_text_light</item>
     </style>
 
     <style name="DatePicker_dark" parent="Theme.AppCompat.Light.Dialog.Alert">
@@ -23,15 +48,7 @@
         <item name="android:textColorPrimary">@color/tt_text</item>
         <item name="android:textColorSecondary">@color/tt_text_light</item>
     </style>
-    <style name="Preferences_item" parent="Preference">
-        <item name="colorAccent">@color/tt_back</item>
-    </style>
-    <style name="Preferences_category" parent="Preference">
-        <item name="colorAccent">@color/tt_back</item>
-        <item name="background">@color/tt_back_light</item>
-    </style>
-    <style name="Preference_screen" parent="Preference">
-    </style>
+
     <style name="RadioButton_blue">
         <item name="backgroundColor">@color/item_blue</item>
         <item name="android:textColor">@color/tt_text_light</item>
