@@ -27,6 +27,7 @@ class fragment_add_item: Fragment() { //TODO light Theme
     private var binding: View? = null
     private var editItem: Item = Item(-1,"", null, null,false, false, "")
     private var getItem: Item? = null
+    private var originItem: Item? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,6 +36,7 @@ class fragment_add_item: Fragment() { //TODO light Theme
         binding = inflater.inflate(R.layout.fragment_add_item, container, false)
         return binding.apply {
             getItem = args.itemArgument
+            originItem = args.itemArgument
         }
     }
 
@@ -177,8 +179,6 @@ class fragment_add_item: Fragment() { //TODO light Theme
     }
 
     private fun addItem() {
-        var index: Int
-        var color = ""
         var colorButton: RadioButton = view?.findViewById<RadioButton>(rg_color.checkedRadioButtonId)!!
         when (this.view?.findViewById<RadioButton>(colorButton.id)?.id) {
             rb_purple.id -> editItem.Color = "purple"
@@ -192,9 +192,12 @@ class fragment_add_item: Fragment() { //TODO light Theme
         editItem.Text = tb_add_text.text.toString()
         Functions().saveItem(editItem)
 
+        if (originItem != null) {
+            NotificationUtils().cancelNotification(originItem!!.Index)
+        }
+
         if(editItem.Date !=null && editItem.Date!!.isAfter(LocalDateTime.now())) {
-            Log.d("addItem", "try add Notification")
-            NotificationUtils(mContext).makeNotification(editItem)
+            NotificationUtils().makeNotification(editItem)
             Log.d("Notification", "Item ${editItem.Index} has Notification at " + editItem.Date!!.format(
                 DateTimeFormatter.ofPattern("dd.MM.uuuu HH:mm")))
         } else {
@@ -218,7 +221,6 @@ class fragment_add_item: Fragment() { //TODO light Theme
         var tDay: Int = actualDateTime.dayOfMonth
         var tMonth: Int = actualDateTime.monthValue
         var tYear: Int = actualDateTime.year
-        //TODO use material timepicker datepicker
         val timePickerDialog = TimePickerDialog(this.context,
             R.style.ThemeOverlay_MaterialComponents_MaterialCalendar,
             { view, hourOfDay, minute ->

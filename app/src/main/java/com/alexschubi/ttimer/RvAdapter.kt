@@ -1,34 +1,21 @@
 package com.alexschubi.ttimer
 
-import android.annotation.SuppressLint
-import android.content.res.Resources
 import android.graphics.*
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RadioButton
 import android.widget.Toast
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
-import androidx.core.graphics.BitmapCompat
-import androidx.core.graphics.drawable.toBitmap
-import androidx.core.graphics.drawable.toDrawable
 import androidx.core.graphics.scale
-import androidx.core.view.isNotEmpty
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.fragment_add_item.*
 import kotlinx.android.synthetic.main.recycler_view.view.*
-import java.time.LocalDateTime
-import java.time.Year
 import java.time.format.DateTimeFormatter
 
 
-class RvAdapter constructor(private val activity: MainActivity, private val rVArrayList: List<Item>, val listener: ContentListener) : RecyclerView.Adapter<RvAdapter.ViewHolder>(){
+class RvAdapter constructor(private val rVArrayList: List<Item>, val listener: ContentListener) : RecyclerView.Adapter<RvAdapter.ViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.recycler_view, parent, false)
@@ -43,7 +30,7 @@ class RvAdapter constructor(private val activity: MainActivity, private val rVAr
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         fun bind (rVArrayList: List<Item>, listener: ContentListener){
-            val currentItem = rVArrayList[absoluteAdapterPosition]
+            val currentItem = rVArrayList[bindingAdapterPosition]
             if (currentItem.Date == null) {
                 itemView.tv_item_span.visibility = View.GONE
                 itemView.tv_item_datetime.visibility = View.GONE
@@ -81,16 +68,17 @@ class SwipeToDelete(var adapter: RvAdapter) : ItemTouchHelper.SimpleCallback(0, 
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         val position = viewHolder.absoluteAdapterPosition
-        val item = viewHolder.itemView.id
-        Log.d("RecyclerView.swiped","adapterpos $position = item.id $item")
-        val editItem = Functions().getListString("Item $item")
+        val itemIndex = viewHolder.itemView.id
+        Log.d("RecyclerView.swiped","adapterpos $position = item.id $itemIndex")
+        val editItem = Functions().getListString("Item $itemIndex")
         editItem[8] = true.toString()
-        Functions().putListString("Item $item", editItem)
-        Log.d("Preferences", "changed Item $item to deleted")
+        Functions().putListString("Item $itemIndex", editItem)
+        Log.d("Preferences", "changed Item $itemIndex to deleted")
         Functions().getDB()
         adapter.notifyItemRemoved(position)
-        Toast.makeText(viewHolder.itemView.context, "Item $item deleted", Toast.LENGTH_SHORT).show()
-        Log.d("SharedPreferences", "deleted Item $item")
+        NotificationUtils().cancelNotification(itemIndex)
+        Toast.makeText(viewHolder.itemView.context, "Item $itemIndex deleted", Toast.LENGTH_SHORT).show()
+        Log.d("SharedPreferences", "deleted Item $itemIndex")
         Log.d("MainPrefs.size", mainPrefs.all.size.toString() + "items")
     }
 

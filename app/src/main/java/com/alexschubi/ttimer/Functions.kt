@@ -6,8 +6,10 @@ import java.time.LocalDateTime
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
+import kotlinx.android.synthetic.main.main_toolbar.view.*
 import java.time.Year
 import java.util.*
+import kotlin.collections.ArrayList
 
 class Functions {
 
@@ -37,12 +39,9 @@ class Functions {
     fun getDB() {
         getArrayList.clear()
         var getindex = suppPrefs.getInt("ItemAmount", 0)
-        Log.d("Preferences", "${mainPrefs.all.size} Items saved")
-        Log.d("Preferences", suppPrefs.getInt("ItemAmount", 0).toString() + " Items registered")
         if (getindex >= 0) {
             while (getindex > 0) {
                 val getStringItem = getListString("Item $getindex")
-                Log.d("Preferences", "get Item " + getStringItem)
                 if(!getStringItem[8].toBoolean()){
                     val getItem = Item(
                         getStringItem[0].toInt(),
@@ -146,6 +145,44 @@ class Functions {
         }
         Log.d("Preferences.save", "added Item: " + addItemString.toString())
         return addItemString
+    }
+    fun sortList(getList: ArrayList<Item>, getSortMode: Int): ArrayList<Item> {
+        var sortMode = getSortMode
+        when (getSortMode) {
+            0 -> {}
+            1 -> {
+                getList.sortBy { it.Color}
+                suppActionBar.customView.tv_sortMode.text = "sortBy Color"
+            }
+            2 -> {
+                getList.sortBy { it.Date}
+                suppActionBar.customView.tv_sortMode.text = "sortBy Date"
+            }
+            3 -> {
+                getList.sortedWith(compareBy({it.Date}, {it.Color}))
+                suppActionBar.customView.tv_sortMode.text = "sortBy Date>Color"
+            }
+            4 -> {
+                getList.sortedWith(compareBy({it.Color}, {it.Date}))
+                suppActionBar.customView.tv_sortMode.text = "sortBy Color>Date"
+            }
+            5 -> {
+                getList.sortBy { it.Date}
+                suppActionBar.customView.tv_sortMode.text = "sortBy "
+            }
+            6 -> {
+                getList.sortBy { it.Date}
+                suppActionBar.customView.tv_sortMode.text = "sortBy "
+            }
+            7 -> {
+                getList.sortBy { it.Index}
+                suppActionBar.customView.tv_sortMode.text = "sortBy"
+                sortMode = 0
+            }
+            else -> sortMode = 0
+        }
+        suppPrefs.edit().putInt("sortMode", sortMode).apply()
+        return getList
     }
 
     fun showKeyboard(view: View) {

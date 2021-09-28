@@ -38,7 +38,7 @@ lateinit var inputMethodManager: InputMethodManager
 lateinit var firebaseAnalytics: FirebaseAnalytics
 lateinit var firebaseCrashlytics: FirebaseCrashlytics
 
-val getArrayList = ArrayList<Item>()
+var getArrayList = ArrayList<Item>()
 
 class MainActivity : AppCompatActivity()
 {
@@ -105,7 +105,7 @@ class MainActivity : AppCompatActivity()
             /*try { PendingIntent.getBroadcast(context, editItem.Index, intent, PendingIntent.FLAG_CANCEL_CURRENT).cancel()}finally {
                 Log.d("PendingIntent", "already canceled")
             }*/
-            val notificationUtils = NotificationUtils(context)
+            val notificationUtils = NotificationUtils()
             val notification = notificationUtils.getNotificationBuilder(editItemArray).build()
             notificationUtils.getManager().notify(editItem.Index, notification)
 

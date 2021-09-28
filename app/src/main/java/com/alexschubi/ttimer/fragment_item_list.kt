@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_item_list.*
 import kotlinx.android.synthetic.main.fragment_item_list.view.*
 import kotlinx.android.synthetic.main.main_toolbar.*
+import kotlinx.android.synthetic.main.main_toolbar.view.*
 import kotlin.system.exitProcess
 
 class fragment_item_list : Fragment() {
@@ -30,10 +31,14 @@ class fragment_item_list : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val sortMode = suppPrefs.getInt("sortMode", 0)
+        suppActionBar.customView.tv_sortMode.visibility = View.VISIBLE
+        suppActionBar.customView.tv_sortMode?.text = sortMode.toString()
+        getArrayList = Functions().sortList(getArrayList, sortMode)
+
         linearLayoutManager = LinearLayoutManager(mContext)
         view.recyclerViewItems.layoutManager = linearLayoutManager
-        val castArrayList: List<Item> = getArrayList.asReversed() as List<Item>
-        var adapter = RvAdapter( MainActivity(), castArrayList, object: RvAdapter.ContentListener{
+        var adapter = RvAdapter( getArrayList.asReversed(), object: RvAdapter.ContentListener{
             override fun onItemClicked(item: Item) {
                 super.onItemClicked(item)
                 //TODO sort by color/date
@@ -56,6 +61,7 @@ class fragment_item_list : Fragment() {
         swipe_refresh_layout.setOnRefreshListener {
             Functions().getDB()
             Log.d("ItemList", "getDB()")
+            getArrayList = Functions().sortList(getArrayList, suppPrefs.getInt("sortMode", -1)+1)
             recyclerViewItems.adapter?.notifyDataSetChanged()
             swipe_refresh_layout.isRefreshing = false
         }
