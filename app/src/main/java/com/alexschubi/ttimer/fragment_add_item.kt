@@ -27,7 +27,6 @@ class fragment_add_item: Fragment() { //TODO light Theme
     private var binding: View? = null
     private var editItem: Item = Item(-1,"", null, null,false, false, "")
     private var getItem: Item? = null
-    private var originItem: Item? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,7 +35,6 @@ class fragment_add_item: Fragment() { //TODO light Theme
         binding = inflater.inflate(R.layout.fragment_add_item, container, false)
         return binding.apply {
             getItem = args.itemArgument
-            originItem = args.itemArgument
         }
     }
 
@@ -192,8 +190,8 @@ class fragment_add_item: Fragment() { //TODO light Theme
         editItem.Text = tb_add_text.text.toString()
         Functions().saveItem(editItem)
 
-        if (originItem != null) {
-            NotificationUtils().cancelNotification(originItem!!.Index)
+        if (getItem != null) {
+            NotificationUtils().cancelNotification(getItem!!)
         }
 
         if(editItem.Date !=null && editItem.Date!!.isAfter(LocalDateTime.now())) {

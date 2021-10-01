@@ -12,10 +12,11 @@ import android.graphics.BitmapFactory
 import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
-class NotificationUtils(base: Context) : ContextWrapper(base) {
+class NotificationUtils() : ContextWrapper(mContext) {
     private var notificationManager: NotificationManager? = null
 
     init {
@@ -93,7 +94,7 @@ class NotificationUtils(base: Context) : ContextWrapper(base) {
         }
     }
 
-    fun makeNotification(editItem: Item) {//TODO cancel notification when readded or deleted
+    fun makeNotification(editItem: Item) {
         val zonedItemDateTime = editItem.Date!!.atZone(ZoneId.systemDefault())
         val alarmManager = mContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(mContext, MainActivity.NotificationReceiver::class.java).putExtra("ItemArray", Functions().getItemArray(editItem))
@@ -105,6 +106,14 @@ class NotificationUtils(base: Context) : ContextWrapper(base) {
         )
         Log.d("AlarmManager", "doAlarm Item: ${editItem.Index} in " +
                 "${(zonedItemDateTime.toInstant().minusMillis(ZonedDateTime.now().toInstant().toEpochMilli())).toEpochMilli()} milliSeconds with" + pendingIntent.toString())
+    }
+    fun cancelNotification(cancelItem: Item) {
+        Log.d("cancelNotification", "got Item $cancelItem for canceling")
+        if(cancelItem.Date?.isAfter(LocalDateTime.now()) == true) {
+            val intent = Intent(mContext, MainActivity.NotificationReceiver::class.java).putExtra("ItemArray", Functions().getItemArray(cancelItem))
+            PendingIntent.getBroadcast(mContext, cancelItem.Index, intent, PendingIntent.FLAG_CANCEL_CURRENT).cancel()
+            Log.i("Notification", "canceled old pendingInent")
+        }
     }
 
 }

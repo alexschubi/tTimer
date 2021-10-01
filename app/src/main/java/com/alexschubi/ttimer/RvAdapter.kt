@@ -57,7 +57,7 @@ class RvAdapter constructor(private val rVArrayList: List<Item>, val listener: C
         fun onItemClicked(item: Item) {}
     }
 }
-class SwipeToDelete(var adapter: RvAdapter) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT){
+class SwipeToDelete(var adapter: RvAdapter, var displayItemList: MutableList<Item>) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT){
     override fun onMove(
         recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder,
@@ -76,7 +76,7 @@ class SwipeToDelete(var adapter: RvAdapter) : ItemTouchHelper.SimpleCallback(0, 
         Log.d("Preferences", "changed Item $itemIndex to deleted")
         Functions().getDB()
         adapter.notifyItemRemoved(position)
-        NotificationUtils().cancelNotification(itemIndex)
+        NotificationUtils().cancelNotification(displayItemList.get(position))
         Toast.makeText(viewHolder.itemView.context, "Item $itemIndex deleted", Toast.LENGTH_SHORT).show()
         Log.d("SharedPreferences", "deleted Item $itemIndex")
         Log.d("MainPrefs.size", mainPrefs.all.size.toString() + "items")
@@ -105,7 +105,7 @@ class SwipeToDelete(var adapter: RvAdapter) : ItemTouchHelper.SimpleCallback(0, 
     }
 }
 //TODO visualization
-class SwipeToEdit(var adapter: RvAdapter, var rVArrayList: ArrayList<Item>) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT){
+class SwipeToEdit(var adapter: RvAdapter, var displayItemList: MutableList<Item>) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT){
     override fun onMove(
         recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder,
@@ -115,7 +115,7 @@ class SwipeToEdit(var adapter: RvAdapter, var rVArrayList: ArrayList<Item>) : It
     }
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         val item = viewHolder.absoluteAdapterPosition
-        adapter.listener.onItemClicked(rVArrayList.asReversed().get(item))
+        adapter.listener.onItemClicked(displayItemList.get(item))
         Log.d("","")
         Log.d("FragmentManger", "create fragment_add_item...")
         //NavHostFragment.findNavController().navigate(R.id.action_ItemList_to_AddItem)

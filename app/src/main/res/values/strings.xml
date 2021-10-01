@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">tTimer</string>
+    <string name="app_version">1.0</string>
+    <string name="about_text">programmed by: Alexander Schubert</string>
     <!-- Preference Titles -->
     <string name="messages_header">Messages</string>
     <string name="sync_header">Sync</string>
@@ -26,9 +28,21 @@
         <item>followBattery</item>
         <item>light</item>
         <item>dark</item>
+    </string-array>
+    
+    <string-array name="sort_modes">
+        <item>sort by None ↑</item>
+        <item>sort by None ↓</item>
+        <item>sort by Color ↑</item>
+        <item>sort by Color ↓</item>
+        <item>sort by Date ↑</item>
+        <item>sort by Date ↓</item>
+        <item>sort by Date&lt;Color ↑</item>
+        <item>sort by Date&lt;Color ↓</item>
+        <item>sort by Color&lt;Date ↑</item>
+        <item>sort by Color&lt;Date ↓</item>
 
     </string-array>
 
-    <string name="app_version">1.0</string>
-    <string name="about_text">programmed by: Alexander Schubert</string>
+    
 </resources>

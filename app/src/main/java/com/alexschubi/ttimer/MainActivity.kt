@@ -14,6 +14,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.ActionBar.DISPLAY_SHOW_CUSTOM
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.fragment.NavHostFragment
@@ -30,15 +31,16 @@ import kotlin.system.exitProcess
 
 lateinit var mainPrefs: SharedPreferences
 lateinit var suppPrefs: SharedPreferences
-lateinit var mContext: Context
+lateinit var mContext: Context //TODO dont use
 lateinit var mapplication: Application
+lateinit var mainActivity: MainActivity
 lateinit var suppFragManager: FragmentManager
 lateinit var suppActionBar: ActionBar
 lateinit var inputMethodManager: InputMethodManager
 lateinit var firebaseAnalytics: FirebaseAnalytics
 lateinit var firebaseCrashlytics: FirebaseCrashlytics
 
-var getArrayList = ArrayList<Item>()
+var getArrayList = ArrayList<Item>() //TODO dont use
 
 class MainActivity : AppCompatActivity()
 {
@@ -49,12 +51,15 @@ class MainActivity : AppCompatActivity()
     override fun onCreate(savedInstanceState: Bundle?) {
 
         mContext = this
+        mainActivity = this
         mapplication = this.application
         inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
 
         suppActionBar = supportActionBar!!
         suppActionBar.setCustomView(R.layout.main_toolbar)
         suppActionBar.setDisplayShowCustomEnabled(true)
+        suppActionBar.displayOptions = DISPLAY_SHOW_CUSTOM
+        suppActionBar.show()
         suppActionBar.customView.b_settings.visibility = View.VISIBLE
         suppActionBar.customView.b_back.visibility = View.GONE
         suppFragManager = supportFragmentManager
@@ -62,7 +67,6 @@ class MainActivity : AppCompatActivity()
 
         mainPrefs = getPreferences(MODE_PRIVATE)
         suppPrefs = getPreferences(MODE_PRIVATE)
-
         FirebaseApp.initializeApp(this)
         firebaseAnalytics = FirebaseAnalytics.getInstance(mContext)
         firebaseCrashlytics = FirebaseCrashlytics.getInstance()
