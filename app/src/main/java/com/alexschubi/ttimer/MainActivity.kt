@@ -58,10 +58,10 @@ class MainActivity : AppCompatActivity()
         suppActionBar = supportActionBar!!
         suppActionBar.setCustomView(R.layout.main_toolbar)
         suppActionBar.setDisplayShowCustomEnabled(true)
-        suppActionBar.displayOptions = DISPLAY_SHOW_CUSTOM
-        suppActionBar.show()
         suppActionBar.customView.b_settings.visibility = View.VISIBLE
         suppActionBar.customView.b_back.visibility = View.GONE
+        suppActionBar.customView.sp_sortMode.visibility = View.VISIBLE
+
         suppFragManager = supportFragmentManager
         //TODO use navigation-back instead of direct transitions
 

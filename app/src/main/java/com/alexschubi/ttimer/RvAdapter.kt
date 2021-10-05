@@ -57,7 +57,7 @@ class RvAdapter constructor(private val rVArrayList: List<Item>, val listener: C
         fun onItemClicked(item: Item) {}
     }
 }
-class SwipeToDelete(var adapter: RvAdapter, var displayItemList: MutableList<Item>) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT){
+class SwipeToDelete(var adapter: RvAdapter, var displayItemList: List<Item>) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT){
     override fun onMove(
         recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder,
@@ -105,7 +105,7 @@ class SwipeToDelete(var adapter: RvAdapter, var displayItemList: MutableList<Ite
     }
 }
 //TODO visualization
-class SwipeToEdit(var adapter: RvAdapter, var displayItemList: MutableList<Item>) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT){
+class SwipeToEdit(var adapter: RvAdapter, var displayItemList: List<Item>) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT){
     override fun onMove(
         recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder,

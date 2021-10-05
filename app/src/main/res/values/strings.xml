@@ -37,10 +37,10 @@
         <item>sort by Color ↓</item>
         <item>sort by Date ↑</item>
         <item>sort by Date ↓</item>
-        <item>sort by Date&lt;Color ↑</item>
-        <item>sort by Date&lt;Color ↓</item>
-        <item>sort by Color&lt;Date ↑</item>
-        <item>sort by Color&lt;Date ↓</item>
+        <item>sort by Date&gt;Color ↑</item>
+        <item>sort by Date&gt;Color ↓</item>
+        <item>sort by Color&gt;Date ↑</item>
+        <item>sort by Color&gt;Date ↓</item>
 
     </string-array>
 

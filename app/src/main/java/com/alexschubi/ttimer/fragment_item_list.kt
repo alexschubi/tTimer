@@ -9,6 +9,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.ActivityNavigator
@@ -22,10 +24,11 @@ import kotlinx.android.synthetic.main.main_toolbar.view.*
 import kotlin.system.exitProcess
 
 
-private lateinit var displyItemList: MutableList<Item>
+private lateinit var displyItemList: List<Item>
 
 class fragment_item_list : Fragment() {
     private lateinit var linearLayoutManager: LinearLayoutManager
+    var checkInitial: Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,7 +42,6 @@ class fragment_item_list : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         //val sortMode = suppPrefs.getInt("sortMode", 0)
-        suppActionBar.customView.tv_sortMode.visibility = View.VISIBLE
         //suppActionBar.customView.tv_sortMode?.text = sortMode.toString()
         displyItemList = Functions().sortList(getArrayList, suppPrefs.getInt("sortMode", 0))
 
@@ -70,12 +72,49 @@ class fragment_item_list : Fragment() {
             Log.d("ItemList", "getDB()")
             suppPrefs.edit().putInt("sortMode", suppPrefs.getInt("sortMode", 0) +1).apply()
             displyItemList = Functions().sortList(getArrayList, suppPrefs.getInt("sortMode", 0))
-            recyclerViewItems.adapter?.notifyDataSetChanged()
             mainActivity.recreate()
             swipe_refresh_layout.isRefreshing = false
         }
-        sp_sortMode.onItemSelectedListener =
-        //b_settings.setOnClickListener(){ parentFragment?.findNavController()?.navigate(R.id.action_ItemList_to_fragment_settings) }
+
+       /* ArrayAdapter.createFromResource(mContext,R.array.sort_modes, android.R.layout.simple_spinner_item).also {
+            adapter -> adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            suppActionBar.customView.sp_sortMode.adapter = adapter
+        }*/
+        suppActionBar.customView.sp_sortMode.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                var sMode: String = parent?.getItemAtPosition(position) as String
+                var sModeInt: Int = 0
+                Log.d("Spinner", "change sortMode")
+                when (sMode){
+                    "sort by None ↑" -> sModeInt = 0
+                    "sort by None ↓" -> sModeInt = 1
+                    "sort by Color ↑" -> sModeInt = 2
+                    "sort by Color ↓" -> sModeInt = 3
+                    "sort by Date ↑" -> sModeInt = 4
+                    "sort by Date ↓" -> sModeInt = 5
+                    "sort by Date>Color ↑" -> sModeInt = 6
+                    "sort by Date>Color ↓" -> sModeInt = 7
+                    "sort by Color>Date ↑" -> sModeInt = 8
+                    "sort by Color>Date ↓" -> sModeInt = 9
+                    else -> Log.d("sortMode", "wrong sortModeKey String")
+                }
+                suppPrefs.edit().putInt("sortMode", sModeInt).apply()
+                Log.i("sortMode", "changed to $sModeInt")
+                /*if(++checkInitial<3){
+                    Log.d("sortMode", "DOnt try recreate and checkInitial is $checkInitial")
+                } else {
+                    checkInitial = 0
+                    Log.d("sortMode", "try recreate and checkInitial is $checkInitial")
+                    //mainActivity.recreate()
+                }*/
+                displyItemList = Functions().sortList(getArrayList, suppPrefs.getInt("sortMode", 0))
+                adapter.notifyDataSetChanged()
+            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                null
+            }
+        }
+
     }
 
     private val timer = object: CountDownTimer(1 * 60 * 60 * 1000, 1 * 10 * 1000){ //hour*min*sec*millisec
@@ -93,29 +132,4 @@ class fragment_item_list : Fragment() {
         super.onDestroyView()
         timer.cancel()
     }
-
- class SpinnerActivity: Activity(), AdapterView.OnItemSelectedListener{
-     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-         var sMode: String = parent?.getItemAtPosition(position) as String
-         var sModeInt: Int
-         when (sMode){
-             "sort by None ↑" -> sModeInt = 0
-             "sort by None ↑" -> sModeInt = 0
-             "sort by Color ↑" -> sModeInt = 0//TODO LAST
-             "sort by None ↑" -> sModeInt = 0
-             "sort by None ↑" -> sModeInt = 0
-             "sort by None ↑" -> sModeInt = 0
-             "sort by None ↑" -> sModeInt = 0
-             "sort by None ↑" -> sModeInt = 0
-
-
-         }
-         suppPrefs.edit().putInt("sortMode", sMode).apply()
-     }
-
-     override fun onNothingSelected(parent: AdapterView<*>?) {
-         null
-     }
-
- }
 }

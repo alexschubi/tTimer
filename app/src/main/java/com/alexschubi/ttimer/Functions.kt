@@ -146,61 +146,45 @@ class Functions {
         Log.d("Preferences.save", "added Item: " + addItemString.toString())
         return addItemString
     }
-    fun sortList(getList: ArrayList<Item>, getSortMode: Int): MutableList<Item> {
-        var sortMode = getSortMode
-        var sortedList: MutableList<Item>? = null
+    fun sortList(getList: ArrayList<Item>, getSortMode: Int): List<Item> {
+        var sortedList: List<Item>? = null
         when (getSortMode) {
-            0 -> {
-                suppActionBar.customView.tv_sortMode.text = "sortBy None"
-                sortedList = getList
-            }
-            1 -> {
-                getList.sortBy { it.Color} //TODO define sortation
-                sortedList = getList //normal sort is blue>green>orange>purple>red>yellow
-                suppActionBar.customView.tv_sortMode.text = "sortBy Color up"
-            }
+            0 -> { sortedList = getList }
+            1 -> { sortedList = getList.reversed() }
             2 -> {
                 getList.sortBy { it.Color}
-                sortedList = getList.asReversed()
-                suppActionBar.customView.tv_sortMode.text = "sortBy Color down"
+                sortedList = getList //normal sort is blue>green>orange>purple>red>yellow
             }
             3 -> {
-                getList.sortBy { it.Date}
-                sortedList = getList.asReversed()
-                suppActionBar.customView.tv_sortMode.text = "sortBy Date down"
+                getList.sortBy { it.Color}
+                sortedList = getList.reversed()
             }
             4 -> {
                 getList.sortBy { it.Date}
-                sortedList = getList.asReversed()
-                suppActionBar.customView.tv_sortMode.text = "sortBy Date down"
+                sortedList = getList
             }
             5 -> {
-                getList.sortedWith(compareBy({it.Date}, {it.Color}))
-                sortedList = getList
-                suppActionBar.customView.tv_sortMode.text = "sortBy Date>Color up"
+                getList.sortBy { it.Date}
+                sortedList = getList.asReversed()
             }
             6 -> {
                 getList.sortedWith(compareBy({it.Date}, {it.Color}))
-                sortedList = getList.asReversed()
-                suppActionBar.customView.tv_sortMode.text = "sortBy Date>Color down"
+                sortedList = getList
             }
             7 -> {
-                getList.sortedWith(compareBy({it.Color}, {it.Date}))
-                sortedList = getList
-                suppActionBar.customView.tv_sortMode.text = "sortBy Color>Date up"
+                getList.sortedWith(compareBy({it.Date}, {it.Color}))
+                sortedList = getList.reversed()
             }
             8 -> {
                 getList.sortedWith(compareBy({it.Color}, {it.Date}))
-                sortedList = getList.asReversed()
-                suppActionBar.customView.tv_sortMode.text = "sortBy Color>Date down"
-            }
-            else -> {
-                suppActionBar.customView.tv_sortMode.text = "sortBy None"
                 sortedList = getList
-                sortMode = 0
             }
+            9 -> {
+                getList.sortedWith(compareBy({it.Color}, {it.Date}))
+                sortedList = getList.reversed()
+            }
+            else -> { sortedList = getList }
         }
-        suppPrefs.edit().putInt("sortMode", sortMode).apply()
         return sortedList!!
     }
 

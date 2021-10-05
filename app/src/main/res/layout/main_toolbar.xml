@@ -26,17 +26,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tv_sortMode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <Spinner
         android:id="@+id/sp_sortMode"
         android:layout_width="0dp"
@@ -47,6 +36,6 @@
         app:layout_constraintEnd_toStartOf="@+id/b_settings"
         app:layout_constraintStart_toEndOf="@+id/b_back"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.5" />
+        app:layout_constraintWidth_percent=".5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
