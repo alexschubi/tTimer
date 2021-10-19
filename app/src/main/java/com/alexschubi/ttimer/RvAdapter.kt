@@ -11,26 +11,29 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.scale
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.alexschubi.ttimer.R.*
 import kotlinx.android.synthetic.main.recycler_view.view.*
 import java.time.format.DateTimeFormatter
 
 
 class RvAdapter constructor(private val rVArrayList: List<Item>, val listener: ContentListener) : RecyclerView.Adapter<RvAdapter.ViewHolder>(){
 
+    var mItems = rVArrayList
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.recycler_view, parent, false)
+        val itemView = LayoutInflater.from(parent.context).inflate(layout.recycler_view, parent, false)
         return ViewHolder(itemView)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(rVArrayList, listener)
+        holder.bind(mItems, listener)
     }
 
-    override fun getItemCount() = rVArrayList.size
+    override fun getItemCount() = mItems.size
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-        fun bind (rVArrayList: List<Item>, listener: ContentListener){
-            val currentItem = rVArrayList[bindingAdapterPosition]
+        fun bind (nItems: List<Item>, listener: ContentListener){
+            val currentItem = nItems[bindingAdapterPosition]
             if (currentItem.Date == null) {
                 itemView.tv_item_span.visibility = View.GONE
                 itemView.tv_item_datetime.visibility = View.GONE
@@ -42,15 +45,20 @@ class RvAdapter constructor(private val rVArrayList: List<Item>, val listener: C
             itemView.tv_item_text.text = currentItem.Text
 
             when (currentItem.Color) {
-                "blue"-> itemView.setBackgroundResource(R.color.item_blue)
-                "green" -> itemView.setBackgroundResource(R.color.item_green)
-                "yellow" -> itemView.setBackgroundResource(R.color.item_yellow)
-                "orange" -> itemView.setBackgroundResource(R.color.item_orange)
-                "red" -> itemView.setBackgroundResource(R.color.item_red)
-                "purple" -> itemView.setBackgroundResource(R.color.item_purple)
+                "blue"-> itemView.setBackgroundResource(drawable.rounded_corner_blue)
+                "green" -> itemView.setBackgroundResource(drawable.rounded_corner_green)
+                "yellow" -> itemView.setBackgroundResource(drawable.rounded_corner_yellow)
+                "orange" -> itemView.setBackgroundResource(drawable.rounded_corner_orange)
+                "red" -> itemView.setBackgroundResource(drawable.rounded_corner_red)
+                "purple" -> itemView.setBackgroundResource(drawable.rounded_corner_purple)
             }
+            itemView.elevation = 30F
+            itemView.translationZ = 30F
             itemView.id = currentItem.Index
         }
+    }
+    fun setItems(items: List<Item>) {
+        this.mItems = items
     }
 
     interface ContentListener {
@@ -93,7 +101,7 @@ class SwipeToDelete(var adapter: RvAdapter, var displayItemList: List<Item>) : I
     ) {
         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
         val background = ColorDrawable()
-        background.color = ContextCompat.getColor(mContext, R.color.tt_back_light)
+        background.color = ContextCompat.getColor(mContext, color.tt_back_light)
         background.setBounds(viewHolder.itemView.right+dX.toInt(),
             viewHolder.itemView.top,
             viewHolder.itemView.right,
@@ -132,7 +140,7 @@ class SwipeToEdit(var adapter: RvAdapter, var displayItemList: List<Item>) : Ite
     ) {
         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
         val background = ColorDrawable()
-        background.color = ContextCompat.getColor(mContext, R.color.tt_back_light)
+        background.color = ContextCompat.getColor(mContext, color.tt_back_light)
         background.setBounds(
             viewHolder.itemView.left,
             viewHolder.itemView.top,

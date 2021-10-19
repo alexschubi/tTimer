@@ -150,14 +150,18 @@ class Functions {
         var sortedList: List<Item>? = null
         when (getSortMode) {
             0 -> { sortedList = getList }
-            1 -> { sortedList = getList.reversed() }
+            1 -> {
+                sortedList = getList
+                sortedList = sortedList.reversed()
+            }
             2 -> {
                 getList.sortBy { it.Color}
                 sortedList = getList //normal sort is blue>green>orange>purple>red>yellow
             }
             3 -> {
                 getList.sortBy { it.Color}
-                sortedList = getList.reversed()
+                sortedList = getList
+                sortedList = sortedList.reversed()
             }
             4 -> {
                 getList.sortBy { it.Date}
@@ -165,7 +169,8 @@ class Functions {
             }
             5 -> {
                 getList.sortBy { it.Date}
-                sortedList = getList.asReversed()
+                sortedList = getList
+                sortedList = sortedList.reversed()
             }
             6 -> {
                 getList.sortedWith(compareBy({it.Date}, {it.Color}))
@@ -173,7 +178,8 @@ class Functions {
             }
             7 -> {
                 getList.sortedWith(compareBy({it.Date}, {it.Color}))
-                sortedList = getList.reversed()
+                sortedList = getList
+                sortedList = sortedList.reversed()
             }
             8 -> {
                 getList.sortedWith(compareBy({it.Color}, {it.Date}))
@@ -181,7 +187,8 @@ class Functions {
             }
             9 -> {
                 getList.sortedWith(compareBy({it.Color}, {it.Date}))
-                sortedList = getList.reversed()
+                sortedList = getList
+                sortedList = sortedList.reversed()
             }
             else -> { sortedList = getList }
         }

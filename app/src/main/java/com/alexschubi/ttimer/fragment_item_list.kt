@@ -43,21 +43,23 @@ class fragment_item_list : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         //val sortMode = suppPrefs.getInt("sortMode", 0)
         //suppActionBar.customView.tv_sortMode?.text = sortMode.toString()
+        suppActionBar.customView.sp_sortMode.visibility = View.VISIBLE
         displyItemList = Functions().sortList(getArrayList, suppPrefs.getInt("sortMode", 0))
 
         linearLayoutManager = LinearLayoutManager(mContext)
         view.recyclerViewItems.layoutManager = linearLayoutManager
-        var adapter = RvAdapter( displyItemList, object: RvAdapter.ContentListener{
+        var mlistener = object: RvAdapter.ContentListener{
             override fun onItemClicked(item: Item) {
                 super.onItemClicked(item)
                 //TODO sort by color/date
                 NavHostFragment.findNavController(this@fragment_item_list).navigate(fragment_item_listDirections.actionItemListToAddItem(item))
             }
-        })
+        }
+        var adapter = RvAdapter( displyItemList, mlistener)
         view.recyclerViewItems.adapter = adapter
         ItemTouchHelper(SwipeToDelete(adapter, displyItemList)).attachToRecyclerView(this.recyclerViewItems)
         ItemTouchHelper(SwipeToEdit(adapter, displyItemList)).attachToRecyclerView(this.recyclerViewItems)
-        timer.start()
+       // timer.start() TODO ACTIVATE
 
         view.b_add.setOnClickListener {
             //ViewAnimationUtils.createCircularReveal(fragment_add_item().view, b_add.x.toInt(), b_add.y.toInt(), 20F,50F)
@@ -69,8 +71,7 @@ class fragment_item_list : Fragment() {
         }
         swipe_refresh_layout.setOnRefreshListener {
             Functions().getDB()
-            Log.d("ItemList", "getDB()")
-            suppPrefs.edit().putInt("sortMode", suppPrefs.getInt("sortMode", 0) +1).apply()
+            Log.d("ItemList", "getDB() and reload Fragment")
             displyItemList = Functions().sortList(getArrayList, suppPrefs.getInt("sortMode", 0))
             mainActivity.recreate()
             swipe_refresh_layout.isRefreshing = false
@@ -80,6 +81,7 @@ class fragment_item_list : Fragment() {
             adapter -> adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             suppActionBar.customView.sp_sortMode.adapter = adapter
         }*/
+        suppActionBar.customView.sp_sortMode.setSelection(suppPrefs.getInt("sortMode", 0))
         suppActionBar.customView.sp_sortMode.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 var sMode: String = parent?.getItemAtPosition(position) as String
@@ -100,6 +102,7 @@ class fragment_item_list : Fragment() {
                 }
                 suppPrefs.edit().putInt("sortMode", sModeInt).apply()
                 Log.i("sortMode", "changed to $sModeInt")
+                Log.d("suppPrefs", "sortMode is: "+ suppPrefs.getInt("sortMode", 0).toString())
                 /*if(++checkInitial<3){
                     Log.d("sortMode", "DOnt try recreate and checkInitial is $checkInitial")
                 } else {
@@ -107,7 +110,7 @@ class fragment_item_list : Fragment() {
                     Log.d("sortMode", "try recreate and checkInitial is $checkInitial")
                     //mainActivity.recreate()
                 }*/
-                displyItemList = Functions().sortList(getArrayList, suppPrefs.getInt("sortMode", 0))
+                adapter.setItems(Functions().sortList(getArrayList, suppPrefs.getInt("sortMode", 0)))
                 adapter.notifyDataSetChanged()
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {

@@ -41,6 +41,7 @@ class fragment_add_item: Fragment() { //TODO light Theme
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         tv_addTimeSpan.text = ""
+        suppActionBar.customView.sp_sortMode.visibility = View.GONE
         if (getItem!=null) {
             editItem = getItem!!
             b_add_final.text = "Save"

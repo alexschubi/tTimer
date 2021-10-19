@@ -28,14 +28,15 @@
 
     <Spinner
         android:id="@+id/sp_sortMode"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
         android:entries="@array/sort_modes"
-        android:textAlignment="center"
+        android:gravity="center"
+        android:textAlignment="gravity"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/b_settings"
         app:layout_constraintStart_toEndOf="@+id/b_back"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent=".5" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

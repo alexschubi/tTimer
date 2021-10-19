@@ -12,6 +12,7 @@
             android:entries="@array/pref_theme_modes_names"
             android:entryValues="@array/pref_theme_modes_values"
             app:key="pref_theme"
+            app:useSimpleSummaryProvider="true"
             app:title="pref_theme" />
 
     </androidx.preference.PreferenceCategory>
@@ -24,9 +25,10 @@
             app:key="pref_sync_enable"
             app:title="pref_sync_enable" />
         <EditTextPreference
-            android:defaultValue=""
+            android:defaultValue="1234567890"
             android:key="pref_sync_connection"
             android:selectAllOnFocus="true"
+            app:useSimpleSummaryProvider="true"
             android:singleLine="true"
             android:title="pref_sync_connection" />
     </androidx.preference.PreferenceCategory>

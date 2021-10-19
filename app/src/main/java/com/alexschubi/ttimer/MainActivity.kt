@@ -80,6 +80,7 @@ class MainActivity : AppCompatActivity()
             NavHostFragment.findNavController(nav_host_fragment).navigate(R.id.action_ItemList_to_fragment_settings)
             suppActionBar.customView.b_settings.visibility = View.GONE
             suppActionBar.customView.b_back.visibility = View.VISIBLE
+            suppActionBar.customView.sp_sortMode.visibility = View.GONE
         }
     }
 
