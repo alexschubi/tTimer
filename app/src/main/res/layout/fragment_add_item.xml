@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment_add_item">
+    tools:context="xyz.alexschubi.ttimer.fragment_add_item">
 
     <ScrollView
         android:id="@+id/scrollView2"

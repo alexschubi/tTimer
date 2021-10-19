@@ -1,4 +1,4 @@
-package com.alexschubi.ttimer
+package xyz.alexschubi.ttimer
 
 import android.graphics.*
 import android.graphics.drawable.ColorDrawable
@@ -11,7 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.scale
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.alexschubi.ttimer.R.*
+import xyz.alexschubi.ttimer.R.*
 import kotlinx.android.synthetic.main.recycler_view.view.*
 import java.time.format.DateTimeFormatter
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.alexschubi.ttimer">
+    package="xyz.alexschubi.ttimer">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -14,7 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.alexschubi.ttimer.MainActivity"
+        <activity android:name="xyz.alexschubi.ttimer.MainActivity"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
         <receiver
-            android:name="com.alexschubi.ttimer.MainActivity$NotificationReceiver"
+            android:name="xyz.alexschubi.ttimer.MainActivity$NotificationReceiver"
             android:directBootAware="true"
             android:enabled="true"
             android:exported="true">
@@ -32,7 +32,7 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name="com.alexschubi.ttimer.MainActivity$NotificationSnoozeReceiver"
+            android:name="xyz.alexschubi.ttimer.MainActivity$NotificationSnoozeReceiver"
             android:directBootAware="true"
             android:enabled="true"
             android:exported="true">
@@ -42,7 +42,7 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name="com.alexschubi.ttimer.MainActivity$NotificationDismissReceiver"
+            android:name="xyz.alexschubi.ttimer.MainActivity$NotificationDismissReceiver"
             android:directBootAware="true"
             android:enabled="true"
             android:exported="true" >

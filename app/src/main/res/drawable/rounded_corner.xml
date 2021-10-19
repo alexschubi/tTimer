@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <corners android:radius="5dp" />
-    <solid android:color="@color/tt_back"/>
-</shape>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:elevation="5dp">
+    <!-- Shadow -->
+    <item>
+        <shape  android:shape="rectangle">
+            <solid android:color="#80000000"/>
+            <corners android:radius="5dp" />
+        </shape>
+    </item>
+    <!-- Top color -->
+    <item android:bottom="2dp" android:right="2dp">
+        <shape  android:shape="rectangle">
+            <solid android:color="@color/tt_back" />
+            <corners android:radius="5dp" />
+        </shape>
+    </item>
+</layer-list>

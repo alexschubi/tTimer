@@ -1,4 +1,4 @@
-package com.alexschubi.ttimer
+package xyz.alexschubi.ttimer
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.navArgs
+import xyz.alexschubi.ttimer.R
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_add_item.*
 import kotlinx.android.synthetic.main.fragment_add_item.view.*

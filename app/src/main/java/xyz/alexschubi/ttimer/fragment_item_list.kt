@@ -1,7 +1,5 @@
-package com.alexschubi.ttimer
+package xyz.alexschubi.ttimer
 
-import android.app.Activity
-import android.content.Intent.getIntent
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
@@ -9,11 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Spinner
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.navigation.ActivityNavigator
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -41,14 +36,12 @@ class fragment_item_list : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //val sortMode = suppPrefs.getInt("sortMode", 0)
-        //suppActionBar.customView.tv_sortMode?.text = sortMode.toString()
         suppActionBar.customView.sp_sortMode.visibility = View.VISIBLE
         displyItemList = Functions().sortList(getArrayList, suppPrefs.getInt("sortMode", 0))
 
         linearLayoutManager = LinearLayoutManager(mContext)
         view.recyclerViewItems.layoutManager = linearLayoutManager
-        var mlistener = object: RvAdapter.ContentListener{
+        var mlistener = object: RvAdapter.ContentListener {
             override fun onItemClicked(item: Item) {
                 super.onItemClicked(item)
                 //TODO sort by color/date
@@ -69,7 +62,7 @@ class fragment_item_list : Fragment() {
         fab_test_togglecrcl.setOnClickListener{
             fab_test_togglecrcl.setExpanded(!fab_test_togglecrcl.isExpanded)
         }
-        swipe_refresh_layout.setOnRefreshListener {
+        swipe_refresh_layout.setOnRefreshListener {//TODO sometimes Items lose date after refreshing
             Functions().getDB()
             Log.d("ItemList", "getDB() and reload Fragment")
             displyItemList = Functions().sortList(getArrayList, suppPrefs.getInt("sortMode", 0))

@@ -1,4 +1,4 @@
-package com.alexschubi.ttimer
+package xyz.alexschubi.ttimer
 
 import android.app.Application
 import android.app.PendingIntent
@@ -18,6 +18,7 @@ import androidx.appcompat.app.ActionBar.DISPLAY_SHOW_CUSTOM
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.fragment.NavHostFragment
+import xyz.alexschubi.ttimer.R
 import com.google.firebase.FirebaseApp
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics

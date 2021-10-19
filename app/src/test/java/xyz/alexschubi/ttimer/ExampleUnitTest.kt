@@ -1,4 +1,4 @@
-package com.alexschubi.ttimer
+package xyz.alexschubi.ttimer
 
 import org.junit.Test
 

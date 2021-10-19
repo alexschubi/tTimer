@@ -1,4 +1,4 @@
-package com.alexschubi.ttimer
+package xyz.alexschubi.ttimer
 
 import android.app.AlarmManager
 import android.app.Notification.EXTRA_NOTIFICATION_ID
@@ -12,6 +12,7 @@ import android.graphics.BitmapFactory
 import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import xyz.alexschubi.ttimer.R
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZonedDateTime

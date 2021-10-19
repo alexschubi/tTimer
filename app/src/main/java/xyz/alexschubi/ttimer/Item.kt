@@ -1,4 +1,4 @@
-package com.alexschubi.ttimer
+package xyz.alexschubi.ttimer
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize

@@ -1,20 +1,12 @@
-package com.alexschubi.ttimer
+package xyz.alexschubi.ttimer
 
-import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
-import android.view.MenuItem
 import android.view.View
-import android.view.View.GONE
-import android.view.View.INVISIBLE
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.constraintlayout.widget.ConstraintSet.GONE
 import androidx.navigation.fragment.NavHostFragment
 import androidx.preference.PreferenceFragmentCompat
-import androidx.preference.PreferenceManager
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.main_toolbar.*
 import kotlinx.android.synthetic.main.main_toolbar.view.*
 
 class fragment_settings : PreferenceFragmentCompat() {
@@ -48,6 +40,7 @@ class fragment_settings : PreferenceFragmentCompat() {
             }
             if (key == "pref_theme") {
                 Functions().applyTheme()
+                suppActionBar.customView.sp_sortMode.visibility = View.GONE
                 Log.d("Preferences", "applied Theme settings")
             }
         }

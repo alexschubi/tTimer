@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:445551445345:android:8ffa23c981a25a3c44b120",
+        "mobilesdk_app_id": "1:445551445345:android:17977e8fc1a8056144b120",
         "android_client_info": {
-          "package_name": "com.alexschubi.ttimer"
+          "package_name": "xyz.alexschubi.ttimer"
         }
       },
       "oauth_client": [
