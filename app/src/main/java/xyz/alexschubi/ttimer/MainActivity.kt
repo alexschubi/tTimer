@@ -88,6 +88,7 @@ class MainActivity : AppCompatActivity()
     open class NotificationReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             val pendResult = this.goAsync()
+            mContext = context
             Log.d("NotificationReceiver", "triggered")
             mainPrefs = context.getSharedPreferences("mainPrefs", MODE_PRIVATE)
             suppPrefs = context.getSharedPreferences("suppPrefs", MODE_PRIVATE)
