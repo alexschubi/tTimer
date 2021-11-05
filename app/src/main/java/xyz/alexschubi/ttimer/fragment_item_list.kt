@@ -52,7 +52,7 @@ class fragment_item_list : Fragment() {
         view.recyclerViewItems.adapter = adapter
         ItemTouchHelper(SwipeToDelete(adapter, displyItemList)).attachToRecyclerView(this.recyclerViewItems)
         ItemTouchHelper(SwipeToEdit(adapter, displyItemList)).attachToRecyclerView(this.recyclerViewItems)
-       // timer.start() TODO ACTIVATE
+        timer.start()
 
         view.b_add.setOnClickListener {
             //ViewAnimationUtils.createCircularReveal(fragment_add_item().view, b_add.x.toInt(), b_add.y.toInt(), 20F,50F)

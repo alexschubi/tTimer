@@ -48,6 +48,10 @@ class MainActivity : AppCompatActivity()
     //Arrays Adapter
     private val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("EE dd.MM.yyyy HH:mm")
 
+    //TODO undo button after delete
+    //TODO Bug when cxhanging theme sortmode is shown in settings
+    //TODO bug when adding a new item sometimes not adding for real
+
     //START
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -156,7 +160,9 @@ class MainActivity : AppCompatActivity()
     }
     open class NotificationDismissReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
-            Log.d("NotificationDismissReceiver", "triggered")
+            val pendResult = this.goAsync()
+            Log.i("NotificationDismissReceiver", "trigged")
+            pendResult.finish()
         }
 
     }

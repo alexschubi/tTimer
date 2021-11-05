@@ -82,9 +82,9 @@ class SwipeToDelete(var adapter: RvAdapter, var displayItemList: List<Item>) : I
         editItem[8] = true.toString()
         Functions().putListString("Item $itemIndex", editItem)
         Log.d("Preferences", "changed Item $itemIndex to deleted")
+        getArrayList.find { it.Index == itemIndex }?.let { NotificationUtils().cancelNotification(it) }
         Functions().getDB()
         adapter.notifyItemRemoved(position)
-        NotificationUtils().cancelNotification(displayItemList.get(position))
         Toast.makeText(viewHolder.itemView.context, "Item $itemIndex deleted", Toast.LENGTH_SHORT).show()
         Log.d("SharedPreferences", "deleted Item $itemIndex")
         Log.d("MainPrefs.size", mainPrefs.all.size.toString() + "items")

@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="xyz.alexschubi.ttimer.fragment_item_list">
@@ -36,7 +37,7 @@
         <com.google.android.material.circularreveal.CircularRevealFrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="invisible"
+            android:visibility="gone"
             app:layout_behavior="@string/fab_transformation_sheet_behavior">
 
             <androidx.constraintlayout.widget.ConstraintLayout

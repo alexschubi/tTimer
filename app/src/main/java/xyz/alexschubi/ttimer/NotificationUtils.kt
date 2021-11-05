@@ -52,18 +52,19 @@ class NotificationUtils() : ContextWrapper(mContext) {
         val intent = Intent(this, MainActivity.NotificationReceiver::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
-        val pendingIntent = PendingIntent.getActivity(this, 0, intent, 0)
+        val pendingIntent = PendingIntent.getActivity(this, editItem[0].toInt(), intent, 0)
 
-        val snoozeintent = Intent(this, MainActivity.NotificationSnoozeReceiver::class.java).apply {
+        val snoozeIntent = Intent(this, MainActivity.NotificationSnoozeReceiver::class.java).apply {
             putExtra(EXTRA_NOTIFICATION_ID, 0)
+            putExtra("currentItem", editItem)
         }
-        val snoozePendingIntent = PendingIntent.getActivity(this, 0, snoozeintent, 0)
+        val snoozePendingIntent = PendingIntent.getBroadcast(this, editItem[0].toInt(), snoozeIntent, 0)
 
         val dismissIntent = Intent(this, MainActivity.NotificationDismissReceiver::class.java).apply {
             putExtra(EXTRA_NOTIFICATION_ID, 0)
             putExtra("currentItem", editItem)
         }
-        val dismissPendingIntent = PendingIntent.getActivity(this, 0, dismissIntent, 0)
+        val dismissPendingIntent = PendingIntent.getBroadcast(this, editItem[0].toInt(), dismissIntent, 0)
 
         return NotificationCompat.Builder(
             applicationContext,
@@ -86,6 +87,7 @@ class NotificationUtils() : ContextWrapper(mContext) {
             )
             setDeleteIntent(dismissPendingIntent)
             addAction(R.drawable.ic_baseline_more_time_24, "Delay 10min", snoozePendingIntent)
+            addAction(R.drawable.ic_baseline_delete_outline_24, "Dismiss", dismissPendingIntent)
             setGroup("tTimer")
             setGroupSummary(true)
             priority = NotificationCompat.PRIORITY_DEFAULT
