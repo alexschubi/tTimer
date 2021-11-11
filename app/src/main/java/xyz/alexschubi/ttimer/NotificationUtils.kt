@@ -55,13 +55,13 @@ class NotificationUtils() : ContextWrapper(mContext) {
         val pendingIntent = PendingIntent.getActivity(this, editItem[0].toInt(), intent, 0)
 
         val snoozeIntent = Intent(this, MainActivity.NotificationSnoozeReceiver::class.java).apply {
-            putExtra(EXTRA_NOTIFICATION_ID, 0)
+            putExtra(EXTRA_NOTIFICATION_ID, editItem[0])
             putExtra("currentItem", editItem)
         }
         val snoozePendingIntent = PendingIntent.getBroadcast(this, editItem[0].toInt(), snoozeIntent, 0)
 
         val dismissIntent = Intent(this, MainActivity.NotificationDismissReceiver::class.java).apply {
-            putExtra(EXTRA_NOTIFICATION_ID, 0)
+            putExtra(EXTRA_NOTIFICATION_ID, editItem[0])
             putExtra("currentItem", editItem)
         }
         val dismissPendingIntent = PendingIntent.getBroadcast(this, editItem[0].toInt(), dismissIntent, 0)
@@ -107,16 +107,15 @@ class NotificationUtils() : ContextWrapper(mContext) {
             zonedItemDateTime.toInstant().toEpochMilli(),
             pendingIntent
         )
-        Log.d("AlarmManager", "doAlarm Item: ${editItem.Index} in " +
+        Log.i("AlarmManager", "doAlarm Item: ${editItem.Index} in " +
                 "${(zonedItemDateTime.toInstant().minusMillis(ZonedDateTime.now().toInstant().toEpochMilli())).toEpochMilli()} milliSeconds with" + pendingIntent.toString())
     }
     fun cancelNotification(cancelItem: Item) {
         Log.d("cancelNotification", "got Item $cancelItem for canceling")
-        if(cancelItem.Date?.isAfter(LocalDateTime.now()) == true) {
-            val intent = Intent(mContext, MainActivity.NotificationReceiver::class.java).putExtra("ItemArray", Functions().getItemArray(cancelItem))
-            PendingIntent.getBroadcast(mContext, cancelItem.Index, intent, PendingIntent.FLAG_CANCEL_CURRENT).cancel()
-            Log.i("Notification", "canceled old pendingInent")
-        }
+        val intent = Intent(mContext, MainActivity.NotificationReceiver::class.java).putExtra("ItemArray", Functions().getItemArray(cancelItem))
+        PendingIntent.getBroadcast(mContext, cancelItem.Index, intent, PendingIntent.FLAG_CANCEL_CURRENT).cancel()
+        getManager().cancel(cancelItem.Index)
+        Log.i("Notification", "canceled old pendingInent")
     }
 
 }

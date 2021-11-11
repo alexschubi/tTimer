@@ -96,72 +96,44 @@ class MainActivity : AppCompatActivity()
             Log.d("NotificationReceiver", "triggered")
             mainPrefs = context.getSharedPreferences("mainPrefs", MODE_PRIVATE)
             suppPrefs = context.getSharedPreferences("suppPrefs", MODE_PRIVATE)
-            val snoozeTime = 600000 //1Min=60*1000
 
             val editItemArray = intent.extras!!.getStringArrayList("ItemArray")!!
-            //Log.d("NotificationReceiver", "get saved Item $editItemIndex")
-            //val editItemArray: ArrayList<String> = Functions().getListString("Item $editItemIndex")
-            Log.d("NotificationReceiver", "convert $editItemArray to Item")
-            var editItem = Item(
-                editItemArray[0].toInt(),
-                editItemArray[1],
-                Functions().getTimeOfArray(editItemArray),
-                null,
-                editItemArray[7].toBoolean(),
-                editItemArray[8].toBoolean(),
-                editItemArray[9]
-            )
-            Log.d("NotificationReceiver", "got Item " + editItem.toString())
+            Log.d("NotificationReceiver", "got Item " + editItemArray)
+            var editItem = Functions().ItemFromArray(editItemArray)
 
-            /*try { PendingIntent.getBroadcast(context, editItem.Index, intent, PendingIntent.FLAG_CANCEL_CURRENT).cancel()}finally {
-                Log.d("PendingIntent", "already canceled")
-            }*/
-            val notificationUtils = NotificationUtils()
-            val notification = notificationUtils.getNotificationBuilder(editItemArray).build()
-            notificationUtils.getManager().notify(editItem.Index, notification)
-
+            val notification = NotificationUtils().getNotificationBuilder(editItemArray).build()
+            NotificationUtils().getManager().notify(editItem.Index, notification)
             pendResult.finish()
         }
     }
-    open class NotificationSnoozeReceiver: BroadcastReceiver(){//TODO not showing ass button
+    open class NotificationSnoozeReceiver: BroadcastReceiver(){
         override fun onReceive(context: Context, intent: Intent) {
-        val pendResult = this.goAsync()
+            val pendResult = this.goAsync()
+            mContext = context
             Log.i("NotificationSnoozeReceiver", "trigged")
-            pendResult.finish()
-
-        /*
             mainPrefs = context.getSharedPreferences("mainPrefs", MODE_PRIVATE)
             suppPrefs = context.getSharedPreferences("suppPrefs", MODE_PRIVATE)
-            val editItemArray = intent.extras!!.getStringArrayList("ItemArray")!!
-            Log.d("NotificationSnoozeReceiver", "convert $editItemArray to Item")
-            var editItem = Item(
-                editItemArray[0].toInt(),
-                editItemArray[1],
-                Functions().getTimeOfArray(editItemArray),
-                null,
-                editItemArray[7].toBoolean(),
-                editItemArray[8].toBoolean(),
-                editItemArray[9]
-            )
-            Log.d("NotificationSnoozeReceiver", "got Item " + editItem.toString())
+            val editItemArray = intent.extras!!.getStringArrayList("currentItem")!!
+            var editItem = Functions().ItemFromArray(editItemArray)
             editItem.Date = LocalDateTime.now().plusMinutes(10)
             Functions().saveItem(editItem)
-
-            val notificationUtils = NotificationUtils(context)
-            if(editItem.Date !=null && editItem.Date!!.isAfter(LocalDateTime.now())) {
-                NotificationUtils(mContext).makeNotification(editItem)
-                Log.d("Notification", "Item ${editItem.Index} has Notification at " + editItem.Date!!.format(
-                    DateTimeFormatter.ofPattern("dd.MM.uuuu HH:mm")))
-            }
-            Log.i("AlarmMangaer", "notify Item ${editItem.Index} in " + editItem.Date!!.format(
-                DateTimeFormatter.ofPattern("dd.MM.uuuu HH:mm")))
-        */
+            NotificationUtils().cancelNotification(editItem)
+            NotificationUtils().makeNotification(editItem)
+            pendResult.finish()
         }
     }
     open class NotificationDismissReceiver : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
+        override fun onReceive(context: Context, intent: Intent) {
             val pendResult = this.goAsync()
+            mContext = context
             Log.i("NotificationDismissReceiver", "trigged")
+            mainPrefs = context.getSharedPreferences("mainPrefs", MODE_PRIVATE)
+            suppPrefs = context.getSharedPreferences("suppPrefs", MODE_PRIVATE)
+            val editItemArray = intent.extras!!.getStringArrayList("currentItem")!!
+            var editItem = Functions().ItemFromArray(editItemArray)
+            editItem.Deleted = true
+            Functions().saveItem(editItem)
+            NotificationUtils().cancelNotification(editItem)
             pendResult.finish()
         }
 

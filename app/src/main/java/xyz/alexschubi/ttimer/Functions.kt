@@ -35,6 +35,19 @@ class Functions {
     fun getListString(PrefKey: String?): ArrayList<String> {
         return ArrayList(listOf(*TextUtils.split(mainPrefs.getString(PrefKey, ""), "‚‗‚")))
     }
+    fun ItemFromArray(getStringItem: ArrayList<String>): Item {
+        val getItem = Item(
+            getStringItem[0].toInt(),
+            getStringItem[1],
+            getTimeOfArray(getStringItem),
+            null,
+            getStringItem[7].toBoolean(),
+            getStringItem[8].toBoolean(),
+            getStringItem[9]
+        )
+
+        return getItem
+    }
 
     fun getDB() {
         getArrayList.clear()
@@ -43,16 +56,7 @@ class Functions {
             while (getindex > 0) {
                 val getStringItem = getListString("Item $getindex")
                 if(!getStringItem[8].toBoolean()){
-                    val getItem = Item(
-                        getStringItem[0].toInt(),
-                        getStringItem[1],
-                        getTimeOfArray(getStringItem),
-                        null,
-                        getStringItem[7].toBoolean(),
-                        false,
-                        getStringItem[9]
-                    )
-                    getArrayList.add(getItem)
+                    getArrayList.add(ItemFromArray(getStringItem))
                 }
                 getindex--
             }
@@ -126,7 +130,7 @@ class Functions {
                 "",//Hour
                 "",//Minute
                 false.toString(), //Notified
-                false.toString(), //Deleted
+                editItem.Deleted.toString(), //Deleted
                 editItem.Color
             )
         } else {
@@ -139,7 +143,7 @@ class Functions {
                 editItem.Date!!.hour.toString(),
                 editItem.Date!!.minute.toString(),
                 false.toString(),
-                false.toString(),
+                editItem.Deleted.toString(),
                 editItem.Color
             )
         }
