@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.main_toolbar.view.*
 import kotlin.system.exitProcess
 
 
-private lateinit var displyItemList: List<Item>
+private lateinit var displyItemList: MutableList<Item>
 
 class fragment_item_list : Fragment() {
     private lateinit var linearLayoutManager: LinearLayoutManager
@@ -44,7 +44,6 @@ class fragment_item_list : Fragment() {
         var mlistener = object: RvAdapter.ContentListener {
             override fun onItemClicked(item: Item) {
                 super.onItemClicked(item)
-                //TODO sort by color/date
                 NavHostFragment.findNavController(this@fragment_item_list).navigate(fragment_item_listDirections.actionItemListToAddItem(item))
             }
         }

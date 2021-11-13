@@ -150,13 +150,13 @@ class Functions {
         Log.d("Preferences.save", "added Item: " + addItemString.toString())
         return addItemString
     }
-    fun sortList(getList: ArrayList<Item>, getSortMode: Int): List<Item> {
-        var sortedList: List<Item>? = null
+    fun sortList(getList: ArrayList<Item>, getSortMode: Int): MutableList<Item> {
+        var sortedList: MutableList<Item>? = null
         when (getSortMode) {
             0 -> { sortedList = getList }
             1 -> {
                 sortedList = getList
-                sortedList = sortedList.reversed()
+                sortedList.reverse()
             }
             2 -> {
                 getList.sortBy { it.Color}
@@ -165,7 +165,7 @@ class Functions {
             3 -> {
                 getList.sortBy { it.Color}
                 sortedList = getList
-                sortedList = sortedList.reversed()
+                sortedList.reverse()
             }
             4 -> {
                 getList.sortBy { it.Date}
@@ -174,7 +174,7 @@ class Functions {
             5 -> {
                 getList.sortBy { it.Date}
                 sortedList = getList
-                sortedList = sortedList.reversed()
+                sortedList.reverse()
             }
             6 -> {
                 getList.sortedWith(compareBy({it.Date}, {it.Color}))
@@ -183,7 +183,7 @@ class Functions {
             7 -> {
                 getList.sortedWith(compareBy({it.Date}, {it.Color}))
                 sortedList = getList
-                sortedList = sortedList.reversed()
+                sortedList.reverse()
             }
             8 -> {
                 getList.sortedWith(compareBy({it.Color}, {it.Date}))
@@ -192,7 +192,7 @@ class Functions {
             9 -> {
                 getList.sortedWith(compareBy({it.Color}, {it.Date}))
                 sortedList = getList
-                sortedList = sortedList.reversed()
+                sortedList.reverse()
             }
             else -> { sortedList = getList }
         }

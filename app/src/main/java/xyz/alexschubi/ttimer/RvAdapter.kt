@@ -16,13 +16,13 @@ import kotlinx.android.synthetic.main.recycler_view.view.*
 import java.time.format.DateTimeFormatter
 
 
-class RvAdapter constructor(private val rVArrayList: List<Item>, val listener: ContentListener) : RecyclerView.Adapter<RvAdapter.ViewHolder>(){
+class RvAdapter constructor(private val rVArrayList: MutableList<Item>, val listener: ContentListener) : RecyclerView.Adapter<RvAdapter.ViewHolder>(){
 
     var mItems = rVArrayList
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(layout.recycler_view, parent, false)
-        return ViewHolder(itemView)
+        return ViewHolder(itemView) //TODO sorting is gone after rotate
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -57,7 +57,7 @@ class RvAdapter constructor(private val rVArrayList: List<Item>, val listener: C
             itemView.id = currentItem.Index
         }
     }
-    fun setItems(items: List<Item>) {
+    fun setItems(items: MutableList<Item>) {
         this.mItems = items
     }
 
@@ -65,7 +65,7 @@ class RvAdapter constructor(private val rVArrayList: List<Item>, val listener: C
         fun onItemClicked(item: Item) {}
     }
 }
-class SwipeToDelete(var adapter: RvAdapter, var displayItemList: List<Item>) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT){
+class SwipeToDelete(var adapter: RvAdapter, var displayItemList: MutableList<Item>) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT){
     override fun onMove(
         recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder,
@@ -74,20 +74,19 @@ class SwipeToDelete(var adapter: RvAdapter, var displayItemList: List<Item>) : I
         return false
     }
 
-    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) { //TODO rewrite complete
         val position = viewHolder.absoluteAdapterPosition
         val itemIndex = viewHolder.itemView.id
         Log.d("RecyclerView.swiped","adapterpos $position = item.id $itemIndex")
-        val editItem = Functions().getListString("Item $itemIndex")
-        editItem[8] = true.toString()
-        Functions().putListString("Item $itemIndex", editItem)
-        Log.d("Preferences", "changed Item $itemIndex to deleted")
+        val editItem = Functions().ItemFromArray(Functions().getListString("Item $itemIndex"))
+        editItem.Deleted = true
+        Functions().saveItem(editItem)
+        Log.d("Preferences", "changed Item $editItem to deleted")
         getArrayList.find { it.Index == itemIndex }?.let { NotificationUtils().cancelNotification(it) }
-        Functions().getDB()
+        displayItemList[position].Deleted = true
+        displayItemList.removeAt(position)
         adapter.notifyItemRemoved(position)
         Toast.makeText(viewHolder.itemView.context, "Item $itemIndex deleted", Toast.LENGTH_SHORT).show()
-        Log.d("SharedPreferences", "deleted Item $itemIndex")
-        Log.d("MainPrefs.size", mainPrefs.all.size.toString() + "items")
     }
 
     override fun onChildDraw(
@@ -124,7 +123,6 @@ class SwipeToEdit(var adapter: RvAdapter, var displayItemList: List<Item>) : Ite
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         val item = viewHolder.absoluteAdapterPosition
         adapter.listener.onItemClicked(displayItemList.get(item))
-        Log.d("","")
         Log.d("FragmentManger", "create fragment_add_item...")
         //NavHostFragment.findNavController().navigate(R.id.action_ItemList_to_AddItem)
         //Toast.makeText(viewHolder.itemView.context, "Item $item editing", Toast.LENGTH_SHORT).show()
