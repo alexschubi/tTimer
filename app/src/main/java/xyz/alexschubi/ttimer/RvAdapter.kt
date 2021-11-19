@@ -22,7 +22,7 @@ class RvAdapter constructor(private val rVArrayList: MutableList<Item>, val list
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(layout.recycler_view, parent, false)
-        return ViewHolder(itemView) //TODO sorting is gone after rotate
+        return ViewHolder(itemView)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
