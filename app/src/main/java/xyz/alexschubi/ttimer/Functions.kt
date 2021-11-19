@@ -153,6 +153,9 @@ class Functions {
     fun sortList(getList: ArrayList<Item>, getSortMode: Int): MutableList<Item> {
         var sortedList: MutableList<Item>? = null
         when (getSortMode) {
+            //TODO rewrite whole sorting
+            //TODO bug items lose dateime display sometimes on every revesed sorting
+            //TODO sorting with multiple parameters dont work
             0 -> { sortedList = getList }
             1 -> {
                 sortedList = getList
@@ -162,7 +165,7 @@ class Functions {
                 getList.sortBy { it.Color}
                 sortedList = getList //normal sort is blue>green>orange>purple>red>yellow
             }
-            3 -> {//TODO bug dont show dateTime after sort for date-down and color-down sorting 
+            3 -> {
                 getList.sortBy { it.Color}
                 sortedList = getList
                 sortedList.reverse()
