@@ -162,7 +162,7 @@ class Functions {
                 getList.sortBy { it.Color}
                 sortedList = getList //normal sort is blue>green>orange>purple>red>yellow
             }
-            3 -> {
+            3 -> {//TODO bug dont show dateTime after sort for date-down and color-down sorting 
                 getList.sortBy { it.Color}
                 sortedList = getList
                 sortedList.reverse()
