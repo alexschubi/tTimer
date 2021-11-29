@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.fragment_item_list.*
 import kotlinx.android.synthetic.main.fragment_item_list.view.*
 import kotlinx.android.synthetic.main.main_toolbar.*
 import kotlinx.android.synthetic.main.main_toolbar.view.*
+import java.time.LocalDateTime
 import kotlin.system.exitProcess
 
 
@@ -23,7 +24,6 @@ private lateinit var displyItemList: MutableList<Item>
 
 class fragment_item_list : Fragment() {
     private lateinit var linearLayoutManager: LinearLayoutManager
-    var checkInitial: Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,17 +51,18 @@ class fragment_item_list : Fragment() {
         view.recyclerViewItems.adapter = adapter
         ItemTouchHelper(SwipeToDelete(adapter, displyItemList)).attachToRecyclerView(this.recyclerViewItems)
         ItemTouchHelper(SwipeToEdit(adapter, displyItemList)).attachToRecyclerView(this.recyclerViewItems)
-        timer.start()
 
+        /*recyclerViewItems2.layoutManager = LinearLayoutManager(context)
+        var adapter2 = RecyclerViewAdapter(displyItemList)//TODO rewrite test of recyclerview
+        recyclerViewItems2.adapter = adapter2
+        ItemTouchHelper(SwipeItemView(adapter2, displyItemList)).attachToRecyclerView(this.recyclerViewItems2)*/
+
+        timer.start()
         view.b_add.setOnClickListener {
             //ViewAnimationUtils.createCircularReveal(fragment_add_item().view, b_add.x.toInt(), b_add.y.toInt(), 20F,50F)
             NavHostFragment.findNavController(this).navigate(R.id.action_ItemList_to_AddItem)
         }
-        fab_test_togglecrcl.setExpanded(false)
-        fab_test_togglecrcl.setOnClickListener{
-            fab_test_togglecrcl.setExpanded(!fab_test_togglecrcl.isExpanded)
-        }
-        swipe_refresh_layout.setOnRefreshListener {//TODO sometimes Items lose date after refreshing
+        swipe_refresh_layout.setOnRefreshListener {
             Functions().getDB()
             Log.d("ItemList", "getDB() and reload Fragment")
             displyItemList = Functions().sortList(getArrayList, suppPrefs.getInt("sortMode", 0))
@@ -69,10 +70,6 @@ class fragment_item_list : Fragment() {
             swipe_refresh_layout.isRefreshing = false
         }
 
-       /* ArrayAdapter.createFromResource(mContext,R.array.sort_modes, android.R.layout.simple_spinner_item).also {
-            adapter -> adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            suppActionBar.customView.sp_sortMode.adapter = adapter
-        }*/
         suppActionBar.customView.sp_sortMode.setSelection(suppPrefs.getInt("sortMode", 0))
         suppActionBar.customView.sp_sortMode.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
@@ -95,13 +92,7 @@ class fragment_item_list : Fragment() {
                 suppPrefs.edit().putInt("sortMode", sModeInt).apply()
                 Log.i("sortMode", "changed to $sModeInt")
                 Log.d("suppPrefs", "sortMode is: "+ suppPrefs.getInt("sortMode", 0).toString())
-                /*if(++checkInitial<3){
-                    Log.d("sortMode", "DOnt try recreate and checkInitial is $checkInitial")
-                } else {
-                    checkInitial = 0
-                    Log.d("sortMode", "try recreate and checkInitial is $checkInitial")
-                    //mainActivity.recreate()
-                }*/
+
                 adapter.setItems(Functions().sortList(getArrayList, suppPrefs.getInt("sortMode", 0)))
                 adapter.notifyDataSetChanged()
             }
@@ -113,8 +104,15 @@ class fragment_item_list : Fragment() {
     }
 
     private val timer = object: CountDownTimer(1 * 60 * 60 * 1000, 1 * 10 * 1000){ //hour*min*sec*millisec
+        lateinit var currentTime: LocalDateTime //TODO rewrite time refresh with corutine
         override fun onTick(millisUntilFinished: Long){
             Functions().refreshTime()
+            currentTime = LocalDateTime.now()
+            getArrayList.forEachIndexed { index, item ->
+                if (item.Date!=null && item.Date!!.isAfter(currentTime)){
+                    view?.recyclerViewItems?.adapter?.notifyItemChanged(index)
+                }
+            }
             view?.recyclerViewItems?.adapter?.notifyDataSetChanged()
         }//TODO use coroutine
         override fun onFinish() {

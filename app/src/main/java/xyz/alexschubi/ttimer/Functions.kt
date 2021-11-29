@@ -6,9 +6,7 @@ import java.time.LocalDateTime
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
-import kotlinx.android.synthetic.main.main_toolbar.view.*
 import java.time.Year
-import java.util.*
 import kotlin.collections.ArrayList
 
 class Functions {
@@ -116,7 +114,7 @@ class Functions {
             suppPrefs.edit().putInt("ItemAmount",editItem.Index).apply()
         }
         Log.d("Preferences.save", "ItemAmount is " + suppPrefs.getInt("ItemAmount", 0).toString())
-        putListString("Item ${editItem.Index}", getItemArray(editItem))
+        saveStringList("Item ${editItem.Index}", getItemArray(editItem))
     }
     fun getItemArray(editItem: Item): ArrayList<String> {
         val addItemString: ArrayList<String>

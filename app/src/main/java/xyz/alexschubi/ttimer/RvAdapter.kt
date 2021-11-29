@@ -12,7 +12,7 @@ import androidx.core.graphics.scale
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import xyz.alexschubi.ttimer.R.*
-import kotlinx.android.synthetic.main.recycler_view.view.*
+import kotlinx.android.synthetic.main.recycler_view_item.view.*
 import java.time.format.DateTimeFormatter
 
 
@@ -21,7 +21,7 @@ class RvAdapter constructor(private val rVArrayList: MutableList<Item>, val list
     var mItems = rVArrayList
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(layout.recycler_view, parent, false)
+        val itemView = LayoutInflater.from(parent.context).inflate(layout.recycler_view_item, parent, false)
         return ViewHolder(itemView)
     }
 
