@@ -40,6 +40,7 @@ lateinit var suppActionBar: ActionBar
 lateinit var inputMethodManager: InputMethodManager
 lateinit var firebaseAnalytics: FirebaseAnalytics
 lateinit var firebaseCrashlytics: FirebaseCrashlytics
+lateinit var localDB: ItemsDatabase
 
 var getArrayList = ArrayList<Item>() //TODO dont use
 
@@ -58,6 +59,7 @@ class MainActivity : AppCompatActivity()
         mContext = this
         mainActivity = this
         mapplication = this.application
+        localDB = ItemsDatabase.getDatabase(this)!!
         inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
 
         suppActionBar = supportActionBar!!

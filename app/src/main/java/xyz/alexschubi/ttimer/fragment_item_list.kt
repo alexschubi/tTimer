@@ -52,10 +52,9 @@ class fragment_item_list : Fragment() {
         ItemTouchHelper(SwipeToDelete(adapter, displyItemList)).attachToRecyclerView(this.recyclerViewItems)
         ItemTouchHelper(SwipeToEdit(adapter, displyItemList)).attachToRecyclerView(this.recyclerViewItems)
 
-        /*recyclerViewItems2.layoutManager = LinearLayoutManager(context)
-        var adapter2 = RecyclerViewAdapter(displyItemList)//TODO rewrite test of recyclerview
+        recyclerViewItems2.layoutManager = LinearLayoutManager(context)
+        var adapter2 = RecyclerViewAdapter(localDB.itemsDAO().getAll())//TODO rewrite test of recyclerview
         recyclerViewItems2.adapter = adapter2
-        ItemTouchHelper(SwipeItemView(adapter2, displyItemList)).attachToRecyclerView(this.recyclerViewItems2)*/
 
         timer.start()
         view.b_add.setOnClickListener {

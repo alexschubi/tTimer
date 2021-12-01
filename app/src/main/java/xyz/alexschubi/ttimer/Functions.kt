@@ -6,7 +6,11 @@ import java.time.LocalDateTime
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
+import androidx.room.CoroutinesRoom
+import xyz.alexschubi.ttimer.data.sItem
 import java.time.Year
+import java.time.ZoneId
+import java.time.ZonedDateTime
 import kotlin.collections.ArrayList
 
 class Functions {
@@ -25,7 +29,7 @@ class Functions {
         }
         return tempDateTime
     }
-    fun putListString(PrefKey: String?, stringList: ArrayList<String>) {
+    fun saveStringList(PrefKey: String?, stringList: ArrayList<String>) {
         val myStringList = stringList.toTypedArray()
         mainPrefs.edit().putString(PrefKey, TextUtils.join("‚‗‚", myStringList)).apply()
     }
@@ -78,7 +82,8 @@ class Functions {
         }
     }
     //TODO better span texting
-    fun getSpanString(itemDateTime: LocalDateTime): String{
+    fun getSpanString(itemDateTime: LocalDateTime?): String?{
+        if(itemDateTime==null) return null
         var testOutLine: String = ""
         val currentDateTime = LocalDateTime.now()
             if (itemDateTime.isAfter(currentDateTime)) {
@@ -109,12 +114,15 @@ class Functions {
     }
 
     fun saveItem(editItem: Item){
+        var isNew = false
         if(editItem.Index == -1) {
+            isNew = true
             editItem.Index = suppPrefs.getInt("ItemAmount", 0) + 1
             suppPrefs.edit().putInt("ItemAmount",editItem.Index).apply()
         }
         Log.d("Preferences.save", "ItemAmount is " + suppPrefs.getInt("ItemAmount", 0).toString())
         saveStringList("Item ${editItem.Index}", getItemArray(editItem))
+        saveItemToDB(editItem, isNew)
     }
     fun getItemArray(editItem: Item): ArrayList<String> {
         val addItemString: ArrayList<String>
@@ -229,4 +237,21 @@ class Functions {
         Log.i("Theme", "set to $prefTheme")
     }
 
+    fun saveItemToDB(oItem: Item, isNew: Boolean){
+
+        val sItem = sItem(oItem.Index,
+            oItem.Text,
+            oItem.Date?.atZone(ZoneId.systemDefault())?.toInstant()?.toEpochMilli(),
+            getSpanString(oItem.Date),
+            oItem.Color,
+            oItem.Notified,
+            oItem.Deleted
+        )
+
+        if (isNew){
+            localDB.itemsDAO().insert(sItem)
+        } else {
+            localDB.itemsDAO().update(sItem)
+        }
+    }
 }
