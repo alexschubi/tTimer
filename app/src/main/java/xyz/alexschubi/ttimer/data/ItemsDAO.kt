@@ -4,14 +4,14 @@ import androidx.lifecycle.LiveData
 import androidx.room.*
 
 @Dao
-interface ItemsDAO{ //TODO use corutines / livedata
+interface ItemsDAO{ //TODO use coroutines / livedata
     @Insert
     fun insert(item: sItem)
 
     @Update
     fun update(item: sItem)
 
-    @Query("SELECT * FROM itemsTable WHERE 'Index' = :key LIMIT 1")
+    @Query("SELECT * FROM itemsTable WHERE mIndex = :key")
     fun get(key: Int): sItem?
 
     @Query("SELECT * FROM itemsTable")

@@ -1,6 +1,5 @@
-package xyz.alexschubi.ttimer
+package xyz.alexschubi.ttimer.itemlist
 
-import android.graphics.*
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

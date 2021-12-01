@@ -120,7 +120,7 @@ class Functions {
             editItem.Index = suppPrefs.getInt("ItemAmount", 0) + 1
             suppPrefs.edit().putInt("ItemAmount",editItem.Index).apply()
         }
-        Log.d("Preferences.save", "ItemAmount is " + suppPrefs.getInt("ItemAmount", 0).toString())
+        //Log.d("Preferences.save", "ItemAmount is " + suppPrefs.getInt("ItemAmount", 0).toString())
         saveStringList("Item ${editItem.Index}", getItemArray(editItem))
         saveItemToDB(editItem, isNew)
     }
@@ -207,6 +207,21 @@ class Functions {
         }
         return sortedList!!
     }
+    fun sortMutableList(itemList: MutableList<sItem>, sortMode: Int): MutableList<sItem> {
+        var sortedList: MutableList<sItem> = itemList
+        when(sortMode){
+            1 -> {sortedList = itemList.asReversed()}
+            2 -> {sortedList.sortedBy { it.TimeStamp }}
+            3 -> {}
+            4 -> {}
+            5 -> {}
+            6 -> {}
+            7 -> {}
+            8 -> {}
+            9 -> {}
+        }
+        return sortedList
+    }
 
     fun showKeyboard(view: View) {
         inputMethodManager.showSoftInput(view, 0)
@@ -247,6 +262,7 @@ class Functions {
             oItem.Notified,
             oItem.Deleted
         )
+        Log.d("localDB", "save $sItem")
 
         if (isNew){
             localDB.itemsDAO().insert(sItem)

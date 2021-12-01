@@ -1,17 +1,13 @@
-package xyz.alexschubi.ttimer
+package xyz.alexschubi.ttimer.data
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import xyz.alexschubi.ttimer.data.ItemsDAO
-import xyz.alexschubi.ttimer.data.sItem
 
 @Database(entities = [sItem::class], version = 1, exportSchema = false)
 abstract class ItemsDatabase : RoomDatabase() {
-
     abstract fun itemsDAO(): ItemsDAO
-
     companion object {
         @Volatile
         private var INSTANCE: ItemsDatabase? = null

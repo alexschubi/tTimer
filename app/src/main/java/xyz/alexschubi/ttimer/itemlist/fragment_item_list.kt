@@ -1,4 +1,4 @@
-package xyz.alexschubi.ttimer
+package xyz.alexschubi.ttimer.itemlist
 
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -16,9 +16,9 @@ import kotlinx.android.synthetic.main.fragment_item_list.*
 import kotlinx.android.synthetic.main.fragment_item_list.view.*
 import kotlinx.android.synthetic.main.main_toolbar.*
 import kotlinx.android.synthetic.main.main_toolbar.view.*
+import xyz.alexschubi.ttimer.*
 import java.time.LocalDateTime
 import kotlin.system.exitProcess
-
 
 private lateinit var displyItemList: MutableList<Item>
 
@@ -37,8 +37,8 @@ class fragment_item_list : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         suppActionBar.customView.sp_sortMode.visibility = View.VISIBLE
-        displyItemList = Functions().sortList(getArrayList, suppPrefs.getInt("sortMode", 0))
 
+        displyItemList = Functions().sortList(getArrayList, suppPrefs.getInt("sortMode", 0))
         linearLayoutManager = LinearLayoutManager(mContext)
         view.recyclerViewItems.layoutManager = linearLayoutManager
         var mlistener = object: RvAdapter.ContentListener {
@@ -52,11 +52,16 @@ class fragment_item_list : Fragment() {
         ItemTouchHelper(SwipeToDelete(adapter, displyItemList)).attachToRecyclerView(this.recyclerViewItems)
         ItemTouchHelper(SwipeToEdit(adapter, displyItemList)).attachToRecyclerView(this.recyclerViewItems)
 
+        var getItemsList = Functions().sortMutableList(localDB.itemsDAO().getAll(), suppPrefs.getInt("sortMode", 0))
+        getItemsList.toList().forEach { sItem -> if (sItem.Deleted) getItemsList.remove(sItem) }
+        var displayItemList2 = getItemsList.toMutableList()
         recyclerViewItems2.layoutManager = LinearLayoutManager(context)
-        var adapter2 = RecyclerViewAdapter(localDB.itemsDAO().getAll())//TODO rewrite test of recyclerview
+        var adapter2 = RecyclerViewAdapter(displayItemList2)//TODO rewrite notifications to this DB
         recyclerViewItems2.adapter = adapter2
+        Log.d("localDB", "got $displayItemList2")
+        ItemTouchHelper(SwipeItemLeft(adapter2,displayItemList2)).attachToRecyclerView(this.recyclerViewItems2)
 
-        timer.start()
+        //timer.start()
         view.b_add.setOnClickListener {
             //ViewAnimationUtils.createCircularReveal(fragment_add_item().view, b_add.x.toInt(), b_add.y.toInt(), 20F,50F)
             NavHostFragment.findNavController(this).navigate(R.id.action_ItemList_to_AddItem)
