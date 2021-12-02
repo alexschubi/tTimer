@@ -35,18 +35,13 @@ lateinit var firebaseAnalytics: FirebaseAnalytics
 lateinit var firebaseCrashlytics: FirebaseCrashlytics
 lateinit var localDB: ItemsDatabase
 
-var getArrayList = ArrayList<Item>() //TODO dont use
-
 class MainActivity : AppCompatActivity()
 {
-    //Arrays Adapter
     private val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("EE dd.MM.yyyy HH:mm")
-
     //TODO undo button after delete
     //TODO Bug when cxhanging theme sortmode is shown in settings
     //TODO bug when adding a new item sometimes not adding for real
 
-    //START
     override fun onCreate(savedInstanceState: Bundle?) {
 
         mContext = this
@@ -71,7 +66,7 @@ class MainActivity : AppCompatActivity()
         firebaseAnalytics = FirebaseAnalytics.getInstance(mContext)
         firebaseCrashlytics = FirebaseCrashlytics.getInstance()
         Functions().applyFirebase()
-        Functions().getDB()
+        //Functions().getDB()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         Functions().applyTheme()
@@ -139,16 +134,4 @@ class MainActivity : AppCompatActivity()
         suppActionBar.customView.b_settings.visibility = View.VISIBLE
         suppActionBar.customView.b_back.visibility = View.GONE
     }
-
-/*    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.b_back -> {
-                NavHostFragment.findNavController(nav_host_fragment).navigate(R.id.action_fragment_settings_to_ItemList)
-                suppActionBar.customView.b_settings.visibility = View.VISIBLE
-                suppActionBar.customView.b_back.visibility = View.GONE
-                return true
-            }
-        }
-        return super.onContextItemSelected(item)
-    }*/
 }

@@ -1,26 +1,35 @@
 package xyz.alexschubi.ttimer.itemlist
 
+import android.animation.ObjectAnimator
+import android.animation.PropertyValuesHolder
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewAnimationUtils
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.Toast
+import androidx.core.view.marginBottom
+import androidx.core.view.marginEnd
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.circularreveal.CircularRevealFrameLayout
 import kotlinx.android.synthetic.main.fragment_item_list.*
 import kotlinx.android.synthetic.main.fragment_item_list.view.*
 import kotlinx.android.synthetic.main.main_toolbar.*
 import kotlinx.android.synthetic.main.main_toolbar.view.*
 import xyz.alexschubi.ttimer.*
+import xyz.alexschubi.ttimer.data.sItem
+import java.time.Instant
 import java.time.LocalDateTime
+import java.time.ZoneId
+import kotlin.math.roundToInt
 import kotlin.system.exitProcess
 
-private lateinit var displyItemList: MutableList<Item>
 
 class fragment_item_list : Fragment() {
     private lateinit var linearLayoutManager: LinearLayoutManager
@@ -37,39 +46,54 @@ class fragment_item_list : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         suppActionBar.customView.sp_sortMode.visibility = View.VISIBLE
+        linearLayoutManager = LinearLayoutManager(mainActivity)
 
-        displyItemList = Functions().sortList(getArrayList, suppPrefs.getInt("sortMode", 0))
-        linearLayoutManager = LinearLayoutManager(mContext)
-        view.recyclerViewItems.layoutManager = linearLayoutManager
-        var mlistener = object: RvAdapter.ContentListener {
-            override fun onItemClicked(item: Item) {
-                super.onItemClicked(item)
-                NavHostFragment.findNavController(this@fragment_item_list).navigate(fragment_item_listDirections.actionItemListToAddItem(item))
-            }
-        }
-        var adapter = RvAdapter( displyItemList, mlistener)
-        view.recyclerViewItems.adapter = adapter
-        ItemTouchHelper(SwipeToDelete(adapter, displyItemList)).attachToRecyclerView(this.recyclerViewItems)
-        ItemTouchHelper(SwipeToEdit(adapter, displyItemList)).attachToRecyclerView(this.recyclerViewItems)
-
+        //get and sort items for recyclerview
         var getItemsList = Functions().sortMutableList(localDB.itemsDAO().getAll(), suppPrefs.getInt("sortMode", 0))
         getItemsList.toList().forEach { sItem -> if (sItem.Deleted) getItemsList.remove(sItem) }
         var displayItemList2 = getItemsList.toMutableList()
+        //set adapter for recyclerview with listeners
         recyclerViewItems2.layoutManager = LinearLayoutManager(context)
-        var adapter2 = RecyclerViewAdapter(displayItemList2)//TODO rewrite notifications to this DB
+        var adapter2 = RecyclerViewAdapter(displayItemList2) { item: sItem ->
+            displayAddItem(item)
+        }
+        //TODO rewrite notifications to this DB
         recyclerViewItems2.adapter = adapter2
-        Log.d("localDB", "got $displayItemList2")
+        Log.d("localDB", "got displayList $displayItemList2")
         ItemTouchHelper(SwipeItemLeft(adapter2,displayItemList2)).attachToRecyclerView(this.recyclerViewItems2)
 
-        //timer.start()
         view.b_add.setOnClickListener {
-            //ViewAnimationUtils.createCircularReveal(fragment_add_item().view, b_add.x.toInt(), b_add.y.toInt(), 20F,50F)
+
             NavHostFragment.findNavController(this).navigate(R.id.action_ItemList_to_AddItem)
         }
+
+        var isAddViewRevealed = false
+        view.b_add_reveal.setOnClickListener {
+            val dx: Double = (b_add_reveal.x/2).toDouble()
+            val dy: Double = (b_add_reveal.y/2).toDouble()
+            val minRadius = Math.hypot(dx,dy).toFloat() //TODO edit item
+
+            val addFragment = fragment_add_item()
+            val mx: Double = (addFragment.requireView().x/2).toDouble()
+            val my: Double = (addFragment.requireView().y/2).toDouble()
+            val maxRadius = Math.hypot(mx, my).toFloat()
+            if (!isAddViewRevealed){
+                val animation = ViewAnimationUtils.createCircularReveal(addFragment.view,
+                    (b_add_reveal.x/2).toInt(),
+                    (b_add_reveal.y/2).toInt(),
+                    minRadius,
+                    maxRadius
+                )
+                addFragment.requireView().visibility = View.VISIBLE
+                animation.start()
+                isAddViewRevealed = true
+            }else{
+                isAddViewRevealed = false
+            }
+
+
+        }
         swipe_refresh_layout.setOnRefreshListener {
-            Functions().getDB()
-            Log.d("ItemList", "getDB() and reload Fragment")
-            displyItemList = Functions().sortList(getArrayList, suppPrefs.getInt("sortMode", 0))
             mainActivity.recreate()
             swipe_refresh_layout.isRefreshing = false
         }
@@ -96,9 +120,6 @@ class fragment_item_list : Fragment() {
                 suppPrefs.edit().putInt("sortMode", sModeInt).apply()
                 Log.i("sortMode", "changed to $sModeInt")
                 Log.d("suppPrefs", "sortMode is: "+ suppPrefs.getInt("sortMode", 0).toString())
-
-                adapter.setItems(Functions().sortList(getArrayList, suppPrefs.getInt("sortMode", 0)))
-                adapter.notifyDataSetChanged()
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 null
@@ -107,7 +128,7 @@ class fragment_item_list : Fragment() {
 
     }
 
-    private val timer = object: CountDownTimer(1 * 60 * 60 * 1000, 1 * 10 * 1000){ //hour*min*sec*millisec
+    /*private val timer = object: CountDownTimer(1 * 60 * 60 * 1000, 1 * 10 * 1000){ //hour*min*sec*millisec
         lateinit var currentTime: LocalDateTime //TODO rewrite time refresh with corutine
         override fun onTick(millisUntilFinished: Long){
             Functions().refreshTime()
@@ -123,10 +144,42 @@ class fragment_item_list : Fragment() {
             Toast.makeText(mContext, "AFK?", Toast.LENGTH_SHORT).show()
             exitProcess(-1)
         }
+    }*/
+    private fun displayAddItem(item: sItem?){
+        val editItem = item
+        if (editItem!=null){
+            var modifyItem: Item
+            if (editItem.TimeStamp!=null){
+                modifyItem = Item(editItem.Index,
+                    editItem.Text,
+                    LocalDateTime.ofInstant(editItem.TimeStamp?.let { Instant.ofEpochMilli(it) },
+                        ZoneId.systemDefault()),
+                    editItem.Span,
+                    editItem.Notified,
+                    editItem.Deleted,
+                    editItem.Color
+                )
+            } else {
+                modifyItem = Item(editItem.Index,
+                    editItem.Text,
+                    null,
+                    null,
+                    editItem.Notified,
+                    editItem.Deleted,
+                    editItem.Color
+                )
+            }
+            NavHostFragment.findNavController(this.requireParentFragment())
+                .navigate(fragment_item_listDirections.actionItemListToAddItem(modifyItem))
+        } else {
+            NavHostFragment.findNavController(this.requireParentFragment())
+                .navigate(fragment_item_listDirections.actionItemListToAddItem())
+
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        timer.cancel()
+        //timer.cancel()
     }
 }

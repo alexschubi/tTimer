@@ -204,7 +204,7 @@ class fragment_add_item: Fragment() { //TODO light Theme
             Log.d("Notification", "No Notification wanted or in Past")
         }
         //CLOSE addView
-        Functions().getDB()
+        //Functions().getDB()
         timer.cancel()
         this.view?.let { inputMethodManager.hideSoftInputFromWindow(view?.windowToken, 0) }
         NavHostFragment.findNavController(this).navigate(R.id.action_AddItem_to_ItemList)

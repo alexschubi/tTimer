@@ -1,11 +1,15 @@
 package xyz.alexschubi.ttimer.itemlist
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.RecyclerView
 import xyz.alexschubi.ttimer.R.*
 import kotlinx.android.synthetic.main.recycler_view_item.view.*
+import xyz.alexschubi.ttimer.Functions
+import xyz.alexschubi.ttimer.Item
 import xyz.alexschubi.ttimer.data.sItem
 import java.time.Instant
 import java.time.LocalDateTime
@@ -13,7 +17,7 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 
-class RecyclerViewAdapter(private val rVArrayList: MutableList<sItem>) : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>(){
+class RecyclerViewAdapter(rVArrayList: MutableList<sItem>, val listener: (sItem) -> Unit) : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>(){
 
     var mItems = rVArrayList
 
@@ -23,13 +27,13 @@ class RecyclerViewAdapter(private val rVArrayList: MutableList<sItem>) : Recycle
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(mItems)
+        holder.bind(mItems, listener)
     }
 
     override fun getItemCount() = mItems.size
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-        fun bind (nItems: MutableList<sItem>){
+        fun bind (nItems: MutableList<sItem>, listener: (sItem) -> Unit){
             val currentItem = nItems[bindingAdapterPosition]
             if (currentItem.TimeStamp == null) {
                 itemView.tv_item_span.visibility = View.GONE
@@ -38,7 +42,7 @@ class RecyclerViewAdapter(private val rVArrayList: MutableList<sItem>) : Recycle
                 itemView.tv_item_span.text = currentItem.Span
                 itemView.tv_item_datetime.text = LocalDateTime
                     .ofInstant(Instant.ofEpochMilli(currentItem.TimeStamp!!), ZoneId.systemDefault())
-                    .format(DateTimeFormatter.ofPattern("EE dd.MM.uuuu HH:mm"))
+                    .format(DateTimeFormatter.ofPattern("EE dd.MM.uuuu HH:mm:ss"))
             }
             itemView.tv_item_index.text = currentItem.Span
             itemView.tv_item_text.text = currentItem.Text
@@ -54,6 +58,8 @@ class RecyclerViewAdapter(private val rVArrayList: MutableList<sItem>) : Recycle
             itemView.elevation = 30F
             itemView.translationZ = 30F
             itemView.id = currentItem.Index
+
+            itemView.setOnClickListener {listener(currentItem)}
         }
     }
     fun setItems(items: MutableList<sItem>) {

@@ -23,12 +23,7 @@ class SwipeItemLeft(var adapter: RecyclerViewAdapter, private var displayItemLis
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         val position = viewHolder.bindingAdapterPosition
         val itemIndex = viewHolder.itemView.id
-        var editItem = localDB.itemsDAO().get(itemIndex)
-        editItem!!.Deleted = true
-        localDB.itemsDAO().update(editItem)
-        displayItemList.removeAt(position)
-        adapter.notifyItemRemoved(position)
-        Toast.makeText(viewHolder.itemView.context, "Item $itemIndex deleted", Toast.LENGTH_SHORT).show()
+        Functions().deleteItem(itemIndex, adapter, position)
     }
 
     override fun onChildDraw(
@@ -47,9 +42,9 @@ class SwipeItemLeft(var adapter: RecyclerViewAdapter, private var displayItemLis
             viewHolder.itemView.top,
             viewHolder.itemView.right,
             viewHolder.itemView.bottom)
-        background.draw(c)
+        //background.draw(c)
         val bitmp = BitmapFactory.decodeResource(mainActivity.resources,android.R.drawable.ic_menu_delete)
         val sbitmp = bitmp.scale(viewHolder.itemView.height, viewHolder.itemView.height, true)
-        c.drawBitmap(sbitmp , (viewHolder.itemView.right - viewHolder.itemView.height).toFloat(), viewHolder.itemView.top.toFloat(), null)
+        //c.drawBitmap(sbitmp , (viewHolder.itemView.right - viewHolder.itemView.height).toFloat(), viewHolder.itemView.top.toFloat(), null)
     }
 }

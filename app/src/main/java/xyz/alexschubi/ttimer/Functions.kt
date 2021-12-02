@@ -4,10 +4,12 @@ import android.text.TextUtils
 import android.util.Log
 import java.time.LocalDateTime
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
 import androidx.room.CoroutinesRoom
 import xyz.alexschubi.ttimer.data.sItem
+import xyz.alexschubi.ttimer.itemlist.RecyclerViewAdapter
 import java.time.Year
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -51,7 +53,7 @@ class Functions {
         return getItem
     }
 
-    fun getDB() {
+    /*fun getDB() {
         getArrayList.clear()
         var getindex = suppPrefs.getInt("ItemAmount", 0)
         if (getindex >= 0) {
@@ -67,7 +69,6 @@ class Functions {
         }
         Log.d("getArrayList", getArrayList.toString())
     }
-
     fun refreshTime() {
         if (getArrayList.isEmpty()){
             Log.d("Preferences.refresh", "No Items saved")
@@ -80,7 +81,8 @@ class Functions {
                 }
             }
         }
-    }
+    }*/
+
     //TODO better span texting
     fun getSpanString(itemDateTime: LocalDateTime?): String?{
         if(itemDateTime==null) return null
@@ -252,15 +254,15 @@ class Functions {
         Log.i("Theme", "set to $prefTheme")
     }
 
-    fun saveItemToDB(oItem: Item, isNew: Boolean){
+    fun saveItemToDB(item: Item, isNew: Boolean){
 
-        val sItem = sItem(oItem.Index,
-            oItem.Text,
-            oItem.Date?.atZone(ZoneId.systemDefault())?.toInstant()?.toEpochMilli(),
-            getSpanString(oItem.Date),
-            oItem.Color,
-            oItem.Notified,
-            oItem.Deleted
+        val sItem = sItem(item.Index,
+            item.Text,
+            item.Date?.atZone(ZoneId.systemDefault())?.toInstant()?.toEpochMilli(),
+            getSpanString(item.Date),
+            item.Color,
+            item.Notified,
+            item.Deleted
         )
         Log.d("localDB", "save $sItem")
 
@@ -268,6 +270,23 @@ class Functions {
             localDB.itemsDAO().insert(sItem)
         } else {
             localDB.itemsDAO().update(sItem)
+        }
+    }
+    fun deleteItem(itemIndex: Int, adapter: RecyclerViewAdapter, displayPosition: Int){
+        val editItem = localDB.itemsDAO().get(itemIndex)
+        if (editItem != null) {
+            editItem.Deleted = true
+            localDB.itemsDAO().update(editItem)
+            Log.d("localDB", "changed Item $editItem")
+           //TODO NotificationUtils().cancelNotification(itemIndex)
+            adapter.mItems.remove(editItem)
+            var getItemsList = Functions().sortMutableList(localDB.itemsDAO().getAll(), suppPrefs.getInt("sortMode", 0))
+            getItemsList.toList().forEach { sItem -> if (sItem.Deleted) getItemsList.remove(sItem) }
+            var displayItemList = getItemsList.toMutableList()
+            adapter.setItems(displayItemList)
+            adapter.notifyItemRemoved(displayPosition)
+        } else {
+            Log.d("localDB", "could not get sItem")
         }
     }
 }
