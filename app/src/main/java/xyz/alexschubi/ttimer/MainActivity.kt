@@ -129,8 +129,22 @@ class MainActivity : AppCompatActivity()
 
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
+    override fun onBackPressed() { //TODO fix animation call wen back pressed
+        with(supportFragmentManager.findFragmentById(R.id.nav_host_fragment)) {
+            if ((this as? ExitWithAnimation)?.isToBeExitedWithAnimation() == true) {
+                if (this.posX == null || this.posY == null) {
+                    super.onBackPressed()
+                } else {
+                    this.view?.exitCircularReveal(this.posX!!, this.posY!!) {
+                        supportFragmentManager.popBackStack()
+                        Log.d("Navigation", "Transformed to last Fragment with animation")
+                        super.onBackPressed()
+                    } ?: super.onBackPressed()
+                }
+            } else {
+                super.onBackPressed()
+            }
+        }
         suppActionBar.customView.b_settings.visibility = View.VISIBLE
         suppActionBar.customView.b_back.visibility = View.GONE
     }

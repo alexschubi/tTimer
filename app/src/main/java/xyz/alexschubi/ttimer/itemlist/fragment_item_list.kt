@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.text.Layout
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +16,7 @@ import androidx.core.view.marginBottom
 import androidx.core.view.marginEnd
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.circularreveal.CircularRevealFrameLayout
@@ -63,35 +65,12 @@ class fragment_item_list : Fragment() {
         ItemTouchHelper(SwipeItemLeft(adapter2,displayItemList2)).attachToRecyclerView(this.recyclerViewItems2)
 
         view.b_add.setOnClickListener {
-
             NavHostFragment.findNavController(this).navigate(R.id.action_ItemList_to_AddItem)
         }
 
-        var isAddViewRevealed = false
         view.b_add_reveal.setOnClickListener {
-            val dx: Double = (b_add_reveal.x/2).toDouble()
-            val dy: Double = (b_add_reveal.y/2).toDouble()
-            val minRadius = Math.hypot(dx,dy).toFloat() //TODO edit item
-
-            val addFragment = fragment_add_item()
-            val mx: Double = (addFragment.requireView().x/2).toDouble()
-            val my: Double = (addFragment.requireView().y/2).toDouble()
-            val maxRadius = Math.hypot(mx, my).toFloat()
-            if (!isAddViewRevealed){
-                val animation = ViewAnimationUtils.createCircularReveal(addFragment.view,
-                    (b_add_reveal.x/2).toInt(),
-                    (b_add_reveal.y/2).toInt(),
-                    minRadius,
-                    maxRadius
-                )
-                addFragment.requireView().visibility = View.VISIBLE
-                animation.start()
-                isAddViewRevealed = true
-            }else{
-                isAddViewRevealed = false
-            }
-
-
+            val positions = it.findLocationOfCenterOnTheScreen()
+            parentFragmentManager.open { replace(R.id.nav_host_fragment, AddItemFragment.newInstance(positions)).addToBackStack("list") }
         }
         swipe_refresh_layout.setOnRefreshListener {
             mainActivity.recreate()
@@ -127,7 +106,6 @@ class fragment_item_list : Fragment() {
         }
 
     }
-
     /*private val timer = object: CountDownTimer(1 * 60 * 60 * 1000, 1 * 10 * 1000){ //hour*min*sec*millisec
         lateinit var currentTime: LocalDateTime //TODO rewrite time refresh with corutine
         override fun onTick(millisUntilFinished: Long){

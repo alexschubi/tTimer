@@ -5,49 +5,65 @@ import android.app.TimePickerDialog
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.navArgs
-import xyz.alexschubi.ttimer.R
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_add_item.*
 import kotlinx.android.synthetic.main.fragment_add_item.view.*
-import kotlinx.android.synthetic.main.fragment_item_list.*
 import kotlinx.android.synthetic.main.main_toolbar.view.*
+import xyz.alexschubi.ttimer.data.sItem
+import xyz.alexschubi.ttimer.itemlist.fragment_item_list
 import java.time.DayOfWeek
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.temporal.TemporalAdjusters
 
-class fragment_add_item: Fragment() { //TODO light Theme
-    private val args: fragment_add_itemArgs by navArgs<fragment_add_itemArgs>()
-    private var binding: View? = null
+class AddItemFragment(public val getItem: sItem?) : Fragment(), ExitWithAnimation {
+
+
     private var editItem: Item = Item(-1,"", null, null,false, false, "")
-    var getItem: Item? = null
-    var fabView: View? = null
+
+    override var posX: Int? = null
+    override var posY: Int? = null
+    override fun isToBeExitedWithAnimation(): Boolean = true
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
-        binding = inflater.inflate(R.layout.fragment_add_item, container, false)
-        view?.addOnLayoutChangeListener(this)
-        return binding.apply {
-            if (getItem == null) getItem = args.itemArgument
-        }
+        return inflater.inflate(R.layout.fragment_add_item2, container, false)
+    }
+
+    companion object {
+        @JvmStatic
+        fun newInstance(exit: IntArray? = null) =
+            AddItemFragment(null).apply {
+                posX = 0
+                posY = 0
+                if (exit != null && exit.size ==2){
+                    posX = exit[0]
+                    posY = exit[1]
+                }
+            }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        view.startCircularReveal()
+
         tv_addTimeSpan.text = ""
         suppActionBar.customView.sp_sortMode.visibility = View.GONE
         if (getItem!=null) {
-            editItem = getItem!!
+            editItem = getItem.toItem()
             b_add_final.text = "Save"
         }
         timer.start()
@@ -171,10 +187,10 @@ class fragment_add_item: Fragment() { //TODO light Theme
         suppActionBar.customView.b_settings.visibility = View.GONE
         suppActionBar.customView.b_back.visibility = View.VISIBLE
         suppActionBar.customView.b_back.setOnClickListener() {
-            NavHostFragment.findNavController(nav_host_fragment).navigate(R.id.action_AddItem_to_ItemList)
+            this.view?.exitCircularReveal(this.posX!!, this.posY!!){}
             suppActionBar.customView.b_settings.visibility = View.VISIBLE
             suppActionBar.customView.b_back.visibility = View.GONE
-        }
+        }//TODO only action bar at items-list-fragment
 
         tb_add_text.isFocusableInTouchMode = true
         tb_add_text.requestFocus()
@@ -182,7 +198,7 @@ class fragment_add_item: Fragment() { //TODO light Theme
     }
 
     private fun addItem() {
-        var colorButton: RadioButton = view?.findViewById<RadioButton>(rg_color.checkedRadioButtonId)!!
+        val colorButton: RadioButton = view?.findViewById<RadioButton>(rg_color.checkedRadioButtonId)!!
         when (this.view?.findViewById<RadioButton>(colorButton.id)?.id) {
             rb_purple.id -> editItem.Color = "purple"
             rb_red.id -> editItem.Color = "red"
@@ -196,7 +212,7 @@ class fragment_add_item: Fragment() { //TODO light Theme
         Functions().saveItem(editItem)
 
         if (getItem != null) {
-            NotificationUtils().cancelNotification(getItem!!)
+            NotificationUtils().cancelNotification(editItem)
         }
 
         if(editItem.Date !=null && editItem.Date!!.isAfter(LocalDateTime.now())) {
@@ -210,7 +226,10 @@ class fragment_add_item: Fragment() { //TODO light Theme
         //Functions().getDB()
         timer.cancel()
         this.view?.let { inputMethodManager.hideSoftInputFromWindow(view?.windowToken, 0) }
-        NavHostFragment.findNavController(this).navigate(R.id.action_AddItem_to_ItemList)
+        //this.view?.exitCircularReveal(posX!!, posY!!){ parentFragmentManager.popBackStackImmediate("list", 0)}
+        this.view?.exitCircularReveal(posX!!, posY!!){ parentFragmentManager.close { replace(R.id.nav_host_fragment, fragment_item_list()) }}
+
+        //NavHostFragment.findNavController(this).navigate(R.id.action_AddItem_to_ItemList)
         suppActionBar.customView.b_settings.visibility = View.VISIBLE
         suppActionBar.customView.b_back.visibility = View.GONE
     }
@@ -306,31 +325,5 @@ class fragment_add_item: Fragment() { //TODO light Theme
         super.onDestroyView()
         timer.cancel()
     }
-
-    override fun onPause() {
-        super.onPause()
-        timer.cancel()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        timer.start()
-    }
-    interface ExitWithAnimation{
-        var posX: Int?
-        var posY: Int?
-        fun isToBeExitedWithAnimation(): Boolean
-    }
-}
-
-private fun View.addOnLayoutChangeListener(fragmentAddItem: fragment_add_item) {
-
-    val dx: Double = (fragmentAddItem.fabView!!.x/2).toDouble()
-    val dy: Double = (fragmentAddItem.fabView!!.y/2).toDouble()
-    val minRadius = Math.hypot(dx,dy).toFloat()
-    val mx: Double = (fragmentAddItem.fabView!!.x/2).toDouble()
-    val my: Double = (fragmentAddItem.fabView!!.y/2).toDouble()
-    val maxRadius = Math.hypot(mx, my).toFloat()
-
 
 }
