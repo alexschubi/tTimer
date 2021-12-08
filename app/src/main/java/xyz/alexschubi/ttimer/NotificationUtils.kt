@@ -97,7 +97,7 @@ class NotificationUtils() : ContextWrapper(mContext) {
         }
     }
 
-    fun makeNotification(editItem: Item) {
+    fun makeNotification(editItem: Item) { //TODO use work-manager
         val zonedItemDateTime = editItem.Date!!.atZone(ZoneId.systemDefault())
         val alarmManager = mContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(mContext, MainActivity.NotificationReceiver::class.java).putExtra("ItemArray", Functions().getItemArray(editItem))

@@ -1,21 +1,39 @@
 package xyz.alexschubi.ttimer
 
+import android.app.ActionBar
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.navigation.fragment.NavHostFragment
 import androidx.preference.PreferenceFragmentCompat
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.main_toolbar.view.*
+import kotlinx.android.synthetic.main.add_toolbar.view.*
 
-class fragment_settings : PreferenceFragmentCompat() {
+class fragment_settings : PreferenceFragmentCompat(), ExitWithAnimation{
+    override var posX: Int? = null
+    override var posY: Int? = null
+    override fun isToBeExitedWithAnimation(): Boolean = true
 
+    companion object {
+        @JvmStatic
+        fun newInstance(exit: IntArray? = null): fragment_settings = fragment_settings().apply {
+            if (exit != null && exit.size == 2) {
+                posX = exit[0]
+                posY = exit[1]
+            }
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        view.startCircularReveal()
+        suppActionBar.setCustomView(R.layout.add_toolbar)
+        suppActionBar.customView.b_back.setOnClickListener() {
+            suppActionBar.setCustomView(R.layout.list_toolbar)
+            parentFragmentManager.popBackStack()
+        }
+    }
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
-        suppActionBar.customView.b_settings.visibility = View.GONE
-        suppActionBar.customView.b_back.visibility = View.VISIBLE
-
         preferenceScreen.sharedPreferences.registerOnSharedPreferenceChangeListener { sharedPreferences, key ->
             if (key == "pref_firebase_enabled") {
                 Functions().applyFirebase()
@@ -40,15 +58,8 @@ class fragment_settings : PreferenceFragmentCompat() {
             }
             if (key == "pref_theme") {
                 Functions().applyTheme()
-                suppActionBar.customView.sp_sortMode.visibility = View.GONE
                 Log.d("Preferences", "applied Theme settings")
             }
-        }
-
-        suppActionBar.customView.b_back.setOnClickListener() {
-            NavHostFragment.findNavController(nav_host_fragment).navigate(R.id.action_fragment_settings_to_ItemList)
-            suppActionBar.customView.b_settings.visibility = View.VISIBLE
-            suppActionBar.customView.b_back.visibility = View.GONE
         }
     }
     

@@ -1,5 +1,6 @@
 package xyz.alexschubi.ttimer
 
+import android.app.ActionBar
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
@@ -11,29 +12,30 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
 import android.widget.Toast
-import androidx.navigation.fragment.NavHostFragment
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.add_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_add_item.*
 import kotlinx.android.synthetic.main.fragment_add_item.view.*
-import kotlinx.android.synthetic.main.main_toolbar.view.*
 import xyz.alexschubi.ttimer.data.sItem
-import xyz.alexschubi.ttimer.itemlist.fragment_item_list
 import java.time.DayOfWeek
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.temporal.TemporalAdjusters
 
-class AddItemFragment(public val getItem: sItem?) : Fragment(), ExitWithAnimation {
-
+class AddItemFragment(val getItem: sItem?) : Fragment(), ExitWithAnimation {
 
     private var editItem: Item = Item(-1,"", null, null,false, false, "")
-
     override var posX: Int? = null
     override var posY: Int? = null
     override fun isToBeExitedWithAnimation(): Boolean = true
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    companion object {
+        @JvmStatic
+        fun newInstance(exit: IntArray? = null, getItem: sItem?): AddItemFragment = AddItemFragment(getItem).apply {
+            if (exit != null && exit.size == 2) {
+                posX = exit[0]
+                posY = exit[1]
+            }
+        }
     }
 
     override fun onCreateView(
@@ -43,25 +45,12 @@ class AddItemFragment(public val getItem: sItem?) : Fragment(), ExitWithAnimatio
         return inflater.inflate(R.layout.fragment_add_item2, container, false)
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance(exit: IntArray? = null) =
-            AddItemFragment(null).apply {
-                posX = 0
-                posY = 0
-                if (exit != null && exit.size ==2){
-                    posX = exit[0]
-                    posY = exit[1]
-                }
-            }
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
         super.onViewCreated(view, savedInstanceState)
         view.startCircularReveal()
-
+        suppActionBar.setCustomView(R.layout.add_toolbar)
         tv_addTimeSpan.text = ""
-        suppActionBar.customView.sp_sortMode.visibility = View.GONE
         if (getItem!=null) {
             editItem = getItem.toItem()
             b_add_final.text = "Save"
@@ -183,14 +172,13 @@ class AddItemFragment(public val getItem: sItem?) : Fragment(), ExitWithAnimatio
             editItem.Date = mtime.withDayOfMonth(27).withHour(8).withMinute(0)
             addDateTime(editItem.Date!!)
         }
-
-        suppActionBar.customView.b_settings.visibility = View.GONE
-        suppActionBar.customView.b_back.visibility = View.VISIBLE
         suppActionBar.customView.b_back.setOnClickListener() {
-            this.view?.exitCircularReveal(this.posX!!, this.posY!!){}
-            suppActionBar.customView.b_settings.visibility = View.VISIBLE
-            suppActionBar.customView.b_back.visibility = View.GONE
-        }//TODO only action bar at items-list-fragment
+            Functions().hideKeyboard(this.requireView())
+            this.view?.exitCircularReveal(this.posX!!, this.posY!!){
+                suppActionBar.setCustomView(R.layout.list_toolbar)
+                parentFragmentManager.popBackStack()
+            }
+        }
 
         tb_add_text.isFocusableInTouchMode = true
         tb_add_text.requestFocus()
@@ -226,12 +214,17 @@ class AddItemFragment(public val getItem: sItem?) : Fragment(), ExitWithAnimatio
         //Functions().getDB()
         timer.cancel()
         this.view?.let { inputMethodManager.hideSoftInputFromWindow(view?.windowToken, 0) }
-        //this.view?.exitCircularReveal(posX!!, posY!!){ parentFragmentManager.popBackStackImmediate("list", 0)}
-        this.view?.exitCircularReveal(posX!!, posY!!){ parentFragmentManager.close { replace(R.id.nav_host_fragment, fragment_item_list()) }}
+        this.view?.exitCircularReveal(posX!!, posY!!){
+            parentFragmentManager.popBackStack()
+            suppActionBar.setCustomView(R.layout.list_toolbar)
+            val fragment = parentFragmentManager.findFragmentById(R.id.container)
+            if (fragment != null) {
+                if (fragment.equals(R.id.ItemList)){
 
-        //NavHostFragment.findNavController(this).navigate(R.id.action_AddItem_to_ItemList)
-        suppActionBar.customView.b_settings.visibility = View.VISIBLE
-        suppActionBar.customView.b_back.visibility = View.GONE
+                }
+
+            }
+        }
     }
 
     private fun addSpecificDateTime() {

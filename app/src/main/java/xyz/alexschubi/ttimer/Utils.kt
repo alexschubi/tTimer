@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter
 import android.view.View
 import android.view.ViewAnimationUtils
 import android.view.animation.DecelerateInterpolator
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import xyz.alexschubi.ttimer.data.sItem
@@ -83,7 +84,6 @@ fun sItem.toItem(): Item{
         Notified,
         Deleted,
         Color
-
     )
 }
 
@@ -97,13 +97,6 @@ inline fun FragmentManager.open(block: FragmentTransaction.() -> Unit) {
     beginTransaction().apply{
         block()
         setReorderingAllowed(true)
-        commit()
-    }
-}
-inline fun FragmentManager.close(block: FragmentTransaction.() -> Unit) {
-    beginTransaction().apply{
-        block()
-        setReorderingAllowed(false)
         commit()
     }
 }

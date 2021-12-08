@@ -1,55 +1,47 @@
 package xyz.alexschubi.ttimer.itemlist
 
-import android.animation.ObjectAnimator
-import android.animation.PropertyValuesHolder
+import android.app.ActionBar
 import android.os.Bundle
-import android.os.CountDownTimer
-import android.text.Layout
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewAnimationUtils
 import android.view.ViewGroup
 import android.widget.AdapterView
-import android.widget.Toast
-import androidx.core.view.marginBottom
-import androidx.core.view.marginEnd
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.circularreveal.CircularRevealFrameLayout
 import kotlinx.android.synthetic.main.fragment_item_list.*
 import kotlinx.android.synthetic.main.fragment_item_list.view.*
-import kotlinx.android.synthetic.main.main_toolbar.*
-import kotlinx.android.synthetic.main.main_toolbar.view.*
+import kotlinx.android.synthetic.main.list_toolbar.view.*
 import xyz.alexschubi.ttimer.*
 import xyz.alexschubi.ttimer.data.sItem
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
-import kotlin.math.roundToInt
-import kotlin.system.exitProcess
 
 
 class fragment_item_list : Fragment() {
     private lateinit var linearLayoutManager: LinearLayoutManager
+
+    companion object {
+        @JvmStatic
+        fun newInstance(): fragment_item_list = fragment_item_list()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        suppActionBar.setHomeButtonEnabled(true)
         return inflater.inflate(R.layout.fragment_item_list, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        suppActionBar.setCustomView(R.layout.list_toolbar)
         super.onViewCreated(view, savedInstanceState)
-        suppActionBar.customView.sp_sortMode.visibility = View.VISIBLE
         linearLayoutManager = LinearLayoutManager(mainActivity)
-
         //get and sort items for recyclerview
         var getItemsList = Functions().sortMutableList(localDB.itemsDAO().getAll(), suppPrefs.getInt("sortMode", 0))
         getItemsList.toList().forEach { sItem -> if (sItem.Deleted) getItemsList.remove(sItem) }
@@ -64,17 +56,23 @@ class fragment_item_list : Fragment() {
         Log.d("localDB", "got displayList $displayItemList2")
         ItemTouchHelper(SwipeItemLeft(adapter2,displayItemList2)).attachToRecyclerView(this.recyclerViewItems2)
 
-        view.b_add.setOnClickListener {
-            NavHostFragment.findNavController(this).navigate(R.id.action_ItemList_to_AddItem)
-        }
-
         view.b_add_reveal.setOnClickListener {
             val positions = it.findLocationOfCenterOnTheScreen()
-            parentFragmentManager.open { replace(R.id.nav_host_fragment, AddItemFragment.newInstance(positions)).addToBackStack("list") }
+            parentFragmentManager.open {
+                add(R.id.container, AddItemFragment.newInstance(positions, null))
+                addToBackStack(null)
+            }
         }
         swipe_refresh_layout.setOnRefreshListener {
             mainActivity.recreate()
             swipe_refresh_layout.isRefreshing = false
+        }
+        suppActionBar.customView.b_settings.setOnClickListener {
+            val positions = it.findLocationOfCenterOnTheScreen()
+            parentFragmentManager.open {
+                add(R.id.container, fragment_settings.newInstance(positions))
+                addToBackStack(null)
+            }
         }
 
         suppActionBar.customView.sp_sortMode.setSelection(suppPrefs.getInt("sortMode", 0))
@@ -147,12 +145,18 @@ class fragment_item_list : Fragment() {
                     editItem.Color
                 )
             }
-            NavHostFragment.findNavController(this.requireParentFragment())
-                .navigate(fragment_item_listDirections.actionItemListToAddItem(modifyItem))
-        } else {
-            NavHostFragment.findNavController(this.requireParentFragment())
-                .navigate(fragment_item_listDirections.actionItemListToAddItem())
+            val positions = view?.findLocationOfCenterOnTheScreen()
+            parentFragmentManager.open {
+                add(R.id.container, AddItemFragment.newInstance(positions, item))
+                addToBackStack(null)
+            }
 
+        } else {
+            val positions = view?.findLocationOfCenterOnTheScreen()
+            parentFragmentManager.open {
+                add(R.id.container, AddItemFragment.newInstance(positions, null))
+                addToBackStack(null)
+            }
         }
     }
 

@@ -1,5 +1,4 @@
-<androidx.preference.PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:title="Preferences">
 
@@ -12,13 +11,12 @@
             android:entries="@array/pref_theme_modes_names"
             android:entryValues="@array/pref_theme_modes_values"
             app:key="pref_theme"
-            app:useSimpleSummaryProvider="true"
-            app:title="pref_theme" />
+            app:title="pref_theme"
+            app:useSimpleSummaryProvider="true" />
 
     </androidx.preference.PreferenceCategory>
 
-    <androidx.preference.PreferenceCategory
-        app:title="Sync">
+    <androidx.preference.PreferenceCategory app:title="Sync">
         <SwitchPreference
             android:id="@+id/pref_sync_enabled"
             android:defaultValue="false"
@@ -28,44 +26,39 @@
             android:defaultValue="1234567890"
             android:key="pref_sync_connection"
             android:selectAllOnFocus="true"
-            app:useSimpleSummaryProvider="true"
             android:singleLine="true"
-            android:title="pref_sync_connection" />
+            android:title="pref_sync_connection"
+            app:useSimpleSummaryProvider="true" />
     </androidx.preference.PreferenceCategory>
 
-    <androidx.preference.PreferenceCategory
-        app:title="Send User Statistics">
+    <androidx.preference.PreferenceCategory app:title="Send User Statistics">
         <SwitchPreference
             android:defaultValue="false"
             android:key="pref_firebase_enabled"
-            android:title="pref_firebase_enabled"/>
+            android:title="pref_firebase_enabled" />
     </androidx.preference.PreferenceCategory>
 
-    <androidx.preference.PreferenceCategory
-        app:title="Notifications">
+    <androidx.preference.PreferenceCategory app:title="Notifications">
         <SwitchPreference
             android:defaultValue="true"
             android:key="pref_notifications_enabled"
             android:title="pref_notifications_enabled" />
     </androidx.preference.PreferenceCategory>
 
-    <androidx.preference.PreferenceCategory
-        app:title="Information">
+    <androidx.preference.PreferenceCategory app:title="Information">
         <Preference
             android:key="pref_static_field_key"
-            android:selectable="false"
             android:persistent="false"
-            android:title="Version"
-            android:summary="@string/app_version">
-        </Preference>
+            android:selectable="false"
+            android:summary="@string/app_version"
+            android:title="Version"></Preference>
         <Preference
             android:key="about"
-            android:title="About"
-            android:selectable="false"
             android:persistent="false"
+            android:selectable="false"
             android:summary="@string/about_text"
-            app:summary="@string/about_text">
-        </Preference>
+            android:title="About"
+            app:summary="@string/about_text"></Preference>
     </androidx.preference.PreferenceCategory>
 
 

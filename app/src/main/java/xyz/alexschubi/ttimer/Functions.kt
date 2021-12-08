@@ -4,15 +4,12 @@ import android.text.TextUtils
 import android.util.Log
 import java.time.LocalDateTime
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
-import androidx.room.CoroutinesRoom
 import xyz.alexschubi.ttimer.data.sItem
 import xyz.alexschubi.ttimer.itemlist.RecyclerViewAdapter
 import java.time.Year
 import java.time.ZoneId
-import java.time.ZonedDateTime
 import kotlin.collections.ArrayList
 
 class Functions {
