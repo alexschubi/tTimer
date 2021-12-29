@@ -5,7 +5,7 @@
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/tt_back"
+    android:background="@color/design_default_color_background"
     android:elevation="0dp"
     tools:context="xyz.alexschubi.ttimer.itemlist.fragment_item_list">
 
@@ -58,7 +58,7 @@
         android:src="@drawable/ic_baseline_add_24"
         android:visibility="visible"
         app:backgroundTint="@color/tt_add"
-        app:elevation="20dp"
+        app:borderWidth="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

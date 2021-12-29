@@ -1,6 +1,5 @@
 package xyz.alexschubi.ttimer
 
-import android.app.ActionBar
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
@@ -13,8 +12,7 @@ import android.view.ViewGroup
 import android.widget.RadioButton
 import android.widget.Toast
 import kotlinx.android.synthetic.main.add_toolbar.view.*
-import kotlinx.android.synthetic.main.fragment_add_item.*
-import kotlinx.android.synthetic.main.fragment_add_item.view.*
+import kotlinx.android.synthetic.main.fragment_add_item2.*
 import xyz.alexschubi.ttimer.data.sItem
 import java.time.DayOfWeek
 import java.time.LocalDateTime
@@ -50,13 +48,12 @@ class AddItemFragment(val getItem: sItem?) : Fragment(), ExitWithAnimation {
         super.onViewCreated(view, savedInstanceState)
         view.startCircularReveal()
         suppActionBar.setCustomView(R.layout.add_toolbar)
-        tv_addTimeSpan.text = ""
         if (getItem!=null) {
             editItem = getItem.toItem()
             b_add_final.text = "Save"
         }
         timer.start()
-        cl_date_time.setOnClickListener { addSpecificDateTime() }
+        tv_show_time.setOnClickListener { addSpecificDateTime() }
         b_del_time.setOnClickListener { delDateTime() }
         b_add_final.setOnClickListener { addItem() }
 
@@ -71,107 +68,65 @@ class AddItemFragment(val getItem: sItem?) : Fragment(), ExitWithAnimation {
         }
 
         if (editItem.Date == null) {
-            cl_date_time.visibility = View.GONE
-            ll_day.visibility =  View.GONE
-            ll_hour.visibility = View.GONE
-            ll_minute.visibility = View.GONE
+            tv_show_time.visibility = View.GONE
+            cl_modify_time.visibility =  View.GONE
             b_del_time.visibility = View.GONE
         } else {
             refreshDateTime()
             b_del_time.visibility = View.VISIBLE
-            cl_date_time.visibility = View.VISIBLE
-            ll_day.visibility =  View.VISIBLE
-            ll_hour.visibility = View.VISIBLE
-            ll_minute.visibility = View.VISIBLE
+            tv_show_time.visibility = View.VISIBLE
+            cl_modify_time.visibility =  View.VISIBLE
         }
         //Minutes
-        view.b_minus15minute.setOnClickListener {
-            Log.d("DateTime","+7 Days")
-            editItem.Date = editItem.Date!!.minusMinutes(15)
-            refreshDateTime()
-        }
-        view.b_minus5minute.setOnClickListener {
+        b_minus5minute.setOnClickListener {
             Log.d("DateTime","+7 Days")
             editItem.Date = editItem.Date!!.minusMinutes(5)
             refreshDateTime()
         }
-        view.b_plus15minute.setOnClickListener {
-            Log.d("DateTime","+15 Minutes")
-            editItem.Date = editItem.Date!!.plusMinutes(15)
-            refreshDateTime()
-        }
-        view.b_plus5minute.setOnClickListener {
+        b_plus5minute.setOnClickListener {
             Log.d("DateTime","+5 Minutes")
             editItem.Date = editItem.Date!!.plusMinutes(5)
             refreshDateTime()
         }
         //Hours
-        view.b_minus12hour.setOnClickListener {
-            Log.d("DateTime","-12 Hours")
-            editItem.Date = editItem.Date!!.minusHours(12)
-            refreshDateTime()
-        }
-        view.b_minus1hour.setOnClickListener {
+        b_minus1hour.setOnClickListener {
             Log.d("DateTime","-1 Hour")
             editItem.Date = editItem.Date!!.minusHours(1)
             refreshDateTime()
         }
-        view.b_plus12hour.setOnClickListener {
-            Log.d("DateTime","+12 Hour")
-            editItem.Date = editItem.Date!!.plusHours(12)
-            refreshDateTime()
-        }
-        view.b_plus1hour.setOnClickListener {
+        b_plus1hour.setOnClickListener {
             Log.d("DateTime","+1 Hour")
             editItem.Date = editItem.Date!!.plusHours(1)
             refreshDateTime()
         }
         //Days
-        view.b_minus7day.setOnClickListener {
-            Log.d("DateTime","-7 Days")
-            editItem.Date = editItem.Date!!.minusDays(7)
-            refreshDateTime()
-        }
-        view.b_minus1day.setOnClickListener {
+        b_minus1day.setOnClickListener {
             Log.d("DateTime","-1 Day")
             editItem.Date = editItem.Date!!.minusDays(1)
             refreshDateTime()
         }
-        view.b_plus7day.setOnClickListener {
-            Log.d("DateTime","+7 Days")
-            editItem.Date = editItem.Date!!.plusDays(7)
-            refreshDateTime()
-        }
-        view.b_plus1day.setOnClickListener {
+        b_plus1day.setOnClickListener {
             Log.d("DateTime","+1 Day")
             editItem.Date = editItem.Date!!.plusDays(1)
             refreshDateTime()
         }
         //Quick Time
-        view.b_add_qtime_now.setOnClickListener {
+        b_add_notification.setOnClickListener {
             Log.d("DateTime","Now")
             editItem.Date = LocalDateTime.now()
             addDateTime(editItem.Date!!)
         }
-        view.b_add_qtime_1d.setOnClickListener {
+        b_add_qtime_1d.setOnClickListener {
             Log.d("DateTime","Tomorrow")
             editItem.Date = LocalDateTime.now().plusDays(1).withHour(8).withMinute(0)
             addDateTime(editItem.Date!!)
         }
-        view.b_add_qtime_weekend.setOnClickListener {
+        b_add_qtime_weekend.setOnClickListener {
             Log.d("DateTime","Weekend")
             editItem.Date = LocalDateTime.now().with(TemporalAdjusters.next(DayOfWeek.FRIDAY)).withHour(14).withMinute(0)
             addDateTime(editItem.Date!!)
         }
-        view.b_add_qtime_monthend.setOnClickListener {
-            Log.d("DateTime","Monthend")
-            var mtime = LocalDateTime.now()
-            if(mtime.dayOfMonth > 27){
-                mtime = mtime.plusDays(10)
-            }
-            editItem.Date = mtime.withDayOfMonth(27).withHour(8).withMinute(0)
-            addDateTime(editItem.Date!!)
-        }
+
         suppActionBar.customView.b_back.setOnClickListener() {
             Functions().hideKeyboard(this.requireView())
             this.view?.exitCircularReveal(this.posX!!, this.posY!!){
@@ -236,31 +191,28 @@ class AddItemFragment(val getItem: sItem?) : Fragment(), ExitWithAnimation {
         var tDay: Int = actualDateTime.dayOfMonth
         var tMonth: Int = actualDateTime.monthValue
         var tYear: Int = actualDateTime.year
-        val timePickerDialog = TimePickerDialog(this.context,
-            R.style.ThemeOverlay_MaterialComponents_MaterialCalendar,
+        val timePickerDialog = TimePickerDialog(this.context, //TODO use MaterialTimeOicker https://material.io/components/time-pickers/android#using-time-pickers
+            R.style.tTimePicker,
             { view, hourOfDay, minute ->
                 Log.d("TimePicker", "got Time $hourOfDay:$minute")
                 tMinute = minute
                 tHour = hourOfDay
                 newItemDate = LocalDateTime.of(tYear, tMonth, tDay, tHour, tMinute)
-                tv_addDateTime.text = newItemDate.format(DateTimeFormatter.ofPattern("EE dd.MM.uuuu HH:mm"))
-                tv_addTimeSpan.text = Functions().getSpanString(newItemDate)
+                tv_show_time.text = newItemDate.format(dateFormatter) + " in " + Functions().getSpanString(newItemDate)
+                tv_show_time.visibility = View.VISIBLE
                 b_del_time.visibility = View.VISIBLE
-                cl_date_time.visibility = View.VISIBLE
-                ll_day.visibility =  View.VISIBLE
-                ll_hour.visibility = View.VISIBLE
-                ll_minute.visibility = View.VISIBLE
+                cl_modify_time.visibility = View.VISIBLE
 
                 editItem.Span = Functions().getSpanString(newItemDate)
                 editItem.Date = newItemDate
-                Log.d("addDateTime", "LocalDateTime ${editItem.Date!!.format(DateTimeFormatter.ofPattern("EE dd.MM.uuuu HH:mm"))} set")
+                Log.d("addDateTime", "LocalDateTime ${editItem.Date!!.format(dateFormatter)} set")
                 //exit here
             },
             tHour,
             tMinute,
             true)
         val datePickerDialog = DatePickerDialog(this.requireContext(),
-            R.style.ThemeOverlay_MaterialComponents_MaterialCalendar
+            R.style.tDatePicker
             ,
             { view, year, month, dayOfMonth ->
                 Log.d("DatePicker","got Date $dayOfMonth.$month.$year")
@@ -276,13 +228,12 @@ class AddItemFragment(val getItem: sItem?) : Fragment(), ExitWithAnimation {
         datePickerDialog.show()
     }
     private fun addDateTime(dateTime: LocalDateTime) {
-        tv_addDateTime.text = dateTime.format(DateTimeFormatter.ofPattern("EE dd.MM.uuuu HH:mm"))
-        tv_addTimeSpan.text = Functions().getSpanString(dateTime)
+        tv_show_time.text = dateTime.format(dateFormatter) + " in " + Functions().getSpanString(dateTime)
+        tv_show_time.visibility = View.VISIBLE
         b_del_time.visibility = View.VISIBLE
-        cl_date_time.visibility = View.VISIBLE
-        ll_day.visibility =  View.VISIBLE
-        ll_hour.visibility = View.VISIBLE
-        ll_minute.visibility = View.VISIBLE
+        cl_modify_time.visibility = View.VISIBLE
+        b_add_notification.visibility = View.GONE
+        Log.d("addItem-Date-Text",dateTime.format(dateFormatter) + " in " + Functions().getSpanString(dateTime))
         editItem.Span = Functions().getSpanString(dateTime)
         editItem.Date = dateTime
         Log.d("addDateTime", "LocalDateTime ${editItem.Date!!.format(DateTimeFormatter.ofPattern("EE dd.MM.uuuu HH:mm"))} set")
@@ -290,16 +241,14 @@ class AddItemFragment(val getItem: sItem?) : Fragment(), ExitWithAnimation {
     private fun delDateTime(){
         editItem.Date = null
         editItem.Span = null
-        cl_date_time.visibility = View.GONE
-        ll_day.visibility =  View.GONE
-        ll_hour.visibility = View.GONE
-        ll_minute.visibility = View.GONE
+        tv_show_time.visibility = View.GONE
         b_del_time.visibility = View.GONE
+        cl_modify_time.visibility = View.GONE
+        b_add_notification.visibility = View.VISIBLE
     }
 
     private fun refreshDateTime(){
-        tv_addTimeSpan.text = Functions().getSpanString(editItem.Date!!)
-        tv_addDateTime.text = editItem.Date!!.format(DateTimeFormatter.ofPattern("EE dd.MM.uuuu HH:mm"))
+        tv_show_time.text = editItem.Date!!.format(dateFormatter) + " in " + Functions().getSpanString(editItem.Date!!)
     }
 
     private val timer = object: CountDownTimer(1 * 60 * 60 * 1000, 1 * 10 * 1000){ //hour*min*sec*millisec

@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentTransaction
 import xyz.alexschubi.ttimer.data.sItem
 import java.time.Instant
 import java.time.LocalDateTime
+import java.time.Year
 import java.time.ZoneId
 
 // from https://proandroiddev.com/circular-reveal-in-fragments-the-clean-way-f25c8bc95257
@@ -99,4 +100,34 @@ inline fun FragmentManager.open(block: FragmentTransaction.() -> Unit) {
         setReorderingAllowed(true)
         commit()
     }
+}
+inline fun LocalDateTime.toSpan(): String{
+    val itemDateTime = this
+    var testOutLine: String = ""
+    val currentDateTime = LocalDateTime.now()
+    if (itemDateTime.isAfter(currentDateTime)) {
+        when (itemDateTime.year - currentDateTime.year) {
+            0 -> when (itemDateTime.dayOfYear - currentDateTime.dayOfYear) {
+                0 -> when (itemDateTime.hour - currentDateTime.hour) {
+                    0 -> when (itemDateTime.minute - currentDateTime.minute) {
+                        0 -> testOutLine += "Now"
+                        1 -> testOutLine += "1 Minute"
+                        else -> testOutLine += (itemDateTime.minute - currentDateTime.minute).toString() + " Minutes"
+                    }
+                    1 -> testOutLine += ((itemDateTime.minute - currentDateTime.minute) + 60).toString() + " Minutes"
+                    else -> testOutLine += (itemDateTime.hour - currentDateTime.hour).toString() + " Hours"
+                }
+                1 -> testOutLine += ((itemDateTime.hour - currentDateTime.hour) + 24).toString() + " Hours"
+                else -> testOutLine += (itemDateTime.dayOfYear - currentDateTime.dayOfYear).toString() + " Days"
+            }
+            1 -> when(Year.now().isLeap) {//Leap-Year
+                true -> testOutLine += ((itemDateTime.dayOfYear - currentDateTime.dayOfYear) + 366).toString() + " Days"
+                false -> testOutLine += ((itemDateTime.dayOfYear - currentDateTime.dayOfYear) + 365).toString() + " Days"
+            }
+            else -> testOutLine += (itemDateTime.year - currentDateTime.year).toString() + " Years"
+        }
+    } else {
+        testOutLine += "gone"
+    }
+    return testOutLine
 }

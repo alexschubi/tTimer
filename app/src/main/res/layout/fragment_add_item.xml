@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/design_default_color_background"
     tools:context="xyz.alexschubi.ttimer.fragment_add_item">
 
     <ScrollView
@@ -16,7 +17,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
         <LinearLayout
             android:id="@+id/linearLayout_v_add"
@@ -30,16 +32,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
+                android:background="@drawable/rounded_corner"
                 android:ems="10"
                 android:hint="Text"
                 android:inputType="none|textMultiLine"
                 android:minHeight="35dip"
                 android:padding="4dp"
-                android:text="nmbnmbnm"
                 android:textSize="20sp" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cl_date_time"
+                android:id="@+id/cl_show_time"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="4dp"
@@ -48,7 +50,7 @@
                 android:clickable="false">
 
                 <TextView
-                    android:id="@+id/tv_addDateTime"
+                    android:id="@+id/tv_show_time"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="2dp"
@@ -93,7 +95,7 @@
                     android:textSize="22sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/tv_addDateTime"
+                    app:layout_constraintStart_toEndOf="@+id/tv_show_time"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -123,6 +125,7 @@
                         android:autoSizeStepGranularity="1sp"
                         android:autoSizeTextType="uniform"
                         android:autoText="false"
+                        android:background="@drawable/rounded_corner"
                         android:backgroundTint="@null"
                         android:minWidth="200dip"
                         android:minHeight="35dip"
@@ -141,6 +144,7 @@
                         android:autoSizeStepGranularity="1sp"
                         android:autoSizeTextType="uniform"
                         android:autoText="false"
+                        android:background="@drawable/rounded_corner"
                         android:backgroundTint="@null"
                         android:minWidth="200dip"
                         android:minHeight="35dip"
@@ -159,6 +163,7 @@
                         android:autoSizeStepGranularity="1sp"
                         android:autoSizeTextType="uniform"
                         android:autoText="false"
+                        android:background="@drawable/rounded_corner"
                         android:backgroundTint="@null"
                         android:minWidth="200dip"
                         android:minHeight="35dip"
@@ -177,6 +182,7 @@
                         android:autoSizeStepGranularity="1sp"
                         android:autoSizeTextType="uniform"
                         android:autoText="false"
+                        android:background="@drawable/rounded_corner"
                         android:minWidth="200dip"
                         android:minHeight="35dip"
                         android:text="+15min"
@@ -202,6 +208,7 @@
                         android:autoSizeStepGranularity="1sp"
                         android:autoSizeTextType="uniform"
                         android:autoText="false"
+                        android:background="@drawable/rounded_corner"
                         android:backgroundTint="@null"
                         android:minWidth="200dip"
                         android:minHeight="35dip"
@@ -220,6 +227,7 @@
                         android:autoSizeStepGranularity="1sp"
                         android:autoSizeTextType="uniform"
                         android:autoText="false"
+                        android:background="@drawable/rounded_corner"
                         android:backgroundTint="@null"
                         android:minWidth="200dip"
                         android:minHeight="35dip"
@@ -238,6 +246,7 @@
                         android:autoSizeStepGranularity="1sp"
                         android:autoSizeTextType="uniform"
                         android:autoText="false"
+                        android:background="@drawable/rounded_corner"
                         android:backgroundTint="@null"
                         android:minWidth="200dip"
                         android:minHeight="35dip"
@@ -256,6 +265,7 @@
                         android:autoSizeStepGranularity="1sp"
                         android:autoSizeTextType="uniform"
                         android:autoText="false"
+                        android:background="@drawable/rounded_corner"
                         android:backgroundTint="@null"
                         android:minWidth="200dip"
                         android:minHeight="35dip"
@@ -281,6 +291,7 @@
                         android:autoSizeStepGranularity="1sp"
                         android:autoSizeTextType="uniform"
                         android:autoText="false"
+                        android:background="@drawable/rounded_corner"
                         android:backgroundTint="@null"
                         android:minWidth="200dip"
                         android:minHeight="35dip"
@@ -299,6 +310,7 @@
                         android:autoSizeStepGranularity="1sp"
                         android:autoSizeTextType="uniform"
                         android:autoText="false"
+                        android:background="@drawable/rounded_corner"
                         android:backgroundTint="@null"
                         android:minWidth="200dip"
                         android:minHeight="35dip"
@@ -317,6 +329,7 @@
                         android:autoSizeStepGranularity="1sp"
                         android:autoSizeTextType="uniform"
                         android:autoText="false"
+                        android:background="@drawable/rounded_corner"
                         android:backgroundTint="@null"
                         android:minWidth="200dip"
                         android:minHeight="35dip"
@@ -335,6 +348,7 @@
                         android:autoSizeStepGranularity="1sp"
                         android:autoSizeTextType="uniform"
                         android:autoText="false"
+                        android:background="@drawable/rounded_corner"
                         android:backgroundTint="@null"
                         android:minWidth="200dip"
                         android:minHeight="35dip"
@@ -353,7 +367,7 @@
                     android:orientation="horizontal">
 
                     <Button
-                        android:id="@+id/b_add_qtime_now"
+                        android:id="@+id/b_add_notification"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="2dp"
@@ -363,6 +377,7 @@
                         android:autoSizeStepGranularity="1sp"
                         android:autoSizeTextType="uniform"
                         android:autoText="false"
+                        android:background="@drawable/rounded_corner"
                         android:backgroundTint="@null"
                         android:minWidth="200dip"
                         android:minHeight="35dip"
@@ -381,6 +396,7 @@
                         android:autoSizeStepGranularity="1sp"
                         android:autoSizeTextType="uniform"
                         android:autoText="false"
+                        android:background="@drawable/rounded_corner"
                         android:backgroundTint="@null"
                         android:minWidth="200dip"
                         android:minHeight="35dip"
@@ -399,6 +415,7 @@
                         android:autoSizeStepGranularity="1sp"
                         android:autoSizeTextType="uniform"
                         android:autoText="false"
+                        android:background="@drawable/rounded_corner"
                         android:backgroundTint="@null"
                         android:minWidth="200dip"
                         android:minHeight="35dip"
@@ -417,6 +434,7 @@
                         android:autoSizeStepGranularity="1sp"
                         android:autoSizeTextType="uniform"
                         android:autoText="false"
+                        android:background="@drawable/rounded_corner"
                         android:backgroundTint="@null"
                         android:minWidth="200dip"
                         android:minHeight="35dip"
@@ -433,6 +451,7 @@
                 android:layout_marginStart="4dp"
                 android:layout_marginEnd="4dp"
                 android:layout_marginBottom="4dp"
+                android:background="@drawable/rounded_corner"
                 android:backgroundTint="@null"
                 android:minHeight="35dip"
                 android:text="Delete Notification"

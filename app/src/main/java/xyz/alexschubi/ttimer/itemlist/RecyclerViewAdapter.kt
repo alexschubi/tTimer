@@ -4,13 +4,16 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.RecyclerView
 import xyz.alexschubi.ttimer.R.*
 import kotlinx.android.synthetic.main.recycler_view_item.view.*
 import xyz.alexschubi.ttimer.Functions
 import xyz.alexschubi.ttimer.Item
+import xyz.alexschubi.ttimer.R
 import xyz.alexschubi.ttimer.data.sItem
+import xyz.alexschubi.ttimer.mapplication
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -22,7 +25,7 @@ class RecyclerViewAdapter(rVArrayList: MutableList<sItem>, val listener: (sItem)
     var mItems = rVArrayList
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(layout.recycler_view_item, parent, false)
+        val itemView = LayoutInflater.from(parent.context).inflate(layout.recycler_view_item_v2, parent, false)
         return ViewHolder(itemView)
     }
 
@@ -48,12 +51,12 @@ class RecyclerViewAdapter(rVArrayList: MutableList<sItem>, val listener: (sItem)
             itemView.tv_item_text.text = currentItem.Text
 
             when (currentItem.Color) {
-                "blue"-> itemView.setBackgroundResource(drawable.rounded_corner_blue)
-                "green" -> itemView.setBackgroundResource(drawable.rounded_corner_green)
-                "yellow" -> itemView.setBackgroundResource(drawable.rounded_corner_yellow)
-                "orange" -> itemView.setBackgroundResource(drawable.rounded_corner_orange)
-                "red" -> itemView.setBackgroundResource(drawable.rounded_corner_red)
-                "purple" -> itemView.setBackgroundResource(drawable.rounded_corner_purple)
+                "blue" -> itemView.setBackgroundColor(ContextCompat.getColor(mapplication, R.color.item_blue))
+                "green" -> itemView.setBackgroundColor(ContextCompat.getColor(mapplication, R.color.item_green))
+                "yellow" -> itemView.setBackgroundColor(ContextCompat.getColor(mapplication, R.color.item_yellow))
+                "orange" -> itemView.setBackgroundColor(ContextCompat.getColor(mapplication, R.color.item_orange))
+                "red" -> itemView.setBackgroundColor(ContextCompat.getColor(mapplication, R.color.item_red))
+                "purple" -> itemView.setBackgroundColor(ContextCompat.getColor(mapplication, R.color.item_purple))
             }
             itemView.elevation = 30F
             itemView.translationZ = 30F

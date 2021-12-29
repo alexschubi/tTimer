@@ -28,7 +28,7 @@ lateinit var firebaseAnalytics: FirebaseAnalytics
 lateinit var firebaseCrashlytics: FirebaseCrashlytics
 lateinit var localDB: ItemsDatabase
 lateinit var suppActionBar : ActionBar
-private val dateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("EE dd.MM.yyyy HH:mm")
+val dateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("EE dd.MM.yyyy HH:mm")
 
 class MainActivity : AppCompatActivity() {
 
