@@ -23,4 +23,7 @@
     <color name="test_2">#EE00FF</color>
     <color name="test_3">#4C0051</color>
     <color name="test_4">#7C4C80</color>
+
+
+    <color name="dn_fragment_background">#FFFFFF</color>
 </resources>

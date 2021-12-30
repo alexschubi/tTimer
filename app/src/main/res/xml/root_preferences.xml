@@ -1,5 +1,9 @@
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/dn_fragment_background"
+    android:backgroundTint="@color/dn_fragment_background"
+    android:colorBackground="@color/dn_fragment_background"
+    android:theme="@style/tPreferenceScreen"
     android:title="Preferences">
 
     <androidx.preference.PreferenceCategory

@@ -2,6 +2,7 @@ package xyz.alexschubi.ttimer
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
+import android.util.Log
 import android.view.View
 import android.view.ViewAnimationUtils
 import android.view.animation.DecelerateInterpolator
@@ -15,17 +16,19 @@ import java.time.Year
 import java.time.ZoneId
 
 // from https://proandroiddev.com/circular-reveal-in-fragments-the-clean-way-f25c8bc95257
-fun View.startCircularReveal() {
+fun View.startCircularReveal(oldX: Int, oldY: Int) {
     addOnLayoutChangeListener(object : View.OnLayoutChangeListener {
         override fun onLayoutChange(v: View, left: Int, top: Int, right: Int, bottom: Int, oldLeft: Int, oldTop: Int,
                                     oldRight: Int, oldBottom: Int) {
             v.removeOnLayoutChangeListener(this)
-            val cx = v.right
-            val cy = v.bottom
-            val radius = Math.hypot(right.toDouble(), bottom.toDouble()).toInt()
-            ViewAnimationUtils.createCircularReveal(v, cx, cy, 0f, radius.toFloat()).apply {
-                interpolator = DecelerateInterpolator(2f)
-                duration = 1000
+
+            val diffX: Double = right.toDouble()/2 + oldX
+            val diffY: Double = bottom.toDouble()/2 + oldY
+            val radius = Math.hypot(diffX, diffY).toInt()
+            Log.d("CircularReveal", "from X$diffX and Y$diffY with radius$radius")
+            ViewAnimationUtils.createCircularReveal(v, oldX, oldY, 0f, radius.toFloat()).apply {
+                interpolator = DecelerateInterpolator(1f)
+                duration = 10000
                 start()
             }
         }
@@ -42,7 +45,7 @@ fun View.startCircularReveal() {
 fun View.exitCircularReveal(exitX: Int, exitY: Int, block: () -> Unit) {
     val startRadius = Math.hypot(this.width.toDouble(), this.height.toDouble())
     ViewAnimationUtils.createCircularReveal(this, exitX, exitY, startRadius.toFloat(), 0f).apply {
-        duration = 1000
+        duration = 10000
         interpolator = DecelerateInterpolator(1f)
         addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator?) {

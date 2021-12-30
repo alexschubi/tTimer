@@ -252,7 +252,6 @@ class Functions {
     }
 
     fun saveItemToDB(item: Item, isNew: Boolean){
-
         val sItem = sItem(item.Index,
             item.Text,
             item.Date?.atZone(ZoneId.systemDefault())?.toInstant()?.toEpochMilli(),

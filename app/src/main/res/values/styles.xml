@@ -12,6 +12,8 @@
         <item name="materialTimePickerStyle">@style/tTimePicker</item>
         <item name="cardViewStyle">@style/tCardView</item>
         <item name="materialCardViewStyle">@style/tCardView</item>
+        <item name="preferenceScreenStyle">@style/tPreferenceScreen</item>
+        <item name="preferenceTheme">@style/tPreferenceTheme</item>
     </style>
 
     <style name="tMaterialButton" parent="Widget.MaterialComponents.Button">
@@ -28,7 +30,7 @@
         <item name="android:insetBottom">2dp</item>
         <item name="android:insetLeft">2dp</item>
         <item name="android:insetRight">2dp</item>
-        <item name="android:elevation">5dp</item>
+        <item name="android:elevation">10dp</item>
     </style>
     <style name="tTextView" parent="Widget.MaterialComponents.TextView">
         <item name="backgroundTint">@color/tt_back</item>
@@ -41,6 +43,7 @@
         <item name="autoSizeTextType">uniform</item>
         <item name="android:shape">rectangle</item>
         <item name="background">@drawable/rounded_corner</item>
+        <item name="android:scrollbars">none</item>
     </style>
     <style name="tTextEdit" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="backgroundTint">@color/tt_back</item>
@@ -57,21 +60,23 @@
     <style name="tFloatingButton" parent="Widget.MaterialComponents.FloatingActionButton">
         <item name="backgroundTint">@color/tt_add</item>
         <item name="tint">@color/tt_text_light</item>
-        <item name="elevation">10dp</item>
+        <item name="elevation">20dp</item>
     </style>
     <style name="tTimePicker" parent="Widget.MaterialComponents.TimePicker">
         <item name="android:timePickerMode">spinner</item>
     </style>
     <style name="tDatePicker" parent="Widget.MaterialComponents.MaterialCalendar">
     </style>
-    <style name="tCardView">
-        <item name="cardElevation">3dp</item>
+    <style name="tCardView" parent="Widget.MaterialComponents.CardView">
+        <item name="cardElevation">2dp</item>
         <item name="cardCornerRadius">8dp</item>
-        <item name="strokeWidth">0.5dp</item>
-        <item name="strokeColor">@color/tt_back_dark</item>
     </style>
-    <style name="tFragment">
-        <item name="background">@color/tt_back_light</item>
+    <style name="tPreferenceScreen" parent="Preference.PreferenceScreen">
+        <item name="background">@color/dn_fragment_background</item>
+        <item name="backgroundColor">@color/dn_fragment_background</item>
+    </style>
+    <style name="tPreferenceTheme">
+        <item name="background">@color/dn_fragment_background</item>
     </style>
 
 

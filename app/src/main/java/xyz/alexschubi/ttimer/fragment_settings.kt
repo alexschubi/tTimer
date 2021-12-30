@@ -11,21 +11,27 @@ import kotlinx.android.synthetic.main.add_toolbar.view.*
 class fragment_settings : PreferenceFragmentCompat(), ExitWithAnimation{
     override var posX: Int? = null
     override var posY: Int? = null
+    var startPosX: Int = 0
+    var startPosY: Int = 0
     override fun isToBeExitedWithAnimation(): Boolean = true
 
     companion object {
         @JvmStatic
-        fun newInstance(exit: IntArray? = null): fragment_settings = fragment_settings().apply {
-            if (exit != null && exit.size == 2) {
-                posX = exit[0]
-                posY = exit[1]
+        fun newInstance(startPos: IntArray? = null, exitPos: IntArray? = null): fragment_settings = fragment_settings().apply {
+            if (exitPos != null && exitPos.size == 2) {
+                posX = exitPos[0]
+                posY = exitPos[1]
+            }
+            if (startPos != null && startPos.size == 2) {
+                startPosX = startPos[0]!!
+                startPosY = startPos[1]!!
             }
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        view.startCircularReveal()
+        view.startCircularReveal(startPosX, startPosY)
         suppActionBar.setCustomView(R.layout.add_toolbar)
         suppActionBar.customView.b_back.setOnClickListener() {
             suppActionBar.setCustomView(R.layout.list_toolbar)

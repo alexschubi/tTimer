@@ -24,14 +24,20 @@ class AddItemFragment(val getItem: sItem?) : Fragment(), ExitWithAnimation {
     private var editItem: Item = Item(-1,"", null, null,false, false, "")
     override var posX: Int? = null
     override var posY: Int? = null
+    var startPosX: Int = 0
+    var startPosY: Int = 0
     override fun isToBeExitedWithAnimation(): Boolean = true
 
     companion object {
         @JvmStatic
-        fun newInstance(exit: IntArray? = null, getItem: sItem?): AddItemFragment = AddItemFragment(getItem).apply {
-            if (exit != null && exit.size == 2) {
-                posX = exit[0]
-                posY = exit[1]
+        fun newInstance(startPos: IntArray? = null, exitPos: IntArray? = null, getItem: sItem?): AddItemFragment = AddItemFragment(getItem).apply {
+            if (exitPos != null && exitPos.size == 2) {
+                posX = exitPos[0]
+                posY = exitPos[1]
+            }
+            if (startPos != null && startPos.size == 2) {
+                startPosX = startPos[0]
+                startPosY = startPos[1]
             }
         }
     }
@@ -46,7 +52,7 @@ class AddItemFragment(val getItem: sItem?) : Fragment(), ExitWithAnimation {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         super.onViewCreated(view, savedInstanceState)
-        view.startCircularReveal()
+        view.startCircularReveal(startPosX, startPosY)
         suppActionBar.setCustomView(R.layout.add_toolbar)
         if (getItem!=null) {
             editItem = getItem.toItem()

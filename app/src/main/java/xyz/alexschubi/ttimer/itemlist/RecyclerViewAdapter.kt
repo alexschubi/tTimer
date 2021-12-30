@@ -1,16 +1,14 @@
 package xyz.alexschubi.ttimer.itemlist
 
-import android.util.Log
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.circularreveal.cardview.CircularRevealCardView
+import kotlinx.android.synthetic.main.recycler_view_item_v2.view.*
 import xyz.alexschubi.ttimer.R.*
-import kotlinx.android.synthetic.main.recycler_view_item.view.*
-import xyz.alexschubi.ttimer.Functions
-import xyz.alexschubi.ttimer.Item
 import xyz.alexschubi.ttimer.R
 import xyz.alexschubi.ttimer.data.sItem
 import xyz.alexschubi.ttimer.mapplication
@@ -50,14 +48,39 @@ class RecyclerViewAdapter(rVArrayList: MutableList<sItem>, val listener: (sItem)
             itemView.tv_item_index.text = currentItem.Span
             itemView.tv_item_text.text = currentItem.Text
 
+            var textColor: Int = 0
+            var backgroundColor: Int = 0
             when (currentItem.Color) {
-                "blue" -> itemView.setBackgroundColor(ContextCompat.getColor(mapplication, R.color.item_blue))
-                "green" -> itemView.setBackgroundColor(ContextCompat.getColor(mapplication, R.color.item_green))
-                "yellow" -> itemView.setBackgroundColor(ContextCompat.getColor(mapplication, R.color.item_yellow))
-                "orange" -> itemView.setBackgroundColor(ContextCompat.getColor(mapplication, R.color.item_orange))
-                "red" -> itemView.setBackgroundColor(ContextCompat.getColor(mapplication, R.color.item_red))
-                "purple" -> itemView.setBackgroundColor(ContextCompat.getColor(mapplication, R.color.item_purple))
+                "blue" -> {
+                    textColor = ContextCompat.getColor(mapplication, R.color.tt_text_light)
+                    backgroundColor = ContextCompat.getColor(mapplication, R.color.item_blue)
+                }
+                "green" -> {
+                    textColor = ContextCompat.getColor(mapplication, R.color.tt_text_dark)
+                    backgroundColor = ContextCompat.getColor(mapplication, R.color.item_green)
+                }
+                "yellow" -> {
+                    textColor = ContextCompat.getColor(mapplication, R.color.tt_text_dark)
+                    backgroundColor = ContextCompat.getColor(mapplication, R.color.item_yellow)
+                }
+                "orange" -> {
+                    textColor = ContextCompat.getColor(mapplication, R.color.tt_text_dark)
+                    backgroundColor = ContextCompat.getColor(mapplication, R.color.item_orange)
+                }
+                "red" -> {
+                    textColor = ContextCompat.getColor(mapplication, R.color.tt_text_dark)
+                    backgroundColor = ContextCompat.getColor(mapplication, R.color.item_red)
+                }
+                "purple" -> {
+                    textColor = ContextCompat.getColor(mapplication, R.color.tt_text_light)
+                    backgroundColor = ContextCompat.getColor(mapplication, R.color.item_purple)
+                }
             }
+            itemView.tv_item_datetime.setTextColor(textColor)
+            itemView.tv_item_text.setTextColor(textColor)
+            itemView.tv_item_span.setTextColor(textColor)
+            val revealCardView = itemView as CircularRevealCardView
+            revealCardView.setCardBackgroundColor(backgroundColor)
             itemView.elevation = 30F
             itemView.translationZ = 30F
             itemView.id = currentItem.Index

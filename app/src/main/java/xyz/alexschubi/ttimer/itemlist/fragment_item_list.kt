@@ -51,15 +51,15 @@ class fragment_item_list : Fragment() {
         var adapter2 = RecyclerViewAdapter(displayItemList2) { item: sItem ->
             displayAddItem(item)
         }
-        //TODO rewrite notifications to this DB
+
         recyclerViewItems2.adapter = adapter2
         Log.d("localDB", "got displayList $displayItemList2")
         ItemTouchHelper(SwipeItemLeft(adapter2,displayItemList2)).attachToRecyclerView(this.recyclerViewItems2)
 
         view.b_add_reveal.setOnClickListener {
-            val positions = it.findLocationOfCenterOnTheScreen()
-            parentFragmentManager.open {
-                add(R.id.container, AddItemFragment.newInstance(positions, null))
+            val positions = intArrayOf(it.left + it.width/2, it.top + it.height/2)
+            parentFragmentManager.open {//TODO exit positions from recycler view or insert with animation
+                add(R.id.container, AddItemFragment.newInstance(positions, positions,null))
                 addToBackStack(null)
             }
         }
@@ -124,37 +124,16 @@ class fragment_item_list : Fragment() {
     private fun displayAddItem(item: sItem?){
         val editItem = item
         if (editItem!=null){
-            var modifyItem: Item
-            if (editItem.TimeStamp!=null){
-                modifyItem = Item(editItem.Index,
-                    editItem.Text,
-                    LocalDateTime.ofInstant(editItem.TimeStamp?.let { Instant.ofEpochMilli(it) },
-                        ZoneId.systemDefault()),
-                    editItem.Span,
-                    editItem.Notified,
-                    editItem.Deleted,
-                    editItem.Color
-                )
-            } else {
-                modifyItem = Item(editItem.Index,
-                    editItem.Text,
-                    null,
-                    null,
-                    editItem.Notified,
-                    editItem.Deleted,
-                    editItem.Color
-                )
-            }
             val positions = view?.findLocationOfCenterOnTheScreen()
-            parentFragmentManager.open {
-                add(R.id.container, AddItemFragment.newInstance(positions, item))
+            parentFragmentManager.open {//TODO get position of item
+                add(R.id.container, AddItemFragment.newInstance(positions, intArrayOf(0,0), item))
                 addToBackStack(null)
             }
 
         } else {
             val positions = view?.findLocationOfCenterOnTheScreen()
-            parentFragmentManager.open {
-                add(R.id.container, AddItemFragment.newInstance(positions, null))
+            parentFragmentManager.open {//TODO get position of item
+                add(R.id.container, AddItemFragment.newInstance(positions, intArrayOf(0,0), null))
                 addToBackStack(null)
             }
         }

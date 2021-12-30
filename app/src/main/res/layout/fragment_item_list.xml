@@ -5,7 +5,7 @@
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/design_default_color_background"
+    android:background="@color/dn_fragment_background"
     android:elevation="0dp"
     tools:context="xyz.alexschubi.ttimer.itemlist.fragment_item_list">
 
