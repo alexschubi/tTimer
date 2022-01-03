@@ -5,8 +5,13 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceFragmentCompat
 import kotlinx.android.synthetic.main.add_toolbar.view.*
+import android.util.TypedValue
+
+
+
 
 class fragment_settings : PreferenceFragmentCompat(), ExitWithAnimation{
     override var posX: Int? = null
@@ -32,6 +37,8 @@ class fragment_settings : PreferenceFragmentCompat(), ExitWithAnimation{
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.startCircularReveal(startPosX, startPosY)
+
+        view.setBackgroundColor(mapplication.resources.getColor(R.color.dn_fragment_background, mapplication.theme))
         suppActionBar.setCustomView(R.layout.add_toolbar)
         suppActionBar.customView.b_back.setOnClickListener() {
             suppActionBar.setCustomView(R.layout.list_toolbar)
@@ -54,7 +61,7 @@ class fragment_settings : PreferenceFragmentCompat(), ExitWithAnimation{
                     //TODO sync
                     // TODO password https://stackoverflow.com/a/4325239
                     //  TODO webdav
-                    //   TODO CSV
+                    //Todo save credentials secured
                 } catch (e: Exception) {
                     Toast.makeText(mContext, "could not reach WebDAV-CSV-File", Toast.LENGTH_SHORT)
                 }

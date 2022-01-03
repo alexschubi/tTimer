@@ -13,6 +13,7 @@
         <item name="cardViewStyle">@style/tCardView</item>
         <item name="materialCardViewStyle">@style/tCardView</item>
         <item name="preferenceScreenStyle">@style/tPreferenceScreen</item>
+        <item name="preferenceTheme">@style/tPreferenceTheme</item>
     </style>
 
     <style name="tMaterialButton" parent="Widget.MaterialComponents.Button">
@@ -68,12 +69,15 @@
         <item name="cardElevation">2dp</item>
         <item name="cardCornerRadius">8dp</item>
     </style>
-    <style name="tFragment">
-        <item name="background">@color/tt_back_dark</item>
-    </style>
     <style name="tPreferenceScreen" parent="Preference.PreferenceScreen">
         <item name="background">@color/dn_fragment_background</item>
         <item name="backgroundColor">@color/dn_fragment_background</item>
+    </style>
+    <style name="tPreferenceTheme">
+        <item name="background">@color/dn_fragment_background</item>
+    </style>
+    <style name="tFragment">
+        <item name="background">@color/dn_fragment_background</item>
     </style>
 
 

@@ -81,8 +81,6 @@ class RecyclerViewAdapter(rVArrayList: MutableList<sItem>, val listener: (sItem)
             itemView.tv_item_span.setTextColor(textColor)
             val revealCardView = itemView as CircularRevealCardView
             revealCardView.setCardBackgroundColor(backgroundColor)
-            itemView.elevation = 30F
-            itemView.translationZ = 30F
             itemView.id = currentItem.Index
 
             itemView.setOnClickListener {listener(currentItem)}

@@ -55,14 +55,14 @@
             android:persistent="false"
             android:selectable="false"
             android:summary="@string/app_version"
-            android:title="Version"></Preference>
+            android:title="Version" />
         <Preference
             android:key="about"
             android:persistent="false"
             android:selectable="false"
             android:summary="@string/about_text"
             android:title="About"
-            app:summary="@string/about_text"></Preference>
+            app:summary="@string/about_text" />
     </androidx.preference.PreferenceCategory>
 
 
