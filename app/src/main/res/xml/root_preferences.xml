@@ -1,14 +1,9 @@
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/dn_fragment_background"
-    android:backgroundTint="@color/dn_fragment_background"
-    android:colorBackground="@color/dn_fragment_background"
-    android:theme="@style/tPreferenceScreen"
+    android:theme="@style/tPreferenceTheme"
     android:title="Preferences">
 
-    <androidx.preference.PreferenceCategory
-        android:theme="@style/AppTheme"
-        app:title="Theme">
+    <androidx.preference.PreferenceCategory app:title="Theme">
         <ListPreference
             android:id="@+id/pref_theme"
             android:defaultValue="followSystem"

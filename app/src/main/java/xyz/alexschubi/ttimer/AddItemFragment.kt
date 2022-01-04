@@ -2,6 +2,8 @@ package xyz.alexschubi.ttimer
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.res.ColorStateList
+import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
@@ -11,6 +13,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
 import android.widget.Toast
+import androidx.compose.ui.graphics.Color
+import androidx.core.content.ContextCompat
+import androidx.core.view.updateLayoutParams
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.add_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_add_item2.*
 import xyz.alexschubi.ttimer.data.sItem
@@ -64,6 +71,21 @@ class AddItemFragment(val getItem: sItem?) : Fragment(), ExitWithAnimation {
         b_add_final.setOnClickListener { addItem() }
 
         tb_add_text.setText(editItem.Text)
+        rg_color.setOnCheckedChangeListener { radioGroup, i ->
+            var strokeColor = 0
+            when(i){
+                rb_blue.id -> strokeColor = ContextCompat.getColor(mapplication, R.color.item_blue)
+                rb_green.id ->  strokeColor= ContextCompat.getColor(mapplication, R.color.item_green)
+                rb_red.id ->  strokeColor= ContextCompat.getColor(mapplication, R.color.item_red)
+                rb_purple.id ->  strokeColor= ContextCompat.getColor(mapplication, R.color.item_purple)
+                rb_yellow.id ->  strokeColor= ContextCompat.getColor(mapplication, R.color.item_yellow)
+                rb_orange.id ->  strokeColor= ContextCompat.getColor(mapplication, R.color.item_orange)
+            }
+            text_Input_layout.apply {
+                boxStrokeColor = strokeColor
+                hintTextColor = ColorStateList.valueOf(strokeColor)
+            }
+        }
         when (editItem.Color) {
             "blue"-> rg_color.check(rb_blue.id)
             "green" -> rg_color.check(rb_green.id)
