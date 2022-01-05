@@ -10,8 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceFragmentCompat
 import kotlinx.android.synthetic.main.add_toolbar.view.*
 import android.util.TypedValue
-
-
+import androidx.appcompat.app.AppCompatDelegate
 
 
 class fragment_settings : PreferenceFragmentCompat(), ExitWithAnimation{
@@ -38,18 +37,26 @@ class fragment_settings : PreferenceFragmentCompat(), ExitWithAnimation{
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.startCircularReveal(startPosX, startPosY)
+
         mapplication.setTheme(R.style.tPreferenceTheme)
-
-
-        when (mapplication.resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK)) {
-            Configuration.UI_MODE_NIGHT_YES -> {
-                view.setBackgroundColor(mapplication.resources.getColor(R.color.tt_back_dark, mapplication.theme))
+        when (AppCompatDelegate.getDefaultNightMode()) {
+            AppCompatDelegate.MODE_NIGHT_NO -> view.setBackgroundColor(mapplication.resources.getColor(R.color.d_background, mapplication.theme))
+            AppCompatDelegate.MODE_NIGHT_YES -> view.setBackgroundColor(mapplication.resources.getColor(R.color.n_background, mapplication.theme))
+            AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM -> {
+                when (mapplication.resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK)) {
+                    Configuration.UI_MODE_NIGHT_YES -> { view.setBackgroundColor(mapplication.resources.getColor(R.color.n_background, mapplication.theme)) }
+                    Configuration.UI_MODE_NIGHT_NO -> { view.setBackgroundColor(mapplication.resources.getColor(R.color.d_background, mapplication.theme)) }
+                }
             }
-            Configuration.UI_MODE_NIGHT_NO -> {
-                view.setBackgroundColor(mapplication.resources.getColor(R.color.dn_fragment_background, mapplication.theme))
+            AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY -> {
+                when (mapplication.resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK)) {
+                    Configuration.UI_MODE_NIGHT_YES -> { view.setBackgroundColor(mapplication.resources.getColor(R.color.n_background, mapplication.theme)) }
+                    Configuration.UI_MODE_NIGHT_NO -> { view.setBackgroundColor(mapplication.resources.getColor(R.color.d_background, mapplication.theme)) }
+                }
             }
-            Configuration.UI_MODE_NIGHT_UNDEFINED -> { Log.i("Theme", "no UI-day/night-mode selected")}
         }
+        val textColor = mapplication.resources.getColor(R.color.dn_text, mapplication.theme)
+
 
         suppActionBar.setCustomView(R.layout.add_toolbar)
         suppActionBar.customView.b_back.setOnClickListener() {

@@ -13,6 +13,10 @@
         <item name="cardViewStyle">@style/tCardView</item>
         <item name="materialCardViewStyle">@style/tCardView</item>
         <item name="preferenceTheme">@style/tPreferenceTheme</item>
+        <item name="preferenceFragmentStyle">@style/PreferenceFragment</item>
+        <item name="preferenceStyle">@style/Preference</item>
+        <item name="preferenceCategoryStyle">@style/Preference.Category</item>
+        <item name="editTextPreferenceStyle">@style/Widget.Design.TextInputLayout</item>
     </style>
 
     <style name="tFragment">

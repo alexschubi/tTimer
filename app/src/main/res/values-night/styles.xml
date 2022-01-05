@@ -13,13 +13,17 @@
         <item name="cardViewStyle">@style/tCardView</item>
         <item name="materialCardViewStyle">@style/tCardView</item>
         <item name="preferenceTheme">@style/tPreferenceTheme</item>
+        <item name="preferenceFragmentStyle">@style/tPreferenceTheme</item>
+        <item name="preferenceStyle">@style/Preference</item>
+        <item name="preferenceCategoryStyle">@style/Preference.Category</item>
+        <item name="editTextPreferenceStyle">@style/Widget.Design.TextInputLayout</item>
     </style>
 
     <style name="tFragment">
         <item name="background">@color/dn_fragment_background</item>
     </style>
     <style name="tMaterialButton" parent="Widget.MaterialComponents.Button">
-        <item name="backgroundTint">@color/dn_accent_2</item>
+        <item name="backgroundTint">@color/dn_accent_1</item>
         <item name="android:textColor">@color/dn_text</item>
         <item name="android:textAlignment">center</item>
         <item name="cornerRadius">4dp</item>
@@ -58,6 +62,7 @@
         <item name="autoSizeTextType">uniform</item>
         <item name="android:shape">rectangle</item>
         <item name="background">@drawable/rounded_corner</item>
+        <item name="android:textCursorDrawable">@drawable/cursor</item>
     </style>
     <style name="tFloatingButton" parent="Widget.MaterialComponents.FloatingActionButton">
         <item name="backgroundTint">#43A047</item>

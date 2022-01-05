@@ -39,7 +39,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="2dp"
                     android:hint="Text"
-                    android:inputType="none|textMultiLine" />
+                    android:inputType="none|textMultiLine"
+                    android:textCursorDrawable="@drawable/cursor" />
 
             </com.google.android.material.textfield.TextInputLayout>
 

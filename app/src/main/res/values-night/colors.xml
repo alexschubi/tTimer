@@ -24,8 +24,14 @@
     <color name="test_3">#4C0051</color>
     <color name="test_4">#7C4C80</color>
 
-    <color name="dn_text">#FFFFFF</color>
-    <color name="dn_fragment_background">#2E2E2E</color>
+
+    <color name="dn_text">@color/n_text</color>
+    <color name="dn_fragment_background">@color/n_background</color>
     <color name="dn_accent_1">#555555</color>
     <color name="dn_accent_2">#AAAAAA</color>
+
+    <color name="d_text">#000000</color>
+    <color name="n_text">#FFFFFF</color>
+    <color name="d_background">#FFFFFF</color>
+    <color name="n_background">#2E2E2E</color>
 </resources>
