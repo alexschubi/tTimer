@@ -22,9 +22,9 @@ fun View.startCircularReveal(oldX: Int, oldY: Int) {
                                     oldRight: Int, oldBottom: Int) {
             v.removeOnLayoutChangeListener(this)
 
-            val diffX: Double = right.toDouble()/2 + oldX
-            val diffY: Double = bottom.toDouble()/2 + oldY
-            val radius = Math.hypot(diffX, diffY).toInt()
+            val diffX = (left + right)/2 + oldX
+            val diffY = (top + bottom)/2 + oldY
+            val radius = Math.hypot(diffX.toDouble(), diffY.toDouble())
             Log.d("CircularReveal", "from X$diffX and Y$diffY with radius$radius")
             ViewAnimationUtils.createCircularReveal(v, oldX, oldY, 0f, radius.toFloat()).apply {
                 interpolator = DecelerateInterpolator(1f)
@@ -67,6 +67,12 @@ fun View.findLocationOfCenterOnTheScreen(): IntArray {
     positions[1] = positions[1] + height / 2
     return positions
 }
+fun View.getCenterPosition(): IntArray{
+    val posX = left + width/2
+    val posY = top + height/2
+    return intArrayOf(posX, posY)
+}
+
 fun Item.toSItem(): sItem{
     return sItem(Index,
         Text,

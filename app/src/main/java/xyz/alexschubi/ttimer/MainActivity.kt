@@ -27,7 +27,6 @@ lateinit var inputMethodManager: InputMethodManager
 lateinit var firebaseAnalytics: FirebaseAnalytics
 lateinit var firebaseCrashlytics: FirebaseCrashlytics
 lateinit var localDB: ItemsDatabase
-lateinit var suppActionBar : ActionBar
 val dateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("EE dd.MM.yyyy HH:mm")
 
 class MainActivity : AppCompatActivity() {
@@ -46,9 +45,6 @@ class MainActivity : AppCompatActivity() {
         inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
 
         //TODO use navigation-back instead of direct transitions
-        suppActionBar = supportActionBar!!
-        suppActionBar.setDisplayShowCustomEnabled(true)
-
         mainPrefs = getPreferences(MODE_PRIVATE)
         suppPrefs = getPreferences(MODE_PRIVATE)
         FirebaseApp.initializeApp(this)
@@ -71,7 +67,6 @@ class MainActivity : AppCompatActivity() {
                     super.onBackPressed()
                 } else {
                     this.view?.exitCircularReveal(this.posX!!, this.posY!!) {
-                        suppActionBar.setCustomView(R.layout.list_toolbar)
                         super.onBackPressed()
                     } ?: super.onBackPressed()
                 }

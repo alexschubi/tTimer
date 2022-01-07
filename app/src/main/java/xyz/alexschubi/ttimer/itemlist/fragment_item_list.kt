@@ -1,6 +1,5 @@
 package xyz.alexschubi.ttimer.itemlist
 
-import android.app.ActionBar
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,18 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.FragmentNavigator
-import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_item_list.*
 import kotlinx.android.synthetic.main.fragment_item_list.view.*
-import kotlinx.android.synthetic.main.list_toolbar.view.*
 import xyz.alexschubi.ttimer.*
 import xyz.alexschubi.ttimer.data.sItem
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneId
 
 
 class fragment_item_list : Fragment() {
@@ -39,7 +32,6 @@ class fragment_item_list : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        suppActionBar.setCustomView(R.layout.list_toolbar)
         super.onViewCreated(view, savedInstanceState)
         linearLayoutManager = LinearLayoutManager(mainActivity)
         //get and sort items for recyclerview
@@ -63,20 +55,17 @@ class fragment_item_list : Fragment() {
                 addToBackStack(null)
             }
         }
-        swipe_refresh_layout.setOnRefreshListener {
-            mainActivity.recreate()
-            swipe_refresh_layout.isRefreshing = false
-        }
-        suppActionBar.customView.b_settings.setOnClickListener {
-            val positions = it.findLocationOfCenterOnTheScreen()
-            parentFragmentManager.open {
-                add(R.id.container, fragment_settings.newInstance(positions))
-                addToBackStack(null)
-            }
+        b_back.setOnClickListener {
+            val positions = b_back.getCenterPosition()
+                        parentFragmentManager.open {
+                            add(R.id.container, fragment_settings.newInstance(positions, positions))
+                            addToBackStack(null)
+                        }
         }
 
-        suppActionBar.customView.sp_sortMode.setSelection(suppPrefs.getInt("sortMode", 0))
-        suppActionBar.customView.sp_sortMode.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+
+        sp_sortMode2.setSelection(suppPrefs.getInt("sortMode", 0))
+        sp_sortMode2.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 var sMode: String = parent?.getItemAtPosition(position) as String
                 var sModeInt: Int = 0

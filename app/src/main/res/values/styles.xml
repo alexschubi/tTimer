@@ -1,6 +1,6 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight">
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="contentInsetStart">0dp</item>
         <item name="contentInsetEnd">0dp</item>
         <item name="contentInsetLeft">0dp</item>
@@ -83,10 +83,6 @@
         <item name="colorAccent">@color/dn_accent_1</item>
         <item name="background">@color/dn_fragment_background</item>
         <item name="backgroundColor">@color/dn_fragment_background</item>
-    </style>
-    <style name="Preference.Category" parent="Theme.MaterialComponents.DayNight.Bridge">
-        <item name="android:colorPrimary">@color/dn_text</item>
-        <item name="colorAccent">@color/dn_accent_1</item>
     </style>
 
 

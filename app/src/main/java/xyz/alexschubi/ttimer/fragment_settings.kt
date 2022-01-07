@@ -6,10 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceFragmentCompat
-import kotlinx.android.synthetic.main.add_toolbar.view.*
-import android.util.TypedValue
 import androidx.appcompat.app.AppCompatDelegate
 
 
@@ -55,14 +52,12 @@ class fragment_settings : PreferenceFragmentCompat(), ExitWithAnimation{
                 }
             }
         }
-        val textColor = mapplication.resources.getColor(R.color.dn_text, mapplication.theme)
 
-
-        suppActionBar.setCustomView(R.layout.add_toolbar)
+        /*suppActionBar.setCustomView(R.layout.add_toolbar)
         suppActionBar.customView.b_back.setOnClickListener() {
             suppActionBar.setCustomView(R.layout.list_toolbar)
             parentFragmentManager.popBackStack()
-        }
+        }*/
     }
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)

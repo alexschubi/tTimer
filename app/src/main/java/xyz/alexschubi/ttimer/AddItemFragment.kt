@@ -3,7 +3,6 @@ package xyz.alexschubi.ttimer
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.res.ColorStateList
-import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
@@ -13,12 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
 import android.widget.Toast
-import androidx.compose.ui.graphics.Color
 import androidx.core.content.ContextCompat
-import androidx.core.view.updateLayoutParams
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
-import kotlinx.android.synthetic.main.add_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_add_item2.*
 import xyz.alexschubi.ttimer.data.sItem
 import java.time.DayOfWeek
@@ -60,7 +54,6 @@ class AddItemFragment(val getItem: sItem?) : Fragment(), ExitWithAnimation {
 
         super.onViewCreated(view, savedInstanceState)
         view.startCircularReveal(startPosX, startPosY)
-        suppActionBar.setCustomView(R.layout.add_toolbar)
         if (getItem!=null) {
             editItem = getItem.toItem()
             b_add_final.text = "Save"
@@ -86,6 +79,8 @@ class AddItemFragment(val getItem: sItem?) : Fragment(), ExitWithAnimation {
                 hintTextColor = ColorStateList.valueOf(strokeColor)
             }
         }
+        rg_color.clearCheck()
+        rg_color.check(rb_purple.id)
         when (editItem.Color) {
             "blue"-> rg_color.check(rb_blue.id)
             "green" -> rg_color.check(rb_green.id)
@@ -155,13 +150,13 @@ class AddItemFragment(val getItem: sItem?) : Fragment(), ExitWithAnimation {
             addDateTime(editItem.Date!!)
         }
 
-        suppActionBar.customView.b_back.setOnClickListener() {
+        /*suppActionBar.customView.b_back.setOnClickListener() {
             Functions().hideKeyboard(this.requireView())
             this.view?.exitCircularReveal(this.posX!!, this.posY!!){
                 suppActionBar.setCustomView(R.layout.list_toolbar)
                 parentFragmentManager.popBackStack()
             }
-        }
+        }*/
 
         tb_add_text.isFocusableInTouchMode = true
         tb_add_text.requestFocus()
@@ -199,14 +194,6 @@ class AddItemFragment(val getItem: sItem?) : Fragment(), ExitWithAnimation {
         this.view?.let { inputMethodManager.hideSoftInputFromWindow(view?.windowToken, 0) }
         this.view?.exitCircularReveal(posX!!, posY!!){
             parentFragmentManager.popBackStack()
-            suppActionBar.setCustomView(R.layout.list_toolbar)
-            val fragment = parentFragmentManager.findFragmentById(R.id.container)
-            if (fragment != null) {
-                if (fragment.equals(R.id.ItemList)){
-
-                }
-
-            }
         }
     }
 
