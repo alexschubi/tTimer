@@ -17,6 +17,7 @@
         <item name="preferenceStyle">@style/Preference</item>
         <item name="preferenceCategoryStyle">@style/Preference.Category</item>
         <item name="editTextPreferenceStyle">@style/Widget.Design.TextInputLayout</item>
+        <item name="toolbarStyle">@style/tToolbar</item>
     </style>
 
     <style name="tFragment">
@@ -83,6 +84,12 @@
         <item name="colorAccent">@color/dn_accent_1</item>
         <item name="background">@color/dn_fragment_background</item>
         <item name="backgroundColor">@color/dn_fragment_background</item>
+    </style>
+    <style name="tToolbar" parent="Widget.MaterialComponents.Toolbar">
+        <item name="backgroundColor">@color/dn_accent_2</item>
+        <item name="android:inset">0dp</item>
+        <item name="contentInsetStart">0dp</item>
+        <item name="contentInsetStartWithNavigation">0dp</item>
     </style>
 
 
