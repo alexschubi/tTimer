@@ -39,6 +39,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_item_datetime"
+            style="@style/tTextEdit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -50,6 +51,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_item_text"
+            style="@style/tTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"

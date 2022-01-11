@@ -230,17 +230,17 @@ class Functions {
     }
 
     fun applyFirebase(){
-        val prefNotificationsenabled = PreferenceManager.getDefaultSharedPreferences(mContext).getBoolean("pref_notificaions_enabled", true)
-        val prefSyncEnabled = PreferenceManager.getDefaultSharedPreferences(mContext).getBoolean("pref_sync_enable", true)
-        val prefSyncConnection = PreferenceManager.getDefaultSharedPreferences(mContext).getString("pref_sync_connection", "").toString()
+        val prefNotificationsenabled = PreferenceManager.getDefaultSharedPreferences(mapplication).getBoolean("pref_notificaions_enabled", true)
+        val prefSyncEnabled = PreferenceManager.getDefaultSharedPreferences(mapplication).getBoolean("pref_sync_enable", true)
+        val prefSyncConnection = PreferenceManager.getDefaultSharedPreferences(mapplication).getString("pref_sync_connection", "").toString()
 
-        val prefSendFirebaseenabled = PreferenceManager.getDefaultSharedPreferences(mContext).getBoolean("pref_firebase_enabled", false)
+        val prefSendFirebaseenabled = PreferenceManager.getDefaultSharedPreferences(mapplication).getBoolean("pref_firebase_enabled", false)
         firebaseCrashlytics.setCrashlyticsCollectionEnabled(prefSendFirebaseenabled)
         firebaseAnalytics.setAnalyticsCollectionEnabled(prefSendFirebaseenabled)
         Log.i("Analytics", "Analytics " + prefSendFirebaseenabled.toString())
     }
     fun applyTheme(){
-        val prefTheme = PreferenceManager.getDefaultSharedPreferences(mContext).getString("pref_theme", "followSystem")
+        val prefTheme = PreferenceManager.getDefaultSharedPreferences(mapplication).getString("pref_theme", "followSystem")
         when(prefTheme){
             "default" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_UNSPECIFIED)
             "light" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)

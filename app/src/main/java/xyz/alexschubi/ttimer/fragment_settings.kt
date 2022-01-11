@@ -77,7 +77,7 @@ class fragment_settings : PreferenceFragmentCompat(), ExitWithAnimation{
                     //  TODO webdav
                     //Todo save credentials secured
                 } catch (e: Exception) {
-                    Toast.makeText(mContext, "could not reach WebDAV-CSV-File", Toast.LENGTH_SHORT)
+                    Toast.makeText(mapplication, "could not reach WebDAV-CSV-File", Toast.LENGTH_SHORT)
                 }
             }
             if (key == "pref_notifications_enabled") {//TODO notifications

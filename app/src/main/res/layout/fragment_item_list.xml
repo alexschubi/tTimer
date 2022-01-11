@@ -25,6 +25,7 @@
                     android:id="@+id/b_back"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
+                    android:layout_marginEnd="8dp"
                     android:background="@drawable/ic_baseline_settings_24"
                     android:backgroundTint="@color/tt_text_light"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -34,7 +35,9 @@
                 <Spinner
                     android:id="@+id/sp_sortMode2"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
+                    android:dropDownWidth="match_parent"
+                    android:elevation="20dp"
                     android:entries="@array/sort_modes"
                     android:gravity="center"
                     android:spinnerMode="dropdown"
@@ -68,6 +71,7 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/b_add_reveal"
+        style="@style/tFloatingButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"

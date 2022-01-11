@@ -12,17 +12,18 @@ import android.graphics.BitmapFactory
 import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
-import xyz.alexschubi.ttimer.R
-import java.time.LocalDateTime
+import xyz.alexschubi.ttimer.data.ItemsDatabase
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
-class NotificationUtils() : ContextWrapper(mContext) {
+class NotificationUtils(nContext: Context) : ContextWrapper(nContext) {
     private var notificationManager: NotificationManager? = null
-
+    lateinit var mContext: Context
     init {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createChannels()
+            mContext = nContext
+            localDB = ItemsDatabase.getDatabase(nContext)!!
         }
     }
 

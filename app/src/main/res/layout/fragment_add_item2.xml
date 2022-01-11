@@ -48,6 +48,8 @@
         android:layout_height="match_parent"
 
 
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
         <LinearLayout
@@ -58,6 +60,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/text_Input_layout"
+                style="@style/tTextEdit"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="2dp">
@@ -69,12 +72,15 @@
                     android:layout_margin="2dp"
                     android:hint="Text"
                     android:inputType="none|textMultiLine"
+                    android:text="dfdvdfgdfgnfgbhdfgb"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textCursorDrawable="@drawable/cursor" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tv_show_time"
+                style="@style/tTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
@@ -294,7 +300,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:layout_margin="4dp"
+        android:layout_margin="2dp"
         android:layout_marginBottom="8dp"
         android:backgroundTint="@color/tt_add"
         android:clickable="true"

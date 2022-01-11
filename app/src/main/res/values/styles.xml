@@ -6,9 +6,9 @@
         <item name="contentInsetLeft">0dp</item>
         <item name="contentInsetRight">0dp</item>
         <item name="materialButtonStyle">@style/tMaterialButton</item>
-        <item name="android:textViewStyle">@style/tTextView</item>
-        <item name="floatingActionButtonStyle">@style/tFloatingButton</item>
-        <item name="textInputStyle">@style/tTextEdit</item>
+<!--        <item name="android:textViewStyle">@style/tTextView</item>-->
+<!--        <item name="floatingActionButtonStyle">@style/tFloatingButton</item>-->
+<!--        <item name="textInputStyle">@style/tTextEdit</item>-->
         <item name="materialTimePickerStyle">@style/tTimePicker</item>
         <item name="cardViewStyle">@style/tCardView</item>
         <item name="materialCardViewStyle">@style/tCardView</item>
@@ -23,11 +23,11 @@
     <style name="tFragment">
         <item name="background">@color/dn_fragment_background</item>
     </style>
-    <style name="tMaterialButton" parent="Widget.MaterialComponents.Button">
-        <item name="backgroundTint">@color/dn_accent_2</item>
+    <style name="tMaterialButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="backgroundTint">@color/dn_button_background</item>
         <item name="android:textColor">@color/dn_text</item>
         <item name="android:textAlignment">center</item>
-        <item name="cornerRadius">4dp</item>
+        <item name="cornerRadius">8dp</item>
         <item name="autoSizeMaxTextSize">100sp</item>
         <item name="autoSizeMinTextSize">12sp</item>
         <item name="autoSizeStepGranularity">1sp</item>
@@ -40,7 +40,7 @@
         <item name="android:elevation">10dp</item>
     </style>
     <style name="tTextView" parent="Widget.MaterialComponents.TextView">
-        <item name="backgroundTint">@color/dn_accent_2</item>
+        <item name="backgroundTint">@color/dn_button_background</item>
         <item name="android:textColor">@color/dn_text</item>
         <item name="android:textAlignment">center</item>
         <item name="cornerRadius">4dp</item>
@@ -53,7 +53,7 @@
         <item name="android:scrollbars">none</item>
     </style>
     <style name="tTextEdit" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="backgroundTint">@color/dn_accent_2</item>
+        <item name="backgroundTint">@color/dn_button_background</item>
         <item name="android:textColor">@color/dn_text</item>
         <item name="android:textAlignment">center</item>
         <item name="cornerRadius">4dp</item>
@@ -72,6 +72,7 @@
     </style>
     <style name="tTimePicker" parent="Widget.MaterialComponents.TimePicker">
         <item name="android:timePickerMode">spinner</item>
+        <item name="android:format24Hour">true</item>
     </style>
     <style name="tDatePicker" parent="Widget.MaterialComponents.MaterialCalendar">
     </style>
@@ -86,7 +87,7 @@
         <item name="backgroundColor">@color/dn_fragment_background</item>
     </style>
     <style name="tToolbar" parent="Widget.MaterialComponents.Toolbar">
-        <item name="backgroundColor">@color/dn_accent_2</item>
+        <item name="backgroundColor">@color/dn_button_background</item>
         <item name="android:inset">0dp</item>
         <item name="contentInsetStart">0dp</item>
         <item name="contentInsetStartWithNavigation">0dp</item>

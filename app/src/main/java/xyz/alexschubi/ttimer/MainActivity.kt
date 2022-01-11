@@ -20,7 +20,7 @@ import java.time.format.DateTimeFormatter
 
 lateinit var mainPrefs: SharedPreferences
 lateinit var suppPrefs: SharedPreferences
-lateinit var mContext: Context //TODO dont use
+//lateinit var mContext: Context //TODO dont use
 lateinit var mapplication: Application
 lateinit var mainActivity: MainActivity
 lateinit var inputMethodManager: InputMethodManager
@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        mContext = this
+        //mContext = this
         mainActivity = this
         mapplication = this.application
         localDB = ItemsDatabase.getDatabase(this)!!
@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
         mainPrefs = getPreferences(MODE_PRIVATE)
         suppPrefs = getPreferences(MODE_PRIVATE)
         FirebaseApp.initializeApp(this)
-        firebaseAnalytics = FirebaseAnalytics.getInstance(mContext)
+        firebaseAnalytics = FirebaseAnalytics.getInstance(mapplication)
         firebaseCrashlytics = FirebaseCrashlytics.getInstance()
         Functions().applyFirebase()
 
@@ -79,7 +79,6 @@ class MainActivity : AppCompatActivity() {
     open class NotificationReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             val pendResult = this.goAsync()
-            mContext = context
             Log.d("NotificationReceiver", "triggered")
             mainPrefs =
                 context.getSharedPreferences("mainPrefs", AppCompatActivity.MODE_PRIVATE)
@@ -88,15 +87,14 @@ class MainActivity : AppCompatActivity() {
             val editItemArray = intent.extras!!.getStringArrayList("ItemArray")!!
             Log.d("NotificationReceiver", "got Item " + editItemArray)
             var editItem = Functions().ItemFromArray(editItemArray)
-            val notification = NotificationUtils().getNotificationBuilder(editItemArray).build()
-            NotificationUtils().getManager().notify(editItem.Index, notification)
+            val notification = NotificationUtils(context).getNotificationBuilder(editItemArray).build()
+            NotificationUtils(context).getManager().notify(editItem.Index, notification)
             pendResult.finish()
         }
     }
     open class NotificationSnoozeReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             val pendResult = this.goAsync()
-            mContext = context
             Log.i("NotificationSnoozeReceiver", "trigged")
             mainPrefs =
                 context.getSharedPreferences("mainPrefs", AppCompatActivity.MODE_PRIVATE)
@@ -106,15 +104,14 @@ class MainActivity : AppCompatActivity() {
             var editItem = Functions().ItemFromArray(editItemArray)
             editItem.Date = LocalDateTime.now().plusMinutes(10)
             Functions().saveItem(editItem)
-            NotificationUtils().cancelNotification(editItem)
-            NotificationUtils().makeNotification(editItem)
+            NotificationUtils(context).cancelNotification(editItem)
+            NotificationUtils(context).makeNotification(editItem)
             pendResult.finish()
         }
     }
     open class NotificationDismissReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             val pendResult = this.goAsync()
-            mContext = context
             Log.i("NotificationDismissReceiver", "trigged")
             mainPrefs =
                 context.getSharedPreferences("mainPrefs", AppCompatActivity.MODE_PRIVATE)
@@ -124,7 +121,7 @@ class MainActivity : AppCompatActivity() {
             var editItem = Functions().ItemFromArray(editItemArray)
             editItem.Deleted = true
             Functions().saveItem(editItem)
-            NotificationUtils().cancelNotification(editItem)
+            NotificationUtils(context).cancelNotification(editItem)
             pendResult.finish()
         }
     }

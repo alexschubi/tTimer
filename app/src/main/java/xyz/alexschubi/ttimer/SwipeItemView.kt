@@ -33,7 +33,7 @@ class SwipeItemView(var adapter: RecyclerViewAdapter, var displayItemList: List<
     ) {
         super.onChildDraw(c, recyclerView, viewHolder, dX/4, dY, actionState, isCurrentlyActive)
         val background = ColorDrawable()
-        background.color = ContextCompat.getColor(mContext, R.color.tt_delete)
+        background.color = ContextCompat.getColor(mapplication, R.color.tt_delete)
         background.setBounds(
             (viewHolder.itemView.left+dX).toInt(),
             viewHolder.itemView.top,
@@ -41,7 +41,7 @@ class SwipeItemView(var adapter: RecyclerViewAdapter, var displayItemList: List<
             viewHolder.itemView.bottom
         )
         background.draw(c)
-        val bitmp = BitmapFactory.decodeResource(mContext.resources,android.R.drawable.ic_menu_edit)
+        val bitmp = BitmapFactory.decodeResource(mapplication.resources,android.R.drawable.ic_menu_edit)
         val sbitmp = bitmp.scale(30, 30, true)
         c.drawBitmap(sbitmp , viewHolder.itemView.left.toFloat(), viewHolder.itemView.top.toFloat(), null)
     }

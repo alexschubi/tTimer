@@ -13,6 +13,8 @@ import android.view.ViewGroup
 import android.widget.RadioButton
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
 import kotlinx.android.synthetic.main.fragment_add_item2.*
 import xyz.alexschubi.ttimer.data.sItem
 import java.time.DayOfWeek
@@ -178,11 +180,11 @@ class AddItemFragment(val getItem: sItem?) : Fragment(), ExitWithAnimation {
         Functions().saveItem(editItem)
 
         if (getItem != null) {
-            NotificationUtils().cancelNotification(editItem)
+            NotificationUtils(mapplication).cancelNotification(editItem)
         }
 
         if(editItem.Date !=null && editItem.Date!!.isAfter(LocalDateTime.now())) {
-            NotificationUtils().makeNotification(editItem)
+            NotificationUtils(mapplication).makeNotification(editItem)
             Log.d("Notification", "Item ${editItem.Index} has Notification at " + editItem.Date!!.format(
                 DateTimeFormatter.ofPattern("dd.MM.uuuu HH:mm")))
         } else {
@@ -207,7 +209,7 @@ class AddItemFragment(val getItem: sItem?) : Fragment(), ExitWithAnimation {
         var tMonth: Int = actualDateTime.monthValue
         var tYear: Int = actualDateTime.year
         val timePickerDialog = TimePickerDialog(this.context, //TODO use MaterialTimeOicker https://material.io/components/time-pickers/android#using-time-pickers
-            R.style.tTimePicker,
+            R.style.ThemeOverlay_MaterialComponents_TimePicker,
             { view, hourOfDay, minute ->
                 Log.d("TimePicker", "got Time $hourOfDay:$minute")
                 tMinute = minute
@@ -227,8 +229,7 @@ class AddItemFragment(val getItem: sItem?) : Fragment(), ExitWithAnimation {
             tMinute,
             true)
         val datePickerDialog = DatePickerDialog(this.requireContext(),
-            R.style.tDatePicker
-            ,
+            R.style.ThemeOverlay_MaterialComponents_MaterialCalendar,
             { view, year, month, dayOfMonth ->
                 Log.d("DatePicker","got Date $dayOfMonth.$month.$year")
                 tDay = dayOfMonth
@@ -241,6 +242,11 @@ class AddItemFragment(val getItem: sItem?) : Fragment(), ExitWithAnimation {
             tMonth - 1,
             tDay)
         datePickerDialog.show()
+
+        val timePicker = MaterialTimePicker.Builder()
+            .setTimeFormat(TimeFormat.CLOCK_24H)
+
+
     }
     private fun addDateTime(dateTime: LocalDateTime) {
         tv_show_time.text = dateTime.format(dateFormatter) + " in " + Functions().getSpanString(dateTime)
@@ -273,7 +279,7 @@ class AddItemFragment(val getItem: sItem?) : Fragment(), ExitWithAnimation {
             }
         }
         override fun onFinish() {
-            Toast.makeText(mContext, "AFK?", Toast.LENGTH_SHORT).show()
+            Toast.makeText(mapplication, "AFK?", Toast.LENGTH_SHORT).show()
             this.start()
         }
     }
