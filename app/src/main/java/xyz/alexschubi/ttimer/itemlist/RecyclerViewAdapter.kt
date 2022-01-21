@@ -1,40 +1,50 @@
 package xyz.alexschubi.ttimer.itemlist
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.circularreveal.cardview.CircularRevealCardView
+import kotlinx.android.synthetic.main.fragment_item_list.view.*
 import kotlinx.android.synthetic.main.recycler_view_item_v2.view.*
+import xyz.alexschubi.ttimer.*
 import xyz.alexschubi.ttimer.R.*
-import xyz.alexschubi.ttimer.R
+import xyz.alexschubi.ttimer.data.ItemsDAO
 import xyz.alexschubi.ttimer.data.sItem
-import xyz.alexschubi.ttimer.mapplication
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 
 
-class RecyclerViewAdapter(rVArrayList: MutableList<sItem>, val listener: (sItem) -> Unit) : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>(){
+class RecyclerViewAdapter(
+    rVArrayList: MutableList<sItem>,
+    val onItemClicked: (item: sItem, screenPos: IntArray) -> Unit
+) : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>(){
 
     var mItems = rVArrayList
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(layout.recycler_view_item_v2, parent, false)
-        return ViewHolder(itemView)
+        return ViewHolder(itemView, onItemClicked)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(mItems, listener)
+        holder.bind(mItems)
     }
 
     override fun getItemCount() = mItems.size
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-        fun bind (nItems: MutableList<sItem>, listener: (sItem) -> Unit){
+    class ViewHolder(
+        itemView: View,
+        val onItemClicked: (item: sItem, screenPos: IntArray) -> Unit)
+        : RecyclerView.ViewHolder(itemView), View.OnClickListener{
+
+        init {
+            itemView.setOnClickListener(this)
+        }
+
+        fun bind (nItems: MutableList<sItem>){
             val currentItem = nItems[bindingAdapterPosition]
             if (currentItem.TimeStamp == null) {
                 itemView.tv_item_span.visibility = View.GONE
@@ -43,10 +53,15 @@ class RecyclerViewAdapter(rVArrayList: MutableList<sItem>, val listener: (sItem)
                 itemView.tv_item_span.text = currentItem.Span
                 itemView.tv_item_datetime.text = LocalDateTime
                     .ofInstant(Instant.ofEpochMilli(currentItem.TimeStamp!!), ZoneId.systemDefault())
-                    .format(DateTimeFormatter.ofPattern("EE dd.MM.uuuu HH:mm:ss"))
+                    .format(dateFormatter)
             }
             itemView.tv_item_index.text = currentItem.Span
-            itemView.tv_item_text.text = currentItem.Text
+
+            if(currentItem.Text != null){
+                itemView.tv_item_text.text = currentItem.Text
+            } else {
+                itemView.tv_item_text.visibility = View.GONE
+            }
 
             var textColor: Int = 0
             var backgroundColor: Int = 0
@@ -81,9 +96,16 @@ class RecyclerViewAdapter(rVArrayList: MutableList<sItem>, val listener: (sItem)
             itemView.tv_item_span.setTextColor(textColor)
             val revealCardView = itemView as CircularRevealCardView
             revealCardView.setCardBackgroundColor(backgroundColor)
+
             itemView.id = currentItem.Index
 
-            itemView.setOnClickListener {listener(currentItem)}
+
+        }
+
+        override fun onClick(view: View?) {
+            val item = localDB.itemsDAO().get(view!!.id)
+            val screenLocation = view!!.findLocationOfCenterOnTheScreen()
+            onItemClicked(item!!, screenLocation)
         }
     }
     fun setItems(items: MutableList<sItem>) {

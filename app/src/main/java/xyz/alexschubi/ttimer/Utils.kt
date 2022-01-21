@@ -10,10 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import xyz.alexschubi.ttimer.data.sItem
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.Year
-import java.time.ZoneId
+import java.time.*
 
 // from https://proandroiddev.com/circular-reveal-in-fragments-the-clean-way-f25c8bc95257
 fun View.startCircularReveal(oldX: Int, oldY: Int) {
@@ -96,6 +93,13 @@ fun sItem.toItem(): Item{
         Color
     )
 }
+fun sItem.date(): ZonedDateTime?{
+    var dateTime: ZonedDateTime? = null
+    if(TimeStamp!=null){
+        dateTime = ZonedDateTime.ofInstant(Instant.ofEpochMilli(TimeStamp!!), ZoneId.systemDefault())
+    }
+    return dateTime
+}
 
 interface ExitWithAnimation{
     var posX: Int?
@@ -139,4 +143,8 @@ inline fun LocalDateTime.toSpan(): String{
         testOutLine += "gone"
     }
     return testOutLine
+}
+
+inline fun ZonedDateTime.toMilli(): Long{
+    return toInstant().toEpochMilli()
 }

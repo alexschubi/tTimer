@@ -16,15 +16,17 @@ import androidx.core.content.ContextCompat
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import kotlinx.android.synthetic.main.fragment_add_item2.*
+import kotlinx.android.synthetic.main.fragment_item_list.*
 import xyz.alexschubi.ttimer.data.sItem
-import java.time.DayOfWeek
-import java.time.LocalDateTime
+import xyz.alexschubi.ttimer.itemlist.fragment_item_list
+import java.time.*
 import java.time.format.DateTimeFormatter
 import java.time.temporal.TemporalAdjusters
 
-class AddItemFragment(val getItem: sItem?) : Fragment(), ExitWithAnimation {
+class AddItemFragment(val getItem: sItem?, val fragmentItemList: fragment_item_list) : Fragment(), ExitWithAnimation {
 
-    private var editItem: Item = Item(-1,"", null, null,false, false, "")
+    //private var editItem: Item = Item(-1,"", null, null,false, false, "")
+    private var sItem = sItem(-1, "", null, null, "purple", false, false)
     override var posX: Int? = null
     override var posY: Int? = null
     var startPosX: Int = 0
@@ -33,7 +35,7 @@ class AddItemFragment(val getItem: sItem?) : Fragment(), ExitWithAnimation {
 
     companion object {
         @JvmStatic
-        fun newInstance(startPos: IntArray? = null, exitPos: IntArray? = null, getItem: sItem?): AddItemFragment = AddItemFragment(getItem).apply {
+        fun newInstance(startPos: IntArray? = null, exitPos: IntArray? = null, getItem: sItem?, fragmentItemList: fragment_item_list): AddItemFragment = AddItemFragment(getItem, fragmentItemList).apply {
             if (exitPos != null && exitPos.size == 2) {
                 posX = exitPos[0]
                 posY = exitPos[1]
@@ -57,7 +59,7 @@ class AddItemFragment(val getItem: sItem?) : Fragment(), ExitWithAnimation {
         super.onViewCreated(view, savedInstanceState)
         view.startCircularReveal(startPosX, startPosY)
         if (getItem!=null) {
-            editItem = getItem.toItem()
+            sItem = getItem
             b_add_final.text = "Save"
         }
         timer.start()
@@ -65,7 +67,7 @@ class AddItemFragment(val getItem: sItem?) : Fragment(), ExitWithAnimation {
         b_del_time.setOnClickListener { delDateTime() }
         b_add_final.setOnClickListener { addItem() }
 
-        tb_add_text.setText(editItem.Text)
+        tb_add_text.setText(sItem.Text)
         rg_color.setOnCheckedChangeListener { radioGroup, i ->
             var strokeColor = 0
             when(i){
@@ -83,7 +85,7 @@ class AddItemFragment(val getItem: sItem?) : Fragment(), ExitWithAnimation {
         }
         rg_color.clearCheck()
         rg_color.check(rb_purple.id)
-        when (editItem.Color) {
+        when (sItem.Color) {
             "blue"-> rg_color.check(rb_blue.id)
             "green" -> rg_color.check(rb_green.id)
             "yellow" -> rg_color.check(rb_yellow.id)
@@ -92,7 +94,7 @@ class AddItemFragment(val getItem: sItem?) : Fragment(), ExitWithAnimation {
             "purple" -> rg_color.check(rb_purple.id)
         }
 
-        if (editItem.Date == null) {
+        if (sItem.TimeStamp == null) {
             tv_show_time.visibility = View.GONE
             cl_modify_time.visibility =  View.GONE
             b_del_time.visibility = View.GONE
@@ -105,60 +107,73 @@ class AddItemFragment(val getItem: sItem?) : Fragment(), ExitWithAnimation {
         //Minutes
         b_minus5minute.setOnClickListener {
             Log.d("DateTime","+7 Days")
-            editItem.Date = editItem.Date!!.minusMinutes(5)
+            val newDateTime = sItem.date()
+            if (newDateTime != null) {
+                sItem.TimeStamp = newDateTime.minusMinutes(5).toMilli()
+            }
             refreshDateTime()
         }
         b_plus5minute.setOnClickListener {
             Log.d("DateTime","+5 Minutes")
-            editItem.Date = editItem.Date!!.plusMinutes(5)
+            val newDateTime = sItem.date()
+            if (newDateTime != null) {
+                sItem.TimeStamp = newDateTime.plusMinutes(5).toMilli()
+            }
             refreshDateTime()
         }
         //Hours
         b_minus1hour.setOnClickListener {
             Log.d("DateTime","-1 Hour")
-            editItem.Date = editItem.Date!!.minusHours(1)
+            val newDateTime = sItem.date()
+            if (newDateTime != null) {
+                sItem.TimeStamp = newDateTime.minusHours(1).toMilli()
+            }
             refreshDateTime()
         }
         b_plus1hour.setOnClickListener {
             Log.d("DateTime","+1 Hour")
-            editItem.Date = editItem.Date!!.plusHours(1)
+            val newDateTime = sItem.date()
+            if (newDateTime != null) {
+                sItem.TimeStamp = newDateTime.plusHours(1).toMilli()
+            }
             refreshDateTime()
         }
         //Days
         b_minus1day.setOnClickListener {
             Log.d("DateTime","-1 Day")
-            editItem.Date = editItem.Date!!.minusDays(1)
+            val newDateTime = sItem.date()
+            if (newDateTime != null) {
+                sItem.TimeStamp = newDateTime.minusDays(1).toMilli()
+            }
             refreshDateTime()
         }
         b_plus1day.setOnClickListener {
             Log.d("DateTime","+1 Day")
-            editItem.Date = editItem.Date!!.plusDays(1)
+            val newDateTime = sItem.date()
+            if (newDateTime != null) {
+                sItem.TimeStamp = newDateTime.plusDays(1).toMilli()
+            }
             refreshDateTime()
         }
         //Quick Time
         b_add_notification.setOnClickListener {
             Log.d("DateTime","Now")
-            editItem.Date = LocalDateTime.now()
-            addDateTime(editItem.Date!!)
+            val newDateTIme = ZonedDateTime.now()
+            sItem.TimeStamp = newDateTIme.toMilli()
+            addDateTime(newDateTIme.toLocalDateTime())
         }
         b_add_qtime_1d.setOnClickListener {
             Log.d("DateTime","Tomorrow")
-            editItem.Date = LocalDateTime.now().plusDays(1).withHour(8).withMinute(0)
-            addDateTime(editItem.Date!!)
+            val newDateTime = ZonedDateTime.now().plusDays(1).withHour(8).withMinute(0)
+            sItem.TimeStamp = newDateTime.toMilli()
+            addDateTime(newDateTime.toLocalDateTime())
         }
         b_add_qtime_weekend.setOnClickListener {
             Log.d("DateTime","Weekend")
-            editItem.Date = LocalDateTime.now().with(TemporalAdjusters.next(DayOfWeek.FRIDAY)).withHour(14).withMinute(0)
-            addDateTime(editItem.Date!!)
+            val newDateTime = ZonedDateTime.now().with(TemporalAdjusters.next(DayOfWeek.FRIDAY)).withHour(17).withMinute(0)
+            sItem.TimeStamp = newDateTime.toMilli()
+            addDateTime(newDateTime.toLocalDateTime())
         }
-
-        /*suppActionBar.customView.b_back.setOnClickListener() {
-            Functions().hideKeyboard(this.requireView())
-            this.view?.exitCircularReveal(this.posX!!, this.posY!!){
-                suppActionBar.setCustomView(R.layout.list_toolbar)
-                parentFragmentManager.popBackStack()
-            }
-        }*/
 
         tb_add_text.isFocusableInTouchMode = true
         tb_add_text.requestFocus()
@@ -168,25 +183,25 @@ class AddItemFragment(val getItem: sItem?) : Fragment(), ExitWithAnimation {
     private fun addItem() {
         val colorButton: RadioButton = view?.findViewById<RadioButton>(rg_color.checkedRadioButtonId)!!
         when (this.view?.findViewById<RadioButton>(colorButton.id)?.id) {
-            rb_purple.id -> editItem.Color = "purple"
-            rb_red.id -> editItem.Color = "red"
-            rb_orange.id -> editItem.Color = "orange"
-            rb_yellow.id -> editItem.Color = "yellow"
-            rb_green.id -> editItem.Color = "green"
-            rb_blue.id -> editItem.Color = "blue"
+            rb_purple.id -> sItem.Color = "purple"
+            rb_red.id -> sItem.Color = "red"
+            rb_orange.id -> sItem.Color = "orange"
+            rb_yellow.id -> sItem.Color = "yellow"
+            rb_green.id -> sItem.Color = "green"
+            rb_blue.id -> sItem.Color = "blue"
         }
-        Log.d("radio Button", " color set to ${editItem.Color}")
-        editItem.Text = tb_add_text.text.toString()
-        Functions().saveItem(editItem)
+        Log.d("radio Button", " color set to ${sItem.Color}")
+        sItem.Text = tb_add_text.text.toString()
+        Functions().saveSItemToDB(sItem)
 
         if (getItem != null) {
-            NotificationUtils(mapplication).cancelNotification(editItem)
+            NotificationUtils(mapplication).cancelNotification(sItem.toItem())
         }
 
-        if(editItem.Date !=null && editItem.Date!!.isAfter(LocalDateTime.now())) {
-            NotificationUtils(mapplication).makeNotification(editItem)
-            Log.d("Notification", "Item ${editItem.Index} has Notification at " + editItem.Date!!.format(
-                DateTimeFormatter.ofPattern("dd.MM.uuuu HH:mm")))
+        if(sItem.TimeStamp !=null && sItem.date()!!.isAfter(ZonedDateTime.now())) {
+            NotificationUtils(mapplication).makeNotification(sItem.toItem())
+            Log.d("Notification", "Item ${sItem.Index} has Notification at " + sItem.date()!!.format(
+                dateFormatter))
         } else {
             Log.d("Notification", "No Notification wanted or in Past")
         }
@@ -195,14 +210,16 @@ class AddItemFragment(val getItem: sItem?) : Fragment(), ExitWithAnimation {
         timer.cancel()
         this.view?.let { inputMethodManager.hideSoftInputFromWindow(view?.windowToken, 0) }
         this.view?.exitCircularReveal(posX!!, posY!!){
+            fragmentItemList.displayItemsList?.add(sItem)
+            fragmentItemList.recyclerViewItems2.adapter!!.notifyItemInserted()
             parentFragmentManager.popBackStack()
         }
     }
 
     private fun addSpecificDateTime() {
         var actualDateTime = LocalDateTime.now()
-        if (editItem.Date != null) {actualDateTime = editItem.Date}
-        var newItemDate: LocalDateTime
+        if (sItem.TimeStamp != null) {actualDateTime = sItem.date()!!.toLocalDateTime()}
+        var newItemDate: ZonedDateTime
         var tMinute: Int = actualDateTime.minute
         var tHour: Int = actualDateTime.hour
         var tDay: Int = actualDateTime.dayOfMonth
@@ -214,15 +231,15 @@ class AddItemFragment(val getItem: sItem?) : Fragment(), ExitWithAnimation {
                 Log.d("TimePicker", "got Time $hourOfDay:$minute")
                 tMinute = minute
                 tHour = hourOfDay
-                newItemDate = LocalDateTime.of(tYear, tMonth, tDay, tHour, tMinute)
-                tv_show_time.text = newItemDate.format(dateFormatter) + " in " + Functions().getSpanString(newItemDate)
+                newItemDate = ZonedDateTime.of(tYear, tMonth, tDay, tHour, tMinute, 0, 0, ZoneId.systemDefault())
+                tv_show_time.text = newItemDate.format(dateFormatter) + " in " + Functions().getSpanString(newItemDate.toLocalDateTime())
                 tv_show_time.visibility = View.VISIBLE
                 b_del_time.visibility = View.VISIBLE
                 cl_modify_time.visibility = View.VISIBLE
 
-                editItem.Span = Functions().getSpanString(newItemDate)
-                editItem.Date = newItemDate
-                Log.d("addDateTime", "LocalDateTime ${editItem.Date!!.format(dateFormatter)} set")
+                sItem.Span = Functions().getSpanString(newItemDate.toLocalDateTime())
+                sItem.TimeStamp = newItemDate.toMilli()
+                Log.d("addDateTime", "LocalDateTime ${sItem.date()!!.format(dateFormatter)} set")
                 //exit here
             },
             tHour,
@@ -248,15 +265,15 @@ class AddItemFragment(val getItem: sItem?) : Fragment(), ExitWithAnimation {
 
 
     }
-    private fun addDateTime(dateTime: LocalDateTime) {
+    private fun addDateTime(dateTime: ZonedDateTime) {
         tv_show_time.text = dateTime.format(dateFormatter) + " in " + Functions().getSpanString(dateTime)
         tv_show_time.visibility = View.VISIBLE
         b_del_time.visibility = View.VISIBLE
         cl_modify_time.visibility = View.VISIBLE
         b_add_notification.visibility = View.GONE
         Log.d("addItem-Date-Text",dateTime.format(dateFormatter) + " in " + Functions().getSpanString(dateTime))
-        editItem.Span = Functions().getSpanString(dateTime)
-        editItem.Date = dateTime
+        sItem.Span = Functions().getSpanString(dateTime.toLocalDateTime())
+        sItem.TimeStamp = dateTime.toMilli()
         Log.d("addDateTime", "LocalDateTime ${editItem.Date!!.format(DateTimeFormatter.ofPattern("EE dd.MM.uuuu HH:mm"))} set")
     }
     private fun delDateTime(){

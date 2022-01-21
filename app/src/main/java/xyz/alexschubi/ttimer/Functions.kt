@@ -107,7 +107,7 @@ class Functions {
                     else -> testOutLine += (itemDateTime.year - currentDateTime.year).toString() + " Years"
                 }
             } else {
-                testOutLine += "gone"
+                testOutLine += "past"
             }
         return testOutLine
     }
@@ -266,6 +266,15 @@ class Functions {
             localDB.itemsDAO().insert(sItem)
         } else {
             localDB.itemsDAO().update(sItem)
+        }
+    }
+    fun saveSItemToDB(item: sItem){
+        Log.d("localDB", "save $item")
+
+        if (item.Index<0){
+            localDB.itemsDAO().insert(item)
+        } else {
+            localDB.itemsDAO().update(item)
         }
     }
     fun deleteItem(itemIndex: Int, adapter: RecyclerViewAdapter, displayPosition: Int){
