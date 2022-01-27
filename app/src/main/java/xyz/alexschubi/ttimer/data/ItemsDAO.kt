@@ -17,7 +17,18 @@ interface ItemsDAO{ //TODO use coroutines / livedata
     @Query("SELECT * FROM itemsTable")
     fun getAll(): MutableList<sItem>
 
+    @Query("SELECT * FROM itemsTable WHERE Deleted = 0")
+    fun getActiveItems(): MutableList<sItem>
+
+    @Query("SELECT * FROM itemsTable ORDER BY mIndex DESC LIMIT 1")
+    fun getLast(): sItem
+
     @Query("DELETE FROM itemsTable")
     fun clear()
 
+    @Query("DELETE FROM itemsTable WHERE mIndex = :key")
+    fun delete(key: Int)
+
+    @Query("SELECT COUNT(*) FROM itemsTable ")
+    fun getItemsAmount(): Int
 }

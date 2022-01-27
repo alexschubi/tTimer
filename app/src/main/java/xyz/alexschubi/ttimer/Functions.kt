@@ -50,36 +50,6 @@ class Functions {
         return getItem
     }
 
-    /*fun getDB() {
-        getArrayList.clear()
-        var getindex = suppPrefs.getInt("ItemAmount", 0)
-        if (getindex >= 0) {
-            while (getindex > 0) {
-                val getStringItem = getListString("Item $getindex")
-                if(!getStringItem[8].toBoolean()){
-                    getArrayList.add(ItemFromArray(getStringItem))
-                }
-                getindex--
-            }
-
-            refreshTime()
-        }
-        Log.d("getArrayList", getArrayList.toString())
-    }
-    fun refreshTime() {
-        if (getArrayList.isEmpty()){
-            Log.d("Preferences.refresh", "No Items saved")
-        } else {
-            for(item in getArrayList.indices) {
-                if (getArrayList[item].Date != null) {
-                    getArrayList[item].Span = getSpanString(getArrayList[item].Date!!)
-                    Log.d("Item","got Span of Item $item @ "+ getArrayList[item].Span)
-
-                }
-            }
-        }
-    }*/
-
     //TODO better span texting
     fun getSpanString(itemDateTime: LocalDateTime?): String?{
         if(itemDateTime==null) return null
@@ -112,17 +82,6 @@ class Functions {
         return testOutLine
     }
 
-    fun saveItem(editItem: Item){
-        var isNew = false
-        if(editItem.Index == -1) {
-            isNew = true
-            editItem.Index = suppPrefs.getInt("ItemAmount", 0) + 1
-            suppPrefs.edit().putInt("ItemAmount",editItem.Index).apply()
-        }
-        //Log.d("Preferences.save", "ItemAmount is " + suppPrefs.getInt("ItemAmount", 0).toString())
-        saveStringList("Item ${editItem.Index}", getItemArray(editItem))
-        saveItemToDB(editItem, isNew)
-    }
     fun getItemArray(editItem: Item): ArrayList<String> {
         val addItemString: ArrayList<String>
         if(editItem.Date == null) {
@@ -251,31 +210,14 @@ class Functions {
         Log.i("Theme", "set to $prefTheme")
     }
 
-    fun saveItemToDB(item: Item, isNew: Boolean){
-        val sItem = sItem(item.Index,
-            item.Text,
-            item.Date?.atZone(ZoneId.systemDefault())?.toInstant()?.toEpochMilli(),
-            getSpanString(item.Date),
-            item.Color,
-            item.Notified,
-            item.Deleted
-        )
-        Log.d("localDB", "save $sItem")
-
-        if (isNew){
-            localDB.itemsDAO().insert(sItem)
-        } else {
-            localDB.itemsDAO().update(sItem)
-        }
-    }
     fun saveSItemToDB(item: sItem){
-        Log.d("localDB", "save $item")
-
-        if (item.Index<0){
+        if(item.Index == -1){
+            item.Index = localDB.itemsDAO().getItemsAmount() + 1
             localDB.itemsDAO().insert(item)
         } else {
             localDB.itemsDAO().update(item)
         }
+        Log.d("localDB", "save $item")
     }
     fun deleteItem(itemIndex: Int, adapter: RecyclerViewAdapter, displayPosition: Int){
         val editItem = localDB.itemsDAO().get(itemIndex)
@@ -284,12 +226,6 @@ class Functions {
             localDB.itemsDAO().update(editItem)
             Log.d("localDB", "changed Item $editItem")
            //TODO NotificationUtils().cancelNotification(itemIndex)
-            adapter.mItems.remove(editItem)
-            var getItemsList = Functions().sortMutableList(localDB.itemsDAO().getAll(), suppPrefs.getInt("sortMode", 0))
-            getItemsList.toList().forEach { sItem -> if (sItem.Deleted) getItemsList.remove(sItem) }
-            var displayItemList = getItemsList.toMutableList()
-            adapter.setItems(displayItemList)
-            adapter.notifyItemRemoved(displayPosition)
         } else {
             Log.d("localDB", "could not get sItem")
         }

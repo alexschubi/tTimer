@@ -3,16 +3,13 @@ package xyz.alexschubi.ttimer.itemlist
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.drawable.ColorDrawable
-import android.util.Log
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.scale
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import xyz.alexschubi.ttimer.*
-import xyz.alexschubi.ttimer.data.sItem
 
-class SwipeItemLeft(var adapter: RecyclerViewAdapter, private var displayItemList: MutableList<sItem>) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT){
+class SwipeItemLeft(var adapter: RecyclerViewAdapter, private var fragmentItemList: fragment_item_list) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT){
     override fun onMove(
         recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder,
@@ -23,6 +20,7 @@ class SwipeItemLeft(var adapter: RecyclerViewAdapter, private var displayItemLis
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         val position = viewHolder.bindingAdapterPosition
         val itemIndex = viewHolder.itemView.id
+        fragmentItemList.removeItem(adapter.mItems.find { it.Index == itemIndex }!!)
         Functions().deleteItem(itemIndex, adapter, position)
     }
 

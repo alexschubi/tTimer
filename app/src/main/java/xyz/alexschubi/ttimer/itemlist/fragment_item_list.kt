@@ -49,7 +49,7 @@ class fragment_item_list : Fragment() {
         recyclerViewItems2.adapter = adapter
         Log.d("localDB", "got displayList $displayItemsList")
         //set swipe Listener
-        ItemTouchHelper(SwipeItemLeft(adapter,displayItemsList!!)).attachToRecyclerView(this.recyclerViewItems2)
+        ItemTouchHelper(SwipeItemLeft(adapter,this@fragment_item_list)).attachToRecyclerView(this.recyclerViewItems2)
 
         view.b_add_reveal.setOnClickListener {
             val positions = intArrayOf(it.left + it.width/2, it.top + it.height/2)
@@ -114,7 +114,7 @@ class fragment_item_list : Fragment() {
         }
     }*/
 
-    private fun sortItems(items: MutableList<sItem>): MutableList<sItem> {
+    fun sortItems(items: MutableList<sItem>): MutableList<sItem> {
         var getItemsList = items
         getItemsList.toList().forEach { sItem -> if (sItem.Deleted) getItemsList.remove(sItem) }
         return getItemsList.toMutableList()
@@ -139,26 +139,30 @@ class fragment_item_list : Fragment() {
 
             getItems.add(editItem)
             adapter.setItems(getItems)
-            recyclerViewItems2.adapter = adapter
-            adapter.notifyItemInserted(newIndex)
         }
-        val viewHolder = editItem.Index.let { recyclerViewItems2.findViewHolderForItemId(it.toLong()) }
+        //val viewHolder = editItem.Index.let { recyclerViewItems2.findViewHolderForItemId(it.toLong()) }
         startPos = view.findLocationOfCenterOnTheScreen()
 
         parentFragmentManager.open {//TODO get position of item
             add(R.id.container, AddItemFragment.newInstance(startPos, exitPos, item, this@fragment_item_list))
             addToBackStack(null)
+
         }
         Log.d("CircularReveal",
             "opened reveal item ${editItem.Index} from ${startPos[1]},${startPos[1]}, and closing at ${exitPos[0]},${exitPos[1]}")
     }
 
-    open fun addItem(){
-
+    fun addItem(item: sItem): IntArray? {
+        adapter.addItem(item)
+        return linearLayoutManager.findViewByPosition(adapter.mItems.lastIndexOf(item))
+            ?.getCenterPosition()
     }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        //timer.cancel()
+    fun editItem(oldItem: sItem, newItem: sItem): IntArray? {
+        adapter.editItem(oldItem, newItem)
+        return linearLayoutManager.findViewByPosition(adapter.mItems.lastIndexOf(newItem))
+            ?.getCenterPosition()
+    }
+    fun removeItem(item: sItem){
+        adapter.removeItem(item)
     }
 }

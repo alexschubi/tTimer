@@ -1,5 +1,6 @@
 package xyz.alexschubi.ttimer.itemlist
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -55,13 +56,8 @@ class RecyclerViewAdapter(
                     .ofInstant(Instant.ofEpochMilli(currentItem.TimeStamp!!), ZoneId.systemDefault())
                     .format(dateFormatter)
             }
-            itemView.tv_item_index.text = currentItem.Span
-
-            if(currentItem.Text != null){
-                itemView.tv_item_text.text = currentItem.Text
-            } else {
-                itemView.tv_item_text.visibility = View.GONE
-            }
+            itemView.tv_item_index.text = currentItem.Index.toString()
+            itemView.tv_item_text.text = currentItem.Text
 
             var textColor: Int = 0
             var backgroundColor: Int = 0
@@ -96,7 +92,6 @@ class RecyclerViewAdapter(
             itemView.tv_item_span.setTextColor(textColor)
             val revealCardView = itemView as CircularRevealCardView
             revealCardView.setCardBackgroundColor(backgroundColor)
-
             itemView.id = currentItem.Index
 
 
@@ -104,12 +99,35 @@ class RecyclerViewAdapter(
 
         override fun onClick(view: View?) {
             val item = localDB.itemsDAO().get(view!!.id)
-            val screenLocation = view!!.findLocationOfCenterOnTheScreen()
+            val screenLocation = view.findLocationOfCenterOnTheScreen()
             onItemClicked(item!!, screenLocation)
         }
     }
     fun setItems(items: MutableList<sItem>) {
-        this.mItems = items
+        mItems = Functions().sortMutableList(items, suppPrefs.getInt("sortMode", 0))
+        notifyDataSetChanged()
+    }
+    fun addItem(item: sItem){
+        mItems.add(item)
+        mItems = Functions().sortMutableList(mItems, suppPrefs.getInt("sortMode", 0))
+        //val position: Int = mItems.find { it.Index == item.Index }!!.Index
+        val index = mItems.lastIndexOf(item)
+        notifyItemInserted(index)
+        Log.d("RecyclerView", "addItem $item")
+    }
+    fun editItem(oldItem: sItem, newItem: sItem){
+        //val index = mItems.find { it.Index == item.Index }!!.Index
+        val index = mItems.lastIndexOf(oldItem)
+        mItems[index] = newItem
+        notifyItemChanged(index)
+        Log.d("RecyclerView", "editItem $newItem")
+    }
+    fun removeItem(item: sItem){
+        val index = mItems.lastIndexOf(item)
+        //val index = mItems.find { it.Index == item.Index }!!.Index
+        mItems.removeAt(index)
+        notifyItemRemoved(index)
+        Log.d("RecyclerView", "removeItem $item")
     }
 }
 

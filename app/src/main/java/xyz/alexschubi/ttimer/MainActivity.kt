@@ -103,7 +103,7 @@ class MainActivity : AppCompatActivity() {
             val editItemArray = intent.extras!!.getStringArrayList("currentItem")!!
             var editItem = Functions().ItemFromArray(editItemArray)
             editItem.Date = LocalDateTime.now().plusMinutes(10)
-            Functions().saveItem(editItem)
+            Functions().saveSItemToDB(editItem.toSItem())
             NotificationUtils(context).cancelNotification(editItem)
             NotificationUtils(context).makeNotification(editItem)
             pendResult.finish()
@@ -120,7 +120,7 @@ class MainActivity : AppCompatActivity() {
             val editItemArray = intent.extras!!.getStringArrayList("currentItem")!!
             var editItem = Functions().ItemFromArray(editItemArray)
             editItem.Deleted = true
-            Functions().saveItem(editItem)
+            Functions().saveSItemToDB(editItem.toSItem())
             NotificationUtils(context).cancelNotification(editItem)
             pendResult.finish()
         }
