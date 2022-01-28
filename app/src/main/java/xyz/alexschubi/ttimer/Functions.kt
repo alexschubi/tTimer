@@ -219,7 +219,7 @@ class Functions {
         }
         Log.d("localDB", "save $item")
     }
-    fun deleteItem(itemIndex: Int, adapter: RecyclerViewAdapter, displayPosition: Int){
+    fun deleteItem(itemIndex: Int){
         val editItem = localDB.itemsDAO().get(itemIndex)
         if (editItem != null) {
             editItem.Deleted = true

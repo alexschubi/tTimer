@@ -70,6 +70,8 @@ class AddItemFragment(private val getItem: sItem?, private val fragmentItemList:
             Functions().saveSItemToDB(sItem)
             //fragmentItemList.addItem(sItem)
             sItem = localDB.itemsDAO().getLast()
+            Functions().deleteItem(sItem.Index)
+
         }
 
         timer.start()
@@ -317,10 +319,8 @@ class AddItemFragment(private val getItem: sItem?, private val fragmentItemList:
     override fun onDestroyView() {
         super.onDestroyView()
         timer.cancel()
-        if (!exitWithSave && getItem == null){
-            //fragmentItemList.removeItem(sItem)
-            localDB.itemsDAO().delete(sItem.Index)
-
+        if (exitWithSave){
+            Functions().saveSItemToDB(sItem)
         }
         Log.d("AddItemFragment", "exit Fragment")
     }

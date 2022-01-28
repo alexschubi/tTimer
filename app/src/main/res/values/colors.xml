@@ -27,7 +27,7 @@
     <color name="dn_text">@color/d_text</color>
     <color name="dn_fragment_background">@color/d_background</color>
     <color name="dn_accent_1">#EEEEEE</color>
-    <color name="dn_button_background">#FFFFFF</color>
+    <color name="dn_button_background">#E3F2FD</color>
     <color name="dn_button_outline">#000000</color>
 
     <color name="d_text">#000000</color>

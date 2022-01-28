@@ -3,8 +3,6 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-
-
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/dn_fragment_background">
@@ -55,7 +53,7 @@
         <LinearLayout
             android:id="@+id/linearLayout_v_add"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <com.google.android.material.textfield.TextInputLayout
@@ -85,7 +83,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:clickable="false"
-                android:gravity="center_vertical"
                 android:maxLines="1"
                 android:minHeight="35dip"
                 android:text="Wed 01.01.0001 00:00 in 200 minutes"
@@ -109,7 +106,8 @@
                     app:layout_constraintEnd_toStartOf="@+id/b_plus5minute"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintWidth_percent="0.5" />
+                    app:layout_constraintWidth_percent="0.5"
+                    app:strokeWidth="1dp" />
 
                 <Button
                     android:id="@+id/b_plus1day"
@@ -120,7 +118,8 @@
                     android:textAllCaps="false"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/b_plus1hour"
-                    app:layout_constraintWidth_percent="0.5" />
+                    app:layout_constraintWidth_percent="0.5"
+                    app:strokeWidth="1dp" />
 
                 <Button
                     android:id="@+id/b_plus5minute"
@@ -132,7 +131,8 @@
                     android:textAllCaps="false"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintWidth_percent="0.5" />
+                    app:layout_constraintWidth_percent="0.5"
+                    app:strokeWidth="1dp" />
 
                 <Button
                     android:id="@+id/b_add_qtime_1d"
@@ -144,7 +144,8 @@
                     app:layout_constraintEnd_toStartOf="@+id/b_add_qtime_weekend"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/b_minus1day"
-                    app:layout_constraintWidth_percent="0.5" />
+                    app:layout_constraintWidth_percent="0.5"
+                    app:strokeWidth="1dp" />
 
                 <Button
                     android:id="@+id/b_plus1hour"
@@ -155,7 +156,8 @@
                     android:textAllCaps="false"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/b_plus5minute"
-                    app:layout_constraintWidth_percent="0.5" />
+                    app:layout_constraintWidth_percent="0.5"
+                    app:strokeWidth="1dp" />
 
                 <Button
                     android:id="@+id/b_add_qtime_weekend"
@@ -167,7 +169,8 @@
                     android:textAllCaps="false"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/b_plus1day"
-                    app:layout_constraintWidth_percent="0.5" />
+                    app:layout_constraintWidth_percent="0.5"
+                    app:strokeWidth="1dp" />
 
                 <Button
                     android:id="@+id/b_minus1hour"
@@ -179,7 +182,8 @@
                     app:layout_constraintEnd_toStartOf="@+id/b_plus1hour"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/b_minus5minute"
-                    app:layout_constraintWidth_percent="0.5" />
+                    app:layout_constraintWidth_percent="0.5"
+                    app:strokeWidth="1dp" />
 
                 <Button
                     android:id="@+id/b_minus1day"
@@ -191,7 +195,8 @@
                     app:layout_constraintEnd_toStartOf="@+id/b_plus1day"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/b_minus1hour"
-                    app:layout_constraintWidth_percent="0.5" />
+                    app:layout_constraintWidth_percent="0.5"
+                    app:strokeWidth="1dp" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -292,6 +297,7 @@
                     android:scaleY="1.7" />
 
             </RadioGroup>
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
@@ -301,7 +307,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:layout_margin="2dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginBottom="2dp"
         android:backgroundTint="@color/tt_add"
         android:clickable="true"
         android:text="Add"

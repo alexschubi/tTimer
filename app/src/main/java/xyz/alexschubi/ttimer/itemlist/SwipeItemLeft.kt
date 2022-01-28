@@ -18,10 +18,10 @@ class SwipeItemLeft(var adapter: RecyclerViewAdapter, private var fragmentItemLi
         return false
     }
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        val position = viewHolder.bindingAdapterPosition
+        //val position = viewHolder.bindingAdapterPosition
         val itemIndex = viewHolder.itemView.id
         fragmentItemList.removeItem(adapter.mItems.find { it.Index == itemIndex }!!)
-        Functions().deleteItem(itemIndex, adapter, position)
+        Functions().deleteItem(itemIndex)
     }
 
     override fun onChildDraw(
