@@ -71,7 +71,7 @@ fun View.getCenterPosition(): IntArray{
 }
 
 fun Item.toSItem(): sItem{
-    return sItem(Index,
+    return sItem(Index.toLong(),
         Text,
         Date?.atZone(ZoneId.systemDefault())?.toInstant()?.toEpochMilli(),
         Functions().getSpanString(Date),
@@ -84,7 +84,7 @@ fun sItem.toItem(): Item{
     var dateTime: LocalDateTime? = null
     if (TimeStamp!=null)
         dateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(TimeStamp!!), ZoneId.systemDefault())
-    return Item(Index,
+    return Item(Index.toInt(),
         Text,
         dateTime,
         Functions().getSpanString(dateTime),

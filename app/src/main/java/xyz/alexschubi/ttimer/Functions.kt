@@ -211,7 +211,7 @@ class Functions {
     }
 
     fun saveSItemToDB(item: sItem){
-        if(item.Index == -1){
+        if(item.Index == -1L){
             item.Index = localDB.itemsDAO().getItemsAmount() + 1
             localDB.itemsDAO().insert(item)
         } else {
@@ -219,7 +219,7 @@ class Functions {
         }
         Log.d("localDB", "save $item")
     }
-    fun deleteItem(itemIndex: Int){
+    fun deleteItem(itemIndex: Long){
         val editItem = localDB.itemsDAO().get(itemIndex)
         if (editItem != null) {
             editItem.Deleted = true

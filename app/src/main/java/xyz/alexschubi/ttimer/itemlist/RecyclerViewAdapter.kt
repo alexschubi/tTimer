@@ -7,11 +7,9 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.circularreveal.cardview.CircularRevealCardView
-import kotlinx.android.synthetic.main.fragment_item_list.view.*
 import kotlinx.android.synthetic.main.recycler_view_item_v2.view.*
 import xyz.alexschubi.ttimer.*
 import xyz.alexschubi.ttimer.R.*
-import xyz.alexschubi.ttimer.data.ItemsDAO
 import xyz.alexschubi.ttimer.data.sItem
 import java.time.Instant
 import java.time.LocalDateTime
@@ -27,7 +25,7 @@ class RecyclerViewAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(layout.recycler_view_item_v2, parent, false)
-        return ViewHolder(itemView, onItemClicked)
+        return ViewHolder(itemView, onItemClicked, mItems)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -38,7 +36,9 @@ class RecyclerViewAdapter(
 
     class ViewHolder(
         itemView: View,
-        val onItemClicked: (item: sItem, screenPos: IntArray) -> Unit)
+        val onItemClicked: (item: sItem, screenPos: IntArray) -> Unit,
+        val mItems: MutableList<sItem>
+    )
         : RecyclerView.ViewHolder(itemView), View.OnClickListener{
 
         init {
@@ -92,15 +92,15 @@ class RecyclerViewAdapter(
             itemView.tv_item_span.setTextColor(textColor)
             val revealCardView = itemView as CircularRevealCardView
             revealCardView.setCardBackgroundColor(backgroundColor)
-            itemView.id = currentItem.Index
-
+            itemView.id = currentItem.Index.toInt()
 
         }
 
-        override fun onClick(view: View?) {
-            val item = localDB.itemsDAO().get(view!!.id)
+        override fun onClick(view: View) {
+            val dItem = mItems[bindingAdapterPosition]
+            //val item = localDB.itemsDAO().get(view!!.id.toLong())
             val screenLocation = view.findLocationOfCenterOnTheScreen()
-            onItemClicked(item!!, screenLocation)
+            onItemClicked(dItem, screenLocation)
         }
     }
     fun setItems(items: MutableList<sItem>) {

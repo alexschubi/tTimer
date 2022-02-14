@@ -6,7 +6,7 @@ import java.time.ZonedDateTime
 
 @Entity(tableName = "itemsTable")
 data class sItem(
-    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "mIndex") var Index: Int,
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "mIndex") var Index: Long,
     @ColumnInfo(name = "Text") var Text: String = "",
     @ColumnInfo(name = "Date") var TimeStamp: Long?,
     @ColumnInfo(name = "Span") var Span: String?,

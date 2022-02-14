@@ -5,14 +5,14 @@ import androidx.room.*
 
 @Dao
 interface ItemsDAO{ //TODO use coroutines / livedata
-    @Insert
+    @Insert//(onConflict = OnConflictStrategy.REPLACE)
     fun insert(item: sItem)
 
     @Update
     fun update(item: sItem)
 
     @Query("SELECT * FROM itemsTable WHERE mIndex = :key")
-    fun get(key: Int): sItem?
+    fun get(key: Long): sItem?
 
     @Query("SELECT * FROM itemsTable")
     fun getAll(): MutableList<sItem>
@@ -27,8 +27,8 @@ interface ItemsDAO{ //TODO use coroutines / livedata
     fun clear()
 
     @Query("DELETE FROM itemsTable WHERE mIndex = :key")
-    fun delete(key: Int)
+    fun delete(key: Long)
 
     @Query("SELECT COUNT(*) FROM itemsTable ")
-    fun getItemsAmount(): Int
+    fun getItemsAmount(): Long
 }
