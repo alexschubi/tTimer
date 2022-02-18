@@ -99,7 +99,7 @@ class RecyclerViewAdapter(
         override fun onClick(view: View) {
             val dItem = mItems[bindingAdapterPosition]
             //val item = localDB.itemsDAO().get(view!!.id.toLong())
-            val screenLocation = view.findLocationOfCenterOnTheScreen()
+            val screenLocation = view.getCenterPosition()
             onItemClicked(dItem, screenLocation)
         }
     }

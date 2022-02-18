@@ -31,4 +31,5 @@ interface ItemsDAO{ //TODO use coroutines / livedata
 
     @Query("SELECT COUNT(*) FROM itemsTable ")
     fun getItemsAmount(): Long
+
 }

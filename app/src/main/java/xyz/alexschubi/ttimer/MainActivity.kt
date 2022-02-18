@@ -14,13 +14,13 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import xyz.alexschubi.ttimer.data.ItemsDatabase
+import xyz.alexschubi.ttimer.data.suppPreferences
 import xyz.alexschubi.ttimer.itemlist.fragment_item_list
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 lateinit var mainPrefs: SharedPreferences
 lateinit var suppPrefs: SharedPreferences
-//lateinit var mContext: Context //TODO dont use
 lateinit var mapplication: Application
 lateinit var mainActivity: MainActivity
 lateinit var inputMethodManager: InputMethodManager
@@ -32,17 +32,18 @@ val dateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("EE dd.MM.yyy
 class MainActivity : AppCompatActivity() {
 
     //TODO undo button after delete
-    //TODO Bug when cxhanging theme sortmode is shown in settings
-    //TODO bug when adding a new item sometimes not adding for real
     //TODO rewrite notifications for db
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        //mContext = this
         mainActivity = this
         mapplication = this.application
-        localDB = ItemsDatabase.getDatabase(this)!!
         inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        localDB = ItemsDatabase.getDatabase(this)!!
+        localDB.preferenceesDAO().insert(
+            suppPreferences(1, "default", false, null, false, true, "2.0", 0, true)
+        )
+        //TODO last
 
         //TODO use navigation-back instead of direct transitions
         mainPrefs = getPreferences(MODE_PRIVATE)

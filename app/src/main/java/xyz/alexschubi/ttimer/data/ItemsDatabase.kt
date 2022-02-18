@@ -5,9 +5,10 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [sItem::class], version = 1, exportSchema = false)
+@Database(entities = [sItem::class, suppPreferences::class], version = 1, exportSchema = false)
 abstract class ItemsDatabase : RoomDatabase() {
     abstract fun itemsDAO(): ItemsDAO
+    abstract fun preferenceesDAO(): PreferencesDAO
     companion object {
         @Volatile
         private var INSTANCE: ItemsDatabase? = null

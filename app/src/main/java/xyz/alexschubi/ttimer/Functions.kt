@@ -114,57 +114,7 @@ class Functions {
         Log.d("Preferences.save", "added Item: " + addItemString.toString())
         return addItemString
     }
-    fun sortList(getList: ArrayList<Item>, getSortMode: Int): MutableList<Item> {
-        var sortedList: MutableList<Item>? = null
-        when (getSortMode) {
-            //TODO rewrite whole sorting
-            //TODO bug items lose dateime display sometimes on every revesed sorting
-            //TODO sorting with multiple parameters dont work
-            0 -> { sortedList = getList }
-            1 -> {
-                sortedList = getList
-                sortedList.reverse()
-            }
-            2 -> {
-                getList.sortBy { it.Color}
-                sortedList = getList //normal sort is blue>green>orange>purple>red>yellow
-            }
-            3 -> {
-                getList.sortBy { it.Color}
-                sortedList = getList
-                sortedList.reverse()
-            }
-            4 -> {
-                getList.sortBy { it.Date}
-                sortedList = getList
-            }
-            5 -> {
-                getList.sortBy { it.Date}
-                sortedList = getList
-                sortedList.reverse()
-            }
-            6 -> {
-                getList.sortedWith(compareBy({it.Date}, {it.Color}))
-                sortedList = getList
-            }
-            7 -> {
-                getList.sortedWith(compareBy({it.Date}, {it.Color}))
-                sortedList = getList
-                sortedList.reverse()
-            }
-            8 -> {
-                getList.sortedWith(compareBy({it.Color}, {it.Date}))
-                sortedList = getList
-            }
-            9 -> {
-                getList.sortedWith(compareBy({it.Color}, {it.Date}))
-                sortedList = getList
-                sortedList.reverse()
-            }
-            else -> { sortedList = getList }
-        }
-        return sortedList!!
-    }
+
     fun sortMutableList(itemList: MutableList<sItem>, sortMode: Int): MutableList<sItem> {
         var sortedList: MutableList<sItem> = itemList
         when(sortMode){
@@ -201,7 +151,7 @@ class Functions {
     fun applyTheme(){
         val prefTheme = PreferenceManager.getDefaultSharedPreferences(mapplication).getString("pref_theme", "followSystem")
         when(prefTheme){
-            "default" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_UNSPECIFIED)
+            "default" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
             "light" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             "dark" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             "followSystem" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)

@@ -16,8 +16,7 @@ import androidx.core.content.ContextCompat
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import kotlinx.android.synthetic.main.fragment_add_item2.*
-import kotlinx.android.synthetic.main.fragment_item_list.*
-import xyz.alexschubi.ttimer.data.ItemsDAO
+import kotlinx.android.synthetic.main.fragment_add_item2.view.*
 import xyz.alexschubi.ttimer.data.sItem
 import xyz.alexschubi.ttimer.itemlist.fragment_item_list
 import java.time.*
@@ -63,6 +62,18 @@ class AddItemFragment(private val getItem: sItem?, private val fragmentItemList:
 
         super.onViewCreated(view, savedInstanceState)
         view.startCircularReveal(startPosX, startPosY)
+        //TODO get offset when appar from listview is not expanded
+        //TODO start reveal positions not really at center
+
+        view.b_settings.setOnClickListener {
+            exitWithSave = false
+            timer.cancel()
+            this.view?.let { inputMethodManager.hideSoftInputFromWindow(view?.windowToken, 0) }
+            this.view?.exitCircularReveal(posX!!, posY!!){
+                parentFragmentManager.popBackStack()
+            }
+        }
+
         if (getItem!=null) {
             sItem = localDB.itemsDAO().get(getItem.Index)!!
             b_add_final.text = "Save"

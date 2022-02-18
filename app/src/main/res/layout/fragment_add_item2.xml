@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content">
 
                 <Button
-                    android:id="@+id/b_back"
+                    android:id="@+id/b_settings"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:background="@drawable/ic_baseline_arrow_back_24"

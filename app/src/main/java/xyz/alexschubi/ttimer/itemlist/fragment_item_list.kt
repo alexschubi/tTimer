@@ -19,7 +19,6 @@ class fragment_item_list : Fragment() {
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var adapter: RecyclerViewAdapter
     var displayItemsList: MutableList<sItem>? = null
-    var unsortedItems: MutableList<sItem>? = null
 
     companion object {
         @JvmStatic
@@ -38,14 +37,12 @@ class fragment_item_list : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         linearLayoutManager = LinearLayoutManager(mainActivity)
         //get and sort items for recyclerview
-        unsortedItems = getUnsortItems()
-        displayItemsList = sortItems(unsortedItems!!)
+        displayItemsList = Functions().sortMutableList(localDB.itemsDAO().getActiveItems(), localDB.preferenceesDAO().getLast().SortMode)
         //set adapter for recyclerview with listeners
         recyclerViewItems2.layoutManager = LinearLayoutManager(context)
         adapter = RecyclerViewAdapter(
-            displayItemsList!!,
-            { item: sItem, pos: IntArray -> displayAddItem(item, pos, view) }
-        )
+            displayItemsList!!
+        ) { item: sItem, pos: IntArray -> displayAddItem(item, pos, view) }
         recyclerViewItems2.adapter = adapter
         Log.d("localDB", "got displayList $displayItemsList")
         //set swipe Listener
@@ -58,8 +55,8 @@ class fragment_item_list : Fragment() {
                 addToBackStack(null)
             }
         }
-        b_back.setOnClickListener {
-            val positions = b_back.getCenterPosition()
+        b_settings.setOnClickListener {
+            val positions = b_settings.getCenterPosition()
             parentFragmentManager.open {
                 add(R.id.container, fragment_settings.newInstance(positions, positions))
                 addToBackStack(null)
@@ -114,12 +111,7 @@ class fragment_item_list : Fragment() {
         }
     }*/
 
-    fun sortItems(items: MutableList<sItem>): MutableList<sItem> {
-        var getItemsList = items
-        getItemsList.toList().forEach { sItem -> if (sItem.Deleted) getItemsList.remove(sItem) }
-        return getItemsList.toMutableList()
-    }
-    private fun getUnsortItems(): MutableList<sItem>{ return localDB.itemsDAO().getAll()}
+    private fun getUnsortItems(): MutableList<sItem>{ return localDB.itemsDAO().getActiveItems()}
 
     private fun displayAddItem(item: sItem?, exitPosition: IntArray, view: View){
         var editItem = item
@@ -127,9 +119,9 @@ class fragment_item_list : Fragment() {
         var startPos: IntArray = intArrayOf(0,0)
 
         if (editItem == null){
-            val getItems = sortItems(getUnsortItems())
+            val getItems = Functions().sortMutableList(localDB.itemsDAO().getActiveItems(), localDB.preferenceesDAO().getLast().SortMode)
             val newIndex = getItems.size+1
-            editItem = sItem (newIndex,
+            editItem = sItem (newIndex.toLong(),
                 "------------",
                 null,
                 null,
@@ -141,7 +133,9 @@ class fragment_item_list : Fragment() {
             adapter.setItems(getItems)
         }
         //val viewHolder = editItem.Index.let { recyclerViewItems2.findViewHolderForItemId(it.toLong()) }
-        startPos = view.findLocationOfCenterOnTheScreen()
+        startPos = view.getCenterPosition()
+        startPos[1] += view.appbar.measuredHeight
+        exitPos[1] += view.appbar.measuredHeight
 
         parentFragmentManager.open {//TODO get position of item
             add(R.id.container, AddItemFragment.newInstance(startPos, exitPos, item, this@fragment_item_list))
