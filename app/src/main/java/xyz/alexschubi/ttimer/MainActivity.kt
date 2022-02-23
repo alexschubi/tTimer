@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.FirebaseApp
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import kotlinx.android.synthetic.main.fragment_item_list.view.*
 import xyz.alexschubi.ttimer.data.ItemsDatabase
 import xyz.alexschubi.ttimer.data.suppPreferences
 import xyz.alexschubi.ttimer.itemlist.fragment_item_list
@@ -63,7 +64,7 @@ class MainActivity : AppCompatActivity() {
         with(supportFragmentManager.findFragmentById(R.id.container)) {
             // Check if the current fragment implements the [ExitWithAnimation] interface or not
             // Also check if the [ExitWithAnimation.isToBeExitedWithAnimation] is `true` or not
-            if ((this as? ExitWithAnimation)?.isToBeExitedWithAnimation() == true) { //TODO not triggered
+            if ((this as? ExitWithAnimation)?.isToBeExitedWithAnimation() == true) {
                 if (this.posX == null || this.posY == null) {
                     super.onBackPressed()
                 } else {

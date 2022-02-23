@@ -3,6 +3,7 @@ package xyz.alexschubi.ttimer
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.res.ColorStateList
+import android.hardware.input.InputManager
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
@@ -62,9 +63,10 @@ class AddItemFragment(private val getItem: sItem?, private val fragmentItemList:
 
         super.onViewCreated(view, savedInstanceState)
         view.startCircularReveal(startPosX, startPosY)
-        //TODO get offset when appar from listview is not expanded
+        fragmentItemList.view?.appbar?.setExpanded(true)
         //TODO start reveal positions not really at center
 
+        //i dont know why this is here, cuz it cant br acessed
         view.b_settings.setOnClickListener {
             exitWithSave = false
             timer.cancel()
@@ -88,7 +90,10 @@ class AddItemFragment(private val getItem: sItem?, private val fragmentItemList:
         timer.start()
         tv_show_time.setOnClickListener { addSpecificDateTime() }
         b_del_time.setOnClickListener { delDateTime() }
-        b_add_final.setOnClickListener { addItem() }
+        b_add_final.setOnClickListener {
+            //TODO disable inputs while animation
+            addItem()
+        }
 
         tb_add_text.setText(sItem.Text)
         rg_color.setOnCheckedChangeListener { radioGroup, i ->

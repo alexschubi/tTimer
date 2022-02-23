@@ -18,13 +18,10 @@ fun View.startCircularReveal(oldX: Int, oldY: Int) {
         override fun onLayoutChange(v: View, left: Int, top: Int, right: Int, bottom: Int, oldLeft: Int, oldTop: Int,
                                     oldRight: Int, oldBottom: Int) {
             v.removeOnLayoutChangeListener(this)
-
-            val diffX = (left + right)/2 + oldX
-            val diffY = (top + bottom)/2 + oldY
-            val radius = Math.hypot(diffX.toDouble(), diffY.toDouble())
-            Log.d("CircularReveal", "from X$diffX and Y$diffY with radius$radius")
-            ViewAnimationUtils.createCircularReveal(v, oldX, oldY, 0f, radius.toFloat()).apply {
-                interpolator = DecelerateInterpolator(2f)
+            val endRadius = Math.hypot(width.toDouble(), height.toDouble())
+            Log.d("CircularReveal", "from X$oldX and Y$oldY with radius$endRadius")
+            ViewAnimationUtils.createCircularReveal(v, oldX, oldY, 0f, endRadius.toFloat()).apply {
+                interpolator = DecelerateInterpolator(1f)
                 duration = 10000
                 start()
             }
@@ -41,9 +38,10 @@ fun View.startCircularReveal(oldX: Int, oldY: Int) {
  */
 fun View.exitCircularReveal(exitX: Int, exitY: Int, block: () -> Unit) {
     val startRadius = Math.hypot(this.width.toDouble(), this.height.toDouble())
+    Log.d("CircularReveal", "from X$exitX and Y$exitY with radius$startRadius")
     ViewAnimationUtils.createCircularReveal(this, exitX, exitY, startRadius.toFloat(), 0f).apply {
         duration = 10000
-        interpolator = DecelerateInterpolator(2f)
+        interpolator = DecelerateInterpolator(1f)
         addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator?) {
                 block()

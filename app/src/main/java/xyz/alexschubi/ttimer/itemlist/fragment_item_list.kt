@@ -133,9 +133,9 @@ class fragment_item_list : Fragment() {
             adapter.setItems(getItems)
         }
         //val viewHolder = editItem.Index.let { recyclerViewItems2.findViewHolderForItemId(it.toLong()) }
-        startPos = view.getCenterPosition()
-        startPos[1] += view.appbar.measuredHeight
-        exitPos[1] += view.appbar.measuredHeight
+        exitPos[1] += view.appbar.height
+        startPos = exitPos
+
 
         parentFragmentManager.open {//TODO get position of item
             add(R.id.container, AddItemFragment.newInstance(startPos, exitPos, item, this@fragment_item_list))
