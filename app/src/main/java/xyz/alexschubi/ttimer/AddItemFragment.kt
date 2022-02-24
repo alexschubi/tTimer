@@ -67,7 +67,9 @@ class AddItemFragment(private val getItem: sItem?, private val fragmentItemList:
         //TODO start reveal positions not really at center
 
         //i dont know why this is here, cuz it cant br acessed
-        view.b_settings.setOnClickListener {
+        view.b_back.setOnClickListener {
+            b_back.setOnClickListener(null)
+            b_add_final.setOnClickListener(null)
             exitWithSave = false
             timer.cancel()
             this.view?.let { inputMethodManager.hideSoftInputFromWindow(view?.windowToken, 0) }
@@ -91,7 +93,8 @@ class AddItemFragment(private val getItem: sItem?, private val fragmentItemList:
         tv_show_time.setOnClickListener { addSpecificDateTime() }
         b_del_time.setOnClickListener { delDateTime() }
         b_add_final.setOnClickListener {
-            //TODO disable inputs while animation
+            b_back.setOnClickListener(null)
+            b_add_final.setOnClickListener(null)
             addItem()
         }
 
@@ -239,6 +242,9 @@ class AddItemFragment(private val getItem: sItem?, private val fragmentItemList:
         } else {
             fragmentItemList.editItem(getItem, sItem)
         }
+        b_add_final.isClickable = false
+
+
         exitWithSave = true
         timer.cancel()
         this.view?.let { inputMethodManager.hideSoftInputFromWindow(view?.windowToken, 0) }
