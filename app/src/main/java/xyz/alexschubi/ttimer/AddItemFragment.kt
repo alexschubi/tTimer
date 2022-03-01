@@ -3,7 +3,6 @@ package xyz.alexschubi.ttimer
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.res.ColorStateList
-import android.hardware.input.InputManager
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
@@ -296,11 +295,6 @@ class AddItemFragment(private val getItem: sItem?, private val fragmentItemList:
             tMonth - 1,
             tDay)
         datePickerDialog.show()
-
-        val timePicker = MaterialTimePicker.Builder()
-            .setTimeFormat(TimeFormat.CLOCK_24H)
-
-
     }
     private fun addDateTime(dateTime: ZonedDateTime) {
         tv_show_time.text = dateTime.format(dateFormatter) + " in " + Functions().getSpanString(dateTime.toLocalDateTime()!!)

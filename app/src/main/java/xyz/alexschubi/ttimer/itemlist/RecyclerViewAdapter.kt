@@ -104,19 +104,17 @@ class RecyclerViewAdapter(
         }
     }
     fun setItems(items: MutableList<sItem>) {
-        mItems = Functions().sortMutableList(items, suppPrefs.getInt("sortMode", 0))
+        mItems = Functions().sortMutableList(items, localDB.preferencesDAO().getLast().SortMode)
         notifyDataSetChanged()
     }
     fun addItem(item: sItem){
         mItems.add(item)
-        mItems = Functions().sortMutableList(mItems, suppPrefs.getInt("sortMode", 0))
-        //val position: Int = mItems.find { it.Index == item.Index }!!.Index
+        mItems = Functions().sortMutableList(mItems, localDB.preferencesDAO().getLast().SortMode)
         val index = mItems.lastIndexOf(item)
         notifyItemInserted(index)
         Log.d("RecyclerView", "addItem $item")
     }
     fun editItem(oldItem: sItem, newItem: sItem){
-        //val index = mItems.find { it.Index == item.Index }!!.Index
         val index = mItems.lastIndexOf(oldItem)
         mItems[index] = newItem
         notifyItemChanged(index)
@@ -124,7 +122,6 @@ class RecyclerViewAdapter(
     }
     fun removeItem(item: sItem){
         val index = mItems.lastIndexOf(item)
-        //val index = mItems.find { it.Index == item.Index }!!.Index
         mItems.removeAt(index)
         notifyItemRemoved(index)
         Log.d("RecyclerView", "removeItem $item")

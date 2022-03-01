@@ -1,11 +1,10 @@
 package xyz.alexschubi.ttimer.data
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 
 @Dao
 interface ItemsDAO{ //TODO use coroutines / livedata
-    @Insert//(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.ABORT)
     fun insert(item: sItem)
 
     @Update

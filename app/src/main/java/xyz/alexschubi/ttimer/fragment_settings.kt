@@ -1,6 +1,5 @@
 package xyz.alexschubi.ttimer
 
-import android.app.ActionBar
 import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
@@ -52,12 +51,6 @@ class fragment_settings : PreferenceFragmentCompat(), ExitWithAnimation{
                 }
             }
         }
-
-        /*suppActionBar.setCustomView(R.layout.add_toolbar)
-        suppActionBar.customView.b_back.setOnClickListener() {
-            suppActionBar.setCustomView(R.layout.list_toolbar)
-            parentFragmentManager.popBackStack()
-        }*/
     }
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)

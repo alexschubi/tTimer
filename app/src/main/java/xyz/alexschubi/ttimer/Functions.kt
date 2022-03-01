@@ -1,16 +1,10 @@
 package xyz.alexschubi.ttimer
 
-import android.text.TextUtils
 import android.util.Log
-import java.time.LocalDateTime
-import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.preference.PreferenceManager
 import xyz.alexschubi.ttimer.data.sItem
-import xyz.alexschubi.ttimer.itemlist.RecyclerViewAdapter
+import java.time.LocalDateTime
 import java.time.Year
-import java.time.ZoneId
-import kotlin.collections.ArrayList
 
 class Functions {
 
@@ -28,14 +22,7 @@ class Functions {
         }
         return tempDateTime
     }
-    fun saveStringList(PrefKey: String?, stringList: ArrayList<String>) {
-        val myStringList = stringList.toTypedArray()
-        mainPrefs.edit().putString(PrefKey, TextUtils.join("‚‗‚", myStringList)).apply()
-    }
 
-    fun getListString(PrefKey: String?): ArrayList<String> {
-        return ArrayList(listOf(*TextUtils.split(mainPrefs.getString(PrefKey, ""), "‚‗‚")))
-    }
     fun ItemFromArray(getStringItem: ArrayList<String>): Item {
         val getItem = Item(
             getStringItem[0].toInt(),
@@ -131,25 +118,14 @@ class Functions {
         return sortedList
     }
 
-    fun showKeyboard(view: View) {
-        inputMethodManager.showSoftInput(view, 0)
-    }
-    fun hideKeyboard(view: View) {
-        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
-    }
-
     fun applyFirebase(){
-        val prefNotificationsenabled = PreferenceManager.getDefaultSharedPreferences(mapplication).getBoolean("pref_notificaions_enabled", true)
-        val prefSyncEnabled = PreferenceManager.getDefaultSharedPreferences(mapplication).getBoolean("pref_sync_enable", true)
-        val prefSyncConnection = PreferenceManager.getDefaultSharedPreferences(mapplication).getString("pref_sync_connection", "").toString()
-
-        val prefSendFirebaseenabled = PreferenceManager.getDefaultSharedPreferences(mapplication).getBoolean("pref_firebase_enabled", false)
+        val prefSendFirebaseenabled = localDB.preferencesDAO().getLast().FirebaseEnabled
         firebaseCrashlytics.setCrashlyticsCollectionEnabled(prefSendFirebaseenabled)
         firebaseAnalytics.setAnalyticsCollectionEnabled(prefSendFirebaseenabled)
         Log.i("Analytics", "Analytics " + prefSendFirebaseenabled.toString())
     }
     fun applyTheme(){
-        val prefTheme = PreferenceManager.getDefaultSharedPreferences(mapplication).getString("pref_theme", "followSystem")
+        val prefTheme = localDB.preferencesDAO().getLast().Theme
         when(prefTheme){
             "default" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
             "light" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)

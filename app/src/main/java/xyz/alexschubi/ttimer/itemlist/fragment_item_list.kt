@@ -37,7 +37,7 @@ class fragment_item_list : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         linearLayoutManager = LinearLayoutManager(mainActivity)
         //get and sort items for recyclerview
-        displayItemsList = Functions().sortMutableList(localDB.itemsDAO().getActiveItems(), localDB.preferenceesDAO().getLast().SortMode)
+        displayItemsList = Functions().sortMutableList(localDB.itemsDAO().getActiveItems(), localDB.preferencesDAO().getLast().SortMode)
         //set adapter for recyclerview with listeners
         recyclerViewItems2.layoutManager = LinearLayoutManager(context)
         adapter = RecyclerViewAdapter(
@@ -64,7 +64,7 @@ class fragment_item_list : Fragment() {
         }
 
 
-        sp_sortMode2.setSelection(suppPrefs.getInt("sortMode", 0))
+        sp_sortMode2.setSelection(localDB.preferencesDAO().getLast().SortMode)
         sp_sortMode2.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 var sMode: String = parent?.getItemAtPosition(position) as String
@@ -83,9 +83,11 @@ class fragment_item_list : Fragment() {
                     "sort by Color>Date ↓" -> sModeInt = 9
                     else -> Log.d("sortMode", "wrong sortModeKey String")
                 }
-                suppPrefs.edit().putInt("sortMode", sModeInt).apply()
+                val updatePref = localDB.preferencesDAO().getLast()
+                updatePref.SortMode = sModeInt
+                localDB.preferencesDAO().update(updatePref)
                 Log.i("sortMode", "changed to $sModeInt")
-                Log.d("suppPrefs", "sortMode is: "+ suppPrefs.getInt("sortMode", 0).toString())
+                Log.d("suppPrefs", "sortMode is: "+ localDB.preferencesDAO().getLast().SortMode.toString())
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 null
@@ -93,25 +95,6 @@ class fragment_item_list : Fragment() {
         }
 
     }
-    /*private val timer = object: CountDownTimer(1 * 60 * 60 * 1000, 1 * 10 * 1000){ //hour*min*sec*millisec
-        lateinit var currentTime: LocalDateTime //TODO rewrite time refresh with corutine
-        override fun onTick(millisUntilFinished: Long){
-            Functions().refreshTime()
-            currentTime = LocalDateTime.now()
-            getArrayList.forEachIndexed { index, item ->
-                if (item.Date!=null && item.Date!!.isAfter(currentTime)){
-                    view?.recyclerViewItems?.adapter?.notifyItemChanged(index)
-                }
-            }
-            view?.recyclerViewItems?.adapter?.notifyDataSetChanged()
-        }//TODO use coroutine
-        override fun onFinish() {
-            Toast.makeText(mContext, "AFK?", Toast.LENGTH_SHORT).show()
-            exitProcess(-1)
-        }
-    }*/
-
-    private fun getUnsortItems(): MutableList<sItem>{ return localDB.itemsDAO().getActiveItems()}
 
     private fun displayAddItem(item: sItem?, exitPosition: IntArray, view: View){
         var editItem = item
@@ -119,7 +102,7 @@ class fragment_item_list : Fragment() {
         var startPos: IntArray = intArrayOf(0,0)
 
         if (editItem == null){
-            val getItems = Functions().sortMutableList(localDB.itemsDAO().getActiveItems(), localDB.preferenceesDAO().getLast().SortMode)
+            val getItems = Functions().sortMutableList(localDB.itemsDAO().getActiveItems(), localDB.preferencesDAO().getLast().SortMode)
             val newIndex = getItems.size+1
             editItem = sItem (newIndex.toLong(),
                 "------------",
@@ -132,15 +115,11 @@ class fragment_item_list : Fragment() {
             getItems.add(editItem)
             adapter.setItems(getItems)
         }
-        //val viewHolder = editItem.Index.let { recyclerViewItems2.findViewHolderForItemId(it.toLong()) }
         exitPos[1] += view.appbar.height
         startPos = exitPos
-
-
         parentFragmentManager.open {//TODO get position of item
             add(R.id.container, AddItemFragment.newInstance(startPos, exitPos, item, this@fragment_item_list))
             addToBackStack(null)
-
         }
         Log.d("CircularReveal",
             "opened reveal item ${editItem.Index} from ${startPos[1]},${startPos[1]}, and closing at ${exitPos[0]},${exitPos[1]}")

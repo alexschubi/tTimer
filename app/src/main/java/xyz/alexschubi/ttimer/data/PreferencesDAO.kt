@@ -4,7 +4,7 @@ import androidx.room.*
 
 @Dao
 interface PreferencesDAO {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.ABORT)
     fun insert(preferences: suppPreferences)
 
     @Update
