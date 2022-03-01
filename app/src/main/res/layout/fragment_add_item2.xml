@@ -1,305 +1,318 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/dn_fragment_background">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appbar"
-
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinatorLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:expanded="false">
+        android:layout_height="0dp"
+        android:background="@color/dn_fragment_background"
+        app:layout_constraintBottom_toTopOf="@+id/b_add_final"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar2"
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:contentInsetStart="0dp"
-            app:contentInsetStartWithNavigation="0dp"
-            app:layout_scrollFlags="scroll|enterAlways">
+            app:expanded="false">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:contentInsetStart="0dp"
+                app:contentInsetStartWithNavigation="0dp"
+                app:layout_scrollFlags="scroll|enterAlways">
 
-                <Button
-                    android:id="@+id/b_back"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="@drawable/ic_baseline_arrow_back_24"
-                    android:backgroundTint="@color/tt_text_light"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </com.google.android.material.appbar.MaterialToolbar>
+                    <Button
+                        android:id="@+id/b_back"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/ic_baseline_arrow_back_24"
+                        android:backgroundTint="@color/tt_text_light"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-    </com.google.android.material.appbar.AppBarLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.appbar.MaterialToolbar>
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        </com.google.android.material.appbar.AppBarLayout>
 
-
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="2dp"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
-
-        <LinearLayout
-            android:id="@+id/linearLayout_v_add"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/text_Input_layout"
-                style="@style/tTextEdit"
+
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+            <LinearLayout
+                android:id="@+id/linearLayout_v_add"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="2dp">
+                android:orientation="vertical">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/tb_add_text"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/text_Input_layout"
+                    style="@style/tTextEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="2dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/tb_add_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2dp"
+                        android:hint="Text"
+                        android:inputType="none|textMultiLine"
+                        android:text="dfdvdfgdfgnfgbhdfgb"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textCursorDrawable="@drawable/cursor" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_show_time"
+                    style="@style/tTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:clickable="false"
+                    android:maxLines="1"
+                    android:minHeight="35dip"
+                    android:text="Wed 01.01.0001 00:00 in 200 minutes"
+                    android:textAlignment="center"
+                    android:textStyle="bold" />
+
+                <RadioGroup
+                    android:id="@+id/rg_color"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="2dp"
-                    android:hint="Text"
-                    android:inputType="none|textMultiLine"
-                    android:text="dfdvdfgdfgnfgbhdfgb"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:textCursorDrawable="@drawable/cursor" />
+                    android:checkedButton="@id/rb_purple"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:textAlignment="center">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <RadioButton
+                        android:id="@+id/rb_purple"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        android:button="?android:attr/listChoiceIndicatorMultiple"
+                        android:buttonTint="@color/item_purple"
+                        android:scaleX="1.7"
+                        android:scaleY="1.7" />
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/tv_show_time"
-                style="@style/tTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:clickable="false"
-                android:maxLines="1"
-                android:minHeight="35dip"
-                android:text="Wed 01.01.0001 00:00 in 200 minutes"
-                android:textAlignment="center"
-                android:textStyle="bold" />
+                    <RadioButton
+                        android:id="@+id/rb_blue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        android:button="?android:attr/listChoiceIndicatorMultiple"
+                        android:buttonTint="@color/item_blue"
+                        android:scaleX="1.7"
+                        android:scaleY="1.7" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cl_modify_time"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="2dp">
+                    <RadioButton
+                        android:id="@+id/rb_green"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        android:button="?android:attr/listChoiceIndicatorMultiple"
+                        android:buttonTint="@color/item_green"
+                        android:scaleX="1.7"
+                        android:scaleY="1.7" />
 
+                    <RadioButton
+                        android:id="@+id/rb_yellow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        android:button="?android:attr/listChoiceIndicatorMultiple"
+                        android:buttonTint="@color/item_yellow"
+                        android:scaleX="1.7"
+                        android:scaleY="1.7" />
+
+                    <RadioButton
+                        android:id="@+id/rb_orange"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        android:button="?android:attr/listChoiceIndicatorMultiple"
+                        android:buttonTint="@color/item_orange"
+                        android:scaleX="1.7"
+                        android:scaleY="1.7" />
+
+                    <RadioButton
+                        android:id="@+id/rb_red"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        android:button="?android:attr/listChoiceIndicatorMultiple"
+                        android:buttonTint="@color/item_red"
+                        android:scaleX="1.7"
+                        android:scaleY="1.7" />
+
+                </RadioGroup>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_modify_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp">
+
+
+                    <Button
+                        android:id="@+id/b_minus5minute"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:autoText="false"
+                        android:text="-5min"
+                        android:textAllCaps="false"
+                        app:layout_constraintEnd_toStartOf="@+id/b_plus5minute"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintWidth_percent="0.5"
+                        app:strokeWidth="1dp" />
+
+                    <Button
+                        android:id="@+id/b_plus1day"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:autoText="false"
+                        android:text="+1d"
+                        android:textAllCaps="false"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/b_plus1hour"
+                        app:layout_constraintWidth_percent="0.5"
+                        app:strokeWidth="1dp" />
+
+                    <Button
+                        android:id="@+id/b_plus5minute"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:autoSizeTextType="uniform"
+                        android:autoText="false"
+                        android:text="+5min"
+                        android:textAllCaps="false"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintWidth_percent="0.5"
+                        app:strokeWidth="1dp" />
+
+                    <Button
+                        android:id="@+id/b_add_qtime_1d"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:autoText="false"
+                        android:text="tomorrow"
+                        android:textAllCaps="false"
+                        app:layout_constraintEnd_toStartOf="@+id/b_add_qtime_weekend"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/b_minus1day"
+                        app:layout_constraintWidth_percent="0.5"
+                        app:strokeWidth="1dp" />
+
+                    <Button
+                        android:id="@+id/b_plus1hour"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:autoText="false"
+                        android:text="+1h"
+                        android:textAllCaps="false"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/b_plus5minute"
+                        app:layout_constraintWidth_percent="0.5"
+                        app:strokeWidth="1dp" />
+
+                    <Button
+                        android:id="@+id/b_add_qtime_weekend"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:autoSizeTextType="uniform"
+                        android:autoText="false"
+                        android:text="weekend"
+                        android:textAllCaps="false"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/b_plus1day"
+                        app:layout_constraintWidth_percent="0.5"
+                        app:strokeWidth="1dp" />
+
+                    <Button
+                        android:id="@+id/b_minus1hour"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:autoText="false"
+                        android:text="-1h"
+                        android:textAllCaps="false"
+                        app:layout_constraintEnd_toStartOf="@+id/b_plus1hour"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/b_minus5minute"
+                        app:layout_constraintWidth_percent="0.5"
+                        app:strokeWidth="1dp" />
+
+                    <Button
+                        android:id="@+id/b_minus1day"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:autoText="false"
+                        android:text="-1d"
+                        android:textAllCaps="false"
+                        app:layout_constraintEnd_toStartOf="@+id/b_plus1day"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/b_minus1hour"
+                        app:layout_constraintWidth_percent="0.5"
+                        app:strokeWidth="1dp" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <Button
-                    android:id="@+id/b_minus5minute"
-                    android:layout_width="0dp"
+                    android:id="@+id/b_del_time"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:autoText="false"
-                    android:text="-5min"
-                    android:textAllCaps="false"
-                    app:layout_constraintEnd_toStartOf="@+id/b_plus5minute"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintWidth_percent="0.5"
-                    app:strokeWidth="1dp" />
+                    android:layout_margin="2dp"
+                    android:backgroundTint="@null"
+                    android:text="Delete Notification"
+                    android:textAllCaps="false" />
 
                 <Button
-                    android:id="@+id/b_plus1day"
-                    android:layout_width="0dp"
+                    android:id="@+id/b_add_notification"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="2dp"
+                    android:layout_weight="1"
                     android:autoText="false"
-                    android:text="+1d"
-                    android:textAllCaps="false"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/b_plus1hour"
-                    app:layout_constraintWidth_percent="0.5"
-                    app:strokeWidth="1dp" />
+                    android:backgroundTint="@null"
+                    android:text="Add Notification"
+                    android:textAllCaps="false" />
 
-                <Button
-                    android:id="@+id/b_plus5minute"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:autoSizeTextType="uniform"
-                    android:autoText="false"
-                    android:text="+5min"
-                    android:textAllCaps="false"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintWidth_percent="0.5"
-                    app:strokeWidth="1dp" />
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
 
-                <Button
-                    android:id="@+id/b_add_qtime_1d"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:autoText="false"
-                    android:text="tomorrow"
-                    android:textAllCaps="false"
-                    app:layout_constraintEnd_toStartOf="@+id/b_add_qtime_weekend"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/b_minus1day"
-                    app:layout_constraintWidth_percent="0.5"
-                    app:strokeWidth="1dp" />
 
-                <Button
-                    android:id="@+id/b_plus1hour"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:autoText="false"
-                    android:text="+1h"
-                    android:textAllCaps="false"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/b_plus5minute"
-                    app:layout_constraintWidth_percent="0.5"
-                    app:strokeWidth="1dp" />
-
-                <Button
-                    android:id="@+id/b_add_qtime_weekend"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:autoSizeTextType="uniform"
-                    android:autoText="false"
-                    android:text="weekend"
-                    android:textAllCaps="false"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/b_plus1day"
-                    app:layout_constraintWidth_percent="0.5"
-                    app:strokeWidth="1dp" />
-
-                <Button
-                    android:id="@+id/b_minus1hour"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:autoText="false"
-                    android:text="-1h"
-                    android:textAllCaps="false"
-                    app:layout_constraintEnd_toStartOf="@+id/b_plus1hour"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/b_minus5minute"
-                    app:layout_constraintWidth_percent="0.5"
-                    app:strokeWidth="1dp" />
-
-                <Button
-                    android:id="@+id/b_minus1day"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:autoText="false"
-                    android:text="-1d"
-                    android:textAllCaps="false"
-                    app:layout_constraintEnd_toStartOf="@+id/b_plus1day"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/b_minus1hour"
-                    app:layout_constraintWidth_percent="0.5"
-                    app:strokeWidth="1dp" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <Button
-                android:id="@+id/b_del_time"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="2dp"
-                android:backgroundTint="@null"
-                android:text="Delete Notification"
-                android:textAllCaps="false" />
-
-            <Button
-                android:id="@+id/b_add_notification"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="2dp"
-                android:layout_weight="1"
-                android:autoText="false"
-                android:backgroundTint="@null"
-                android:text="Add Notification"
-                android:textAllCaps="false" />
-
-            <RadioGroup
-                android:id="@+id/rg_color"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="2dp"
-                android:checkedButton="@id/rb_purple"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:textAlignment="center">
-
-                <RadioButton
-                    android:id="@+id/rb_purple"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="2dp"
-                    android:layout_marginRight="2dp"
-                    android:button="?android:attr/listChoiceIndicatorMultiple"
-                    android:buttonTint="@color/item_purple"
-                    android:scaleX="1.7"
-                    android:scaleY="1.7" />
-
-                <RadioButton
-                    android:id="@+id/rb_blue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="2dp"
-                    android:layout_marginRight="2dp"
-                    android:button="?android:attr/listChoiceIndicatorMultiple"
-                    android:buttonTint="@color/item_blue"
-                    android:scaleX="1.7"
-                    android:scaleY="1.7" />
-
-                <RadioButton
-                    android:id="@+id/rb_green"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="2dp"
-                    android:layout_marginRight="2dp"
-                    android:button="?android:attr/listChoiceIndicatorMultiple"
-                    android:buttonTint="@color/item_green"
-                    android:scaleX="1.7"
-                    android:scaleY="1.7" />
-
-                <RadioButton
-                    android:id="@+id/rb_yellow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="2dp"
-                    android:layout_marginRight="2dp"
-                    android:button="?android:attr/listChoiceIndicatorMultiple"
-                    android:buttonTint="@color/item_yellow"
-                    android:scaleX="1.7"
-                    android:scaleY="1.7" />
-
-                <RadioButton
-                    android:id="@+id/rb_orange"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="2dp"
-                    android:layout_marginRight="2dp"
-                    android:button="?android:attr/listChoiceIndicatorMultiple"
-                    android:buttonTint="@color/item_orange"
-                    android:scaleX="1.7"
-                    android:scaleY="1.7" />
-
-                <RadioButton
-                    android:id="@+id/rb_red"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="2dp"
-                    android:layout_marginRight="2dp"
-                    android:button="?android:attr/listChoiceIndicatorMultiple"
-                    android:buttonTint="@color/item_red"
-                    android:scaleX="1.7"
-                    android:scaleY="1.7" />
-
-            </RadioGroup>
-
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <Button
         android:id="@+id/b_add_final"
@@ -307,16 +320,16 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:layout_margin="2dp"
-        android:layout_marginStart="2dp"
-        android:layout_marginEnd="2dp"
-        android:layout_marginBottom="2dp"
         android:backgroundTint="@color/tt_add"
         android:clickable="true"
         android:text="Add"
         android:textAlignment="center"
         android:textAllCaps="false"
         android:textColor="@color/tt_text_light"
-        android:textSize="24sp" />
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
+</androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
