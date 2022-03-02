@@ -2,7 +2,7 @@
 .gradle
 /local.properties
 /gradle.properties
-/.idea
+/.idea/
 /.idea/caches
 /.idea/libraries
 /.idea/modules.xml
@@ -14,3 +14,9 @@
 /captures
 .externalNativeBuild
 .cxx
+
+# IntelliJ
+.idea/
+misc.xml
+deploymentTargetDropDown.xml
+render.experimental.xml
