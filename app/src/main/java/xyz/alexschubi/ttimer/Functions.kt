@@ -119,10 +119,10 @@ class Functions {
     }
 
     fun applyFirebase(){
-        val prefSendFirebaseenabled = localDB.preferencesDAO().getLast().FirebaseEnabled
-        firebaseCrashlytics.setCrashlyticsCollectionEnabled(prefSendFirebaseenabled)
-        firebaseAnalytics.setAnalyticsCollectionEnabled(prefSendFirebaseenabled)
-        Log.i("Analytics", "Analytics " + prefSendFirebaseenabled.toString())
+        val prefSendFirebaseEnabled = localDB.preferencesDAO().getLast().FirebaseEnabled
+        firebaseCrashlytics.setCrashlyticsCollectionEnabled(prefSendFirebaseEnabled)
+        firebaseAnalytics.setAnalyticsCollectionEnabled(prefSendFirebaseEnabled)
+        Log.i("Analytics", "Analytics " + prefSendFirebaseEnabled.toString())
     }
     fun applyTheme(){
         val prefTheme = localDB.preferencesDAO().getLast().Theme

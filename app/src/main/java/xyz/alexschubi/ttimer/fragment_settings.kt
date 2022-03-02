@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.preference.PreferenceFragmentCompat
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.preference.PreferenceManager
 
 
 class fragment_settings : PreferenceFragmentCompat(), ExitWithAnimation{
@@ -24,8 +25,8 @@ class fragment_settings : PreferenceFragmentCompat(), ExitWithAnimation{
                 posY = exitPos[1]
             }
             if (startPos != null && startPos.size == 2) {
-                startPosX = startPos[0]!!
-                startPosY = startPos[1]!!
+                startPosX = startPos[0]
+                startPosY = startPos[1]
             }
         }
     }
@@ -56,13 +57,16 @@ class fragment_settings : PreferenceFragmentCompat(), ExitWithAnimation{
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
         preferenceScreen.sharedPreferences.registerOnSharedPreferenceChangeListener { sharedPreferences, key ->
             if (key == "pref_firebase_enabled") {
+                localDB.preferencesDAO().getLast().FirebaseEnabled = PreferenceManager.getDefaultSharedPreferences(mapplication.applicationContext).getBoolean(key, false)
                 Functions().applyFirebase()
                 Log.d("Preferences", "applied Firebase settings")
             }
             if (key == "pref_sync_enabled") {
+                localDB.preferencesDAO().getLast().SyncEnabled = PreferenceManager.getDefaultSharedPreferences(mapplication.applicationContext).getBoolean(key, false)
                 Log.d("Preferences", "applied Sync settings")
             }
             if (key == "pref_sync_connection") {
+                localDB.preferencesDAO().getLast().SyncConnection = PreferenceManager.getDefaultSharedPreferences(mapplication.applicationContext).getString(key, null)
                 Log.d("Preferences", "trying Sync connection")
                 try {
                     //TODO sync
@@ -73,10 +77,12 @@ class fragment_settings : PreferenceFragmentCompat(), ExitWithAnimation{
                     Toast.makeText(mapplication, "could not reach WebDAV-CSV-File", Toast.LENGTH_SHORT)
                 }
             }
-            if (key == "pref_notifications_enabled") {//TODO notifications
+            if (key == "pref_notifications_enabled") {
+                localDB.preferencesDAO().getLast().Notifications = PreferenceManager.getDefaultSharedPreferences(mapplication.applicationContext).getBoolean(key, true)
                 Log.d("Preferences", "applied notification settings")
             }
             if (key == "pref_theme") {
+                localDB.preferencesDAO().getLast().Theme = PreferenceManager.getDefaultSharedPreferences(mapplication.applicationContext).getString(key, "default")!!
                 Functions().applyTheme()
                 Log.d("Preferences", "applied Theme settings")
             }

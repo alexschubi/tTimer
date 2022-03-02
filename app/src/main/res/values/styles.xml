@@ -6,17 +6,14 @@
         <item name="contentInsetLeft">0dp</item>
         <item name="contentInsetRight">0dp</item>
         <item name="materialButtonStyle">@style/tMaterialButton</item>
-<!--        <item name="android:textViewStyle">@style/tTextView</item>-->
-<!--        <item name="floatingActionButtonStyle">@style/tFloatingButton</item>-->
-<!--        <item name="textInputStyle">@style/tTextEdit</item>-->
         <item name="materialTimePickerStyle">@style/tTimePicker</item>
         <item name="cardViewStyle">@style/tCardView</item>
         <item name="materialCardViewStyle">@style/tCardView</item>
-        <item name="preferenceTheme">@style/tPreferenceTheme</item>
-        <item name="preferenceFragmentStyle">@style/PreferenceFragment</item>
-        <item name="preferenceStyle">@style/Preference</item>
-        <item name="preferenceCategoryStyle">@style/Preference.Category</item>
-        <item name="editTextPreferenceStyle">@style/Widget.Design.TextInputLayout</item>
+<!--        <item name="preferenceTheme">@style/tPreferenceTheme</item>-->
+<!--        <item name="preferenceFragmentStyle">@style/PreferenceFragment</item>-->
+<!--        <item name="preferenceStyle">@style/Preference</item>-->
+<!--        <item name="preferenceCategoryStyle">@style/Preference.Category</item>-->
+<!--        <item name="editTextPreferenceStyle">@style/Widget.Design.TextInputLayout</item>-->
         <item name="toolbarStyle">@style/tToolbar</item>
     </style>
 
