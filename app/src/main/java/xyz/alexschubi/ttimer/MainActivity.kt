@@ -25,6 +25,7 @@ lateinit var firebaseAnalytics: FirebaseAnalytics
 lateinit var firebaseCrashlytics: FirebaseCrashlytics
 lateinit var localDB: ItemsDatabase
 val dateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("EE dd.MM.yyyy HH:mm")
+var skipBackPress: Boolean = false
 
 class MainActivity : AppCompatActivity() {
 
@@ -50,17 +51,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() { // from https://proandroiddev.com/circular-reveal-in-fragments-the-clean-way-f25c8bc95257
-        with(supportFragmentManager.findFragmentById(R.id.container)) {
-            if ((this as? ExitWithAnimation)?.isToBeExitedWithAnimation() == true) {
-                if (this.posX == null || this.posY == null) {
-                    super.onBackPressed()
-                } else {
-                    this.view?.exitCircularReveal(this.posX!!, this.posY!!) {
+        if(!skipBackPress){
+            with(supportFragmentManager.findFragmentById(R.id.container)) {
+                if ((this as? ExitWithAnimation)?.isToBeExitedWithAnimation() == true) {
+                    if (this.posX == null || this.posY == null) {
                         super.onBackPressed()
-                    } ?: super.onBackPressed()
+                    } else {
+                        this.view?.exitCircularReveal(this.posX!!, this.posY!!) {
+                            super.onBackPressed()
+                        } ?: super.onBackPressed()
+                    }
+                } else {
+                    super.onBackPressed()
                 }
-            } else {
-                super.onBackPressed()
             }
         }
     }

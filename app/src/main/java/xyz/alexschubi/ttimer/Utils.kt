@@ -20,9 +20,16 @@ fun View.startCircularReveal(oldX: Int, oldY: Int) {
             v.removeOnLayoutChangeListener(this)
             val endRadius = Math.hypot(width.toDouble(), height.toDouble())
             Log.d("CircularReveal", "from X$oldX and Y$oldY with radius$endRadius")
+            skipBackPress = true
             ViewAnimationUtils.createCircularReveal(v, oldX, oldY, 0f, endRadius.toFloat()).apply {
                 interpolator = DecelerateInterpolator(1f)
                 duration = 10000
+                addListener(object : AnimatorListenerAdapter() {
+                    override fun onAnimationEnd(animation: Animator?) {
+                        skipBackPress = false
+                        super.onAnimationEnd(animation)
+                    }
+                })
                 start()
             }
         }
@@ -39,12 +46,14 @@ fun View.startCircularReveal(oldX: Int, oldY: Int) {
 fun View.exitCircularReveal(exitX: Int, exitY: Int, block: () -> Unit) {
     val startRadius = Math.hypot(this.width.toDouble(), this.height.toDouble())
     Log.d("CircularReveal", "from X$exitX and Y$exitY with radius$startRadius")
+    skipBackPress = true
     ViewAnimationUtils.createCircularReveal(this, exitX, exitY, startRadius.toFloat(), 0f).apply {
         duration = 10000
         interpolator = DecelerateInterpolator(1f)
         addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator?) {
                 block()
+                skipBackPress = false
                 super.onAnimationEnd(animation)
             }
         })
