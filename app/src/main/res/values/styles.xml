@@ -14,13 +14,14 @@
 <!--        <item name="preferenceStyle">@style/Preference</item>-->
 <!--        <item name="preferenceCategoryStyle">@style/Preference.Category</item>-->
 <!--        <item name="editTextPreferenceStyle">@style/Widget.Design.TextInputLayout</item>-->
+        <item name="alertDialogTheme">@style/tAlertDialog</item>
         <item name="toolbarStyle">@style/tToolbar</item>
     </style>
 
     <style name="tFragment">
         <item name="background">@color/dn_fragment_background</item>
     </style>
-    <style name="tMaterialButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+    <style name="tMaterialButton" parent="Widget.MaterialComponents.Button.TextButton">
         <item name="backgroundTint">@color/dn_button_background</item>
         <item name="android:textColor">@color/dn_text</item>
         <item name="android:textAlignment">center</item>
@@ -35,6 +36,8 @@
         <item name="android:insetLeft">2dp</item>
         <item name="android:insetRight">2dp</item>
         <item name="android:elevation">10dp</item>
+        <item name="strokeWidth">0dp</item>
+        <item name="rippleColor">@color/dn_accent_1</item>
     </style>
     <style name="tTextView" parent="Widget.MaterialComponents.TextView">
         <item name="backgroundTint">@color/dn_button_background</item>
@@ -54,6 +57,7 @@
         <item name="android:textColor">@color/dn_text</item>
         <item name="android:textAlignment">center</item>
         <item name="cornerRadius">4dp</item>
+        <item name="strokeWidth">0dp</item>
         <item name="autoSizeMaxTextSize">100sp</item>
         <item name="autoSizeMinTextSize">16sp</item>
         <item name="autoSizeStepGranularity">1sp</item>
@@ -88,6 +92,15 @@
         <item name="android:inset">0dp</item>
         <item name="contentInsetStart">0dp</item>
         <item name="contentInsetStartWithNavigation">0dp</item>
+    </style>
+    <style name="tSpinnerTheme" parent="@android:style/Widget.Holo.DropDownItem.Spinner">
+        <item name="android:textColor">@color/dn_text_reversed</item>
+        <item name="android:backgroundTint">@color/dn_accent_1</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+    <style name="tAlertDialog" parent="Theme.AppCompat.DayNight.Dialog.Alert">
+<!--        <item name="alertDialogButtonGroupStyle"></item>-->
+        <item name="alertDialogCenterButtons">true</item>
     </style>
 
 

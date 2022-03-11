@@ -21,6 +21,7 @@
             android:id="@+id/appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/dn_accent_1"
             app:expanded="false">
 
             <com.google.android.material.appbar.MaterialToolbar
@@ -40,7 +41,9 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:background="@drawable/ic_baseline_arrow_back_24"
-                        android:backgroundTint="@color/tt_text_light"
+                        android:backgroundTint="@color/dn_text_reversed"
+                        android:drawableTint="@color/dn_text_reversed"
+                        app:iconTint="@color/dn_text_reversed"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -193,8 +196,7 @@
                         app:layout_constraintEnd_toStartOf="@+id/b_plus5minute"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintWidth_percent="0.5"
-                        app:strokeWidth="1dp" />
+                        app:layout_constraintWidth_percent="0.5" />
 
                     <Button
                         android:id="@+id/b_plus1day"
@@ -205,8 +207,7 @@
                         android:textAllCaps="false"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/b_plus1hour"
-                        app:layout_constraintWidth_percent="0.5"
-                        app:strokeWidth="1dp" />
+                        app:layout_constraintWidth_percent="0.5" />
 
                     <Button
                         android:id="@+id/b_plus5minute"
@@ -218,8 +219,7 @@
                         android:textAllCaps="false"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintWidth_percent="0.5"
-                        app:strokeWidth="1dp" />
+                        app:layout_constraintWidth_percent="0.5" />
 
                     <Button
                         android:id="@+id/b_add_qtime_1d"
@@ -231,8 +231,7 @@
                         app:layout_constraintEnd_toStartOf="@+id/b_add_qtime_weekend"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/b_minus1day"
-                        app:layout_constraintWidth_percent="0.5"
-                        app:strokeWidth="1dp" />
+                        app:layout_constraintWidth_percent="0.5" />
 
                     <Button
                         android:id="@+id/b_plus1hour"
@@ -243,8 +242,7 @@
                         android:textAllCaps="false"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/b_plus5minute"
-                        app:layout_constraintWidth_percent="0.5"
-                        app:strokeWidth="1dp" />
+                        app:layout_constraintWidth_percent="0.5" />
 
                     <Button
                         android:id="@+id/b_add_qtime_weekend"
@@ -256,8 +254,7 @@
                         android:textAllCaps="false"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/b_plus1day"
-                        app:layout_constraintWidth_percent="0.5"
-                        app:strokeWidth="1dp" />
+                        app:layout_constraintWidth_percent="0.5" />
 
                     <Button
                         android:id="@+id/b_minus1hour"
@@ -269,8 +266,7 @@
                         app:layout_constraintEnd_toStartOf="@+id/b_plus1hour"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/b_minus5minute"
-                        app:layout_constraintWidth_percent="0.5"
-                        app:strokeWidth="1dp" />
+                        app:layout_constraintWidth_percent="0.5" />
 
                     <Button
                         android:id="@+id/b_minus1day"
@@ -282,8 +278,7 @@
                         app:layout_constraintEnd_toStartOf="@+id/b_plus1day"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/b_minus1hour"
-                        app:layout_constraintWidth_percent="0.5"
-                        app:strokeWidth="1dp" />
+                        app:layout_constraintWidth_percent="0.5" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -294,7 +289,8 @@
                     android:layout_margin="2dp"
                     android:backgroundTint="@null"
                     android:text="Delete Notification"
-                    android:textAllCaps="false" />
+                    android:textAllCaps="false"
+                    app:rippleColor="@color/dn_accent_1" />
 
                 <Button
                     android:id="@+id/b_add_notification"
@@ -305,7 +301,8 @@
                     android:autoText="false"
                     android:backgroundTint="@null"
                     android:text="Add Notification"
-                    android:textAllCaps="false" />
+                    android:textAllCaps="false"
+                    app:rippleColor="@color/dn_accent_1" />
 
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>

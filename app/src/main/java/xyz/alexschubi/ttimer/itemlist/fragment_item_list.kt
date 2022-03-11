@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.fragment_item_list.*
 import kotlinx.android.synthetic.main.fragment_item_list.view.*
 import xyz.alexschubi.ttimer.*
 import xyz.alexschubi.ttimer.data.sItem
+import xyz.alexschubi.ttimer.settings.FragmentSettings
 
 
 class fragment_item_list : Fragment() {
@@ -58,7 +59,7 @@ class fragment_item_list : Fragment() {
         b_settings.setOnClickListener {
             val positions = b_settings.getCenterPosition()
             parentFragmentManager.open {
-                add(R.id.container, fragment_settings.newInstance(positions, positions))
+                add(R.id.container, FragmentSettings.newInstance(positions, positions))
                 addToBackStack(null)
             }
         }

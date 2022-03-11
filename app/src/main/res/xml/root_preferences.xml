@@ -5,7 +5,7 @@
     <androidx.preference.PreferenceCategory app:title="Theme">
         <ListPreference
             android:id="@+id/pref_theme"
-            android:defaultValue="followSystem"
+            android:defaultValue="true"
             android:entries="@array/pref_theme_modes_names"
             android:entryValues="@array/pref_theme_modes_values"
             app:key="pref_theme"
@@ -15,14 +15,15 @@
     </androidx.preference.PreferenceCategory>
 
     <androidx.preference.PreferenceCategory
-        app:title="Sync">
+        app:title="Sync"
+        app:isPreferenceVisible="false">
         <SwitchPreference
             android:id="@+id/pref_sync_enabled"
             android:defaultValue="false"
             app:key="pref_sync_enable"
             app:title="pref_sync_enable" />
         <Preference
-            android:key="sync_connection_successful"
+            android:key="sync_connection_click"
             android:persistent="false"
             android:selectable="true"
             android:title= "change connection" />
