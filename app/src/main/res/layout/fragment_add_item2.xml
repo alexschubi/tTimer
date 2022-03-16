@@ -88,19 +88,6 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/tv_show_time"
-                    style="@style/tTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:clickable="false"
-                    android:maxLines="1"
-                    android:minHeight="35dip"
-                    android:text="Wed 01.01.0001 00:00 in 200 minutes"
-                    android:textAlignment="center"
-                    android:textStyle="bold" />
-
                 <RadioGroup
                     android:id="@+id/rg_color"
                     android:layout_width="match_parent"
@@ -115,69 +102,100 @@
                         android:id="@+id/rb_purple"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:layout_marginLeft="2dp"
                         android:layout_marginRight="2dp"
                         android:button="?android:attr/listChoiceIndicatorMultiple"
                         android:buttonTint="@color/item_purple"
+                        android:gravity="center"
                         android:scaleX="1.7"
-                        android:scaleY="1.7" />
+                        android:scaleY="1.7"
+                        android:textAlignment="center" />
 
                     <RadioButton
                         android:id="@+id/rb_blue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:layout_marginLeft="2dp"
                         android:layout_marginRight="2dp"
                         android:button="?android:attr/listChoiceIndicatorMultiple"
                         android:buttonTint="@color/item_blue"
+                        android:gravity="center"
                         android:scaleX="1.7"
-                        android:scaleY="1.7" />
+                        android:scaleY="1.7"
+                        android:textAlignment="center" />
 
                     <RadioButton
                         android:id="@+id/rb_green"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:layout_marginLeft="2dp"
                         android:layout_marginRight="2dp"
                         android:button="?android:attr/listChoiceIndicatorMultiple"
                         android:buttonTint="@color/item_green"
+                        android:gravity="center"
                         android:scaleX="1.7"
-                        android:scaleY="1.7" />
+                        android:scaleY="1.7"
+                        android:textAlignment="center" />
 
                     <RadioButton
                         android:id="@+id/rb_yellow"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:layout_marginLeft="2dp"
                         android:layout_marginRight="2dp"
                         android:button="?android:attr/listChoiceIndicatorMultiple"
                         android:buttonTint="@color/item_yellow"
+                        android:gravity="center"
                         android:scaleX="1.7"
-                        android:scaleY="1.7" />
+                        android:scaleY="1.7"
+                        android:textAlignment="center" />
 
                     <RadioButton
                         android:id="@+id/rb_orange"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:layout_marginLeft="2dp"
                         android:layout_marginRight="2dp"
                         android:button="?android:attr/listChoiceIndicatorMultiple"
                         android:buttonTint="@color/item_orange"
+                        android:gravity="center"
                         android:scaleX="1.7"
-                        android:scaleY="1.7" />
+                        android:scaleY="1.7"
+                        android:textAlignment="center" />
 
                     <RadioButton
                         android:id="@+id/rb_red"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:layout_marginLeft="2dp"
                         android:layout_marginRight="2dp"
                         android:button="?android:attr/listChoiceIndicatorMultiple"
                         android:buttonTint="@color/item_red"
+                        android:gravity="center"
                         android:scaleX="1.7"
-                        android:scaleY="1.7" />
+                        android:scaleY="1.7"
+                        android:textAlignment="center" />
 
                 </RadioGroup>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_show_time"
+                    style="@style/tTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:clickable="false"
+                    android:maxLines="1"
+                    android:minHeight="35dip"
+                    android:text="Wed 01.01.0001 00:00 in 200 minutes"
+                    android:textAlignment="center"
+                    android:textStyle="bold" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/cl_modify_time"

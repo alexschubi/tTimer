@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
 import android.widget.Toast
+import androidx.compose.ui.input.key.Key.Companion.I
 import androidx.core.content.ContextCompat
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
@@ -23,8 +24,10 @@ import java.time.*
 import java.time.format.DateTimeFormatter
 import java.time.temporal.TemporalAdjusters
 
-class AddItemFragment(private val getItem: sItem?, private val fragmentItemList: fragment_item_list) : Fragment(), ExitWithAnimation {
+class AddItemFragment() : Fragment(), ExitWithAnimation {
 
+    private var getSItem: sItem? = null
+    private var mfragmentItemList: fragment_item_list? = null
     private var sItem = sItem(-1, "", null, null, "purple", false, false)
     override var posX: Int? = null
     override var posY: Int? = null
@@ -33,13 +36,15 @@ class AddItemFragment(private val getItem: sItem?, private val fragmentItemList:
     override fun isToBeExitedWithAnimation(): Boolean = true
     var exitWithSave = false
 
+
     companion object {
         @JvmStatic
-        fun newInstance(startPos: IntArray? = null,
-                        exitPos: IntArray? = null,
-                        getItem: sItem?,
-                        fragmentItemList: fragment_item_list): AddItemFragment
-        = AddItemFragment(getItem, fragmentItemList).apply {
+        fun newInstance(
+            startPos: IntArray? = null,
+            exitPos: IntArray? = null,
+            getItem: sItem? = null,
+            fragmentItemList: fragment_item_list? = null): AddItemFragment
+        = AddItemFragment().apply {
             if (exitPos != null && exitPos.size == 2) {
                 posX = exitPos[0]
                 posY = exitPos[1]
@@ -47,6 +52,12 @@ class AddItemFragment(private val getItem: sItem?, private val fragmentItemList:
             if (startPos != null && startPos.size == 2) {
                 startPosX = startPos[0]
                 startPosY = startPos[1]
+            }
+            if (getItem != null){
+                getSItem = getItem
+            }
+            if(fragmentItemList != null){
+                mfragmentItemList = fragmentItemList
             }
         }
     }
@@ -59,10 +70,15 @@ class AddItemFragment(private val getItem: sItem?, private val fragmentItemList:
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
+//rotation crash savedstate so disabled rotation in mainfest
         super.onViewCreated(view, savedInstanceState)
         view.startCircularReveal(startPosX, startPosY)
-        fragmentItemList.view?.appbar?.setExpanded(true)
+        if (mfragmentItemList != null){
+            mfragmentItemList!!.view?.appbar?.setExpanded(true)
+        }else {
+            Log.e("AddItemFragment", "no fragmentItemList passed")
+        }
+
         //TODO start reveal positions not really at center
 
         //i dont know why this is here, cuz it cant br acessed
@@ -77,8 +93,8 @@ class AddItemFragment(private val getItem: sItem?, private val fragmentItemList:
             }
         }
 
-        if (getItem!=null) {
-            sItem = localDB.itemsDAO().get(getItem.Index)!!
+        if (getSItem!=null) {
+            sItem = localDB.itemsDAO().get(getSItem!!.Index)!!
             b_add_final.text = "Save"
         } else {
             Functions().saveSItemToDB(sItem)
@@ -224,7 +240,7 @@ class AddItemFragment(private val getItem: sItem?, private val fragmentItemList:
         Functions().saveSItemToDB(sItem)
 
         //cancel and make notification
-        if (getItem != null) {
+        if (getSItem != null) {
             NotificationUtils(mapplication).cancelNotification(sItem.toItem())
         }
         if(sItem.TimeStamp !=null && sItem.date()!!.isAfter(ZonedDateTime.now())) {
@@ -236,10 +252,12 @@ class AddItemFragment(private val getItem: sItem?, private val fragmentItemList:
         }
 
         //CLOSE addView
-        if(getItem == null){
-            fragmentItemList.addItem(sItem)
-        } else {
-            fragmentItemList.editItem(getItem, sItem)
+        if(getSItem == null && mfragmentItemList != null){
+            mfragmentItemList!!.addItem(sItem)
+        } else if (getSItem != null && mfragmentItemList != null){
+            mfragmentItemList!!.editItem(getSItem!!, sItem)
+        }else{
+            Log.e("AddItemFragment", "no fragmentItemList passed")
         }
         b_add_final.isClickable = false
 

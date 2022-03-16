@@ -38,6 +38,8 @@ class FragmentSettings : PreferenceFragmentCompat(), ExitWithAnimation {
             }
         }
     }
+//TODO add DateFormat as Preference
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

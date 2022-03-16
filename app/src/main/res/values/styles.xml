@@ -35,7 +35,7 @@
         <item name="android:insetBottom">2dp</item>
         <item name="android:insetLeft">2dp</item>
         <item name="android:insetRight">2dp</item>
-        <item name="android:elevation">10dp</item>
+        <item name="android:elevation">5dp</item>
         <item name="strokeWidth">0dp</item>
         <item name="rippleColor">@color/dn_accent_1</item>
     </style>
@@ -69,7 +69,7 @@
     <style name="tFloatingButton" parent="Widget.MaterialComponents.FloatingActionButton">
         <item name="backgroundTint">#43A047</item>
         <item name="tint">#FFFFFF</item>
-        <item name="elevation">20dp</item>
+        <item name="elevation">7dp</item>
     </style>
     <style name="tTimePicker" parent="Widget.MaterialComponents.TimePicker">
         <item name="android:timePickerMode">spinner</item>
@@ -78,7 +78,7 @@
     <style name="tDatePicker" parent="Widget.MaterialComponents.MaterialCalendar">
     </style>
     <style name="tCardView" parent="Widget.MaterialComponents.CardView">
-        <item name="cardElevation">2dp</item>
+        <item name="cardElevation">4dp</item>
         <item name="cardCornerRadius">8dp</item>
     </style>
     <style name="tPreferenceTheme" parent="Theme.MaterialComponents.DayNight.Bridge">
