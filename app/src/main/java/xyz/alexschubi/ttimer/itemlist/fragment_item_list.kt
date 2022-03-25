@@ -44,6 +44,7 @@ class fragment_item_list : Fragment() {
         adapter = RecyclerViewAdapter(
             displayItemsList!!
         ) { item: sItem, pos: IntArray -> displayAddItem(item, pos, view) }
+        adapter.setItems(Functions().sortMutableList(localDB.itemsDAO().getActiveItems(), localDB.preferencesDAO().getLast().SortMode))
         recyclerViewItems2.adapter = adapter
         Log.d("localDB", "got displayList $displayItemsList")
         //set swipe Listener
@@ -69,24 +70,25 @@ class fragment_item_list : Fragment() {
         sp_sortMode2.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 var sMode: String = parent?.getItemAtPosition(position) as String
-                var sModeInt: Int = 0
+                var sModeInt = 0
                 Log.d("Spinner", "change sortMode")
                 when (sMode){
-                    "sort by None ↑" -> sModeInt = 0
-                    "sort by None ↓" -> sModeInt = 1
-                    "sort by Color ↑" -> sModeInt = 2
-                    "sort by Color ↓" -> sModeInt = 3
-                    "sort by Date ↑" -> sModeInt = 4
-                    "sort by Date ↓" -> sModeInt = 5
-                    "sort by Date>Color ↑" -> sModeInt = 6
-                    "sort by Date>Color ↓" -> sModeInt = 7
-                    "sort by Color>Date ↑" -> sModeInt = 8
-                    "sort by Color>Date ↓" -> sModeInt = 9
+                    "sort by None ↑" -> sModeInt = 1
+                    "sort by None ↓" -> sModeInt = 2
+                    "sort by Color ↑" -> sModeInt = 3
+                    "sort by Color ↓" -> sModeInt = 4
+                    "sort by Date ↑" -> sModeInt = 5
+                    "sort by Date ↓" -> sModeInt = 6
+                    "sort by Date>Color ↑" -> sModeInt = 7
+                    "sort by Date>Color ↓" -> sModeInt = 8
+                    "sort by Color>Date ↑" -> sModeInt = 9
+                    "sort by Color>Date ↓" -> sModeInt = 10
                     else -> Log.d("sortMode", "wrong sortModeKey String")
                 }
                 val updatePref = localDB.preferencesDAO().getLast()
                 updatePref.SortMode = sModeInt
                 localDB.preferencesDAO().update(updatePref)
+                adapter.setItems(Functions().sortMutableList(localDB.itemsDAO().getActiveItems(), sModeInt))
                 Log.i("sortMode", "changed to $sModeInt")
                 Log.d("suppPrefs", "sortMode is: "+ localDB.preferencesDAO().getLast().SortMode.toString())
             }

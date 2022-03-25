@@ -38,27 +38,23 @@ class RecyclerViewAdapter(
         itemView: View,
         val onItemClicked: (item: sItem, screenPos: IntArray) -> Unit,
         val mItems: MutableList<sItem>
-    )
-        : RecyclerView.ViewHolder(itemView), View.OnClickListener{
-
-        init {
-            itemView.setOnClickListener(this)
-        }
+    ) : RecyclerView.ViewHolder(itemView), View.OnClickListener{
 
         fun bind (nItems: MutableList<sItem>){
             val currentItem = nItems[bindingAdapterPosition]
-            if (currentItem.TimeStamp == null) {
-                itemView.tv_item_span.visibility = View.GONE
-                itemView.tv_item_datetime.visibility = View.GONE
-            } else {
+            itemView.setOnClickListener(this)
+            itemView.tv_item_span.visibility = View.GONE
+            itemView.tv_item_datetime.visibility = View.GONE
+            if (currentItem.TimeStamp != null) {
                 itemView.tv_item_span.text = currentItem.Span
                 itemView.tv_item_datetime.text = LocalDateTime
                     .ofInstant(Instant.ofEpochMilli(currentItem.TimeStamp!!), ZoneId.systemDefault())
                     .format(dateFormatter)
+                itemView.tv_item_span.visibility = View.VISIBLE
+                itemView.tv_item_datetime.visibility = View.VISIBLE
             }
             itemView.tv_item_index.text = currentItem.Index.toString()
             itemView.tv_item_text.text = currentItem.Text
-
             var textColor: Int = 0
             var backgroundColor: Int = 0
             when (currentItem.Color) {
@@ -93,16 +89,18 @@ class RecyclerViewAdapter(
             val revealCardView = itemView as CircularRevealCardView
             revealCardView.setCardBackgroundColor(backgroundColor)
             itemView.id = currentItem.Index.toInt()
-
         }
 
         override fun onClick(view: View) {
-            val dItem = mItems[bindingAdapterPosition]
+            val fItem = mItems.findLast { it.Index == itemView.id.toLong() }!!
+            //val dItem = mItems[bindingAdapterPosition]
+            //val dItem = mItems[itemId.toInt()]
             //val item = localDB.itemsDAO().get(view!!.id.toLong())
             val screenLocation = view.getCenterPosition()
-            onItemClicked(dItem, screenLocation)
+            onItemClicked(fItem, screenLocation)
         }
     }
+
     fun setItems(items: MutableList<sItem>) {
         mItems = Functions().sortMutableList(items, localDB.preferencesDAO().getLast().SortMode)
         notifyDataSetChanged()

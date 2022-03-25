@@ -213,7 +213,7 @@
                         android:textAllCaps="false"
                         app:layout_constraintEnd_toStartOf="@+id/b_plus5minute"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/b_add_qtime_1d"
                         app:layout_constraintWidth_percent="0.5" />
 
                     <Button
@@ -223,6 +223,7 @@
                         android:autoText="false"
                         android:text="+1d"
                         android:textAllCaps="false"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/b_plus1hour"
                         app:layout_constraintWidth_percent="0.5" />
@@ -236,7 +237,7 @@
                         android:text="+5min"
                         android:textAllCaps="false"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/b_add_qtime_weekend"
                         app:layout_constraintWidth_percent="0.5" />
 
                     <Button
@@ -248,7 +249,7 @@
                         android:textAllCaps="false"
                         app:layout_constraintEnd_toStartOf="@+id/b_add_qtime_weekend"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/b_minus1day"
+                        app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintWidth_percent="0.5" />
 
                     <Button
@@ -271,7 +272,7 @@
                         android:text="weekend"
                         android:textAllCaps="false"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/b_plus1day"
+                        app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintWidth_percent="0.5" />
 
                     <Button
@@ -293,6 +294,7 @@
                         android:autoText="false"
                         android:text="-1d"
                         android:textAllCaps="false"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/b_plus1day"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/b_minus1hour"

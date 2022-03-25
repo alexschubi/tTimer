@@ -23,7 +23,7 @@ fun View.startCircularReveal(oldX: Int, oldY: Int) {
             skipBackPress = true
             ViewAnimationUtils.createCircularReveal(v, oldX, oldY, 0f, endRadius.toFloat()).apply {
                 interpolator = DecelerateInterpolator(2f)
-                duration = 3000
+                duration = 1000
                 addListener(object : AnimatorListenerAdapter() {
                     override fun onAnimationEnd(animation: Animator?) {
                         skipBackPress = false
@@ -48,7 +48,7 @@ fun View.exitCircularReveal(exitX: Int, exitY: Int, block: () -> Unit) {
     Log.d("CircularReveal", "from X$exitX and Y$exitY with radius$startRadius")
     skipBackPress = true
     ViewAnimationUtils.createCircularReveal(this, exitX, exitY, startRadius.toFloat(), 0f).apply {
-        duration = 3000
+        duration = 1000
         interpolator = DecelerateInterpolator(2f)
         addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator?) {

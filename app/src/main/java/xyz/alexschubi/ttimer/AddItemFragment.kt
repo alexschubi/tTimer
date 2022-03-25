@@ -79,8 +79,6 @@ class AddItemFragment() : Fragment(), ExitWithAnimation {
             Log.e("AddItemFragment", "no fragmentItemList passed")
         }
 
-        //TODO start reveal positions not really at center
-
         //i dont know why this is here, cuz it cant br acessed
         view.b_back.setOnClickListener {
             b_back.setOnClickListener(null)
@@ -216,7 +214,7 @@ class AddItemFragment() : Fragment(), ExitWithAnimation {
         }
         b_add_qtime_weekend.setOnClickListener {
             Log.d("DateTime","Weekend")
-            val newDateTime = ZonedDateTime.now().with(TemporalAdjusters.next(DayOfWeek.FRIDAY)).withHour(17).withMinute(0)
+            val newDateTime = ZonedDateTime.now().with(TemporalAdjusters.next(DayOfWeek.FRIDAY)).withHour(19).withMinute(0)
             sItem.TimeStamp = newDateTime.toMilli()
             addDateTime(newDateTime)
         }
@@ -236,7 +234,8 @@ class AddItemFragment() : Fragment(), ExitWithAnimation {
             rb_blue.id -> sItem.Color = "blue"
         }
         Log.d("radio Button", " color set to ${sItem.Color}")
-        sItem.Text = sItem.Index.toString() + " - " + tb_add_text.text.toString()
+        sItem.Text = tb_add_text.text.toString()
+        // sItem.Text = sItem.Index.toString() + " - " + tb_add_text.text.toString()
         Functions().saveSItemToDB(sItem)
 
         //cancel and make notification

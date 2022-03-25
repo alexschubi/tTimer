@@ -77,7 +77,7 @@ class FragmentSettings : PreferenceFragmentCompat(), ExitWithAnimation {
     }
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
-        preferenceScreen.sharedPreferences.registerOnSharedPreferenceChangeListener { sharedPreferences, key ->
+        preferenceScreen.sharedPreferences?.registerOnSharedPreferenceChangeListener { sharedPreferences, key ->
             if (key == "pref_firebase_enabled") {
                 localDB.preferencesDAO().getLast().FirebaseEnabled = PreferenceManager.getDefaultSharedPreferences(
                     mapplication.applicationContext).getBoolean(key, false)
