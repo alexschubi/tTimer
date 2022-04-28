@@ -265,7 +265,7 @@ class AddItemFragment() : Fragment(), ExitWithAnimation {
         timer.cancel()
         this.view?.let { inputMethodManager.hideSoftInputFromWindow(view?.windowToken, 0) }
         this.view?.exitCircularReveal(posX!!, posY!!){
-            parentFragmentManager.popBackStack()
+            parentFragmentManager.popBackStackImmediate()
         }
     }
 
@@ -337,7 +337,7 @@ class AddItemFragment() : Fragment(), ExitWithAnimation {
         tv_show_time.text = sItem.date()!!.format(dateFormatter) + " in " + Functions().getSpanString(sItem.date()!!.toLocalDateTime()!!)
     }
 
-    private val timer = object: CountDownTimer(1 * 60 * 60 * 1000, 1 * 10 * 1000){ //hour*min*sec*millisec
+    private val timer = object: CountDownTimer((1 * 60 * 60 * 1000).toLong(), (1 * 10 * 1000).toLong()){ //hour*min*sec*millisec
         override fun onTick(millisUntilFinished: Long){
             if (sItem.TimeStamp != null ) {
                 refreshDateTime()

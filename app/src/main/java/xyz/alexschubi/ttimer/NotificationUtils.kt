@@ -50,22 +50,36 @@ class NotificationUtils(nContext: Context) : ContextWrapper(nContext) {
     }
 
     fun getNotificationBuilder(editItem: ArrayList<String>): NotificationCompat.Builder {
-        val intent = Intent(this, MainActivity.NotificationReceiver::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
-        }
+        //Normal Notification to trogger
+        val intent = Intent(this, MainActivity.NotificationReceiver::class.java)
         val pendingIntent = PendingIntent.getActivity(this, editItem[0].toInt(), intent, 0)
 
-        val snoozeIntent = Intent(this, MainActivity.NotificationSnoozeReceiver::class.java).apply {
-            putExtra(EXTRA_NOTIFICATION_ID, editItem[0])
-            putExtra("currentItem", editItem)
+        //press on Notification
+        val openIntent = Intent(this, MainActivity.NotificationReceiver::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
         }
-        val snoozePendingIntent = PendingIntent.getBroadcast(this, editItem[0].toInt(), snoozeIntent, 0)
+        val openPendingIntent = PendingIntent.getActivity(this, editItem[0].toInt(), intent, 0)
 
-        val dismissIntent = Intent(this, MainActivity.NotificationDismissReceiver::class.java).apply {
+        //for the 2h delay button in notificgation
+        val snoozeLongIntent = Intent(this, MainActivity.NotificationSnoozeLongReceiver::class.java).apply {
             putExtra(EXTRA_NOTIFICATION_ID, editItem[0])
             putExtra("currentItem", editItem)
         }
-        val dismissPendingIntent = PendingIntent.getBroadcast(this, editItem[0].toInt(), dismissIntent, 0)
+        val snoozeLongPendingIntent = PendingIntent.getBroadcast(this, editItem[0].toInt(), snoozeLongIntent, 0)
+
+        //for the 10min delay button in notification
+        val snoozeShortIntent = Intent(this, MainActivity.NotificationSnoozeShortReceiver::class.java).apply {
+            putExtra(EXTRA_NOTIFICATION_ID, editItem[0])
+            putExtra("currentItem", editItem)
+        }
+        val snoozeShortPendingIntent = PendingIntent.getBroadcast(this, editItem[0].toInt(), snoozeShortIntent, 0)
+
+        //for press delete button in notification
+        val deleteIntent = Intent(this, MainActivity.NotificationDeleteReceiver::class.java).apply {
+            putExtra(EXTRA_NOTIFICATION_ID, editItem[0])
+            putExtra("currentItem", editItem)
+        }
+        val deletePendingIntent = PendingIntent.getBroadcast(this, editItem[0].toInt(), deleteIntent, 0)
 
         return NotificationCompat.Builder(
             applicationContext,
@@ -86,9 +100,11 @@ class NotificationUtils(nContext: Context) : ContextWrapper(nContext) {
                 NotificationCompat.BigTextStyle()
                     .bigText(editItem[1])
             )
-            setDeleteIntent(dismissPendingIntent)
-            addAction(R.drawable.ic_baseline_more_time_24, "Delay 10min", snoozePendingIntent)
-            addAction(R.drawable.ic_baseline_delete_outline_24, "Dismiss", dismissPendingIntent)
+            //TODO open application with openPentigIntent
+            setDeleteIntent(deletePendingIntent)
+            addAction(R.drawable.ic_baseline_more_time_24, "Delay 10min", snoozeShortPendingIntent)
+            addAction(R.drawable.ic_baseline_more_time_24, "Delay 2h", snoozeLongPendingIntent)
+            addAction(R.drawable.ic_baseline_delete_outline_24, "Delete", deletePendingIntent)
             setGroup("tTimer")
             setGroupSummary(true)
             priority = NotificationCompat.PRIORITY_DEFAULT
@@ -108,11 +124,10 @@ class NotificationUtils(nContext: Context) : ContextWrapper(nContext) {
             zonedItemDateTime.toInstant().toEpochMilli(),
             pendingIntent
         )
-        Log.i("AlarmManager", "doAlarm Item: ${editItem.Index} in " +
+        Log.i("Notification", "doAlarm Item: ${editItem.Index} in " +
                 "${(zonedItemDateTime.toInstant().minusMillis(ZonedDateTime.now().toInstant().toEpochMilli())).toEpochMilli()} milliSeconds with" + pendingIntent.toString())
     }
     fun cancelNotification(cancelItem: Item) {
-        Log.d("cancelNotification", "got Item $cancelItem for canceling")
         val intent = Intent(mContext, MainActivity.NotificationReceiver::class.java).putExtra("ItemArray", Functions().getItemArray(cancelItem))
         PendingIntent.getBroadcast(mContext, cancelItem.Index, intent, PendingIntent.FLAG_CANCEL_CURRENT).cancel()
         getManager().cancel(cancelItem.Index)

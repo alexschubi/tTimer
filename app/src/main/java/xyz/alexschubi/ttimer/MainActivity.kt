@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity() {
             pendResult.finish()
         }
     }
-    open class NotificationSnoozeReceiver : BroadcastReceiver() {
+    open class NotificationSnoozeShortReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             val pendResult = this.goAsync()
             Log.i("NotificationSnoozeReceiver", "trigged")
@@ -94,7 +94,20 @@ class MainActivity : AppCompatActivity() {
             pendResult.finish()
         }
     }
-    open class NotificationDismissReceiver : BroadcastReceiver() {
+    open class NotificationSnoozeLongReceiver : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            val pendResult = this.goAsync()
+            Log.i("NotificationSnoozeReceiver", "trigged")
+            val editItemArray = intent.extras!!.getStringArrayList("currentItem")!!
+            var editItem = Functions().ItemFromArray(editItemArray)
+            editItem.Date = LocalDateTime.now().plusHours(3)
+            Functions().saveSItemToDB(editItem.toSItem())
+            NotificationUtils(context).cancelNotification(editItem)
+            NotificationUtils(context).makeNotification(editItem)
+            pendResult.finish()
+        }
+    }
+    open class NotificationDeleteReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             val pendResult = this.goAsync()
             Log.i("NotificationDismissReceiver", "trigged")
@@ -103,6 +116,20 @@ class MainActivity : AppCompatActivity() {
             editItem.Deleted = true
             Functions().saveSItemToDB(editItem.toSItem())
             NotificationUtils(context).cancelNotification(editItem)
+            pendResult.finish()
+        }
+    }
+    open class NotificationOpenReceiver : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            val pendResult = this.goAsync()
+            Log.i("NotificationDismissReceiver", "trigged")
+            val editItemArray = intent.extras!!.getStringArrayList("currentItem")!!
+            var editItem = Functions().ItemFromArray(editItemArray)
+            NotificationUtils(context).cancelNotification(editItem)
+
+            val startIntent = intent
+            startIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            context.startActivity(startIntent)
             pendResult.finish()
         }
     }

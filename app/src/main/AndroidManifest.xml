@@ -37,24 +37,28 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name="xyz.alexschubi.ttimer.MainActivity$NotificationSnoozeReceiver"
+            android:name="xyz.alexschubi.ttimer.MainActivity$NotificationSnoozeShortReceiver"
             android:directBootAware="true"
             android:enabled="true"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED"/>
-            </intent-filter>
         </receiver>
         <receiver
-            android:name="xyz.alexschubi.ttimer.MainActivity$NotificationDismissReceiver"
+            android:name="xyz.alexschubi.ttimer.MainActivity$NotificationSnoozeLongReceiver"
             android:directBootAware="true"
             android:enabled="true"
             android:exported="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED"/>
-            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="xyz.alexschubi.ttimer.MainActivity$NotificationDeleteReceiver"
+            android:directBootAware="true"
+            android:enabled="true"
+            android:exported="true" >
+        </receiver>
+        <receiver
+            android:name="xyz.alexschubi.ttimer.MainActivity$NotificationOpenReceiver"
+            android:directBootAware="true"
+            android:enabled="true"
+            android:exported="true" >
         </receiver>
     </application>
 
