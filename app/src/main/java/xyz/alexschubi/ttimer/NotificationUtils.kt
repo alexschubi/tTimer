@@ -51,35 +51,37 @@ class NotificationUtils(nContext: Context) : ContextWrapper(nContext) {
 
     fun getNotificationBuilder(editItem: ArrayList<String>): NotificationCompat.Builder {
         //Normal Notification to trogger
-        val intent = Intent(this, MainActivity.NotificationReceiver::class.java)
-        val pendingIntent = PendingIntent.getActivity(this, editItem[0].toInt(), intent, 0)
+       // val intent = Intent(this, MainActivity.NotificationReceiver::class.java)
+       // val pendingIntent = PendingIntent.getActivity(this, editItem[0].toInt(), intent, PendingIntent.FLAG_IMMUTABLE)
 
         //press on Notification
-        val openIntent = Intent(this, MainActivity.NotificationReceiver::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        val openIntent = Intent(this, MainActivity.NotificationOpenReceiver::class.java).apply {
+            //addFlags((Intent.FLAG_ACTIVITY_NEW_TASK) and (Intent.FLAG_ACTIVITY_CLEAR_TASK) and (Intent.FLAG_ACTIVITY_CLEAR_TOP))
+            putExtra(EXTRA_NOTIFICATION_ID, editItem[0])
+            putExtra("currentItem", editItem)
         }
-        val openPendingIntent = PendingIntent.getActivity(this, editItem[0].toInt(), intent, 0)
+        val openPendingIntent = PendingIntent.getActivity(this, editItem[0].toInt(), openIntent, PendingIntent.FLAG_IMMUTABLE)
 
         //for the 2h delay button in notificgation
         val snoozeLongIntent = Intent(this, MainActivity.NotificationSnoozeLongReceiver::class.java).apply {
             putExtra(EXTRA_NOTIFICATION_ID, editItem[0])
             putExtra("currentItem", editItem)
         }
-        val snoozeLongPendingIntent = PendingIntent.getBroadcast(this, editItem[0].toInt(), snoozeLongIntent, 0)
+        val snoozeLongPendingIntent = PendingIntent.getBroadcast(this, editItem[0].toInt(), snoozeLongIntent, PendingIntent.FLAG_IMMUTABLE)
 
         //for the 10min delay button in notification
         val snoozeShortIntent = Intent(this, MainActivity.NotificationSnoozeShortReceiver::class.java).apply {
             putExtra(EXTRA_NOTIFICATION_ID, editItem[0])
             putExtra("currentItem", editItem)
         }
-        val snoozeShortPendingIntent = PendingIntent.getBroadcast(this, editItem[0].toInt(), snoozeShortIntent, 0)
+        val snoozeShortPendingIntent = PendingIntent.getBroadcast(this, editItem[0].toInt(), snoozeShortIntent, PendingIntent.FLAG_IMMUTABLE)
 
         //for press delete button in notification
         val deleteIntent = Intent(this, MainActivity.NotificationDeleteReceiver::class.java).apply {
             putExtra(EXTRA_NOTIFICATION_ID, editItem[0])
             putExtra("currentItem", editItem)
         }
-        val deletePendingIntent = PendingIntent.getBroadcast(this, editItem[0].toInt(), deleteIntent, 0)
+        val deletePendingIntent = PendingIntent.getBroadcast(this, editItem[0].toInt(), deleteIntent, PendingIntent.FLAG_IMMUTABLE)
 
         return NotificationCompat.Builder(
             applicationContext,
@@ -87,7 +89,7 @@ class NotificationUtils(nContext: Context) : ContextWrapper(nContext) {
         ).apply {
             setChannelId(applicationContext.packageName)
             setSmallIcon(R.drawable.ttimer_notification_pic)
-            setContentIntent(pendingIntent)
+            setContentIntent(openPendingIntent)
             setCategory(NotificationCompat.CATEGORY_ALARM)
             setLargeIcon(
                 BitmapFactory.decodeResource(
@@ -117,7 +119,8 @@ class NotificationUtils(nContext: Context) : ContextWrapper(nContext) {
     fun makeNotification(editItem: Item) { //TODO use work-manager
         val zonedItemDateTime = editItem.Date!!.atZone(ZoneId.systemDefault())
         val alarmManager = mContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val intent = Intent(mContext, MainActivity.NotificationReceiver::class.java).putExtra("ItemArray", Functions().getItemArray(editItem))
+        val intent = Intent(mContext, MainActivity.NotificationReceiver::class.java)
+            .putExtra("ItemArray", Functions().getItemArray(editItem))
         val pendingIntent = PendingIntent.getBroadcast(mContext, editItem.Index, intent, PendingIntent.FLAG_ONE_SHOT)
         alarmManager.setExact(
             AlarmManager.RTC_WAKEUP,

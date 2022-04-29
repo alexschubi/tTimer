@@ -1,5 +1,6 @@
 package xyz.alexschubi.ttimer
 
+import android.app.Activity
 import android.app.Application
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -12,6 +13,7 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import xyz.alexschubi.ttimer.data.ItemsDatabase
+import xyz.alexschubi.ttimer.data.sItem
 import xyz.alexschubi.ttimer.data.suppPreferences
 import xyz.alexschubi.ttimer.itemlist.fragment_item_list
 import java.time.LocalDateTime
@@ -32,6 +34,18 @@ class MainActivity : AppCompatActivity() {
     //TODO undo button after delete
     //TODO rewrite notifications for db
 
+    companion object {
+        private var openSItem: sItem? = null
+        @JvmStatic
+        fun newInstance(openWithItem: sItem? = null): MainActivity
+                = MainActivity().apply {
+            if(openWithItem != null){
+                openSItem = openWithItem
+            }
+        }
+    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         mainActivity = this
         mapplication = this.application
@@ -47,7 +61,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         Functions().applyTheme()
         setContentView(R.layout.activity_main)
-        supportFragmentManager.open { replace(R.id.container, fragment_item_list.newInstance()) }
+        if(openSItem != null){
+            supportFragmentManager.open { replace(R.id.container, fragment_item_list.newInstance(openSItem)) }
+        }else{
+            supportFragmentManager.open { replace(R.id.container, fragment_item_list.newInstance()) }
+        }
     }
 
     override fun onBackPressed() { // from https://proandroiddev.com/circular-reveal-in-fragments-the-clean-way-f25c8bc95257
@@ -71,7 +89,7 @@ class MainActivity : AppCompatActivity() {
     open class NotificationReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             val pendResult = this.goAsync()
-            Log.d("NotificationReceiver", "triggered")
+            Log.i("NotificationReceiver", "triggered")
 
             val editItemArray = intent.extras!!.getStringArrayList("ItemArray")!!
             Log.d("NotificationReceiver", "got Item " + editItemArray)
@@ -84,12 +102,12 @@ class MainActivity : AppCompatActivity() {
     open class NotificationSnoozeShortReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             val pendResult = this.goAsync()
-            Log.i("NotificationSnoozeReceiver", "trigged")
+            Log.i("Notification", "SnoozeShortReceiver trigged")
             val editItemArray = intent.extras!!.getStringArrayList("currentItem")!!
             var editItem = Functions().ItemFromArray(editItemArray)
+            NotificationUtils(context).cancelNotification(editItem)
             editItem.Date = LocalDateTime.now().plusMinutes(10)
             Functions().saveSItemToDB(editItem.toSItem())
-            NotificationUtils(context).cancelNotification(editItem)
             NotificationUtils(context).makeNotification(editItem)
             pendResult.finish()
         }
@@ -97,12 +115,12 @@ class MainActivity : AppCompatActivity() {
     open class NotificationSnoozeLongReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             val pendResult = this.goAsync()
-            Log.i("NotificationSnoozeReceiver", "trigged")
+            Log.i("Notification", "SnoozeLongReceiver trigged")
             val editItemArray = intent.extras!!.getStringArrayList("currentItem")!!
             var editItem = Functions().ItemFromArray(editItemArray)
+            NotificationUtils(context).cancelNotification(editItem)
             editItem.Date = LocalDateTime.now().plusHours(3)
             Functions().saveSItemToDB(editItem.toSItem())
-            NotificationUtils(context).cancelNotification(editItem)
             NotificationUtils(context).makeNotification(editItem)
             pendResult.finish()
         }
@@ -110,25 +128,24 @@ class MainActivity : AppCompatActivity() {
     open class NotificationDeleteReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             val pendResult = this.goAsync()
-            Log.i("NotificationDismissReceiver", "trigged")
+            Log.d("Notification", "DeleteReceiver trigged")
             val editItemArray = intent.extras!!.getStringArrayList("currentItem")!!
             var editItem = Functions().ItemFromArray(editItemArray)
+            NotificationUtils(context).cancelNotification(editItem)
             editItem.Deleted = true
             Functions().saveSItemToDB(editItem.toSItem())
-            NotificationUtils(context).cancelNotification(editItem)
+            Log.i("localDB", "delted item ${editItem.Index}")
             pendResult.finish()
         }
     }
     open class NotificationOpenReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             val pendResult = this.goAsync()
-            Log.i("NotificationDismissReceiver", "trigged")
+            Log.i("Notification", "OpenItemReceiver trigged")
             val editItemArray = intent.extras!!.getStringArrayList("currentItem")!!
             var editItem = Functions().ItemFromArray(editItemArray)
             NotificationUtils(context).cancelNotification(editItem)
-
-            val startIntent = intent
-            startIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            val startIntent = MainActivity.newInstance(editItem.toSItem())
             context.startActivity(startIntent)
             pendResult.finish()
         }

@@ -22,8 +22,14 @@ class fragment_item_list : Fragment() {
     var displayItemsList: MutableList<sItem>? = null
 
     companion object {
+        private var openSItem: sItem? = null
         @JvmStatic
-        fun newInstance(): fragment_item_list = fragment_item_list()
+        fun newInstance(openWithItem: sItem? = null): fragment_item_list
+                = fragment_item_list().apply {
+            if(openWithItem != null){
+                openSItem = openWithItem
+            }
+        }
     }
 
     override fun onCreateView(
@@ -94,6 +100,15 @@ class fragment_item_list : Fragment() {
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 null
+            }
+        }
+
+        if (openSItem != null) {
+            val positions = intArrayOf(b_add_reveal.left + b_add_reveal.width/2, b_add_reveal.top + b_add_reveal.height/2)
+            parentFragmentManager.open {//TODO exit positions from recycler view or insert with animation
+                add(R.id.container, AddItemFragment.newInstance(positions, positions,
+                    openSItem, this@fragment_item_list))
+                addToBackStack(null)
             }
         }
 
