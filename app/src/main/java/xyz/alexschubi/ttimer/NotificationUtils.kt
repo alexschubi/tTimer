@@ -56,11 +56,11 @@ class NotificationUtils(nContext: Context) : ContextWrapper(nContext) {
 
         //press on Notification
         val openIntent = Intent(this, MainActivity.NotificationOpenReceiver::class.java).apply {
-            //addFlags((Intent.FLAG_ACTIVITY_NEW_TASK) and (Intent.FLAG_ACTIVITY_CLEAR_TASK) and (Intent.FLAG_ACTIVITY_CLEAR_TOP))
             putExtra(EXTRA_NOTIFICATION_ID, editItem[0])
             putExtra("currentItem", editItem)
         }
-        val openPendingIntent = PendingIntent.getActivity(this, editItem[0].toInt(), openIntent, PendingIntent.FLAG_IMMUTABLE)
+        val openPendingIntent = PendingIntent.getBroadcast(this, editItem[0].toInt(), openIntent, PendingIntent.FLAG_IMMUTABLE)
+        val openPendingActionIntent = PendingIntent.getActivity(this, editItem[0].toInt(), openIntent, PendingIntent.FLAG_IMMUTABLE)
 
         //for the 2h delay button in notificgation
         val snoozeLongIntent = Intent(this, MainActivity.NotificationSnoozeLongReceiver::class.java).apply {
@@ -89,7 +89,7 @@ class NotificationUtils(nContext: Context) : ContextWrapper(nContext) {
         ).apply {
             setChannelId(applicationContext.packageName)
             setSmallIcon(R.drawable.ttimer_notification_pic)
-            setContentIntent(openPendingIntent)
+            setContentIntent(openPendingActionIntent)
             setCategory(NotificationCompat.CATEGORY_ALARM)
             setLargeIcon(
                 BitmapFactory.decodeResource(
@@ -102,15 +102,16 @@ class NotificationUtils(nContext: Context) : ContextWrapper(nContext) {
                 NotificationCompat.BigTextStyle()
                     .bigText(editItem[1])
             )
-            //TODO open application with openPentigIntent
+            //TODO open application with openPendingIntent
             setDeleteIntent(deletePendingIntent)
-            addAction(R.drawable.ic_baseline_more_time_24, "Delay 10min", snoozeShortPendingIntent)
-            addAction(R.drawable.ic_baseline_more_time_24, "Delay 2h", snoozeLongPendingIntent)
+            addAction(R.drawable.ic_outline_edit_24, "Edit", openPendingIntent)
+            addAction(R.drawable.ic_baseline_more_time_24, "+10min", snoozeShortPendingIntent)
+            //TODO readd addAction(R.drawable.ic_baseline_more_time_24, "+2h", snoozeLongPendingIntent)
             addAction(R.drawable.ic_baseline_delete_outline_24, "Delete", deletePendingIntent)
             setGroup("tTimer")
             setGroupSummary(true)
             priority = NotificationCompat.PRIORITY_DEFAULT
-            setAutoCancel(true)
+            setAutoCancel(false)
             build()
 
         }

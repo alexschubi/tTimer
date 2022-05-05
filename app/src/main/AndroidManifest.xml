@@ -18,12 +18,15 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name="xyz.alexschubi.ttimer.MainActivity"
+        <activity android:name=".MainActivity"
             android:windowSoftInputMode="adjustResize"
-            android:screenOrientation="locked">
+            android:screenOrientation="locked"
+            android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="xyz.alexschubi.ttimer.MainActivity" />
                 <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <receiver

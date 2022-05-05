@@ -1,6 +1,5 @@
 package xyz.alexschubi.ttimer
 
-import android.app.Activity
 import android.app.Application
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -54,6 +53,8 @@ class MainActivity : AppCompatActivity() {
         localDB.preferencesDAO().insert(
             suppPreferences(1, "default", false, null, false, true, "2.0", 0, true, "EE dd.MM.yyyy HH:mm")
         )
+        Log.d("localDB.Items", localDB.itemsDAO().getAll().toString())
+        Log.d("localDB.Preferences", localDB.preferencesDAO().getLast().toString())
         FirebaseApp.initializeApp(this)
         firebaseAnalytics = FirebaseAnalytics.getInstance(mapplication)
         firebaseCrashlytics = FirebaseCrashlytics.getInstance()
@@ -65,7 +66,7 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.open { replace(R.id.container, fragment_item_list.newInstance(openSItem)) }
         }else{
             supportFragmentManager.open { replace(R.id.container, fragment_item_list.newInstance()) }
-        }
+        } //Useless if else case?
     }
 
     override fun onBackPressed() { // from https://proandroiddev.com/circular-reveal-in-fragments-the-clean-way-f25c8bc95257
@@ -102,7 +103,7 @@ class MainActivity : AppCompatActivity() {
     open class NotificationSnoozeShortReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             val pendResult = this.goAsync()
-            Log.i("Notification", "SnoozeShortReceiver trigged")
+            Log.i("Notification", "SnoozeShortReceiver triggered")
             val editItemArray = intent.extras!!.getStringArrayList("currentItem")!!
             var editItem = Functions().ItemFromArray(editItemArray)
             NotificationUtils(context).cancelNotification(editItem)
@@ -115,7 +116,7 @@ class MainActivity : AppCompatActivity() {
     open class NotificationSnoozeLongReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             val pendResult = this.goAsync()
-            Log.i("Notification", "SnoozeLongReceiver trigged")
+            Log.i("Notification", "SnoozeLongReceiver triggered")
             val editItemArray = intent.extras!!.getStringArrayList("currentItem")!!
             var editItem = Functions().ItemFromArray(editItemArray)
             NotificationUtils(context).cancelNotification(editItem)
@@ -128,7 +129,7 @@ class MainActivity : AppCompatActivity() {
     open class NotificationDeleteReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             val pendResult = this.goAsync()
-            Log.d("Notification", "DeleteReceiver trigged")
+            Log.i("Notification", "DeleteReceiver triggered")
             val editItemArray = intent.extras!!.getStringArrayList("currentItem")!!
             var editItem = Functions().ItemFromArray(editItemArray)
             NotificationUtils(context).cancelNotification(editItem)
@@ -141,12 +142,15 @@ class MainActivity : AppCompatActivity() {
     open class NotificationOpenReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             val pendResult = this.goAsync()
-            Log.i("Notification", "OpenItemReceiver trigged")
+            Log.d("Notification", "OpenItemReceiver triggered")
             val editItemArray = intent.extras!!.getStringArrayList("currentItem")!!
             var editItem = Functions().ItemFromArray(editItemArray)
             NotificationUtils(context).cancelNotification(editItem)
-            val startIntent = MainActivity.newInstance(editItem.toSItem())
-            context.startActivity(startIntent)
+
+            var startActivityIntent: Intent = Intent(context, MainActivity.newInstance(editItem.toSItem())::class.java).apply {
+                setFlags((Intent.FLAG_ACTIVITY_NEW_TASK) or (Intent.FLAG_ACTIVITY_CLEAR_TASK) or (Intent.FLAG_ACTIVITY_CLEAR_TOP))
+            }
+            context.startActivity(startActivityIntent)
             pendResult.finish()
         }
     }
