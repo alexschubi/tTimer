@@ -31,8 +31,6 @@ var skipBackPress: Boolean = false
 class MainActivity : AppCompatActivity() {
 
     //TODO undo button after delete
-    //TODO rewrite notifications for db
-
     companion object {
         private var openSItem: sItem? = null
         @JvmStatic
@@ -136,21 +134,6 @@ class MainActivity : AppCompatActivity() {
             editItem.Deleted = true
             Functions().saveSItemToDB(editItem.toSItem())
             Log.i("localDB", "delted item ${editItem.Index}")
-            pendResult.finish()
-        }
-    }
-    open class NotificationOpenReceiver : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent) {
-            val pendResult = this.goAsync()
-            Log.d("Notification", "OpenItemReceiver triggered")
-            val editItemArray = intent.extras!!.getStringArrayList("currentItem")!!
-            var editItem = Functions().ItemFromArray(editItemArray)
-            NotificationUtils(context).cancelNotification(editItem)
-
-            var startActivityIntent: Intent = Intent(context, MainActivity.newInstance(editItem.toSItem())::class.java).apply {
-                setFlags((Intent.FLAG_ACTIVITY_NEW_TASK) or (Intent.FLAG_ACTIVITY_CLEAR_TASK) or (Intent.FLAG_ACTIVITY_CLEAR_TOP))
-            }
-            context.startActivity(startActivityIntent)
             pendResult.finish()
         }
     }

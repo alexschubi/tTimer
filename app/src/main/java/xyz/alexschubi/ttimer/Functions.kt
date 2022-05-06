@@ -115,7 +115,7 @@ class Functions {
             8 -> {}
             9 -> {}
             10 -> {}
-        }
+        } //TODO more sort modes, reversed ones are not working
         return sortedList
     }
 
@@ -152,7 +152,7 @@ class Functions {
             editItem.Deleted = true
             localDB.itemsDAO().update(editItem)
             Log.d("localDB", "changed Item $editItem")
-           //TODO NotificationUtils().cancelNotification(itemIndex)
+           NotificationUtils(mapplication).cancelNotification(editItem.toItem())
         } else {
             Log.d("localDB", "could not get sItem")
         }

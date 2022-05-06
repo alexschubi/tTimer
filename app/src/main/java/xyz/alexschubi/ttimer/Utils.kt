@@ -35,14 +35,6 @@ fun View.startCircularReveal(oldX: Int, oldY: Int) {
         }
     })
 }
-/**
- * Animate fragment exit using given parameters as animation end point. Runs the given block of code
- * after animation completion.
- *
- * @param exitX: Animation end point X coordinate.
- * @param exitY: Animation end point Y coordinate.
- * @param block: Block of code to be executed on animation completion.
- */
 fun View.exitCircularReveal(exitX: Int, exitY: Int, block: () -> Unit) {
     val startRadius = Math.hypot(this.width.toDouble(), this.height.toDouble())
     Log.d("CircularReveal", "from X$exitX and Y$exitY with radius$startRadius")

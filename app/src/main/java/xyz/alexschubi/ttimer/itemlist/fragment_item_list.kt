@@ -79,21 +79,19 @@ class fragment_item_list : Fragment() {
                 var sModeInt = 0
                 Log.d("Spinner", "change sortMode")
                 when (sMode){
-                    "sort by None ↑" -> sModeInt = 1
-                    "sort by None ↓" -> sModeInt = 2
-                    "sort by Color ↑" -> sModeInt = 3
-                    "sort by Color ↓" -> sModeInt = 4
-                    "sort by Date ↑" -> sModeInt = 5
-                    "sort by Date ↓" -> sModeInt = 6
-                    "sort by Date>Color ↑" -> sModeInt = 7
-                    "sort by Date>Color ↓" -> sModeInt = 8
-                    "sort by Color>Date ↑" -> sModeInt = 9
-                    "sort by Color>Date ↓" -> sModeInt = 10
+                    "sort by None ↑" -> sModeInt = 0
+                    "sort by None ↓" -> sModeInt = 1
+                    "sort by Color ↑" -> sModeInt = 2
+                    "sort by Color ↓" -> sModeInt = 3
+                    "sort by Date ↑" -> sModeInt = 4
+                    "sort by Date ↓" -> sModeInt = 5
+                    "sort by Date>Color ↑" -> sModeInt = 6
+                    "sort by Date>Color ↓" -> sModeInt = 7
+                    "sort by Color>Date ↑" -> sModeInt = 8
+                    "sort by Color>Date ↓" -> sModeInt = 9
                     else -> Log.d("sortMode", "wrong sortModeKey String")
                 }
-                val updatePref = localDB.preferencesDAO().getLast()
-                updatePref.SortMode = sModeInt
-                localDB.preferencesDAO().update(updatePref)
+                localDB.preferencesDAO().update(localDB.preferencesDAO().getLast().apply { SortMode = sModeInt })
                 adapter.setItems(Functions().sortMutableList(localDB.itemsDAO().getActiveItems(), sModeInt))
                 Log.i("sortMode", "changed to $sModeInt")
                 Log.d("suppPrefs", "sortMode is: "+ localDB.preferencesDAO().getLast().SortMode.toString())
@@ -105,7 +103,7 @@ class fragment_item_list : Fragment() {
 
         if (openSItem != null) {
             val positions = intArrayOf(b_add_reveal.left + b_add_reveal.width/2, b_add_reveal.top + b_add_reveal.height/2)
-            parentFragmentManager.open {//TODO exit positions from recycler view or insert with animation
+            parentFragmentManager.open {
                 add(R.id.container, AddItemFragment.newInstance(positions, positions,
                     openSItem, this@fragment_item_list))
                 addToBackStack(null)
@@ -135,7 +133,7 @@ class fragment_item_list : Fragment() {
         }
         exitPos[1] += view.appbar.height
         startPos = exitPos
-        parentFragmentManager.open {//TODO get position of item
+        parentFragmentManager.open {
             add(R.id.container, AddItemFragment.newInstance(startPos, exitPos, item, this@fragment_item_list))
             addToBackStack(null)
         }

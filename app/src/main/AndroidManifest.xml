@@ -57,12 +57,6 @@
             android:enabled="true"
             android:exported="true" >
         </receiver>
-        <receiver
-            android:name="xyz.alexschubi.ttimer.MainActivity$NotificationOpenReceiver"
-            android:directBootAware="true"
-            android:enabled="true"
-            android:exported="true" >
-        </receiver>
     </application>
 
 </manifest>
