@@ -24,25 +24,24 @@ import java.time.*
 import java.time.format.DateTimeFormatter
 import java.time.temporal.TemporalAdjusters
 
-class AddItemFragment() : Fragment(), ExitWithAnimation {
+class AddItemFragment3() : Fragment(), ExitWithAnimation {
 
+    //newInstance Variables
     private var getSItem: sItem? = null
     private var mfragmentItemList: fragment_item_list? = null
-    private var sItem = sItem(-1, "", null, null, "purple", false, false)
     override var posX: Int? = null
     override var posY: Int? = null
-    var startPosX: Int = 0
-    var startPosY: Int = 0
+    private var startPosX: Int = 0
+    private var startPosY: Int = 0
     override fun isToBeExitedWithAnimation(): Boolean = true
     private var exitWithSave = false
-    private var newItem: Boolean = true
-    private var mMinute: Long = 0L
-    private var mHour: Long = 0L
-    private var mDay: Long = 0L
-    private var mMonth: Long = 0L
-    private var mYear: Long = 0L
+    //local Variables
+    private var isNewItem = true
+    private var newItem = sItem(-1, "", null, null, "purple", false, false)
+    private var sDateTime = ZonedDateTime.now()
     lateinit var timePickerDialog: MaterialTimePicker
     lateinit var datePickerDialog: MaterialDatePicker<Long>
+    var currentItem: sItem = newItem
 
 
     companion object {
@@ -51,8 +50,8 @@ class AddItemFragment() : Fragment(), ExitWithAnimation {
             startPos: IntArray? = null,
             exitPos: IntArray? = null,
             getItem: sItem? = null,
-            fragmentItemList: fragment_item_list? = null): AddItemFragment
-        = AddItemFragment().apply {
+            fragmentItemList: fragment_item_list? = null): AddItemFragment3
+        = AddItemFragment3().apply {
             if (exitPos != null && exitPos.size == 2) {
                 posX = exitPos[0]
                 posY = exitPos[1]
@@ -62,15 +61,15 @@ class AddItemFragment() : Fragment(), ExitWithAnimation {
                 startPosY = startPos[1]
             }
             if (getItem != null){
-                getSItem = getItem
-                newItem = false
+                currentItem = getItem
+                isNewItem = false
             }
             if(fragmentItemList != null){
                 mfragmentItemList = fragmentItemList
             }
+
         }
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -101,29 +100,65 @@ class AddItemFragment() : Fragment(), ExitWithAnimation {
             }
         }
 
-        if (getSItem!=null) {
-            sItem = localDB.itemsDAO().get(getSItem!!.Index)!!
+        if (!isNewItem) {
             b_add_final.text = "Save"
         } else {
-            Functions().saveSItemToDB(sItem)
-            //fragmentItemList.addItem(sItem)
-            sItem = localDB.itemsDAO().getLast()
-            Functions().deleteItem(sItem.Index)
+            Functions().saveSItemToDB(currentItem)
+            currentItem = localDB.itemsDAO().getLast()
+            Functions().deleteItem(currentItem.Index)
         }
 
+        if (currentItem.TimeStamp == null) {
+            tv_show_time.visibility = View.GONE
+            table_datetime.visibility =  View.GONE
+            b_del_time.visibility = View.GONE
+        } else {
+            refreshDateTime()
+            b_del_time.visibility = View.VISIBLE
+            tv_show_time.visibility = View.VISIBLE
+            table_datetime.visibility =  View.VISIBLE
+        }
+        tb_add_text.setText(currentItem.Text)
 
+        initDateTimePicker()
+        timePickerDialog.addOnPositiveButtonClickListener {
+            sDateTime = sDateTime.withHour(timePickerDialog.hour)
+            sDateTime = sDateTime.withMinute(timePickerDialog.minute)
+            currentItem.TimeStamp = sDateTime.toMilli()
+            Log.d("TimePickerDialog", sDateTime.format(DateTimeFormatter.ofPattern("EE dd.MM.yyyy")))
+            refreshDateTime()
+        }
+        datePickerDialog.addOnPositiveButtonClickListener {
+            val tempDate = it.toZonedDateTime()
+            sDateTime = sDateTime.withDayOfMonth(tempDate.dayOfMonth)
+            sDateTime = sDateTime.withMonth(tempDate.monthValue)
+            sDateTime = sDateTime.withYear(tempDate.year)
+            currentItem.TimeStamp = sDateTime.toMilli()
+            Log.d("TimePickerDialog", sDateTime.format(DateTimeFormatter.ofPattern("EE dd.MM.yyyy")))
+            refreshDateTime()
+        }
 
-        timer.start()
-        tablerow_date.setOnClickListener {  }
-        tablerow_time.setOnClickListener {  }
-        tablerow_span.setOnClickListener {  }
+        tablerow_date.setOnClickListener {
+            initDateTimePicker()
+            datePickerDialog.show(parentFragmentManager, "TimePicker")
+        }
+        tablerow_time.setOnClickListener {
+            initDateTimePicker()
+            timePickerDialog.show(parentFragmentManager, "TimePicker")
+        }
+        tablerow_span.setOnClickListener {
+            displayDateTimePicker()
+        }
         b_del_time.setOnClickListener { delDateTime() }
+        b_add_notification.setOnClickListener {
+            addDateTime(ZonedDateTime.now())
+            refreshDateTime()
+        }
         b_add_final.setOnClickListener {
             b_back.setOnClickListener(null)
             b_add_final.setOnClickListener(null)
             addItem()
         }
-        tb_add_text.setText(sItem.Text)
         rg_color.setOnCheckedChangeListener { radioGroup, i ->
             var strokeColor = 0
             when(i){
@@ -141,7 +176,7 @@ class AddItemFragment() : Fragment(), ExitWithAnimation {
         }
         rg_color.clearCheck()
         rg_color.check(rb_purple.id)
-        when (sItem.Color) {
+        when (currentItem.Color) {
             "blue"-> rg_color.check(rb_blue.id)
             "green" -> rg_color.check(rb_green.id)
             "yellow" -> rg_color.check(rb_yellow.id)
@@ -150,17 +185,7 @@ class AddItemFragment() : Fragment(), ExitWithAnimation {
             "purple" -> rg_color.check(rb_purple.id)
         }
 
-        if (sItem.TimeStamp == null) {
-            tv_show_time.visibility = View.GONE
-            table_datetime.visibility =  View.GONE
-            b_del_time.visibility = View.GONE
-        } else {
-            refreshDateTime()
-            b_del_time.visibility = View.VISIBLE
-            tv_show_time.visibility = View.VISIBLE
-            table_datetime.visibility =  View.VISIBLE
-        }
-
+        timer.start()
         tb_add_text.isFocusableInTouchMode = true
         tb_add_text.requestFocus()
         inputMethodManager.showSoftInput(tb_add_text, 0)
@@ -169,36 +194,36 @@ class AddItemFragment() : Fragment(), ExitWithAnimation {
     private fun addItem() {
         val colorButton: RadioButton = view?.findViewById<RadioButton>(rg_color.checkedRadioButtonId)!!
         when (this.view?.findViewById<RadioButton>(colorButton.id)?.id) {
-            rb_purple.id -> sItem.Color = "purple"
-            rb_red.id -> sItem.Color = "red"
-            rb_orange.id -> sItem.Color = "orange"
-            rb_yellow.id -> sItem.Color = "yellow"
-            rb_green.id -> sItem.Color = "green"
-            rb_blue.id -> sItem.Color = "blue"
+            rb_purple.id -> currentItem.Color = "purple"
+            rb_red.id -> currentItem.Color = "red"
+            rb_orange.id -> currentItem.Color = "orange"
+            rb_yellow.id -> currentItem.Color = "yellow"
+            rb_green.id -> currentItem.Color = "green"
+            rb_blue.id -> currentItem.Color = "blue"
         }
-        Log.d("radio Button", " color set to ${sItem.Color}")
-        sItem.Text = tb_add_text.text.toString()
+        Log.d("radio Button", " color set to ${currentItem.Color}")
+        currentItem.Text = tb_add_text.text.toString()
         // sItem.Text = sItem.Index.toString() + " - " + tb_add_text.text.toString()
-        Functions().saveSItemToDB(sItem)
+        Functions().saveSItemToDB(currentItem)
 
         //cancel and make notification
-        if (getSItem != null) {
-            NotificationUtils(mapplication).cancelNotification(sItem.toItem())
-        }
-        if(sItem.TimeStamp !=null && sItem.date()!!.isAfter(ZonedDateTime.now())) {
-            NotificationUtils(mapplication).makeNotification(sItem.toItem())
-            Log.d("Notification", "Item ${sItem.Index} has Notification at " + sItem.date()!!.format(
+        NotificationUtils(mapplication).cancelNotification(currentItem.toItem())
+        if(currentItem.TimeStamp !=null && currentItem.date()!!.isAfter(ZonedDateTime.now())) {
+            NotificationUtils(mapplication).makeNotification(currentItem.toItem())
+            Log.d("Notification", "Item ${currentItem.Index} has Notification at " + currentItem.date()!!.format(
                 dateFormatter))
         } else {
             Log.d("Notification", "No Notification wanted or in Past")
         }
 
         //CLOSE addView
-        if(getSItem == null && mfragmentItemList != null){
-            mfragmentItemList!!.addItem(sItem)
-        } else if (getSItem != null && mfragmentItemList != null){
-            mfragmentItemList!!.editItem(getSItem!!, sItem)
-        }else{
+        if (mfragmentItemList != null){
+            if(isNewItem){
+                mfragmentItemList!!.addItem(currentItem)
+            } else {
+                mfragmentItemList!!.editItem(getSItem!!, currentItem)
+            }
+        } else {
             Log.e("AddItemFragment", "no fragmentItemList passed")
         }
         b_add_final.isClickable = false
@@ -212,20 +237,10 @@ class AddItemFragment() : Fragment(), ExitWithAnimation {
         }
     }
 
-    private fun openTimePicker() {
-        var actualDateTime = LocalDateTime.now()
-        if (sItem.TimeStamp != null) {actualDateTime = sItem.date()!!.toLocalDateTime()}
-
-        timePickerDialog.addOnPositiveButtonClickListener {
-           // mHour =actualDateTime.hour
-        }
-        timePickerDialog.show(this.parentFragmentManager, "test")
-    }
-
 
     private fun displayDateTimePicker() {
         var actualDateTime = LocalDateTime.now()
-        if (sItem.TimeStamp != null) {actualDateTime = sItem.date()!!.toLocalDateTime()}
+        if (currentItem.TimeStamp != null) {actualDateTime = currentItem.date()!!.toLocalDateTime()}
         var newItemDate: ZonedDateTime
         var tMinute: Int = actualDateTime.minute
         var tHour: Int = actualDateTime.hour
@@ -243,10 +258,11 @@ class AddItemFragment() : Fragment(), ExitWithAnimation {
                 tv_show_time.visibility = View.VISIBLE
                 b_del_time.visibility = View.VISIBLE
                 table_datetime.visibility = View.VISIBLE
+                timer.start()
 
-                sItem.Span = Functions().getSpanString(newItemDate.toLocalDateTime())
-                sItem.TimeStamp = newItemDate.toMilli()
-                Log.d("addDateTime", "LocalDateTime ${sItem.date()!!.format(dateFormatter)} set")
+                currentItem.Span = Functions().getSpanString(newItemDate.toLocalDateTime())
+                currentItem.TimeStamp = newItemDate.toMilli()
+                Log.d("addDateTime", "LocalDateTime ${currentItem.date()!!.format(dateFormatter)} set")
                 //exit here
             },
             tHour,
@@ -268,6 +284,21 @@ class AddItemFragment() : Fragment(), ExitWithAnimation {
         datePickerDialog.show()
     }
 
+    fun initDateTimePicker(){
+        var tempDateTime = LocalDateTime.now()
+        if (currentItem.TimeStamp != null) {
+            tempDateTime = currentItem.date()!!.toLocalDateTime()
+        }
+        timePickerDialog = MaterialTimePicker.Builder()
+            .setTimeFormat(TimeFormat.CLOCK_24H)
+            .setHour(tempDateTime.hour)
+            .setMinute(tempDateTime.minute)
+            .build()
+        datePickerDialog = MaterialDatePicker.Builder.datePicker()
+            .setSelection(null )
+            .build()
+    }
+
     private fun addDateTime(dateTime: ZonedDateTime) {
         tv_show_time.text = dateTime.format(dateFormatter) + " in " + Functions().getSpanString(dateTime.toLocalDateTime()!!)
         tv_show_time.visibility = View.VISIBLE
@@ -275,13 +306,13 @@ class AddItemFragment() : Fragment(), ExitWithAnimation {
         table_datetime.visibility = View.VISIBLE
         b_add_notification.visibility = View.GONE
         Log.d("addItem-Date-Text",dateTime.format(dateFormatter) + " in " + Functions().getSpanString(dateTime!!.toLocalDateTime()!!))
-        sItem.Span = Functions().getSpanString(dateTime.toLocalDateTime())
-        sItem.TimeStamp = dateTime.toMilli()
+        currentItem.Span = Functions().getSpanString(dateTime.toLocalDateTime())
+        currentItem.TimeStamp = dateTime.toMilli()
         Log.d("addDateTime", "LocalDateTime ${dateTime.format(DateTimeFormatter.ofPattern("EE dd.MM.uuuu HH:mm"))} set")
     }
     private fun delDateTime(){
-        sItem.TimeStamp = null
-        sItem.Span = null
+        currentItem.TimeStamp = null
+        currentItem.Span = null
         tv_show_time.visibility = View.GONE
         b_del_time.visibility = View.GONE
         table_datetime.visibility = View.GONE
@@ -289,14 +320,14 @@ class AddItemFragment() : Fragment(), ExitWithAnimation {
     }
 
     private fun refreshDateTime(){
-        tv_show_date.text = sItem.date()!!.format(DateTimeFormatter.ofPattern("EE dd.MM.yyyy"))
-        tv_show_time.text = sItem.date()!!.format(DateTimeFormatter.ofPattern("HH:mm"))
-        tv_show_span.text = "in " + Functions().getSpanString(sItem.date()!!.toLocalDateTime()!!)
+        tv_show_date.text = currentItem.date()!!.format(DateTimeFormatter.ofPattern("EE dd.MM.yyyy"))
+        tv_show_time.text = currentItem.date()!!.format(DateTimeFormatter.ofPattern("HH:mm"))
+        tv_show_span.text = "in " + Functions().getSpanString(currentItem.date()!!.toLocalDateTime()!!)
     }
 
     private val timer = object: CountDownTimer((1 * 60 * 60 * 1000).toLong(), (1 * 10 * 1000).toLong()){ //hour*min*sec*millisec
         override fun onTick(millisUntilFinished: Long){
-            if (sItem.TimeStamp != null ) {
+            if (currentItem.TimeStamp != null ) {
                 refreshDateTime()
             }
         }
@@ -310,7 +341,7 @@ class AddItemFragment() : Fragment(), ExitWithAnimation {
         super.onDestroyView()
         timer.cancel()
         if (exitWithSave){
-            Functions().saveSItemToDB(sItem)
+            Functions().saveSItemToDB(currentItem)
         }
         Log.d("AddItemFragment", "exit Fragment")
     }

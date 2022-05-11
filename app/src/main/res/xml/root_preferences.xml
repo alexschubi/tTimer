@@ -9,7 +9,7 @@
             android:entries="@array/pref_theme_modes_names"
             android:entryValues="@array/pref_theme_modes_values"
             app:key="pref_theme"
-            app:title="pref_theme"
+            app:title="Choose Lightmode / Darkmode"
             app:useSimpleSummaryProvider="true" />
 
     </androidx.preference.PreferenceCategory>
@@ -34,7 +34,7 @@
         <SwitchPreference
             android:defaultValue="false"
             android:key="pref_firebase_enabled"
-            android:title="pref_firebase_enabled" />
+            android:title="Google Firebase" />
     </androidx.preference.PreferenceCategory>
 
     <androidx.preference.PreferenceCategory
@@ -42,7 +42,7 @@
         <SwitchPreference
             android:defaultValue="true"
             android:key="pref_notifications_enabled"
-            android:title="pref_notifications_enabled" />
+            android:title="Enable Notifications" />
     </androidx.preference.PreferenceCategory>
 
     <androidx.preference.PreferenceCategory

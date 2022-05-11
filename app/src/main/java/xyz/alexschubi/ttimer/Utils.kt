@@ -137,3 +137,6 @@ inline fun LocalDateTime.toSpan(): String{
 inline fun ZonedDateTime.toMilli(): Long{
     return toInstant().toEpochMilli()
 }
+inline fun Long.toZonedDateTime(): ZonedDateTime{
+    return ZonedDateTime.ofInstant(Instant.ofEpochMilli(this), ZoneId.systemDefault())
+}

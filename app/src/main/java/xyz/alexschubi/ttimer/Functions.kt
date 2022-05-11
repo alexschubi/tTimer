@@ -136,6 +136,13 @@ class Functions {
         }
         Log.i("Theme", "set to $prefTheme")
     }
+    fun applyNotificationSwitch(){
+        val prefNotification = localDB.preferencesDAO().getLast().Notifications
+        when (prefNotification) {
+            true -> {}//TODO deaktivate all notifications
+            false -> {}//TODO activate all notifications
+        }
+    }
 
     fun saveSItemToDB(item: sItem){
         if(item.Index == -1L){

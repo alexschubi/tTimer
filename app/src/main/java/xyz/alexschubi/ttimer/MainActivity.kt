@@ -49,16 +49,18 @@ class MainActivity : AppCompatActivity() {
         inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
         localDB = ItemsDatabase.getDatabase(this)!!
         localDB.preferencesDAO().insert(
-            suppPreferences(1, "default", false, null, false, true, "2.0", 0, true, "EE dd.MM.yyyy HH:mm")
+            suppPreferences(1, "followSystem", false, null, false, true, "2.0", 0, true, "EE dd.MM.yyyy HH:mm")
         )
         Log.d("localDB.Items", localDB.itemsDAO().getAll().toString())
         Log.d("localDB.Preferences", localDB.preferencesDAO().getLast().toString())
+
         FirebaseApp.initializeApp(this)
         firebaseAnalytics = FirebaseAnalytics.getInstance(mapplication)
         firebaseCrashlytics = FirebaseCrashlytics.getInstance()
         Functions().applyFirebase()
-        super.onCreate(savedInstanceState)
         Functions().applyTheme()
+
+        super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         if(openSItem != null){
             supportFragmentManager.open { replace(R.id.container, fragment_item_list.newInstance(openSItem)) }

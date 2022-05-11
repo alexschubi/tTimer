@@ -127,10 +127,11 @@ class NotificationUtils(nContext: Context) : ContextWrapper(nContext) {
                 "${(zonedItemDateTime.toInstant().minusMillis(ZonedDateTime.now().toInstant().toEpochMilli())).toEpochMilli()} milliSeconds with" + pendingIntent.toString())
     }
     fun cancelNotification(cancelItem: Item) {
-        val intent = Intent(mContext, MainActivity.NotificationReceiver::class.java).putExtra("ItemArray", Functions().getItemArray(cancelItem))
-        PendingIntent.getBroadcast(mContext, cancelItem.Index, intent, PendingIntent.FLAG_CANCEL_CURRENT).cancel()
-        getManager().cancel(cancelItem.Index)
-        Log.i("Notification", "canceled old pendingInent")
+        try{val intent = Intent(mContext, MainActivity.NotificationReceiver::class.java).putExtra("ItemArray", Functions().getItemArray(cancelItem))
+            PendingIntent.getBroadcast(mContext, cancelItem.Index, intent, PendingIntent.FLAG_CANCEL_CURRENT).cancel()
+            getManager().cancel(cancelItem.Index)
+            Log.i("Notification", "canceled old pendingInent")
+        } catch (e: Error){null}
     }
 
 }

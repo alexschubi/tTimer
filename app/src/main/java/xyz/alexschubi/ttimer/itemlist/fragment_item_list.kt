@@ -59,7 +59,7 @@ class fragment_item_list : Fragment() {
         view.b_add_reveal.setOnClickListener {
             val positions = intArrayOf(it.left + it.width/2, it.top + it.height/2)
             parentFragmentManager.open {//TODO exit positions from recycler view or insert with animation
-                add(R.id.container, AddItemFragment.newInstance(positions, positions,null, this@fragment_item_list))
+                add(R.id.container, AddItemFragment3.newInstance(positions, positions,null, this@fragment_item_list))
                 addToBackStack(null)
             }
         }
@@ -104,7 +104,7 @@ class fragment_item_list : Fragment() {
         if (openSItem != null) {
             val positions = intArrayOf(b_add_reveal.left + b_add_reveal.width/2, b_add_reveal.top + b_add_reveal.height/2)
             parentFragmentManager.open {
-                add(R.id.container, AddItemFragment.newInstance(positions, positions,
+                add(R.id.container, AddItemFragment3.newInstance(positions, positions,
                     openSItem, this@fragment_item_list))
                 addToBackStack(null)
             }
@@ -134,7 +134,7 @@ class fragment_item_list : Fragment() {
         exitPos[1] += view.appbar.height
         startPos = exitPos
         parentFragmentManager.open {
-            add(R.id.container, AddItemFragment.newInstance(startPos, exitPos, item, this@fragment_item_list))
+            add(R.id.container, AddItemFragment3.newInstance(startPos, exitPos, item, this@fragment_item_list))
             addToBackStack(null)
         }
         Log.d("CircularReveal",
