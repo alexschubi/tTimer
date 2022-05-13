@@ -15,6 +15,13 @@
 .externalNativeBuild
 .cxx
 
+# manuell add
+daemon
+caches
+native
+.tmp
+
+
 # IntelliJ
 .idea/
 misc.xml

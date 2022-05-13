@@ -6,7 +6,6 @@
         <item name="contentInsetLeft">0dp</item>
         <item name="contentInsetRight">0dp</item>
         <item name="materialButtonStyle">@style/tMaterialButton</item>
-        <item name="materialTimePickerStyle">@style/tTimePicker</item>
         <item name="cardViewStyle">@style/tCardView</item>
         <item name="materialCardViewStyle">@style/tCardView</item>
 <!--        <item name="preferenceTheme">@style/tPreferenceTheme</item>-->
@@ -101,6 +100,14 @@
     <style name="tAlertDialog" parent="Theme.AppCompat.DayNight.Dialog.Alert">
 <!--        <item name="alertDialogButtonGroupStyle"></item>-->
         <item name="alertDialogCenterButtons">true</item>
+    </style>
+    <style name="tMaterialDatePicker" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
+        <item name="colorPrimary">@color/datetime_picker1</item>
+        <item name="colorOnSurface">@color/datetime_picker2</item>
+    </style>
+    <style name="tMaterialTimePicker" parent="ThemeOverlay.MaterialComponents.TimePicker">
+        <item name="colorPrimary">@color/datetime_picker1</item>
+        <item name="colorOnSurface">@color/datetime_picker2</item>
     </style>
 
 

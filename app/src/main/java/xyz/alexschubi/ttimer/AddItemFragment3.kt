@@ -14,6 +14,7 @@ import android.widget.RadioButton
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import kotlinx.android.synthetic.main.fragment_add_item3.*
@@ -39,9 +40,11 @@ class AddItemFragment3() : Fragment(), ExitWithAnimation {
     private var isNewItem = true
     private var newItem = sItem(-1, "", null, null, "purple", false, false)
     private var sDateTime = ZonedDateTime.now()
+
     lateinit var timePickerDialog: MaterialTimePicker
     lateinit var datePickerDialog: MaterialDatePicker<Long>
     var currentItem: sItem = newItem
+    var hasNotification = false
 
 
     companion object {
@@ -108,11 +111,13 @@ class AddItemFragment3() : Fragment(), ExitWithAnimation {
             Functions().deleteItem(currentItem.Index)
         }
 
+        var tempDateTime = LocalDateTime.now()
         if (currentItem.TimeStamp == null) {
             tv_show_time.visibility = View.GONE
             table_datetime.visibility =  View.GONE
             b_del_time.visibility = View.GONE
         } else {
+            tempDateTime = currentItem.date()!!.toLocalDateTime()
             refreshDateTime()
             b_del_time.visibility = View.VISIBLE
             tv_show_time.visibility = View.VISIBLE
@@ -120,7 +125,16 @@ class AddItemFragment3() : Fragment(), ExitWithAnimation {
         }
         tb_add_text.setText(currentItem.Text)
 
-        initDateTimePicker()
+        timePickerDialog = MaterialTimePicker.Builder()
+            .setTimeFormat(TimeFormat.CLOCK_24H)
+            .setHour(tempDateTime.hour)
+            .setMinute(tempDateTime.minute)
+            .setTheme(R.style.tMaterialTimePicker)
+            .build()
+        datePickerDialog = MaterialDatePicker.Builder.datePicker()
+            .setSelection(null )
+            .setTheme(R.style.tMaterialDatePicker)
+            .build()
         timePickerDialog.addOnPositiveButtonClickListener {
             sDateTime = sDateTime.withHour(timePickerDialog.hour)
             sDateTime = sDateTime.withMinute(timePickerDialog.minute)
@@ -139,11 +153,11 @@ class AddItemFragment3() : Fragment(), ExitWithAnimation {
         }
 
         tablerow_date.setOnClickListener {
-            initDateTimePicker()
-            datePickerDialog.show(parentFragmentManager, "TimePicker")
+            //initDateTimePicker()
+            datePickerDialog.show(parentFragmentManager, "DatePicker")
         }
         tablerow_time.setOnClickListener {
-            initDateTimePicker()
+            //initDateTimePicker()
             timePickerDialog.show(parentFragmentManager, "TimePicker")
         }
         tablerow_span.setOnClickListener {
@@ -190,7 +204,7 @@ class AddItemFragment3() : Fragment(), ExitWithAnimation {
         tb_add_text.requestFocus()
         inputMethodManager.showSoftInput(tb_add_text, 0)
     }
-
+//END of OnCreate()
     private fun addItem() {
         val colorButton: RadioButton = view?.findViewById<RadioButton>(rg_color.checkedRadioButtonId)!!
         when (this.view?.findViewById<RadioButton>(colorButton.id)?.id) {

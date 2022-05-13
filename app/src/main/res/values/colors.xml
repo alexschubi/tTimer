@@ -21,8 +21,8 @@
 
     <color name="test_1">#F56FFF</color>
     <color name="test_2">#EE00FF</color>
-    <color name="test_3">#4C0051</color>
-    <color name="test_4">#7C4C80</color>
+    <color name="datetime_picker1">#8BC34A</color>
+    <color name="datetime_picker2">#E0FFE1</color>
 
 
     <color name="dn_text">@color/d_text</color>

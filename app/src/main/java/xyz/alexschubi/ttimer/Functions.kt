@@ -139,7 +139,7 @@ class Functions {
     fun applyNotificationSwitch(){
         val prefNotification = localDB.preferencesDAO().getLast().Notifications
         when (prefNotification) {
-            true -> {}//TODO deaktivate all notifications
+            true -> {}//TODO deactivate all notifications
             false -> {}//TODO activate all notifications
         }
     }

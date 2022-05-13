@@ -84,27 +84,39 @@ class FragmentSettings : PreferenceFragmentCompat(), ExitWithAnimation {
                     mapplication.applicationContext).getBoolean(key, false)
                 Functions().applyFirebase()
                 Log.d("Preferences", "applied Firebase settings")
-            }
-            if (key == "pref_sync_enabled") { //TODO
-                localDB.preferencesDAO().getLast().SyncEnabled = PreferenceManager.getDefaultSharedPreferences(
-                    mapplication.applicationContext).getBoolean(key, false)
+
+                val bFirebase = PreferenceManager
+                    .getDefaultSharedPreferences(mapplication.applicationContext).getBoolean(key, false)
+                mPrefs = mPrefs.apply{FirebaseEnabled = bFirebase }
+                localDB.preferencesDAO().update(mPrefs)
+
                 Log.d("Preferences", "applied Sync settings")
             }
-            if (key == "pref_notifications_enabled") { //TODO
+            if (key == "pref_sync_enabled") {
+                val bSync = PreferenceManager
+                    .getDefaultSharedPreferences(mapplication.applicationContext).getBoolean(key, false)
+                mPrefs = mPrefs.apply{SyncEnabled = bSync }
+                localDB.preferencesDAO().update(mPrefs)
+                //TODO implement synchronisation
+                Log.d("Preferences", "applied Sync settings")
+            }
+            if (key == "pref_notifications_enabled") {
                 val bNotification = PreferenceManager
                     .getDefaultSharedPreferences(mapplication.applicationContext).getBoolean(key, true)
-                mPrefs = mPrefs.apply{Notifications = bNotification!!}
+                mPrefs = mPrefs.apply{Notifications = bNotification }
+                localDB.preferencesDAO().update(mPrefs)
                 Functions().applyTheme()
-                Log.d("Preferences", "apply Theme settings")
+                Log.d("Preferences", "apply Notification settings")
             }
             if (key == "pref_theme") {
                 val sTheme = PreferenceManager
-                    .getDefaultSharedPreferences(mapplication.applicationContext).getString(key, "followSystem")
-                mPrefs = mPrefs.apply{Theme = sTheme!!}
+                    .getDefaultSharedPreferences(mapplication.applicationContext).getString(key, "followSystem")!!
+                mPrefs = mPrefs.apply{Theme = sTheme}
+                localDB.preferencesDAO().update(mPrefs)
                 Functions().applyTheme()
                 Log.d("Preferences", "apply Theme settings")
             }
-            localDB.preferencesDAO().update(mPrefs)
+
         }
 
         /*val connectionButton = findPreference<Preference>("sync_connection_click")
