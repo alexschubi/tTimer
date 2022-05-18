@@ -76,7 +76,8 @@
                     style="@style/tTextEdit"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="2dp">
+                    android:layout_marginTop="2dp"
+                    android:minHeight="48dp">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/tb_add_text"
@@ -97,85 +98,129 @@
                     android:layout_marginTop="4dp"
                     android:checkedButton="@id/rb_purple"
                     android:gravity="center"
+                    android:minHeight="48dp"
                     android:orientation="horizontal"
+                    android:padding="4dp"
                     android:textAlignment="center">
 
                     <RadioButton
                         android:id="@+id/rb_purple"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        style="@style/tRadioButton"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
                         android:layout_gravity="center"
+                        android:layout_marginStart="4dp"
                         android:layout_marginLeft="2dp"
+                        android:layout_marginEnd="4dp"
                         android:layout_marginRight="2dp"
-                        android:layout_weight="1"
-                        android:button="?android:attr/listChoiceIndicatorMultiple"
+                        android:layout_weight="0"
+                        android:background="@drawable/custom_radiobutton_2"
+                        android:backgroundTint="@color/item_purple"
+                        android:button="@null"
                         android:buttonTint="@color/item_purple"
                         android:gravity="center"
+                        android:minWidth="0dp"
+                        android:minHeight="0dp"
                         android:textAlignment="center" />
 
                     <RadioButton
                         android:id="@+id/rb_blue"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        style="@style/tRadioButton"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
                         android:layout_gravity="center"
+                        android:layout_marginStart="4dp"
                         android:layout_marginLeft="2dp"
+                        android:layout_marginEnd="4dp"
                         android:layout_marginRight="2dp"
-                        android:layout_weight="1"
-                        android:button="?android:attr/listChoiceIndicatorMultiple"
+                        android:layout_weight="0"
+                        android:background="@drawable/custom_radiobutton_2"
+                        android:backgroundTint="@color/item_blue"
+                        android:button="@null"
                         android:buttonTint="@color/item_blue"
                         android:gravity="center"
+                        android:minWidth="0dp"
+                        android:minHeight="0dp"
                         android:textAlignment="center" />
 
                     <RadioButton
                         android:id="@+id/rb_green"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        style="@style/tRadioButton"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
                         android:layout_gravity="center"
+                        android:layout_marginStart="4dp"
                         android:layout_marginLeft="2dp"
+                        android:layout_marginEnd="4dp"
                         android:layout_marginRight="2dp"
-                        android:layout_weight="1"
-                        android:button="?android:attr/listChoiceIndicatorMultiple"
+                        android:layout_weight="0"
+                        android:background="@drawable/custom_radiobutton_2"
+                        android:backgroundTint="@color/item_green"
+                        android:button="@null"
                         android:buttonTint="@color/item_green"
                         android:gravity="center"
+                        android:minWidth="0dp"
+                        android:minHeight="0dp"
                         android:textAlignment="center" />
 
                     <RadioButton
                         android:id="@+id/rb_yellow"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        style="@style/tRadioButton"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
                         android:layout_gravity="center"
+                        android:layout_marginStart="4dp"
                         android:layout_marginLeft="2dp"
+                        android:layout_marginEnd="4dp"
                         android:layout_marginRight="2dp"
-                        android:layout_weight="1"
-                        android:button="?android:attr/listChoiceIndicatorMultiple"
+                        android:layout_weight="0"
+                        android:background="@drawable/custom_radiobutton_2"
+                        android:backgroundTint="@color/item_yellow"
+                        android:button="@null"
                         android:buttonTint="@color/item_yellow"
                         android:gravity="center"
+                        android:minWidth="0dp"
+                        android:minHeight="0dp"
                         android:textAlignment="center" />
 
                     <RadioButton
                         android:id="@+id/rb_orange"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        style="@style/tRadioButton"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
                         android:layout_gravity="center"
+                        android:layout_marginStart="4dp"
                         android:layout_marginLeft="2dp"
+                        android:layout_marginEnd="4dp"
                         android:layout_marginRight="2dp"
-                        android:layout_weight="1"
-                        android:button="?android:attr/listChoiceIndicatorMultiple"
+                        android:layout_weight="0"
+                        android:background="@drawable/custom_radiobutton_2"
+                        android:backgroundTint="@color/item_orange"
+                        android:button="@null"
                         android:buttonTint="@color/item_orange"
                         android:gravity="center"
+                        android:minWidth="0dp"
+                        android:minHeight="0dp"
                         android:textAlignment="center" />
 
                     <RadioButton
                         android:id="@+id/rb_red"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        style="@style/tRadioButton"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
                         android:layout_gravity="center"
+                        android:layout_marginStart="4dp"
                         android:layout_marginLeft="2dp"
+                        android:layout_marginEnd="4dp"
                         android:layout_marginRight="2dp"
-                        android:layout_weight="1"
-                        android:button="?android:attr/listChoiceIndicatorMultiple"
+                        android:layout_weight="0"
+                        android:background="@drawable/custom_radiobutton_2"
+                        android:backgroundTint="@color/item_red"
+                        android:button="@null"
                         android:buttonTint="@color/item_red"
                         android:gravity="center"
+                        android:minWidth="0dp"
+                        android:minHeight="0dp"
                         android:textAlignment="center" />
 
                 </RadioGroup>
@@ -189,12 +234,13 @@
                     <TableRow
                         android:id="@+id/tablerow_date"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:minHeight="40dp">
 
                         <ImageView
                             android:id="@+id/imageView"
                             android:layout_width="wrap_content"
-                            android:layout_height="35dp"
+                            android:layout_height="match_parent"
                             android:layout_weight="0.05"
                             android:adjustViewBounds="false"
                             app:srcCompat="@drawable/ic_baseline_calendar_today_24" />
@@ -203,7 +249,7 @@
                             android:id="@+id/tv_show_date"
                             style="@style/tTextView"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:clickable="false"
                             android:maxLines="1"
@@ -216,12 +262,13 @@
                     <TableRow
                         android:id="@+id/tablerow_time"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:minHeight="40dp">
 
                         <ImageView
                             android:id="@+id/imageView2"
                             android:layout_width="match_parent"
-                            android:layout_height="35dp"
+                            android:layout_height="match_parent"
                             android:layout_weight="0.05"
                             app:srcCompat="@drawable/ic_baseline_access_time_24" />
 
@@ -229,7 +276,7 @@
                             android:id="@+id/tv_show_time"
                             style="@style/tTextView"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:clickable="false"
                             android:maxLines="1"
@@ -242,12 +289,13 @@
                     <TableRow
                         android:id="@+id/tablerow_span"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:minHeight="40dp">
 
                         <ImageView
                             android:id="@+id/imageView3"
                             android:layout_width="wrap_content"
-                            android:layout_height="35dp"
+                            android:layout_height="match_parent"
                             android:layout_weight="0.05"
                             app:srcCompat="@drawable/ic_baseline_hourglass_bottom_24" />
 
@@ -255,7 +303,7 @@
                             android:id="@+id/tv_show_span"
                             style="@style/tTextView"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:clickable="false"
                             android:maxLines="1"

@@ -105,16 +105,16 @@ class Functions {
     fun sortMutableList(itemList: MutableList<sItem>, sortMode: Int): MutableList<sItem> {
         var sortedList: MutableList<sItem> = itemList
         when(sortMode){
-            1 -> {sortedList = itemList.sortedBy { it.Index }.toMutableList() }
-            2 -> {sortedList = itemList.sortedBy { it.Index }.reversed().toMutableList()}
-            3 -> {sortedList = itemList.sortedBy { it.Color }.toMutableList() }
-            4 -> {sortedList = itemList.sortedBy { it.Color }.reversed().toMutableList() }
-            5 -> {sortedList = itemList.sortedBy { it.TimeStamp }.toMutableList() }
-            6 -> {sortedList = itemList.sortedBy { it.TimeStamp }.reversed().toMutableList() }
+            0 -> {sortedList = itemList.sortedBy { it.Index }.toMutableList() }
+            1 -> {sortedList = itemList.sortedBy { it.Index }.reversed().toMutableList()}
+            2 -> {sortedList = itemList.sortedBy { it.Color }.toMutableList() }
+            3 -> {sortedList = itemList.sortedBy { it.Color }.reversed().toMutableList() }
+            4 -> {sortedList = itemList.sortedBy { it.TimeStamp }.toMutableList() }
+            5 -> {sortedList = itemList.sortedBy { it.TimeStamp }.reversed().toMutableList() }
+            6 -> {}
             7 -> {}
             8 -> {}
             9 -> {}
-            10 -> {}
         } //TODO more sort modes, reversed ones are not working
         return sortedList
     }

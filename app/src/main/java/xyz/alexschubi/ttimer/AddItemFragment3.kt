@@ -86,7 +86,7 @@ class AddItemFragment3() : Fragment(), ExitWithAnimation {
         super.onViewCreated(view, savedInstanceState)
         view.startCircularReveal(startPosX, startPosY)
         if (mfragmentItemList != null){
-            mfragmentItemList!!.view?.appbar?.setExpanded(true)
+            mfragmentItemList!!.view?.appbar?.setExpanded(false)
         }else {
             Log.e("AddItemFragment", "no fragmentItemList passed")
         }
@@ -132,14 +132,14 @@ class AddItemFragment3() : Fragment(), ExitWithAnimation {
             .setTheme(R.style.tMaterialTimePicker)
             .build()
         datePickerDialog = MaterialDatePicker.Builder.datePicker()
-            .setSelection(null )
+            .setSelection(ZonedDateTime.now().toMilli())
             .setTheme(R.style.tMaterialDatePicker)
             .build()
         timePickerDialog.addOnPositiveButtonClickListener {
             sDateTime = sDateTime.withHour(timePickerDialog.hour)
             sDateTime = sDateTime.withMinute(timePickerDialog.minute)
             currentItem.TimeStamp = sDateTime.toMilli()
-            Log.d("TimePickerDialog", sDateTime.format(DateTimeFormatter.ofPattern("EE dd.MM.yyyy")))
+            Log.d("TimePickerDialog", sDateTime.format(DateTimeFormatter.ofPattern("HH:mm")))
             refreshDateTime()
         }
         datePickerDialog.addOnPositiveButtonClickListener {
@@ -148,7 +148,7 @@ class AddItemFragment3() : Fragment(), ExitWithAnimation {
             sDateTime = sDateTime.withMonth(tempDate.monthValue)
             sDateTime = sDateTime.withYear(tempDate.year)
             currentItem.TimeStamp = sDateTime.toMilli()
-            Log.d("TimePickerDialog", sDateTime.format(DateTimeFormatter.ofPattern("EE dd.MM.yyyy")))
+            Log.d("DatePickerDialog", sDateTime.format(DateTimeFormatter.ofPattern("EE dd.MM.yyyy")))
             refreshDateTime()
         }
 
@@ -161,7 +161,7 @@ class AddItemFragment3() : Fragment(), ExitWithAnimation {
             timePickerDialog.show(parentFragmentManager, "TimePicker")
         }
         tablerow_span.setOnClickListener {
-            displayDateTimePicker()
+            //TODO display both DateTImePickers
         }
         b_del_time.setOnClickListener { delDateTime() }
         b_add_notification.setOnClickListener {
@@ -249,53 +249,6 @@ class AddItemFragment3() : Fragment(), ExitWithAnimation {
         this.view?.exitCircularReveal(posX!!, posY!!){
             parentFragmentManager.popBackStackImmediate()
         }
-    }
-
-
-    private fun displayDateTimePicker() {
-        var actualDateTime = LocalDateTime.now()
-        if (currentItem.TimeStamp != null) {actualDateTime = currentItem.date()!!.toLocalDateTime()}
-        var newItemDate: ZonedDateTime
-        var tMinute: Int = actualDateTime.minute
-        var tHour: Int = actualDateTime.hour
-        var tDay: Int = actualDateTime.dayOfMonth
-        var tMonth: Int = actualDateTime.monthValue
-        var tYear: Int = actualDateTime.year
-        val timePickerDialog = TimePickerDialog(this.context, //TODO use MaterialTimeOicker https://material.io/components/time-pickers/android#using-time-pickers
-            R.style.ThemeOverlay_MaterialComponents_TimePicker,
-            { view, hourOfDay, minute ->
-                Log.d("TimePicker", "got Time $hourOfDay:$minute")
-                tMinute = minute
-                tHour = hourOfDay
-                newItemDate = ZonedDateTime.of(tYear, tMonth, tDay, tHour, tMinute, 0, 0, ZoneId.systemDefault())
-                tv_show_time.text = newItemDate.format(dateFormatter) + " in " + Functions().getSpanString(newItemDate.toLocalDateTime())
-                tv_show_time.visibility = View.VISIBLE
-                b_del_time.visibility = View.VISIBLE
-                table_datetime.visibility = View.VISIBLE
-                timer.start()
-
-                currentItem.Span = Functions().getSpanString(newItemDate.toLocalDateTime())
-                currentItem.TimeStamp = newItemDate.toMilli()
-                Log.d("addDateTime", "LocalDateTime ${currentItem.date()!!.format(dateFormatter)} set")
-                //exit here
-            },
-            tHour,
-            tMinute,
-            true)
-        val datePickerDialog = DatePickerDialog(this.requireContext(),
-            R.style.ThemeOverlay_MaterialComponents_MaterialCalendar,
-            { view, year, month, dayOfMonth ->
-                Log.d("DatePicker","got Date $dayOfMonth.$month.$year")
-                tDay = dayOfMonth
-                tMonth = month + 1
-                tYear = year
-
-                timePickerDialog.show()
-            },
-            tYear,
-            tMonth - 1,
-            tDay)
-        datePickerDialog.show()
     }
 
     fun initDateTimePicker(){

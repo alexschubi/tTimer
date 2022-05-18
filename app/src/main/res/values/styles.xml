@@ -109,7 +109,14 @@
         <item name="colorPrimary">@color/datetime_picker1</item>
         <item name="colorOnSurface">@color/datetime_picker2</item>
     </style>
-
+    <style name="tRadioButton" parent="Widget.Material3.CompoundButton.RadioButton">
+        <item name="paddingStart">0dp</item>
+        <item name="paddingEnd">0dp</item>
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:paddingRight">0dp</item>
+        <item name="minHeight">0dp</item>
+        <item name="minWidth">0dp</item>
+    </style>
 
     <style name="RadioButton_blue">
         <item name="backgroundColor">@color/item_blue</item>
