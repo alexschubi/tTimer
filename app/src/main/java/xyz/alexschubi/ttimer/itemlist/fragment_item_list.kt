@@ -101,7 +101,7 @@ class fragment_item_list : Fragment() {
             }
         }
 
-        if (openSItem != null) {
+        if (openSItem != null) { //why is this here
             val positions = intArrayOf(b_add_reveal.left + b_add_reveal.width/2, b_add_reveal.top + b_add_reveal.height/2)
             parentFragmentManager.open {
                 add(R.id.container, AddItemFragment3.newInstance(positions, positions,
@@ -134,7 +134,12 @@ class fragment_item_list : Fragment() {
         exitPos[1] += view.appbar.height
         startPos = exitPos
         parentFragmentManager.open {
-            add(R.id.container, AddItemFragment3.newInstance(startPos, exitPos, item, this@fragment_item_list))
+            add(R.id.container, AddItemFragment3.newInstance(startPos,
+                exitPos,
+                item,
+                this@fragment_item_list,
+                adapter.mItems.lastIndexOf(adapter.mItems.findLast{ it.Index == editItem.Index }) )
+            )
             addToBackStack(null)
         }
         Log.d("CircularReveal",
@@ -146,12 +151,12 @@ class fragment_item_list : Fragment() {
         return linearLayoutManager.findViewByPosition(adapter.mItems.lastIndexOf(item))
             ?.getCenterPosition()
     }
-    fun editItem(oldItem: sItem, newItem: sItem): IntArray? {
-        adapter.editItem(oldItem, newItem)
-        return linearLayoutManager.findViewByPosition(adapter.mItems.lastIndexOf(newItem))
+    fun editItem(oldItemPosition: Int, newItem: sItem): IntArray? {
+        adapter.editItem(oldItemPosition, newItem)
+        return linearLayoutManager.findViewByPosition(oldItemPosition)
             ?.getCenterPosition()
     }
-    fun removeItem(item: sItem){
-        adapter.removeItem(item)
+    fun removeItem(oldItemPosition: Int){
+        adapter.removeItem(oldItemPosition)
     }
 }

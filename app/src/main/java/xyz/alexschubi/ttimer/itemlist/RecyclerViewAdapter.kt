@@ -112,17 +112,15 @@ class RecyclerViewAdapter(
         notifyItemInserted(index)
         Log.d("RecyclerView", "addItem $item")
     }
-    fun editItem(oldItem: sItem, newItem: sItem){
-        val index = mItems.lastIndexOf(oldItem)
-        mItems[index] = newItem
-        notifyItemChanged(index)
+    fun editItem(oldItemPosition: Int, newItem: sItem){
+        mItems[oldItemPosition] = newItem
+        notifyItemChanged(oldItemPosition)
         Log.d("RecyclerView", "editItem $newItem")
     }
-    fun removeItem(item: sItem){
-        val index = mItems.lastIndexOf(item)
-        mItems.removeAt(index)
-        notifyItemRemoved(index)
-        Log.d("RecyclerView", "removeItem $item")
+    fun removeItem(oldItemPosition: Int){
+        mItems.removeAt(oldItemPosition)
+        notifyItemRemoved(oldItemPosition)
+        Log.d("RecyclerView", "removeItem $oldItemPosition")
     }
 }
 

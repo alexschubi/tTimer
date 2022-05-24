@@ -40,7 +40,7 @@ class AddItemFragment3() : Fragment(), ExitWithAnimation {
     private var isNewItem = true
     private var newItem = sItem(-1, "", null, null, "purple", false, false)
     private var sDateTime = ZonedDateTime.now()
-
+    private var linLayPosition: Int? = null
     lateinit var timePickerDialog: MaterialTimePicker
     lateinit var datePickerDialog: MaterialDatePicker<Long>
     var currentItem: sItem = newItem
@@ -53,8 +53,9 @@ class AddItemFragment3() : Fragment(), ExitWithAnimation {
             startPos: IntArray? = null,
             exitPos: IntArray? = null,
             getItem: sItem? = null,
-            fragmentItemList: fragment_item_list? = null): AddItemFragment3
-        = AddItemFragment3().apply {
+            fragmentItemList: fragment_item_list? = null,
+            linearLayoutPosition: Int? = null
+        ): AddItemFragment3 = AddItemFragment3().apply {
             if (exitPos != null && exitPos.size == 2) {
                 posX = exitPos[0]
                 posY = exitPos[1]
@@ -65,10 +66,14 @@ class AddItemFragment3() : Fragment(), ExitWithAnimation {
             }
             if (getItem != null){
                 currentItem = getItem
+                getSItem = getItem
                 isNewItem = false
             }
             if(fragmentItemList != null){
                 mfragmentItemList = fragmentItemList
+            }
+            if (linearLayoutPosition != null){
+                linLayPosition = linearLayoutPosition
             }
 
         }
@@ -235,7 +240,7 @@ class AddItemFragment3() : Fragment(), ExitWithAnimation {
             if(isNewItem){
                 mfragmentItemList!!.addItem(currentItem)
             } else {
-                mfragmentItemList!!.editItem(getSItem!!, currentItem)
+                mfragmentItemList!!.editItem(linLayPosition!!, currentItem)
             }
         } else {
             Log.e("AddItemFragment", "no fragmentItemList passed")
