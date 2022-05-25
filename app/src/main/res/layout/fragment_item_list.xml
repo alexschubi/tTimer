@@ -25,6 +25,7 @@
 
                 <Button
                     android:id="@+id/b_settings"
+                    style="@style/tMaterialButton"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginTop="8dp"

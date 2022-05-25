@@ -5,7 +5,7 @@
         <item name="contentInsetEnd">0dp</item>
         <item name="contentInsetLeft">0dp</item>
         <item name="contentInsetRight">0dp</item>
-        <item name="materialButtonStyle">@style/tMaterialButton</item>
+        <item name="materialButtonStyle">@style/tMaterialButtonNormal</item>
         <item name="cardViewStyle">@style/tCardView</item>
         <item name="materialCardViewStyle">@style/tCardView</item>
 <!--        <item name="preferenceTheme">@style/tPreferenceTheme</item>-->
@@ -37,6 +37,10 @@
         <item name="android:elevation">5dp</item>
         <item name="strokeWidth">0dp</item>
         <item name="rippleColor">@color/dn_accent_1</item>
+    </style>
+    <style name="tMaterialButtonNormal" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textColor">@color/dn_text</item>
+        <item name="android:textAlignment">center</item>
     </style>
     <style name="tTextView" parent="Widget.MaterialComponents.TextView">
         <item name="backgroundTint">@color/dn_button_background</item>

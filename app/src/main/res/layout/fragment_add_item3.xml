@@ -38,6 +38,7 @@
 
                     <Button
                         android:id="@+id/b_back"
+                        style="@style/tMaterialButton"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:background="@drawable/ic_baseline_arrow_back_24"
@@ -317,6 +318,7 @@
 
                 <Button
                     android:id="@+id/b_del_time"
+                    style="@style/tMaterialButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
@@ -327,6 +329,7 @@
 
                 <Button
                     android:id="@+id/b_add_notification"
+                    style="@style/tMaterialButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
@@ -345,6 +348,7 @@
 
     <Button
         android:id="@+id/b_add_final"
+        style="@style/tMaterialButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
