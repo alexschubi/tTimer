@@ -153,7 +153,7 @@ class Functions {
         }
         Log.d("localDB", "save $item")
     }
-    fun deleteItem(itemIndex: Long){
+    fun deleteItemFromDB(itemIndex: Long){
         val editItem = localDB.itemsDAO().get(itemIndex)
         if (editItem != null) {
             editItem.Deleted = true

@@ -55,6 +55,7 @@ class fragment_item_list : Fragment() {
         Log.d("localDB", "got displayList $displayItemsList")
         //set swipe Listener
         ItemTouchHelper(SwipeItemLeft(adapter,this@fragment_item_list)).attachToRecyclerView(this.recyclerViewItems2)
+        ItemTouchHelper(SwipeItemRight(adapter,this@fragment_item_list)).attachToRecyclerView(this.recyclerViewItems2)
 
         view.b_add_reveal.setOnClickListener {
             val positions = intArrayOf(it.left + it.width/2, it.top + it.height/2)
@@ -131,7 +132,8 @@ class fragment_item_list : Fragment() {
             getItems.add(editItem)
             adapter.setItems(getItems)
         }
-        exitPos[1] += view.appbar.height
+        //nice try if appbar where visible after backstack
+        //exitPos[1] += view.appbar.height
         startPos = exitPos
         parentFragmentManager.open {
             add(R.id.container, AddItemFragment3.newInstance(startPos,

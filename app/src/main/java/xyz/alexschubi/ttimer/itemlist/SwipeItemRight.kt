@@ -4,9 +4,11 @@ import android.graphics.Canvas
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
-import xyz.alexschubi.ttimer.Functions
+import xyz.alexschubi.ttimer.*
 
-class SwipeItemLeft(var adapter: RecyclerViewAdapter, private var fragmentItemList: fragment_item_list) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT){
+class SwipeItemRight(var adapter: RecyclerViewAdapter,
+                     private var fragmentItemList: fragment_item_list) :
+    ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT){
     override fun onMove(
         recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder,

@@ -1,7 +1,5 @@
 package xyz.alexschubi.ttimer
 
-import android.app.DatePickerDialog
-import android.app.TimePickerDialog
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -14,7 +12,6 @@ import android.widget.RadioButton
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.google.android.material.datepicker.MaterialDatePicker
-import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import kotlinx.android.synthetic.main.fragment_add_item3.*
@@ -23,7 +20,6 @@ import xyz.alexschubi.ttimer.data.sItem
 import xyz.alexschubi.ttimer.itemlist.fragment_item_list
 import java.time.*
 import java.time.format.DateTimeFormatter
-import java.time.temporal.TemporalAdjusters
 
 class AddItemFragment3() : Fragment(), ExitWithAnimation {
 
@@ -113,7 +109,7 @@ class AddItemFragment3() : Fragment(), ExitWithAnimation {
         } else {
             Functions().saveSItemToDB(currentItem)
             currentItem = localDB.itemsDAO().getLast()
-            Functions().deleteItem(currentItem.Index)
+            Functions().deleteItemFromDB(currentItem.Index)
         }
 
         var tempDateTime = LocalDateTime.now()
