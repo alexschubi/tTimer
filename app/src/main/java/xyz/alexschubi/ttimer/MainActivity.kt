@@ -15,6 +15,7 @@ import xyz.alexschubi.ttimer.data.ItemsDatabase
 import xyz.alexschubi.ttimer.data.sItem
 import xyz.alexschubi.ttimer.data.suppPreferences
 import xyz.alexschubi.ttimer.itemlist.fragment_item_list
+import xyz.alexschubi.ttimer.livedata.LiveDataRecyclerViewFragment
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -67,6 +68,9 @@ class MainActivity : AppCompatActivity() {
         }else{
             supportFragmentManager.open { replace(R.id.container, fragment_item_list.newInstance()) }
         } //Useless if else case?
+
+        //TODO use LiveData and remove normal RecyclerView
+        supportFragmentManager.open { replace(R.id.container, LiveDataRecyclerViewFragment.newInstance()) }
     }
 
     override fun onBackPressed() { // from https://proandroiddev.com/circular-reveal-in-fragments-the-clean-way-f25c8bc95257

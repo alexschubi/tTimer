@@ -40,7 +40,7 @@ class Functions {
     //TODO better span texting
     fun getSpanString(itemDateTime: LocalDateTime?): String?{
         if(itemDateTime==null) return null
-        var testOutLine: String = ""
+        var testOutLine = ""
         val currentDateTime = LocalDateTime.now()
             if (itemDateTime.isAfter(currentDateTime)) {
                 when (itemDateTime.year - currentDateTime.year) {
@@ -164,4 +164,8 @@ class Functions {
             Log.d("localDB", "could not get sItem")
         }
     }
+    fun getSortedItems(): MutableList<sItem>{
+        return sortMutableList(localDB.itemsDAO().getActiveItems(), localDB.preferencesDAO().getLast().SortMode)
+    }
+
 }
