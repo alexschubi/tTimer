@@ -115,9 +115,62 @@ class Functions {
             7 -> {}
             8 -> {}
             9 -> {}
-        } //TODO more sort modes, reversed ones are not working
+        } //TODO more sort modes
         return sortedList
     }
+    /*              "sort by None ↑" -> sModeInt = 0
+                    "sort by None ↓" -> sModeInt = 1
+                    "sort by Color ↑" -> sModeInt = 2
+                    "sort by Color ↓" -> sModeInt = 3
+                    "sort by Date ↑" -> sModeInt = 4
+                    "sort by Date ↓" -> sModeInt = 5
+                    "sort by Date, Color ↑" -> sModeInt = 6
+                    "sort by Date, Color ↓" -> sModeInt = 7
+                    "sort by Color, Date ↑" -> sModeInt = 8
+                    "sort by Color, Date ↓" -> sModeInt = 9
+                    "sort by 0>Date, Color ↑" -> sModeInt = 10
+                    "sort by 0>Date, Color ↓" -> sModeInt = 11
+                    "sort by Date>0, Color ↑" -> sModeInt = 12
+                    "sort by Date>0, Color ↓" -> sModeInt = 13
+                    "sort by Color, Date ↑>0" -> sModeInt = 14
+                    "sort by Color, Date ↓>0" -> sModeInt = 15
+                    "sort by Color, 0>Date ↑" -> sModeInt = 16
+                    "sort by Color, 0>Date ↓" -> sModeInt = 17
+                    "sort by 0>Date ↑" -> sModeInt = 18
+                    "sort by 0>Date ↓" -> sModeInt = 19
+                    "sort by Date ↑>0" -> sModeInt = 20
+                    "sort by Date ↓>0" -> sModeInt = 21*/
+    fun getSortedLiveData(sortMode: Int?): MutableList<sItem> {
+        var sortingMode = 0
+        sortingMode = sortMode ?: localDB.preferencesDAO().getLast().SortMode
+        var orderBySQL = "Index ASC"
+        when(sortingMode){
+            0 ->  {orderBySQL = "Index ASC"}
+            1 ->  {orderBySQL = "Index DESC"}
+            2 ->  {orderBySQL = "Color ASC"}
+            3 ->  {orderBySQL = "Color DESC"}
+            4 ->  {orderBySQL = "Date ASC"}
+            5 ->  {orderBySQL = "Date DESC"}
+            6 ->  {orderBySQL = "Date, Color ASC"}
+            7 ->  {orderBySQL = "Date, Color DESC"}
+            8 ->  {orderBySQL = "Color, Date ASC"}
+            9 ->  {orderBySQL = "Color, Date DESC"}
+            10 -> {orderBySQL = "Date IS NULL ASC, Date IS NOT NULL ASC, Color ASC"}
+            11 -> {orderBySQL = "Date IS NULL DESC, Date IS NOT NULL DESC, Color DESC"}
+            12 -> {orderBySQL = "Date IS NOT NULL ASC, Date IS NULL ASC, Color ASC"}
+            13 -> {orderBySQL = "Date IS NOT NULL DESC, Date IS NULL DESC, Color DESC"}
+            14 -> {orderBySQL = "Color ASC, Date IS NOT NULL DESC, Date IS NULL DESC"}
+            15 -> {orderBySQL = "Color DESC, Date IS NOT NULL DESC, Date IS NULL DESC"}
+            16 -> {orderBySQL = "Color ASC, Date IS NULL DESC, Date IS NOT NULL DESC"}
+            17 -> {orderBySQL = "Color DESC, Date IS NULL DESC, Date IS NOT NULL DESC"}
+            18 -> {orderBySQL = "Date IS NULL ASC, Date IS NOT NULL ASC"}
+            19 -> {orderBySQL = "Date IS NULL DESC, Date IS NOT NULL DESC"}
+            20 -> {orderBySQL = "Date IS NOT NULL ASC, Date IS NULL ASC"}
+            21 -> {orderBySQL = "Date IS NOT NULL DESC, Date IS NULL DESC"}
+        }
+        return localDB.itemsDAO().getLiveDataItemsSorted(orderBySQL)
+    }
+
 
     fun applyFirebase(){
         val prefSendFirebaseEnabled = localDB.preferencesDAO().getLast().FirebaseEnabled

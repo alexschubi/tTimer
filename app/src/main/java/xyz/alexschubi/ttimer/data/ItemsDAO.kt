@@ -31,4 +31,6 @@ interface ItemsDAO{ //TODO use coroutines / livedata
     @Query("SELECT COUNT(*) FROM itemsTable ")
     fun getItemsAmount(): Long
 
+    @Query("SELECT * FROM itemsTable WHERE Deleted = 0 ORDER BY :key")
+    fun getLiveDataItemsSorted(key: String): MutableList<sItem>
 }

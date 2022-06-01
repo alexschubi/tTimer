@@ -14,7 +14,6 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import xyz.alexschubi.ttimer.data.ItemsDatabase
 import xyz.alexschubi.ttimer.data.sItem
 import xyz.alexschubi.ttimer.data.suppPreferences
-import xyz.alexschubi.ttimer.itemlist.fragment_item_list
 import xyz.alexschubi.ttimer.livedata.LiveDataRecyclerViewFragment
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -60,17 +59,11 @@ class MainActivity : AppCompatActivity() {
         firebaseCrashlytics = FirebaseCrashlytics.getInstance()
         Functions().applyFirebase()
         Functions().applyTheme()
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        if(openSItem != null){
-            supportFragmentManager.open { replace(R.id.container, fragment_item_list.newInstance(openSItem)) }
-        }else{
-            supportFragmentManager.open { replace(R.id.container, fragment_item_list.newInstance()) }
-        } //Useless if else case?
 
-        //TODO use LiveData and remove normal RecyclerView
-        supportFragmentManager.open { replace(R.id.container, LiveDataRecyclerViewFragment.newInstance()) }
+        //open Fragment
+        supportFragmentManager.open { replace(R.id.container, LiveDataRecyclerViewFragment.newInstance(openSItem)) }
     }
 
     override fun onBackPressed() { // from https://proandroiddev.com/circular-reveal-in-fragments-the-clean-way-f25c8bc95257

@@ -16,31 +16,31 @@ import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import kotlinx.android.synthetic.main.fragment_add_item3.*
 import kotlinx.android.synthetic.main.fragment_add_item3.view.*
+import kotlinx.android.synthetic.main.live_data_recycler_view_fragment.*
 import xyz.alexschubi.ttimer.data.sItem
-import xyz.alexschubi.ttimer.itemlist.fragment_item_list
+import xyz.alexschubi.ttimer.livedata.LiveDataRecyclerViewAdapter
+import xyz.alexschubi.ttimer.livedata.LiveDataRecyclerViewFragment
 import java.time.*
 import java.time.format.DateTimeFormatter
 
 class AddItemFragment3() : Fragment(), ExitWithAnimation {
 
     //newInstance Variables
-    private var getSItem: sItem? = null
-    private var mfragmentItemList: fragment_item_list? = null
+    private var oldItem: sItem? = null
     override var posX: Int? = null
     override var posY: Int? = null
     private var startPosX: Int = 0
     private var startPosY: Int = 0
     override fun isToBeExitedWithAnimation(): Boolean = true
     private var exitWithSave = false
+    private lateinit var adapter: LiveDataRecyclerViewAdapter
     //local Variables
     private var isNewItem = true
-    private var newItem = sItem(-1, "", null, null, "purple", false, false)
+    private val newItem = sItem(-1, "", null, null, "purple", false, false)
     private var sDateTime = ZonedDateTime.now()
-    private var linLayPosition: Int? = null
-    lateinit var timePickerDialog: MaterialTimePicker
-    lateinit var datePickerDialog: MaterialDatePicker<Long>
+    private lateinit var timePickerDialog: MaterialTimePicker
+    private lateinit var datePickerDialog: MaterialDatePicker<Long>
     var currentItem: sItem = newItem
-    var hasNotification = false
 
 
     companion object {
@@ -49,8 +49,7 @@ class AddItemFragment3() : Fragment(), ExitWithAnimation {
             startPos: IntArray? = null,
             exitPos: IntArray? = null,
             getItem: sItem? = null,
-            fragmentItemList: fragment_item_list? = null,
-            linearLayoutPosition: Int? = null
+            listFragment: LiveDataRecyclerViewFragment? = null
         ): AddItemFragment3 = AddItemFragment3().apply {
             if (exitPos != null && exitPos.size == 2) {
                 posX = exitPos[0]
@@ -62,14 +61,11 @@ class AddItemFragment3() : Fragment(), ExitWithAnimation {
             }
             if (getItem != null){
                 currentItem = getItem
-                getSItem = getItem
+                oldItem = getItem
                 isNewItem = false
             }
-            if(fragmentItemList != null){
-                mfragmentItemList = fragmentItemList
-            }
-            if (linearLayoutPosition != null){
-                linLayPosition = linearLayoutPosition
+            if(listFragment != null){
+                adapter = listFragment.liveRecyclerView.adapter as LiveDataRecyclerViewAdapter
             }
 
         }
@@ -86,11 +82,6 @@ class AddItemFragment3() : Fragment(), ExitWithAnimation {
 //rotation crash savedstate so disabled rotation in mainfest
         super.onViewCreated(view, savedInstanceState)
         view.startCircularReveal(startPosX, startPosY)
-        if (mfragmentItemList != null){
-            mfragmentItemList!!.view?.appbar?.setExpanded(false)
-        }else {
-            Log.e("AddItemFragment", "no fragmentItemList passed")
-        }
 
         //i dont know why this is here, cuz it cant br acessed
         view.b_back.setOnClickListener {
@@ -205,44 +196,37 @@ class AddItemFragment3() : Fragment(), ExitWithAnimation {
         tb_add_text.requestFocus()
         inputMethodManager.showSoftInput(tb_add_text, 0)
     }
+
 //END of OnCreate()
+
     private fun addItem() {
         val colorButton: RadioButton = view?.findViewById<RadioButton>(rg_color.checkedRadioButtonId)!!
-        when (this.view?.findViewById<RadioButton>(colorButton.id)?.id) {
-            rb_purple.id -> currentItem.Color = "purple"
-            rb_red.id -> currentItem.Color = "red"
-            rb_orange.id -> currentItem.Color = "orange"
-            rb_yellow.id -> currentItem.Color = "yellow"
-            rb_green.id -> currentItem.Color = "green"
-            rb_blue.id -> currentItem.Color = "blue"
-        }
+    when (this.view?.findViewById<RadioButton>(colorButton.id)?.id) {
+        rb_purple.id -> currentItem.Color = "purple"
+        rb_red.id -> currentItem.Color = "red"
+        rb_orange.id -> currentItem.Color = "orange"
+        rb_yellow.id -> currentItem.Color = "yellow"
+        rb_green.id -> currentItem.Color = "green"
+        rb_blue.id -> currentItem.Color = "blue"
+    }
         Log.d("radio Button", " color set to ${currentItem.Color}")
         currentItem.Text = tb_add_text.text.toString()
         // sItem.Text = sItem.Index.toString() + " - " + tb_add_text.text.toString()
         Functions().saveSItemToDB(currentItem)
-
         //cancel and make notification
         NotificationUtils(mapplication).cancelNotification(currentItem.toItem())
         if(currentItem.TimeStamp !=null && currentItem.date()!!.isAfter(ZonedDateTime.now())) {
-            NotificationUtils(mapplication).makeNotification(currentItem.toItem())
-            Log.d("Notification", "Item ${currentItem.Index} has Notification at " + currentItem.date()!!.format(
-                dateFormatter))
+        NotificationUtils(mapplication).makeNotification(currentItem.toItem())
+        Log.d("Notification", "Item ${currentItem.Index} has Notification at " + currentItem.date()!!.format(
+            dateFormatter))
         } else {
             Log.d("Notification", "No Notification wanted or in Past")
         }
+    //CLOSE addView
 
-        //CLOSE addView
-        if (mfragmentItemList != null){
-            if(isNewItem){
-                mfragmentItemList!!.addItem(currentItem)
-            } else {
-                mfragmentItemList!!.editItem(linLayPosition!!, currentItem)
-            }
-        } else {
-            Log.e("AddItemFragment", "no fragmentItemList passed")
-        }
+        if(isNewItem){ adapter.addItem(currentItem) }
+        else { adapter.editItem(oldItem!!, currentItem) }
         b_add_final.isClickable = false
-
 
         exitWithSave = true
         timer.cancel()
