@@ -70,7 +70,7 @@
         <item name="android:textCursorDrawable">@drawable/cursor</item>
     </style>
     <style name="tFloatingButton" parent="Widget.MaterialComponents.FloatingActionButton">
-        <item name="backgroundTint">#43A047</item>
+        <item name="backgroundTint">@color/tt_add</item>
         <item name="tint">#FFFFFF</item>
         <item name="elevation">7dp</item>
     </style>

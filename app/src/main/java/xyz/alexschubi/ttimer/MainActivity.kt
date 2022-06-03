@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.FirebaseApp
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import xyz.alexschubi.ttimer.data.ItemShort
 import xyz.alexschubi.ttimer.data.ItemsDatabase
 import xyz.alexschubi.ttimer.data.sItem
 import xyz.alexschubi.ttimer.data.suppPreferences
@@ -62,8 +63,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        var openWithItemShort: ItemShort? = null
+        if (intent.extras != null){
+            openWithItemShort = intent.extras!!.getParcelable<ItemShort>("shortItem")
+        }
         //open Fragment
-        supportFragmentManager.open { replace(R.id.container, LiveDataRecyclerViewFragment.newInstance(openSItem)) }
+        supportFragmentManager.open { replace(R.id.container, LiveDataRecyclerViewFragment.newInstance(openWithItemShort)) }
     }
 
     override fun onBackPressed() { // from https://proandroiddev.com/circular-reveal-in-fragments-the-clean-way-f25c8bc95257
@@ -88,12 +93,12 @@ class MainActivity : AppCompatActivity() {
         override fun onReceive(context: Context, intent: Intent) {
             val pendResult = this.goAsync()
             Log.i("NotificationReceiver", "triggered")
+            Log.d("MainActivity", "Intent Extras: "+ intent.getBundleExtra())
+            val shortItem: ItemShort = intent.getParcelableExtra<ItemShort>("ItemShort")!!
+//TODO cant get ParcelableExtra LATEST
 
-            val editItemArray = intent.extras!!.getStringArrayList("ItemArray")!!
-            Log.d("NotificationReceiver", "got Item " + editItemArray)
-            var editItem = Functions().ItemFromArray(editItemArray)
-            val notification = NotificationUtils(context).getNotificationBuilder(editItemArray).build()
-            NotificationUtils(context).getManager().notify(editItem.Index, notification)
+            val notification = NotificationUtils(context).getNotificationBuilder(shortItem).build()
+            NotificationUtils(context).getManager().notify(shortItem!!.Index.toInt(), notification)
             pendResult.finish()
         }
     }
@@ -104,7 +109,7 @@ class MainActivity : AppCompatActivity() {
             val editItemArray = intent.extras!!.getStringArrayList("currentItem")!!
             var editItem = Functions().ItemFromArray(editItemArray)
             NotificationUtils(context).cancelNotification(editItem)
-            editItem.Date = LocalDateTime.now().plusMinutes(10)
+            editItem.Date = LocalDateTime.now().plusMinutes(30)
             Functions().saveSItemToDB(editItem.toSItem())
             NotificationUtils(context).makeNotification(editItem)
             pendResult.finish()
@@ -117,7 +122,7 @@ class MainActivity : AppCompatActivity() {
             val editItemArray = intent.extras!!.getStringArrayList("currentItem")!!
             var editItem = Functions().ItemFromArray(editItemArray)
             NotificationUtils(context).cancelNotification(editItem)
-            editItem.Date = LocalDateTime.now().plusHours(3)
+            editItem.Date = LocalDateTime.now().plusDays(1)
             Functions().saveSItemToDB(editItem.toSItem())
             NotificationUtils(context).makeNotification(editItem)
             pendResult.finish()

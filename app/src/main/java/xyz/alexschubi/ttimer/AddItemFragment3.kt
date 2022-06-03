@@ -223,7 +223,6 @@ class AddItemFragment3() : Fragment(), ExitWithAnimation {
             Log.d("Notification", "No Notification wanted or in Past")
         }
     //CLOSE addView
-
         if(isNewItem){ adapter.addItem(currentItem) }
         else { adapter.editItem(oldItem!!, currentItem) }
         b_add_final.isClickable = false

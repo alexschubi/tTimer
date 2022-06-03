@@ -21,18 +21,18 @@ class LiveDataRecyclerViewAdapter(
     val onItemClicked: (item: sItem, view: View) -> Unit
     ): RecyclerView.Adapter<LiveDataRecyclerViewAdapter.ViewHolder>(){
 
-    var mItems = mutableListOf<sItem>()
+    //var mItems = mutableListOf<sItem>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.live_data_recycler_view_item, parent, false)
-        return ViewHolder(itemView, onItemClicked, mItems)
+        return ViewHolder(itemView, onItemClicked, data.value!!)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindItem(mItems[position])
+        holder.bindItem(data.value!![position])
     }
 
-    override fun getItemCount() = mItems.size
+    override fun getItemCount() = data.value!!.size
 
 
     class ViewHolder(
@@ -92,28 +92,28 @@ class LiveDataRecyclerViewAdapter(
 
 
     fun setItems(items: MutableList<sItem>) {
-        mItems = items
+        //mItems = items
         data.value = items
         notifyDataSetChanged()
         Log.d("RecyclerView", "set Items")
     }
     fun addItem(newItem: sItem) {
-        mItems!!.add(newItem)//this use useless somehow because notifieDatachanged only apllied on data.value
-        val pos = mItems!!.indexOf(mItems!!.findLast{it.Index == newItem.Index}!!)
-        //data.value!!.add(newItem)
+        //mItems!!.add(newItem)//this use useless somehow because notifieDatachanged only apllied on data.value
+        data.value!!.add(newItem)
+        val pos = data.value!!.indexOf(data.value!!.findLast{it.Index == newItem.Index}!!)
         notifyItemInserted(pos)
         Log.d("RecyclerView", "add Item ${newItem.Index} at Position $pos")
     }
     fun editItem(oldItem: sItem, newItem: sItem) {
-        val pos = mItems!!.indexOf(mItems!!.findLast{it.Index == oldItem.Index}!!)
-        mItems!![pos] = newItem
+        val pos = data.value!!.indexOf(data.value!!.findLast{it.Index == oldItem.Index}!!)
+        //mItems!![pos] = newItem
         data.value!![pos] = newItem
         notifyItemChanged(pos)
         Log.d("RecyclerView", "replaced Item ${oldItem.Index} with Item ${newItem.Index}at Position $pos")
     }
     fun removeItem(oldItem: sItem){
-        val pos = mItems!!.indexOf(mItems!!.findLast{it.Index == oldItem.Index}!!)
-        mItems!!.removeAt(pos)
+        val pos = data.value!!.indexOf(data.value!!.findLast{it.Index == oldItem.Index}!!)
+        //mItems!!.removeAt(pos)
         data.value!!.remove(oldItem)
         notifyItemRemoved(pos)
         Log.d("RecyclerView", "remove Item ${oldItem.Index} at Position $pos")

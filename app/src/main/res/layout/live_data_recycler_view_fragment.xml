@@ -78,10 +78,12 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/b_add_reveal"
+        style="@style/tFloatingButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        android:src="@drawable/ic_baseline_add_24" />"
+        android:src="@drawable/ic_baseline_add_24"
+        android:theme="@style/tFloatingButton" />"
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

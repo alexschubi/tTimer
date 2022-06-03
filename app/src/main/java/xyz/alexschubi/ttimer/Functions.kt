@@ -217,8 +217,13 @@ class Functions {
             Log.d("localDB", "could not get sItem")
         }
     }
-    fun getSortedItems(): MutableList<sItem>{
-        return sortMutableList(localDB.itemsDAO().getActiveItems(), localDB.preferencesDAO().getLast().SortMode)
+    fun getSortedItemsWithSpan(): MutableList<sItem> {
+        var items = getSortedLiveData(null)
+        items.forEach {
+            if(it.TimeStamp != null ) {
+                it.Span = getSpanString(it.date()!!.toLocalDateTime())
+            }
+        }
+        return items
     }
-
 }

@@ -18,7 +18,7 @@ class SwipeItem (var adapter: LiveDataRecyclerViewAdapter,
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         val itemIndex = viewHolder.itemView.id.toLong()
-        val deleteItem = adapter.mItems!!.findLast { it.Index == itemIndex }
+        val deleteItem = adapter.data.value!!.findLast { it.Index == itemIndex }
         adapter.removeItem(deleteItem!!)
         Functions().deleteItemFromDB(itemIndex)
         Snackbar.make(fragment.requireView(), "Item removed", Snackbar.LENGTH_LONG)

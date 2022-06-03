@@ -17,16 +17,17 @@ class LiveDataRecyclerViewViewModel : ViewModel() {
     var liveData = MutableLiveData<MutableList<sItem>>()
 
     init {
-        var itemsList = Functions().getSortedLiveData(null)
+        var itemsList = Functions().getSortedItemsWithSpan()
         viewModelScope.launch {
             liveData.value = itemsList
             while (true) {
-                (itemsList).forEach {
+                Log.v("LiveData-ViewModel", "data.value ="+ liveData.value.toString())
+                (liveData.value!!).forEach {
                     if(it.TimeStamp != null ){
                         if (it.date()!!.isAfter(ZonedDateTime.now())) {
                                 it.Span = Functions().getSpanString(it.date()!!.toLocalDateTime())
                                 Log.d("LiveData-ViewModel", "refreshed Item ${it.Index} to Span " +
-                                        itemsList.findLast { tempItem ->
+                                        liveData.value!!.findLast { tempItem ->
                                             it.Index == tempItem.Index
                                         }!!.Span
                                 )

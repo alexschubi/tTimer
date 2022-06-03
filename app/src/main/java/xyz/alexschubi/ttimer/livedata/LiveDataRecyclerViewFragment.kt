@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.live_data_recycler_view_fragment.*
 import kotlinx.android.synthetic.main.live_data_recycler_view_fragment.view.*
 import xyz.alexschubi.ttimer.*
+import xyz.alexschubi.ttimer.data.ItemShort
 import xyz.alexschubi.ttimer.data.sItem
 import xyz.alexschubi.ttimer.settings.FragmentSettings
 import java.time.ZonedDateTime
@@ -26,10 +27,10 @@ class LiveDataRecyclerViewFragment : Fragment() {
     companion object {
         private var openSItem: sItem? = null
         @JvmStatic
-        fun newInstance(openWithItem: sItem? = null): LiveDataRecyclerViewFragment
+        fun newInstance(item: ItemShort?): LiveDataRecyclerViewFragment
                 = LiveDataRecyclerViewFragment().apply {
-            if(openWithItem != null){
-                openSItem = openWithItem
+            if(item != null){
+                openSItem = sItem(item.Index, item.Text, item.TimeStamp, "", item.Color, item.Notified, item.Deleted)
             }
         }
     }
@@ -60,8 +61,8 @@ class LiveDataRecyclerViewFragment : Fragment() {
             liveData!!.forEach {
                 if (it.TimeStamp != null){
                     if (it.date()!!.isAfter(ZonedDateTime.now())){
-                        adapter.notifyItemChanged(liveData.indexOf(it))
-                        Log.d("LiveData-Fragment", "recyclerview notified Item ${it.Index} changed")
+                        this.liveRecyclerView.adapter!!.notifyItemChanged(liveData.indexOf(it))
+                        Log.v("LiveData-Fragment", "recyclerview notified Item ${it.Text} changed")
                     }
                 }
             }
@@ -117,7 +118,7 @@ class LiveDataRecyclerViewFragment : Fragment() {
                     "sort by Date ↓>0" -> sModeInt = 21
                     else -> Log.d("sortMode", "wrong sortModeKey String") }
                 localDB.preferencesDAO().update(localDB.preferencesDAO().getLast().apply { SortMode = sModeInt })
-                adapter.setItems(Functions().sortMutableList(localDB.itemsDAO().getActiveItems(), sModeInt))
+                adapter.setItems(Functions().getSortedItemsWithSpan())
                 Log.i("sortMode", "changed to $sModeInt")
                 Log.d("suppPrefs", "sortMode is: "+ localDB.preferencesDAO().getLast().SortMode.toString())
             }
@@ -127,16 +128,14 @@ class LiveDataRecyclerViewFragment : Fragment() {
         }
 
         //open AddItem when started from notification
-        if (openSItem != null) { //why is this here
+        if (openSItem != null) {
             displayAddItem(openSItem, b_add_reveal)
         }
     }
 
     fun displayAddItem(item: sItem?, view: View?) {
-       // var index = 0L
-       // index = localDB.itemsDAO().getLast().Index + 1
-       // var openItem = sItem(index, "", null, null, "purple", false, false)
-       // if (item != null) {openItem = item}
+
+
 
         var startPos = intArrayOf(0,0)
         var exitPos = intArrayOf(0,0)

@@ -23,9 +23,21 @@
         <item>sort by Color ↓</item>
         <item>sort by Date ↑</item>
         <item>sort by Date ↓</item>
-        <item>sort by Date&gt;Color ↑</item>
-        <item>sort by Date&gt;Color ↓</item>
-        <item>sort by Color&gt;Date ↑</item>
-        <item>sort by Color&gt;Date ↓</item>
+        <item>sort by Date, Color ↑</item>
+        <item>sort by Date, Color ↓</item>
+        <item>sort by Color, Date ↑</item>
+        <item>sort by Color, Date ↓</item>
+        <item>sort by 0>Date, Color ↑</item>
+        <item>sort by 0>Date, Color ↓</item>
+        <item>sort by Date>0, Color ↑</item>
+        <item>sort by Date>0, Color ↓</item>
+        <item>sort by Color, Date ↑>0</item>
+        <item>sort by Color, Date ↓>0</item>
+        <item>sort by Color, 0>Date ↑</item>
+        <item>sort by Color, 0>Date ↓</item>
+        <item>sort by 0>Date ↑</item>
+        <item>sort by 0>Date ↓</item>
+        <item>sort by Date ↑>0</item>
+        <item>sort by Date ↓>0</item>
     </string-array>
 </resources>
