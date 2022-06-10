@@ -214,9 +214,9 @@ class AddItemFragment3() : Fragment(), ExitWithAnimation {
         // sItem.Text = sItem.Index.toString() + " - " + tb_add_text.text.toString()
         Functions().saveSItemToDB(currentItem)
         //cancel and make notification
-        NotificationUtils(mapplication).cancelNotification(currentItem.toItem())
+        NotificationUtils(mapplication).cancelNotification(currentItem.toItemShort())
         if(currentItem.TimeStamp !=null && currentItem.date()!!.isAfter(ZonedDateTime.now())) {
-        NotificationUtils(mapplication).makeNotification(currentItem.toItem())
+        NotificationUtils(mapplication).makeNotification(currentItem.toItemShort())
         Log.d("Notification", "Item ${currentItem.Index} has Notification at " + currentItem.date()!!.format(
             dateFormatter))
         } else {

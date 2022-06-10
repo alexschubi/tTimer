@@ -17,6 +17,7 @@ import xyz.alexschubi.ttimer.data.sItem
 import xyz.alexschubi.ttimer.data.suppPreferences
 import xyz.alexschubi.ttimer.livedata.LiveDataRecyclerViewFragment
 import java.time.LocalDateTime
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
 
@@ -93,9 +94,9 @@ class MainActivity : AppCompatActivity() {
         override fun onReceive(context: Context, intent: Intent) {
             val pendResult = this.goAsync()
             Log.i("NotificationReceiver", "triggered")
-            Log.d("MainActivity", "Intent Extras: "+ intent.getBundleExtra())
             val shortItem: ItemShort = intent.getParcelableExtra<ItemShort>("ItemShort")!!
-//TODO cant get ParcelableExtra LATEST
+            Log.d("MainActivity", "Intent Extras: $shortItem")
+            //TODO cant get ParcelableExtra LATEST
 
             val notification = NotificationUtils(context).getNotificationBuilder(shortItem).build()
             NotificationUtils(context).getManager().notify(shortItem!!.Index.toInt(), notification)
@@ -107,9 +108,9 @@ class MainActivity : AppCompatActivity() {
             val pendResult = this.goAsync()
             Log.i("Notification", "SnoozeShortReceiver triggered")
             val editItemArray = intent.extras!!.getStringArrayList("currentItem")!!
-            var editItem = Functions().ItemFromArray(editItemArray)
+            var editItem = editItemArray.toItemShort()
             NotificationUtils(context).cancelNotification(editItem)
-            editItem.Date = LocalDateTime.now().plusMinutes(30)
+            editItem.TimeStamp = ZonedDateTime.now().plusMinutes(30).toMilli()
             Functions().saveSItemToDB(editItem.toSItem())
             NotificationUtils(context).makeNotification(editItem)
             pendResult.finish()
@@ -119,10 +120,10 @@ class MainActivity : AppCompatActivity() {
         override fun onReceive(context: Context, intent: Intent) {
             val pendResult = this.goAsync()
             Log.i("Notification", "SnoozeLongReceiver triggered")
-            val editItemArray = intent.extras!!.getStringArrayList("currentItem")!!
-            var editItem = Functions().ItemFromArray(editItemArray)
+
+            val editItem = intent.getParcelableExtra<ItemShort>("ItemShort")!!
             NotificationUtils(context).cancelNotification(editItem)
-            editItem.Date = LocalDateTime.now().plusDays(1)
+            editItem.TimeStamp = ZonedDateTime.now().plusDays(1).toMilli()
             Functions().saveSItemToDB(editItem.toSItem())
             NotificationUtils(context).makeNotification(editItem)
             pendResult.finish()
@@ -132,12 +133,12 @@ class MainActivity : AppCompatActivity() {
         override fun onReceive(context: Context, intent: Intent) {
             val pendResult = this.goAsync()
             Log.i("Notification", "DeleteReceiver triggered")
-            val editItemArray = intent.extras!!.getStringArrayList("currentItem")!!
-            var editItem = Functions().ItemFromArray(editItemArray)
+
+            var editItem = intent.getParcelableExtra<ItemShort>("ItemShort")!!
             NotificationUtils(context).cancelNotification(editItem)
             editItem.Deleted = true
             Functions().saveSItemToDB(editItem.toSItem())
-            Log.i("localDB", "delted item ${editItem.Index}")
+            Log.i("localDB", "deleted item ${editItem.Index}")
             pendResult.finish()
         }
     }

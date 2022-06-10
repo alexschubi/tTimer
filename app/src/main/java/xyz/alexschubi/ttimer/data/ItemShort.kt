@@ -14,9 +14,7 @@ data class ItemShort(
     var TimeStamp: Long?,
     var Color: String = "purple",
     var Notified: Boolean = false,
-    var Deleted: Boolean = false,
-    ): Parcelable{
-    override fun writeToParcel(p0: Parcel?, p1: Int) {
-        p0.write//TODO LATEST
-    }
-    }
+    var Deleted: Boolean = false ): Parcelable {
+
+   // override fun writeToParcel(p0: Parcel?, p1: Int) { //p0.write//TODO LATEST }
+}

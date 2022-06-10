@@ -21,7 +21,8 @@
         <activity android:name=".MainActivity"
             android:windowSoftInputMode="adjustResize"
             android:screenOrientation="locked"
-            android:exported="true">
+            android:exported="true"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="xyz.alexschubi.ttimer.MainActivity" />
                 <category android:name="android.intent.category.LAUNCHER" />

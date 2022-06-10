@@ -9,6 +9,8 @@ import android.view.animation.DecelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import xyz.alexschubi.ttimer.data.ItemShort
+import xyz.alexschubi.ttimer.data.ItemsDatabase
 import xyz.alexschubi.ttimer.data.sItem
 import java.time.*
 
@@ -59,34 +61,40 @@ fun View.getCenterPosition(): IntArray{
     return intArrayOf(posX, posY)
 }
 
+fun ArrayList<String>.toItemShort(): ItemShort{
+    val timestamp: Long? = if (this[2]=="") null else this[2].toLong()
+    return ItemShort( this[0].toLong(), this[1], timestamp, this[3], this[4].toBoolean(), this[5].toBoolean())
+}
+fun ItemShort.toArrayList(): ArrayList<String>{
+    val timestamp: String = if (this.TimeStamp==null) "" else this.TimeStamp.toString()
+    return arrayListOf<String>(this.Index.toString(), this.Text, timestamp, this.Color, this.Notified.toString(), this.Deleted.toString())
+}
+fun ItemShort.toSItem(): sItem{//temporary until sItem and Item deleted
+    val timespan: String? = if(TimeStamp==null) null else Functions().getSpanString(this.TimeStamp!!.toZonedDateTime().toLocalDateTime())!!
+    return sItem(this.Index, this.Text,  this.TimeStamp, timespan, this.Color, this.Notified, this.Deleted)
+}
+fun sItem.toItemShort(): ItemShort{//temporary until sItem and Item deleted
+    return ItemShort(Index, Text, TimeStamp, Color, Notified, Deleted)
+}
+fun ItemShort.dateTime(): ZonedDateTime?{
+    return if (TimeStamp != null) TimeStamp!!.toZonedDateTime() else null
+}
+
 fun Item.toSItem(): sItem{
-    return sItem(Index.toLong(),
-        Text,
+    return sItem(Index.toLong(), Text,
         Date?.atZone(ZoneId.systemDefault())?.toInstant()?.toEpochMilli(),
-        Functions().getSpanString(Date),
-        Color,
-        Notified,
-        Deleted
+        Functions().getSpanString(Date), Color, Notified, Deleted
     )
 }
 fun sItem.toItem(): Item{
     var dateTime: LocalDateTime? = null
     if (TimeStamp!=null)
         dateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(TimeStamp!!), ZoneId.systemDefault())
-    return Item(Index.toInt(),
-        Text,
-        dateTime,
-        Functions().getSpanString(dateTime),
-        Notified,
-        Deleted,
-        Color
-    )
+    return Item(Index.toInt(), Text, dateTime, Functions().getSpanString(dateTime), Notified, Deleted, Color)
 }
 fun sItem.date(): ZonedDateTime?{
     var dateTime: ZonedDateTime? = null
-    if(TimeStamp!=null){
-        dateTime = ZonedDateTime.ofInstant(Instant.ofEpochMilli(TimeStamp!!), ZoneId.systemDefault())
-    }
+    if(TimeStamp!=null){ dateTime = ZonedDateTime.ofInstant(Instant.ofEpochMilli(TimeStamp!!), ZoneId.systemDefault()) }
     return dateTime
 }
 
@@ -95,7 +103,6 @@ interface ExitWithAnimation{
     var posY: Int?
     fun isToBeExitedWithAnimation(): Boolean
 }
-
 inline fun FragmentManager.open(block: FragmentTransaction.() -> Unit) {
     beginTransaction().apply{
         block()
@@ -139,4 +146,13 @@ inline fun ZonedDateTime.toMilli(): Long{
 }
 inline fun Long.toZonedDateTime(): ZonedDateTime{
     return ZonedDateTime.ofInstant(Instant.ofEpochMilli(this), ZoneId.systemDefault())
+}
+fun ItemsDatabase.saveItemShort(item: ItemShort){
+    if(item.Index == -1L){
+        item.Index = localDB.itemsDAO().getItemsAmount() + 1
+        this.itemsDAO().insert(item.toSItem())
+    } else {
+        this.itemsDAO().update(item.toSItem())
+    }
+    Log.d("localDB", "save $item")
 }
