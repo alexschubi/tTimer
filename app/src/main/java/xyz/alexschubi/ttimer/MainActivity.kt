@@ -32,7 +32,6 @@ var skipBackPress: Boolean = false
 
 class MainActivity : AppCompatActivity() {
 
-    //TODO undo button after delete
     companion object {
         private var openSItem: sItem? = null
         @JvmStatic
@@ -64,10 +63,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var openWithItemShort: ItemShort? = null
-        if (intent.extras != null){
-            openWithItemShort = intent.extras!!.getParcelable<ItemShort>("shortItem")
-        }
+        var openWithItemShort: ItemShort? = intent.getParcelableExtra<ItemShort>("ItemShort")
+        Log.d("MainActivity", "open App with $openWithItemShort")//TODO LATEST
         //open Fragment
         supportFragmentManager.open { replace(R.id.container, LiveDataRecyclerViewFragment.newInstance(openWithItemShort)) }
     }
@@ -96,10 +93,8 @@ class MainActivity : AppCompatActivity() {
             Log.i("NotificationReceiver", "triggered")
             val shortItem: ItemShort = intent.getParcelableExtra<ItemShort>("ItemShort")!!
             Log.d("MainActivity", "Intent Extras: $shortItem")
-            //TODO cant get ParcelableExtra LATEST
-
             val notification = NotificationUtils(context).getNotificationBuilder(shortItem).build()
-            NotificationUtils(context).getManager().notify(shortItem!!.Index.toInt(), notification)
+            NotificationUtils(context).getManager().notify(shortItem.Index.toInt(), notification)
             pendResult.finish()
         }
     }
@@ -120,8 +115,8 @@ class MainActivity : AppCompatActivity() {
         override fun onReceive(context: Context, intent: Intent) {
             val pendResult = this.goAsync()
             Log.i("Notification", "SnoozeLongReceiver triggered")
-
-            val editItem = intent.getParcelableExtra<ItemShort>("ItemShort")!!
+            val editItemArray = intent.extras!!.getStringArrayList("currentItem")!!
+            var editItem = editItemArray.toItemShort()
             NotificationUtils(context).cancelNotification(editItem)
             editItem.TimeStamp = ZonedDateTime.now().plusDays(1).toMilli()
             Functions().saveSItemToDB(editItem.toSItem())

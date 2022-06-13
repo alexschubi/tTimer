@@ -30,7 +30,7 @@ class LiveDataRecyclerViewFragment : Fragment() {
         fun newInstance(item: ItemShort?): LiveDataRecyclerViewFragment
                 = LiveDataRecyclerViewFragment().apply {
             if(item != null){
-                openSItem = sItem(item.Index, item.Text, item.TimeStamp, "", item.Color, item.Notified, item.Deleted)
+                openSItem = item.toSItem()
             }
         }
     }

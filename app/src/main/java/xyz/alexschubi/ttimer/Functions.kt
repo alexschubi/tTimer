@@ -6,7 +6,7 @@ import xyz.alexschubi.ttimer.data.sItem
 import java.time.LocalDateTime
 import java.time.Year
 
-class Functions {
+class  Functions {
 
     fun getTimeOfArray(getItem: ArrayList<String>): LocalDateTime? {
         var tempDateTime: LocalDateTime? = null

@@ -56,18 +56,19 @@ class NotificationUtils(nContext: Context) : ContextWrapper(nContext) {
 
     fun getNotificationBuilder(editItem: ItemShort): NotificationCompat.Builder {
         //press on Notification
-        val openClickIntent = Intent(this, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        val openClickIntent = Intent(this, MainActivity::class.java)
+            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK and Intent.FLAG_ACTIVITY_CLEAR_TASK)
             .putExtra("ItemShort", editItem)
         val openPendingClickIntent = PendingIntent.getActivity(this, editItem.Index.toInt(), openClickIntent, PendingIntent.FLAG_IMMUTABLE)
 
-        //for the 2h delay button in notificgation
+        //for the 1D delay button in notificgation
         val snoozeLongIntent = Intent(this, MainActivity.NotificationSnoozeLongReceiver::class.java).apply {
             putExtra(EXTRA_NOTIFICATION_ID, editItem.Index)
             putExtra("ItemShort", editItem)
         }
         val snoozeLongPendingIntent = PendingIntent.getBroadcast(this, editItem.Index.toInt(), snoozeLongIntent, PendingIntent.FLAG_IMMUTABLE)
 
-        //for the 10min delay button in notification
+        //for the 30min delay button in notification
         val snoozeShortIntent = Intent(this, MainActivity.NotificationSnoozeShortReceiver::class.java).apply {
             putExtra(EXTRA_NOTIFICATION_ID, editItem.Index)
             putExtra("ItemShort", editItem)
@@ -116,17 +117,15 @@ class NotificationUtils(nContext: Context) : ContextWrapper(nContext) {
 
     fun makeNotification(editItem: ItemShort) { //TODO use work-manager
         val alarmManager = mContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val intent = Intent(mContext, MainActivity.NotificationReceiver::class.java).putExtra("ItemShort", editItem)
-        val pendingIntent = PendingIntent.getBroadcast(mContext, editItem.Index.toInt(), intent, PendingIntent.FLAG_ONE_SHOT)
-        alarmManager.setExact(
-            AlarmManager.RTC_WAKEUP,
-            editItem.TimeStamp!!,
-            pendingIntent
-        )
+        val intent = Intent(mContext, MainActivity.NotificationReceiver::class.java)
+            .putExtra("ItemShort", editItem)
+        val pendingIntent = PendingIntent.getBroadcast(mContext, editItem.Index.toInt(), intent,
+            PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE)
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, editItem.TimeStamp!!, pendingIntent)
         Log.i("Notification", "doAlarm Item ${editItem.Index} in " +
-                "${(editItem.TimeStamp!! - ZonedDateTime.now().toInstant().toEpochMilli()) * 60000} minutes")
+                "${(editItem.TimeStamp!! - ZonedDateTime.now().toInstant().toEpochMilli()) / 60000} minutes")
     }
-    fun cancelNotification(item: ItemShort) {//TODO renew
+    fun cancelNotification(item: ItemShort) {
         try{
             val intent = Intent(mContext, MainActivity.NotificationReceiver::class.java)
                 .putExtra("ItemShort", item)
