@@ -113,6 +113,7 @@ class AddItemFragment3() : Fragment(), ExitWithAnimation {
             refreshDateTime()
             b_del_time.visibility = View.VISIBLE
             tv_show_time.visibility = View.VISIBLE
+            b_add_notification.visibility = View.GONE
             table_datetime.visibility =  View.VISIBLE
         }
         tb_add_text.setText(currentItem.Text)
@@ -145,11 +146,9 @@ class AddItemFragment3() : Fragment(), ExitWithAnimation {
         }
 
         tablerow_date.setOnClickListener {
-            //initDateTimePicker()
             datePickerDialog.show(parentFragmentManager, "DatePicker")
         }
         tablerow_time.setOnClickListener {
-            //initDateTimePicker()
             timePickerDialog.show(parentFragmentManager, "TimePicker")
         }
         tablerow_span.setOnClickListener {
@@ -157,7 +156,15 @@ class AddItemFragment3() : Fragment(), ExitWithAnimation {
         }
         b_del_time.setOnClickListener { delDateTime() }
         b_add_notification.setOnClickListener {
-            addDateTime(ZonedDateTime.now())
+            addDateTime(ZonedDateTime.now().plusMinutes(1))//TODO no plusMinutes
+            refreshDateTime()
+        }
+        b_notification_1d.setOnClickListener {
+            addDateTime(ZonedDateTime.now().plusDays(1))
+            refreshDateTime()
+        }
+        b_notification_30min.setOnClickListener {
+            addDateTime(ZonedDateTime.now().plusMinutes(30))
             refreshDateTime()
         }
         b_add_final.setOnClickListener {
@@ -165,6 +172,7 @@ class AddItemFragment3() : Fragment(), ExitWithAnimation {
             b_add_final.setOnClickListener(null)
             addItem()
         }
+
         rg_color.setOnCheckedChangeListener { radioGroup, i ->
             var strokeColor = 0
             when(i){

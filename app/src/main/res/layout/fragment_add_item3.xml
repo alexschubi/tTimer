@@ -316,29 +316,81 @@
 
                 </TableLayout>
 
-                <Button
-                    android:id="@+id/b_del_time"
-                    style="@style/tMaterialButton"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:backgroundTint="@null"
-                    android:text="Delete Notification"
-                    android:textAllCaps="false"
-                    app:rippleColor="@color/dn_accent_1" />
+                    android:layout_height="match_parent">
 
-                <Button
-                    android:id="@+id/b_add_notification"
-                    style="@style/tMaterialButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:layout_weight="1"
-                    android:autoText="false"
-                    android:backgroundTint="@null"
-                    android:text="Add Notification"
-                    android:textAllCaps="false"
-                    app:rippleColor="@color/dn_accent_1" />
+                    <Button
+                        android:id="@+id/b_add_notification"
+                        style="@style/tMaterialButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:autoText="false"
+                        android:backgroundTint="@null"
+                        android:text="Add Notification"
+                        android:textAllCaps="false"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:rippleColor="@color/dn_accent_1" />
+
+                    <Button
+                        android:id="@+id/b_notification_30min"
+                        style="@style/tMaterialButton"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="2dp"
+                        android:layout_weight="0.5"
+                        android:autoText="false"
+                        android:backgroundTint="@null"
+                        android:text="in 30min."
+                        android:textAllCaps="false"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/b_add_notification"
+                        app:rippleColor="@color/dn_accent_1" />
+
+                    <Button
+                        android:id="@+id/b_notification_1d"
+                        style="@style/tMaterialButton"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_weight="0.5"
+                        android:autoText="false"
+                        android:backgroundTint="@null"
+                        android:text="in 1day"
+                        android:textAllCaps="false"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/guideline2"
+                        app:layout_constraintTop_toBottomOf="@id/b_add_notification"
+                        app:rippleColor="@color/dn_accent_1" />
+
+                    <Button
+                        android:id="@+id/b_del_time"
+                        style="@style/tMaterialButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:backgroundTint="@null"
+                        android:text="Delete Notification"
+                        android:textAllCaps="false"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/b_notification_30min"
+                        app:rippleColor="@color/dn_accent_1" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.5" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
@@ -351,7 +403,7 @@
         style="@style/tMaterialButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
+        android:layout_gravity="center_horizontal"
         android:layout_margin="2dp"
         android:backgroundTint="@color/tt_add"
         android:clickable="true"

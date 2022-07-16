@@ -3,13 +3,7 @@ package xyz.alexschubi.ttimer.data
 import android.os.Build
 import android.os.Parcel
 import android.os.Parcelable
-import androidx.room.*
-import kotlinx.android.parcel.Parceler
-import kotlinx.android.parcel.Parcelize
-import java.time.LocalDateTime
-import java.time.ZonedDateTime
 
-@Parcelize
 data class ItemShort(
     var Index: Long,
     var Text: String = "",
@@ -18,41 +12,37 @@ data class ItemShort(
     var Notified: Boolean = false,
     var Deleted: Boolean = false ): Parcelable {
 
-    companion object : Parceler<ItemShort>{
-        override fun ItemShort.write(parcel: Parcel, flags: Int) {
-            parcel.writeLong(Index)
-            parcel.writeString(Text)
-            parcel.writeLong(TimeStamp ?: -1)
-            parcel.writeString(Color)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                parcel.writeBoolean(Notified)
-                parcel.writeBoolean(Deleted)
-            } else {
-                parcel.writeValue(Notified)
-                parcel.writeValue(Deleted)
-            }
-        }
+    constructor(parcel: Parcel) : this(
+        parcel.readLong(),
+        parcel.readString() ?: "",
+        parcel.readLong(),
+        parcel.readString() ?: "purple",
+        parcel.readBoolean(),
+        parcel.readBoolean() )
 
-        override fun create(parcel: Parcel): ItemShort {
-            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                ItemShort(parcel.readLong(),
-                    parcel.readString() ?: "",
-                    parcel.readLong(),
-                    parcel.readString() ?: "purple",
-                    parcel.readBoolean(),
-                    parcel.readBoolean()
-                )
-            } else {
-                ItemShort(parcel.readLong(),
-                    parcel.readString() ?: "",
-                    parcel.readLong(),
-                    parcel.readString() ?: "purple",
-                    parcel.readValue(Boolean::class.java.classLoader) as Boolean,
-                    parcel.readValue(Boolean::class.java.classLoader) as Boolean
-                )
-            }
-        }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeLong(Index)
+        parcel.writeString(Text)
+        parcel.writeLong(TimeStamp ?: -1)
+        parcel.writeString(Color)
+        parcel.writeBoolean(Notified)
+        parcel.writeBoolean(Deleted)
 
     }
 
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<ItemShort> {
+        override fun createFromParcel(parcel: Parcel): ItemShort {
+            return ItemShort(parcel)
+        }
+
+        override fun newArray(size: Int): Array<ItemShort?> {
+            return arrayOfNulls(size)
+        }
+    }
 }
+
