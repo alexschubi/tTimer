@@ -123,9 +123,10 @@ class FragmentSettings : PreferenceFragmentCompat(), ExitWithAnimation {
         if (connectionButton != null) {
             connectionButton.setOnPreferenceClickListener {
 
-                // TODO password https://stackoverflow.com/a/4325239
-                //  TODO webdav
-                //Todo save credentials secured
+                // TODO implement remote storage
+                // password https://stackoverflow.com/a/4325239
+                // webdav
+                // save credentials secured
                 true
             }
         }*/

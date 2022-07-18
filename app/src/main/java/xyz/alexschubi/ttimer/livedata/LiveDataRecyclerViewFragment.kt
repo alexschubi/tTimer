@@ -134,21 +134,21 @@ class LiveDataRecyclerViewFragment : Fragment() {
     }
 
     fun displayAddItem(item: sItem?, view: View?) {
-
-
-
+        b_add_reveal.isClickable = false
         var startPos = intArrayOf(0,0)
         var exitPos = intArrayOf(0,0)
 
-        if (view != null){
+        if (view != null){ 
             startPos = intArrayOf(view.left + view.width/2, view.top + view.height/2)
         }
         parentFragmentManager.open {
             add(R.id.container, AddItemFragment3.newInstance(startPos, exitPos,
                 item, this@LiveDataRecyclerViewFragment))
             addToBackStack(null)
+
         }
         appbar.setExpanded(false)
+        b_add_reveal.isClickable = true
 
     }
 

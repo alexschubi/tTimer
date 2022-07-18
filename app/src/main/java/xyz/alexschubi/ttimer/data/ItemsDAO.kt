@@ -3,7 +3,7 @@ package xyz.alexschubi.ttimer.data
 import androidx.room.*
 
 @Dao
-interface ItemsDAO{ //TODO use coroutines / livedata
+interface ItemsDAO{
     @Insert(onConflict = OnConflictStrategy.ABORT)
     fun insert(item: sItem)
 

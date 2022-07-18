@@ -24,12 +24,14 @@ import java.time.ZonedDateTime
 class NotificationUtils(nContext: Context) : ContextWrapper(nContext) {
     private var notificationManager: NotificationManager? = null
     lateinit var mContext: Context
+    var alarmManager: AlarmManager
     init {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createChannels()
             mContext = nContext
             localDB = ItemsDatabase.getDatabase(nContext)!!
         }
+        alarmManager = mContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
     }
 
     private fun createChannels() {
@@ -84,7 +86,7 @@ class NotificationUtils(nContext: Context) : ContextWrapper(nContext) {
 
         return NotificationCompat.Builder(
             applicationContext,
-            editItem.Index.toString()
+            applicationContext.packageName
         ).apply {
             setChannelId(applicationContext.packageName)
             setSmallIcon(R.drawable.ttimer_notification_pic)
@@ -115,8 +117,7 @@ class NotificationUtils(nContext: Context) : ContextWrapper(nContext) {
         }
     }
 
-    fun makeNotification(editItem: ItemShort) { //TODO use work-manager
-        val alarmManager = mContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+    fun makeNotification(editItem: ItemShort) {
         val bundle = Bundle().apply { putParcelable("ItemShort", editItem) }
         val intent = Intent(mContext, MainActivity.NotificationReceiver::class.java)
             .putExtra("Bundle", bundle)
@@ -126,14 +127,20 @@ class NotificationUtils(nContext: Context) : ContextWrapper(nContext) {
         Log.i("Notification", "doAlarm Item ${editItem.Index} in " +
                 "${(editItem.TimeStamp!! - ZonedDateTime.now().toInstant().toEpochMilli()) / 60000} minutes")
     }
-    fun cancelNotification(item: ItemShort) {
-        try{
-            val intent = Intent(mContext, MainActivity.NotificationReceiver::class.java)
-                .putExtra("ItemShort", item)
-            PendingIntent.getBroadcast(mContext, item.Index.toInt(), intent, PendingIntent.FLAG_CANCEL_CURRENT).cancel()
-            getManager().cancel(item.Index.toInt())
-            Log.i("Notification", "canceled old pendingInent")
-        } catch (e: Error){null}
+    fun cancelNotification(mItem: ItemShort) {
+        val mIntent = Intent(mContext, MainActivity.NotificationReceiver::class.java)
+        val mPendingIntent = PendingIntent.getBroadcast(mContext, mItem.Index.toInt(), mIntent, PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE)
+
+        try {
+            mPendingIntent.cancel()
+            alarmManager.cancel(mPendingIntent) //TODO cancel triggered Notification
+            Log.i("Notification", "canceled PendingIntent ${mItem.Index}")
+        } catch (e: Exception){
+            Log.e("Notification", "cant get PendingIntent ${mItem.Index}")
+            print(e)
+        }
+
+
     }
 
 }

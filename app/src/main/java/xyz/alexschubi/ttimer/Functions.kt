@@ -37,7 +37,6 @@ class  Functions {
         return getItem
     }
 
-    //TODO better span texting
     fun getSpanString(itemDateTime: LocalDateTime?): String?{
         if(itemDateTime==null) return null
         var testOutLine = ""
@@ -118,7 +117,8 @@ class  Functions {
         } //TODO more sort modes
         return sortedList
     }
-    fun getSortedLiveData(sortMode: Int?): MutableList<sItem> {
+
+    fun getSortedLiveData(sortMode: Int?): MutableList<sItem> { //TODO easier sorting
         var sortingMode = 0
         sortingMode = sortMode ?: localDB.preferencesDAO().getLast().SortMode
         var orderBySQL = "Index ASC"

@@ -156,7 +156,7 @@ class AddItemFragment3() : Fragment(), ExitWithAnimation {
         }
         b_del_time.setOnClickListener { delDateTime() }
         b_add_notification.setOnClickListener {
-            addDateTime(ZonedDateTime.now().plusMinutes(1))//TODO no plusMinutes
+            addDateTime(ZonedDateTime.now().plusMinutes(1))
             refreshDateTime()
         }
         b_notification_1d.setOnClickListener {
@@ -209,14 +209,14 @@ class AddItemFragment3() : Fragment(), ExitWithAnimation {
 
     private fun addItem() {
         val colorButton: RadioButton = view?.findViewById<RadioButton>(rg_color.checkedRadioButtonId)!!
-    when (this.view?.findViewById<RadioButton>(colorButton.id)?.id) {
-        rb_purple.id -> currentItem.Color = "purple"
-        rb_red.id -> currentItem.Color = "red"
-        rb_orange.id -> currentItem.Color = "orange"
-        rb_yellow.id -> currentItem.Color = "yellow"
-        rb_green.id -> currentItem.Color = "green"
-        rb_blue.id -> currentItem.Color = "blue"
-    }
+        when (this.view?.findViewById<RadioButton>(colorButton.id)?.id) {
+            rb_purple.id -> currentItem.Color = "purple"
+            rb_red.id -> currentItem.Color = "red"
+            rb_orange.id -> currentItem.Color = "orange"
+            rb_yellow.id -> currentItem.Color = "yellow"
+            rb_green.id -> currentItem.Color = "green"
+            rb_blue.id -> currentItem.Color = "blue"
+        }
         Log.d("radio Button", " color set to ${currentItem.Color}")
         currentItem.Text = tb_add_text.text.toString()
         // sItem.Text = sItem.Index.toString() + " - " + tb_add_text.text.toString()
