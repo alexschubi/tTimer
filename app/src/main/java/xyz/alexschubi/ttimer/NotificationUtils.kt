@@ -113,7 +113,6 @@ class NotificationUtils(nContext: Context) : ContextWrapper(nContext) {
             priority = NotificationCompat.PRIORITY_DEFAULT
             setAutoCancel(false)
             build()
-
         }
     }
 

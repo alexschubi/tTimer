@@ -11,6 +11,8 @@ import android.view.ViewGroup
 import android.widget.RadioButton
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
@@ -34,6 +36,8 @@ class AddItemFragment3() : Fragment(), ExitWithAnimation {
     override fun isToBeExitedWithAnimation(): Boolean = true
     private var exitWithSave = false
     private lateinit var adapter: LiveDataRecyclerViewAdapter
+    private lateinit var layoutManager: LinearLayoutManager
+    private lateinit var recyclerView: RecyclerView
     //local Variables
     private var isNewItem = true
     private val newItem = sItem(-1, "", null, null, "purple", false, false)
@@ -66,6 +70,8 @@ class AddItemFragment3() : Fragment(), ExitWithAnimation {
             }
             if(listFragment != null){
                 adapter = listFragment.liveRecyclerView.adapter as LiveDataRecyclerViewAdapter
+                layoutManager = listFragment.liveRecyclerView.layoutManager as LinearLayoutManager
+                recyclerView = listFragment.liveRecyclerView
             }
 
         }
@@ -79,17 +85,16 @@ class AddItemFragment3() : Fragment(), ExitWithAnimation {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//rotation crash savedstate so disabled rotation in mainfest
+//rotation crash savedstate so: disabled rotation in manifest
         super.onViewCreated(view, savedInstanceState)
         view.startCircularReveal(startPosX, startPosY)
 
-        //i dont know why this is here, cuz it cant br acessed
         view.b_back.setOnClickListener {
             b_back.setOnClickListener(null)
             b_add_final.setOnClickListener(null)
             exitWithSave = false
             timer.cancel()
-            this.view?.let { inputMethodManager.hideSoftInputFromWindow(view?.windowToken, 0) }
+            this.view?.let { inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0) }
             this.view?.exitCircularReveal(posX!!, posY!!){
                 parentFragmentManager.popBackStack()
             }
@@ -97,19 +102,19 @@ class AddItemFragment3() : Fragment(), ExitWithAnimation {
 
         if (!isNewItem) {
             b_add_final.text = "Save"
-        } else {
+        } else { //This is ony here to get te correct indexNr from the DB
             Functions().saveSItemToDB(currentItem)
             currentItem = localDB.itemsDAO().getLast()
             Functions().deleteItemFromDB(currentItem.Index)
         }
 
-        var tempDateTime = LocalDateTime.now()
+        var tempDateTime = ZonedDateTime.now()
         if (currentItem.TimeStamp == null) {
             tv_show_time.visibility = View.GONE
             table_datetime.visibility =  View.GONE
             b_del_time.visibility = View.GONE
         } else {
-            tempDateTime = currentItem.date()!!.toLocalDateTime()
+            tempDateTime = currentItem.date()
             refreshDateTime()
             b_del_time.visibility = View.VISIBLE
             tv_show_time.visibility = View.VISIBLE
@@ -125,7 +130,7 @@ class AddItemFragment3() : Fragment(), ExitWithAnimation {
             .setTheme(R.style.tMaterialTimePicker)
             .build()
         datePickerDialog = MaterialDatePicker.Builder.datePicker()
-            .setSelection(ZonedDateTime.now().toMilli())
+            .setSelection(tempDateTime.toMilli())
             .setTheme(R.style.tMaterialDatePicker)
             .build()
         timePickerDialog.addOnPositiveButtonClickListener {
@@ -152,7 +157,7 @@ class AddItemFragment3() : Fragment(), ExitWithAnimation {
             timePickerDialog.show(parentFragmentManager, "TimePicker")
         }
         tablerow_span.setOnClickListener {
-            //TODO display both DateTImePickers
+            //TODO display both DateTimePickers
         }
         b_del_time.setOnClickListener { delDateTime() }
         b_add_notification.setOnClickListener {
@@ -231,8 +236,15 @@ class AddItemFragment3() : Fragment(), ExitWithAnimation {
             Log.d("Notification", "No Notification wanted or in Past")
         }
     //CLOSE addView
-        if(isNewItem){ adapter.addItem(currentItem) }
-        else { adapter.editItem(oldItem!!, currentItem) }
+        if(isNewItem){
+            adapter.addItem(currentItem)
+         //   val tIndex =adapter.data.value!!.indexOf(adapter.data.value!!.findLast{it.Index == currentItem.Index-1}!!)
+         //   val positions = recyclerView.findViewHolderForAdapterPosition(tIndex)?.itemView?.getCenterPosition()
+         //   posX = positions?.get(0)
+         //   posY = positions?.get(1)
+        } else {
+            adapter.editItem(oldItem!!, currentItem)
+        }
         b_add_final.isClickable = false
 
         exitWithSave = true
@@ -254,17 +266,18 @@ class AddItemFragment3() : Fragment(), ExitWithAnimation {
             .setMinute(tempDateTime.minute)
             .build()
         datePickerDialog = MaterialDatePicker.Builder.datePicker()
-            .setSelection(null )
+            .setSelection(tempDateTime.toInstant(ZoneOffset.of(ZoneOffset.systemDefault().id)).toEpochMilli())
             .build()
     }
 
     private fun addDateTime(dateTime: ZonedDateTime) {
+        sDateTime = dateTime
         tv_show_time.text = dateTime.format(dateFormatter) + " in " + Functions().getSpanString(dateTime.toLocalDateTime()!!)
         tv_show_time.visibility = View.VISIBLE
         b_del_time.visibility = View.VISIBLE
         table_datetime.visibility = View.VISIBLE
         b_add_notification.visibility = View.GONE
-        Log.d("addItem-Date-Text",dateTime.format(dateFormatter) + " in " + Functions().getSpanString(dateTime!!.toLocalDateTime()!!))
+        Log.d("addItem-Date-Text",dateTime.format(dateFormatter) + " in " + Functions().getSpanString(dateTime.toLocalDateTime()!!))
         currentItem.Span = Functions().getSpanString(dateTime.toLocalDateTime())
         currentItem.TimeStamp = dateTime.toMilli()
         Log.d("addDateTime", "LocalDateTime ${dateTime.format(DateTimeFormatter.ofPattern("EE dd.MM.uuuu HH:mm"))} set")
@@ -299,9 +312,7 @@ class AddItemFragment3() : Fragment(), ExitWithAnimation {
     override fun onDestroyView() {
         super.onDestroyView()
         timer.cancel()
-        if (exitWithSave){
-            Functions().saveSItemToDB(currentItem)
-        }
+        if (exitWithSave){ Functions().saveSItemToDB(currentItem) }
         Log.d("AddItemFragment", "exit Fragment")
     }
 
