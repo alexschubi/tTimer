@@ -12,7 +12,9 @@ import xyz.alexschubi.ttimer.MainActivityViewModel
 @Composable
 fun Screen1(viewModel: MainActivityViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
     val uiState = viewModel.uiState.collectAsState()
-    Button(onClick = {uiState.value.click2++}, modifier = Modifier.padding(8.dp)) {
+    Button(onClick = {
+        viewModel.uiStateSource.value = viewModel.uiStateSource.value.copy(click2 = viewModel.uiStateSource.value.click2 + 1)
+                     }, modifier = Modifier.padding(8.dp)) {
         Text("I've been clicked ${uiState.value.click2} times")
     }
 }

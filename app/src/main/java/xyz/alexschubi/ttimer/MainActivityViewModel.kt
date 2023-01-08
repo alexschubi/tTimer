@@ -7,6 +7,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class MainActivityViewModel (app: Application): AndroidViewModel(app) {
-    private val _UIState = MutableStateFlow(MainActivityUIState())
-    val uiState: StateFlow<MainActivityUIState> = _UIState.asStateFlow()
+    val uiStateSource = MutableStateFlow(MainActivityUIState())
+    val uiState: StateFlow<MainActivityUIState> = uiStateSource.asStateFlow()
 }
