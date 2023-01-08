@@ -1,4 +1,4 @@
-package xyz.alexschubi.ttimer.ui.theme
+package xyz.alexschubi.ttimer.theme
 
 import androidx.compose.ui.graphics.Color
 

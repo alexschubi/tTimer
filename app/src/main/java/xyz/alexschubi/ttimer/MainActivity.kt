@@ -3,23 +3,40 @@ package xyz.alexschubi.ttimer
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.runtime.*
-import com.google.accompanist.navigation.animation.AnimatedNavHost
-import com.google.accompanist.navigation.animation.rememberAnimatedNavController
-import xyz.alexschubi.ttimer.screen1.Screen1
-import com.google.accompanist.navigation.animation.composable
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.*
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.rememberPagerState
+import xyz.alexschubi.ttimer.tabs.Tabs
+import xyz.alexschubi.ttimer.tabs.TabsContent
+import xyz.alexschubi.ttimer.theme.TTimerTheme
 
 class MainActivity : ComponentActivity() {
-    @OptIn(ExperimentalAnimationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        actionBar?.hide() //TODO better way?
         setContent {
-            val navController = rememberAnimatedNavController()
-            AnimatedNavHost(navController = navController, startDestination = NavRoutes.Screen1.route) {
-                composable(NavRoutes.Screen1.route) {Screen1(MainActivityViewModel(application))}
+            TTimerTheme{
+                Surface {
+                    MainScreen()
+                }
             }
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalPagerApi::class)
+@Composable
+fun MainScreen() {
+    val tabs = listOf(TabItem.Home, TabItem.Discover, TabItem.Settings)
+    val pagerState = rememberPagerState(pageCount = tabs.size)
+    Scaffold { padding ->
+        Column(modifier = Modifier.padding(padding)) {
+            Tabs(tabs = tabs, pagerState = pagerState)
+            TabsContent(tabs = tabs, pagerState = pagerState)
+        }
+    }
+}
