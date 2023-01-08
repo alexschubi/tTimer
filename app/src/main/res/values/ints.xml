@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <dimen name="size_title">200dp</dimen>
-    <dimen name="size_date">280dp</dimen>
-    <dimen name="size_time">220dp</dimen>
-    <dimen name="size_item">400dp</dimen>
-</resources>

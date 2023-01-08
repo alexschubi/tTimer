@@ -1,63 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="xyz.alexschubi.ttimer">
-
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    xmlns:tools="http://schemas.android.com/tools">
 
     <application
         android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
-
-        <activity android:name=".MainActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:screenOrientation="locked"
+        android:theme="@style/Theme.tTimer"
+        tools:targetApi="31">
+        <activity
+            android:name=".MainActivity"
             android:exported="true"
-            android:launchMode="standard">
+            android:theme="@style/Theme.tTimer">
             <intent-filter>
-                <action android:name="xyz.alexschubi.ttimer.MainActivity" />
-                <category android:name="android.intent.category.LAUNCHER" />
                 <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.DEFAULT" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
         </activity>
-        <receiver
-            android:name="xyz.alexschubi.ttimer.MainActivity$NotificationReceiver"
-            android:directBootAware="true"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED"/>
-            </intent-filter>
-        </receiver>
-        <receiver
-            android:name="xyz.alexschubi.ttimer.MainActivity$NotificationSnoozeShortReceiver"
-            android:directBootAware="true"
-            android:enabled="true"
-            android:exported="true">
-        </receiver>
-        <receiver
-            android:name="xyz.alexschubi.ttimer.MainActivity$NotificationSnoozeLongReceiver"
-            android:directBootAware="true"
-            android:enabled="true"
-            android:exported="true" >
-        </receiver>
-        <receiver
-            android:name="xyz.alexschubi.ttimer.MainActivity$NotificationDeleteReceiver"
-            android:directBootAware="true"
-            android:enabled="true"
-            android:exported="true" >
-        </receiver>
     </application>
 
 </manifest>
