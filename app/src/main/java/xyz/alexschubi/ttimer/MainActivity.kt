@@ -31,7 +31,7 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalPagerApi::class)
 @Composable
 fun MainScreen() {
-    val tabs = listOf(TabItem.Home, TabItem.Discover, TabItem.Settings)
+    val tabs = listOf(TabItem.ItemPurple, TabItem.ItemsBlue, TabItem.ItemsGreen,TabItem.ItemsYellow, TabItem.ItemsOrange, TabItem.ItemsRed, TabItem.Settings)
     val pagerState = rememberPagerState(pageCount = tabs.size)
     Scaffold { padding ->
         Column(modifier = Modifier.padding(padding)) {

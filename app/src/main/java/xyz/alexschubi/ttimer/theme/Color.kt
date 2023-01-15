@@ -2,7 +2,14 @@ package xyz.alexschubi.ttimer.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple200 = Color(0xFFBB86FC)
-val Purple500 = Color(0xFF6200EE)
-val Purple700 = Color(0xFF3700B3)
-val Teal200 = Color(0xFF03DAC5)
+//Section
+val SectionPurple = Color(0xFF673AB7)
+val SectionBlue = Color(0xFF3F51B5)
+val SectionGreen = Color(0xFF4CAF50)
+val SectionYellow = Color(0xFFFFEB3B)
+val SectionOrange = Color(0xFFFF9800)
+val SectionRed = Color(0xFFE91E63)
+
+//UI
+val TabsHeaderBackground = Color(0xFFFFFFFF)
+val TabsHeaderIndicator = Color(0xFF000000)

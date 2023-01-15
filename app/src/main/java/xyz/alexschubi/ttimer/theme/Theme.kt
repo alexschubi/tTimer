@@ -6,10 +6,17 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 
-private val DarkColorPalette = darkColorScheme()
+private val DarkColorPalette = darkColorScheme(
+    primary = Color(0xFFFFFFFF),
+    secondary = Color(0xFF000000)
+)
 
-private val LightColorPalette = lightColorScheme()
+private val LightColorPalette = lightColorScheme(
+    primary = Color(0xFF000000),
+    secondary = Color(0xFFFFFFFF)
+)
 
 @Composable
 fun TTimerTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {

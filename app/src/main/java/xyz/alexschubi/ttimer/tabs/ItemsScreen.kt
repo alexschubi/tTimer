@@ -6,6 +6,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-fun DiscoverScreen() {
-    Text("Explore the world with Discover.", modifier = Modifier.fillMaxWidth())
+fun ItemsScreen() {
+    Text("Welcome to the Home screen!", modifier = Modifier.fillMaxWidth())
 }
