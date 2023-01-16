@@ -1,0 +1,20 @@
+{
+  "uid": 12345678,
+  "source": "PC1",
+  "text": "test 123 sadkasdui sdfsdfsdf",
+  "lastEdited": 1673892148445,
+  "category": "purple",
+  "tags": ["alpha","beta"],
+  "notifications": [
+    {
+      "nid": 87654321,
+      "status": "new",
+      "timestamp": 1673892148446
+    },
+    {
+      "nid": 11112222,
+      "status": "pending",
+      "timestamp": 1673892148555
+    }
+  ]
+}
