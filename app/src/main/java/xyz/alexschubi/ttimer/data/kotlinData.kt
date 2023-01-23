@@ -1,16 +1,16 @@
 package xyz.alexschubi.ttimer.data
 
 data class kNote(
-    val uid: Int,
-    val source: Source?,
-    val text: String = "",
-    val lastEdited: Long,
-    val category: Category,
-    val tags: List<Tag>?,
-    val notifications: List<kNotification>?
+    val uid: Int = 0,
+    val source: Source? = null,
+    var text: String = "",
+    val lastEdited: Long = 0,
+    val category: Category = Category.purple,
+    val tags: List<Tag>? = null,
+    val notifications: List<kNotification>? = null
 ) {
     fun toJson(): String {
-        var finalstring = "bblblbllblb"
+        val finalstring = "bblblbllblb"
         return finalstring
     }
 }

@@ -15,20 +15,26 @@ import xyz.alexschubi.ttimer.data.*
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ItemsScreen() {
-
+    //Variables for the dialog
     val showDialog = remember { mutableStateOf(false) }
-    val editItem = EditItem()
-    editItem.EditItemDialog(showDialog)
-
+    val editNote = remember { mutableStateOf( kNote() ) }
+    EditItem().EditItemDialog(showDialog, editNote)
+    val initItemsList = test().testData()
+    val itemsList = remember { mutableStateOf( initItemsList ) }
+    //TODO recompose the list so its new when an item was edited
+    //start of the layout
     LazyColumn(
         contentPadding = PaddingValues(8.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
-        itemsIndexed( test().testData() ){ index, item ->
+        itemsIndexed( itemsList.value ){ index, item ->
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor =  MaterialTheme.colorScheme.secondaryContainer),
-                onClick = {showDialog.value = true}
+                onClick = {
+                    editNote.value = item
+                    showDialog.value = true
+                }
             ){
                 //row with Text
                 Row(modifier = Modifier.fillMaxWidth()) {
