@@ -48,7 +48,7 @@ class EditItem {
 
 
         Surface(
-            modifier = Modifier.fillMaxSize()
+           // modifier = Modifier.fillMaxSize()
         ) {
             LazyColumn{
                 item { Text(text = "id=" + note.value.uid) }

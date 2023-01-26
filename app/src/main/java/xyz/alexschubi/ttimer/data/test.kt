@@ -1,7 +1,17 @@
 package xyz.alexschubi.ttimer.data
 
-class test {
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.google.gson.reflect.TypeToken
+import java.io.File
 
+class test {
+    lateinit var testdata: List<kNote>
+
+    init {
+        testToJson(testData())
+        testFromJson()
+    }
     //TEST
     fun testData(): List<kNote>{
         return listOf(
@@ -28,7 +38,30 @@ class test {
             kNote(21, null, "test3", 1673894238666, Category.green, listOf(Tag.alpha, Tag.beta), listOf( kNotification(1, NotificationStatus.new, 2673894238666), kNotification(2, NotificationStatus.pending, 2673894238666))),
             kNote(22, null, "test4", 1673894238666, Category.yellow, listOf(Tag.alpha, Tag.beta), listOf( kNotification(1, NotificationStatus.new, 2673894238666), kNotification(2, NotificationStatus.pending, 2673894238666))),
             kNote(23, null, "test5", 1673894238666, Category.purple, listOf(Tag.alpha, Tag.beta), listOf( kNotification(1, NotificationStatus.new, 2673894238666), kNotification(2, NotificationStatus.pending, 2673894238666))),
-
             )
+    }
+
+
+    fun testToJson(data: List<kNote>){
+
+        val gson = Gson()
+        val string: String = gson.toJson(data)
+        val file = File("data/data/xyz.alexschubi.ttimer/files/test.json")
+        file.createNewFile()
+        file.writeText(string)
+
+        val gsonpretty = GsonBuilder().setPrettyPrinting().create()
+        val stringpretty: String = gsonpretty.toJson(data)
+        val filepretty = File("data/data/xyz.alexschubi.ttimer/files/testpretty.json")
+        filepretty.createNewFile()
+        filepretty.writeText(stringpretty)
+    }
+    fun testFromJson(){
+        val file = File("data/data/xyz.alexschubi.ttimer/files/test.json")
+        val jsonstring = file.readText()
+        val gson = Gson()
+        val listTutorialType = object : TypeToken<List<kNote>>() {}.type
+        val returnList: List<kNote> = gson.fromJson(jsonstring, listTutorialType)
+        testdata = returnList
     }
 }

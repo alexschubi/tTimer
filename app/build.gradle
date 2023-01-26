@@ -75,4 +75,7 @@ dependencies {
     //Pager
     implementation "com.google.accompanist:accompanist-pager:0.13.0"
     implementation "com.google.accompanist:accompanist-pager-indicators:0.13.0"
+
+    //DATA
+    implementation 'com.google.code.gson:gson:2.8.9'
 }

@@ -14,16 +14,24 @@ import xyz.alexschubi.ttimer.data.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ItemsScreen() {
+fun ItemsScreen(category: Category) {
     //Variables for the dialog
     val showDialog = remember { mutableStateOf(false) }
     val editNote = remember { mutableStateOf( kNote() ) }
     EditItem().EditItemDialog(showDialog, editNote)
-    val initItemsList = test().testData()
-    val itemsList = remember { mutableStateOf( initItemsList ) }
+
+    //For Testing TODO remove
+    val mTest = test()
+    var initItemsList = remember { mutableStateOf(mTest.testdata) }.value //TODO remove test data
+
+    val selectedList: List<kNote> = initItemsList.filter { it.category == category }
+    //TODO make it selectable in the preferences to choose between separated and compact view
+
+    val itemsList = remember { mutableStateOf( selectedList ) }
     //TODO recompose the list so its new when an item was edited
     //start of the layout
     LazyColumn(
+        modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(8.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
