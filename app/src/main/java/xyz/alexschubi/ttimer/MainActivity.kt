@@ -1,5 +1,6 @@
 package xyz.alexschubi.ttimer
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -14,10 +15,14 @@ import xyz.alexschubi.ttimer.tabs.Tabs
 import xyz.alexschubi.ttimer.tabs.TabsContent
 import xyz.alexschubi.ttimer.theme.TTimerTheme
 
+lateinit var mcontext: Context
+
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         actionBar?.hide() //TODO better way?
+        mcontext = applicationContext
         setContent {
             TTimerTheme{
                 Surface {

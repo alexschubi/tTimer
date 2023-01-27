@@ -5,12 +5,12 @@ import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import java.io.File
 
-class test {
+class test() {
     lateinit var testdata: List<kNote>
-
     init {
         testToJson(testData())
         testFromJson()
+        json()
     }
     //TEST
     fun testData(): List<kNote>{
