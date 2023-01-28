@@ -11,23 +11,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import xyz.alexschubi.ttimer.data.*
+import xyz.alexschubi.ttimer.mEditItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ItemsScreen(category: Category) {
-    //Variables for the dialog
-    val showDialog = remember { mutableStateOf(false) }
-    val editNote = remember { mutableStateOf( kNote() ) }
-    EditItem().EditItemDialog(showDialog, editNote)
 
-    //For Testing TODO remove
-    val mTest = test()
-    var initItemsList = remember { mutableStateOf(mTest.testdata) }.value //TODO remove test data
-
+    //list of items
+    val initItemsList = remember { mutableStateOf( json().getAllFromJson() ) }.value //TODO refresh
     val selectedList: List<kNote> = initItemsList.filter { it.category == category }
-    //TODO make it selectable in the preferences to choose between separated and compact view
-
     val itemsList = remember { mutableStateOf( selectedList ) }
+    //TODO make it selectable in the preferences to choose between separated and compact view
     //TODO recompose the list so its new when an item was edited
     //start of the layout
     LazyColumn(
@@ -40,8 +34,8 @@ fun ItemsScreen(category: Category) {
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor =  MaterialTheme.colorScheme.secondaryContainer),
                 onClick = {
-                    editNote.value = item
-                    showDialog.value = true
+                    mEditItem.sNoteDialog.value = item
+                    mEditItem.sShowDialog.value = true
                 }
             ){
                 //row with Text
@@ -84,4 +78,7 @@ fun ItemsScreen(category: Category) {
             }
         }
     }
+
+
+
 }

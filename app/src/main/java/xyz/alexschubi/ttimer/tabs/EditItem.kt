@@ -1,40 +1,53 @@
 package xyz.alexschubi.ttimer.tabs
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.DialogProperties
 import xyz.alexschubi.ttimer.data.kNote
 
 
-class EditItem {
+open class EditItem {
+
+    open val sShowDialog = mutableStateOf(false)
+    open val sNoteDialog = mutableStateOf(kNote())
+
+
+    @OptIn(ExperimentalComposeUiApi::class)
     @Composable
     fun EditItemDialog(
         show: MutableState<Boolean>,
         note: MutableState<kNote>
     //TODO add text/dates/etc maybe as whole mutablestateof kItem
     ){
-        var returNnote =  kNote()
+
+
+        var returnNote =  kNote()
         if (show.value) {
             AlertDialog(
-                onDismissRequest = {
-                    show.value = false
-                },
-                title = {
-                    Text(text = "Title for Alert")
-                },
-                text = {
-                    returNnote = editItemDialogBody(note = note)
-                },
+                modifier = Modifier.fillMaxSize(),
+                shape  = MaterialTheme.shapes.large.copy(CornerSize(8.dp)),
+                properties = DialogProperties(usePlatformDefaultWidth = false),
+                onDismissRequest = { show.value = false },
+                //title = { Text(text = "Title for Alert") },
+                text = { returnNote = editItemDialogBody(note = note) },
                 confirmButton = { Button(onClick = {
-                    note.value = returNnote
+                    note.value = returnNote
                     show.value = false
-                }){ Text("confirm") } },
-                dismissButton = { Button(onClick = { show.value = false }){ Text("dismiss") } }
+                }){ Text("submit") } },
+                dismissButton = { Button(onClick = { show.value = false }){ Text("cancel") } }
             )
         }
     }
@@ -43,19 +56,19 @@ class EditItem {
     fun editItemDialogBody(note: MutableState<kNote>): kNote {
         val returnNote = note.value
         var mtext by rememberSaveable(stateSaver = TextFieldValue.Saver) {
-            mutableStateOf(TextFieldValue("example", TextRange(0, 7)))
+            mutableStateOf(TextFieldValue(note.value.text, TextRange(0, 7)))
         }
-
-
         Surface(
-           // modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize()
         ) {
             LazyColumn{
                 item { Text(text = "id=" + note.value.uid) }
                 item { Text(text = "source=" + note.value.source) }
-                item { TextField(
+                item { OutlinedTextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    onValueChange = {mtext = it},
                     value = mtext,
-                    onValueChange = {mtext = it}
+                    label = { Text(text = "Text")},
                 ) }
                 item { Text(text = "edited=" + note.value.lastEdited) }
                 item { Text(text = "category=" + note.value.category) }

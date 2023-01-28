@@ -6,11 +6,13 @@ import com.google.gson.reflect.TypeToken
 import java.io.File
 
 class test() {
-    lateinit var testdata: List<kNote>
+    var testdata: List<kNote>
     init {
-        testToJson(testData())
-        testFromJson()
-        json()
+       // testToJson(testData())
+       // testFromJson()
+        val json = json()
+        //testData().forEach { item -> json.saveToJson(item) }
+        testdata = json.getAllFromJson()
     }
     //TEST
     fun testData(): List<kNote>{
