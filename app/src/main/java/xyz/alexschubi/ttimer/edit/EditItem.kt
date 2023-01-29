@@ -1,9 +1,7 @@
-package xyz.alexschubi.ttimer.tabs
+package xyz.alexschubi.ttimer.edit
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material3.*
@@ -11,7 +9,6 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
@@ -56,23 +53,37 @@ open class EditItem {
     fun editItemDialogBody(note: MutableState<kNote>): kNote {
         val returnNote = note.value
         var mtext by rememberSaveable(stateSaver = TextFieldValue.Saver) {
-            mutableStateOf(TextFieldValue(note.value.text, TextRange(0, 7)))
+            mutableStateOf(TextFieldValue(note.value.text, TextRange.Zero))
         }
         Surface(
             modifier = Modifier.fillMaxSize()
         ) {
             LazyColumn{
-                item { Text(text = "id=" + note.value.uid) }
-                item { Text(text = "source=" + note.value.source) }
-                item { OutlinedTextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    onValueChange = {mtext = it},
-                    value = mtext,
-                    label = { Text(text = "Text")},
-                ) }
-                item { Text(text = "edited=" + note.value.lastEdited) }
-                item { Text(text = "category=" + note.value.category) }
-                item { Text(text = "tags=" + note.value.tags.toString()) }
+                item {
+                    Text(text = "id = " + note.value.uid)
+                    Text(text = "source = " + note.value.source)
+                    Text(text = "edited = " + note.value.lastEdited)
+                }
+                item {
+                    //custom markup
+                    //TODO use custom text-input that can style lines separate
+                    //TextMarkup().CustomTextEdit(text = "")
+
+                    // github repo
+                    TextMarkupImported1().TextHalilozercan()
+                    //TODO return string-value
+                    //TODO restyle
+
+                    //plain string
+                    /*OutlinedTextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        onValueChange = {mtext = it},
+                        value = mtext,
+                        label = { Text(text = "Text")},
+                    )*/
+                }
+                item { Text(text = "category = " + note.value.category) }
+                item { Text(text = "tags = " + note.value.tags.toString()) }
                 item { Text(text = "notifications" + note.value.notifications.toString()) }
             }
 
