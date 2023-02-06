@@ -66,14 +66,12 @@ open class EditItem {
                     //custom markup
                     //TODO use custom text-input that can style lines separate
                     TextMarkup().TextEdit(note.value.text)
-                    //github repo  https://github.com/DmytroShuba/DailyTags
-                    TextMarkupImported2().MarkupTextEdit(note.value.text)
 
+                    //github repo  https://github.com/DmytroShuba/DailyTags
+                    //TextMarkupImported2().MarkupTextEdit(note.value.text)
 
                     // github repo 1
                     //TextMarkupImported1().TextHalilozercan()
-                    //TODO return string-value
-                    //TODO restyle
 
                     //plain string
                     /*OutlinedTextField(
