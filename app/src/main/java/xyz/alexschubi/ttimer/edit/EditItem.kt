@@ -1,7 +1,6 @@
 package xyz.alexschubi.ttimer.edit
 
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material3.*
@@ -48,7 +47,6 @@ open class EditItem {
             )
         }
     }
-    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun editItemDialogBody(note: MutableState<kNote>): kNote {
         val returnNote = note.value
@@ -67,10 +65,13 @@ open class EditItem {
                 item {
                     //custom markup
                     //TODO use custom text-input that can style lines separate
-                    //TextMarkup().CustomTextEdit(text = "")
+                    TextMarkup().TextEdit(note.value.text)
+                    //github repo  https://github.com/DmytroShuba/DailyTags
+                    TextMarkupImported2().MarkupTextEdit(note.value.text)
 
-                    // github repo
-                    TextMarkupImported1().TextHalilozercan()
+
+                    // github repo 1
+                    //TextMarkupImported1().TextHalilozercan()
                     //TODO return string-value
                     //TODO restyle
 

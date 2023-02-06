@@ -77,6 +77,7 @@ dependencies {
     //RichText
     implementation "com.github.pChochura:richtext-compose:1.2.2"
     implementation "org.jetbrains.kotlin:kotlin-reflect:1.7.10"
+    implementation "com.github.DmytroShuba:DailyTags:1.0.0"
     //Icons
     implementation "androidx.compose.material:material-icons-extended:$compose_ui_version"
 }

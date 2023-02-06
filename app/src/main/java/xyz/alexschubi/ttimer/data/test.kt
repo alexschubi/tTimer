@@ -11,7 +11,9 @@ class test() {
        // testToJson(testData())
        // testFromJson()
         val json = json()
+        //activate this one time for testdata
         //testData().forEach { item -> json.saveToJson(item) }
+
         testdata = json.getAllFromJson()
     }
     //TEST
