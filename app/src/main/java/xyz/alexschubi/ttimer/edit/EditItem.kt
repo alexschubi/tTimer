@@ -65,7 +65,7 @@ open class EditItem {
                 item {
                     //custom markup
                     //TODO use custom text-input that can style lines separate
-                    TextMarkup().TextEdit(note.value.text)
+                    TextMarkup(note.value.text).TextField()
 
                     //github repo  https://github.com/DmytroShuba/DailyTags
                     //TextMarkupImported2().MarkupTextEdit(note.value.text)
