@@ -37,7 +37,7 @@ class TextMarkup(text: String) {
 
         val tText = rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue(text, TextRange.Zero)) }
         var mtext by rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue(text, TextRange.Zero)) }
-        val isTextEditing by remember { mutableStateOf(false) }
+        var isTextEditing by rememberSaveable { mutableStateOf(false) }
         val uriHandler = LocalUriHandler.current
         val focusManager = LocalFocusManager.current
 
@@ -47,9 +47,7 @@ class TextMarkup(text: String) {
         } else {
             ViewTextField(textField = tText)
         }
-        Button(onClick = {isTextEditing != isTextEditing}) { Text(text = "toggle EDIT") }
-
-
+        Button(onClick = {isTextEditing = !isTextEditing}) { Text(text = "toggle EDIT + ${isTextEditing}") }
 
     }
 
