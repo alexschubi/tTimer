@@ -29,26 +29,24 @@ import androidx.compose.ui.unit.sp
 
 class TextMarkup(text: String) {
 
-    val text = "dagshjd #hjasdashsjd\n- asdhjdasj \n- www.google.com ad hjh fdsdf\n#jkgfh\n https://youtube.com/ sdjfgb sdf \n \u2022 sd dsfsd ffg "
-    val tText = mutableStateOf(text)
+    val ptext = "dagshjd #hjasdashsjd\n- asdhjdasj \n- www.google.com ad hjh fdsdf\n#jkgfh\n https://youtube.com/ sdjfgb sdf \n \u2022 sd dsfsd ffg "
+    var sText = mutableStateOf(TextFieldValue(text, TextRange.Zero))
 
     @Composable
-    fun TextField() {
+    fun textField(): String {
 
-        val tText = rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue(text, TextRange.Zero)) }
-        var mtext by rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue(text, TextRange.Zero)) }
+        //val tText = rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue(ptext, TextRange.Zero)) }
+        sText = rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue(sText.value.text, TextRange.Zero)) }
         var isTextEditing by rememberSaveable { mutableStateOf(false) }
-        val uriHandler = LocalUriHandler.current
         val focusManager = LocalFocusManager.current
 
-
         if (isTextEditing){
-            EditTextField(textField = tText)
+            EditTextField()
         } else {
-            ViewTextField(textField = tText)
+            ViewTextField()
         }
         Button(onClick = {isTextEditing = !isTextEditing}) { Text(text = "toggle EDIT + ${isTextEditing}") }
-
+        return sText.value.text
     }
 
     private fun textMarkup(text: AnnotatedString): TransformedText{
@@ -108,28 +106,26 @@ class TextMarkup(text: String) {
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    fun EditTextField(textField: MutableState<TextFieldValue>){
-        var mtext by rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(textField.value) }
+    private fun EditTextField(){
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth(),
-            onValueChange = {mtext = it},
-            value = mtext,
+            onValueChange = {sText.value = it},
+            value = sText.value,
             label = { Text(text = "Text") },
             visualTransformation = {textMarkup(it)}
         )
     }
     @Composable
-    fun ViewTextField(textField: MutableState<TextFieldValue>){
-        var mtext by rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(textField.value) }
+    private fun ViewTextField(){
         val uriHandler = LocalUriHandler.current
         ClickableText(
             modifier = Modifier
                 .padding(16.dp)
                 .fillMaxWidth(),
-            text = textMarkup(mtext.annotatedString).text,
+            text = textMarkup(sText.value.annotatedString).text,
             onClick = {
-                textMarkup(mtext.annotatedString).text
+                textMarkup(sText.value.annotatedString).text
                     .getStringAnnotations("URL", it, it)
                     .firstOrNull()?.let { stringAnnotation ->
                         uriHandler.openUri(stringAnnotation.item)

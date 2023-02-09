@@ -12,6 +12,7 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
+import xyz.alexschubi.ttimer.data.json
 import xyz.alexschubi.ttimer.data.kNote
 
 
@@ -42,6 +43,7 @@ open class EditItem {
                 confirmButton = { Button(onClick = {
                     note.value = returnNote
                     show.value = false
+                    json().saveToJson(note.value) //TODO after that the data needs to get refreshed in the list
                 }){ Text("submit") } },
                 dismissButton = { Button(onClick = { show.value = false }){ Text("cancel") } }
             )
@@ -50,9 +52,7 @@ open class EditItem {
     @Composable
     fun editItemDialogBody(note: MutableState<kNote>): kNote {
         val returnNote = note.value
-        var mtext by rememberSaveable(stateSaver = TextFieldValue.Saver) {
-            mutableStateOf(TextFieldValue(note.value.text, TextRange.Zero))
-        }
+
         Surface(
             modifier = Modifier.fillMaxSize()
         ) {
@@ -65,7 +65,7 @@ open class EditItem {
                 item {
                     //custom markup
                     //TODO use custom text-input that can style lines separate
-                    TextMarkup(note.value.text).TextField()
+                    returnNote.text = TextMarkup(note.value.text).textField()
 
                     //github repo  https://github.com/DmytroShuba/DailyTags
                     //TextMarkupImported2().MarkupTextEdit(note.value.text)
@@ -87,7 +87,7 @@ open class EditItem {
             }
 
         }
-        returnNote.text = mtext.text
+        //returnNote.text = mtext.text
         return returnNote
     }
 }
