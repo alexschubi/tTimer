@@ -1,5 +1,7 @@
 package xyz.alexschubi.ttimer.edit
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CornerSize
@@ -8,6 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
@@ -29,12 +32,12 @@ open class EditItem {
         note: MutableState<kNote>
     //TODO add text/dates/etc maybe as whole mutablestateof kItem
     ){
-
+        val focusManager = LocalFocusManager.current
 
         var returnNote =  kNote()
         if (show.value) {
             AlertDialog(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxSize().clickable { focusManager.clearFocus() },
                 shape  = MaterialTheme.shapes.large.copy(CornerSize(8.dp)),
                 properties = DialogProperties(usePlatformDefaultWidth = false),
                 onDismissRequest = { show.value = false },
@@ -52,11 +55,13 @@ open class EditItem {
     @Composable
     fun editItemDialogBody(note: MutableState<kNote>): kNote {
         val returnNote = note.value
+        val focusManager = LocalFocusManager.current
 
         Surface(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize().clickable { focusManager.clearFocus() }
         ) {
-            LazyColumn{
+            LazyColumn(Modifier.clickable { focusManager.clearFocus() }
+            ){
                 item {
                     Text(text = "id = " + note.value.uid)
                     Text(text = "source = " + note.value.source)
@@ -64,22 +69,7 @@ open class EditItem {
                 }
                 item {
                     //custom markup
-                    //TODO use custom text-input that can style lines separate
                     returnNote.text = TextMarkup(note.value.text).textField()
-
-                    //github repo  https://github.com/DmytroShuba/DailyTags
-                    //TextMarkupImported2().MarkupTextEdit(note.value.text)
-
-                    // github repo 1
-                    //TextMarkupImported1().TextHalilozercan()
-
-                    //plain string
-                    /*OutlinedTextField(
-                        modifier = Modifier.fillMaxWidth(),
-                        onValueChange = {mtext = it},
-                        value = mtext,
-                        label = { Text(text = "Text")},
-                    )*/
                 }
                 item { Text(text = "category = " + note.value.category) }
                 item { Text(text = "tags = " + note.value.tags.toString()) }
