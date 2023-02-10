@@ -31,13 +31,15 @@ open class EditItem {
         show: MutableState<Boolean>,
         note: MutableState<kNote>
     //TODO add text/dates/etc maybe as whole mutablestateof kItem
-    ){
+    ): Boolean {
         val focusManager = LocalFocusManager.current
 
         var returnNote =  kNote()
         if (show.value) {
             AlertDialog(
-                modifier = Modifier.fillMaxSize().clickable { focusManager.clearFocus() },
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clickable { focusManager.clearFocus() },
                 shape  = MaterialTheme.shapes.large.copy(CornerSize(8.dp)),
                 properties = DialogProperties(usePlatformDefaultWidth = false),
                 onDismissRequest = { show.value = false },
@@ -51,6 +53,7 @@ open class EditItem {
                 dismissButton = { Button(onClick = { show.value = false }){ Text("cancel") } }
             )
         }
+        return false
     }
     @Composable
     fun editItemDialogBody(note: MutableState<kNote>): kNote {
@@ -58,9 +61,12 @@ open class EditItem {
         val focusManager = LocalFocusManager.current
 
         Surface(
-            modifier = Modifier.fillMaxSize().clickable { focusManager.clearFocus() }
+            modifier = Modifier
+                .fillMaxSize()
+                .clickable { focusManager.clearFocus() }
         ) {
-            LazyColumn(Modifier.clickable { focusManager.clearFocus() }
+            LazyColumn(Modifier
+                .clickable { focusManager.clearFocus() }
             ){
                 item {
                     Text(text = "id = " + note.value.uid)
