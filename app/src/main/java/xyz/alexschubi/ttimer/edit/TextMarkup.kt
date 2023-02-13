@@ -26,91 +26,21 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-class TextMarkup(text: String) {
+class TextMarkup(text: String, private val editable: Boolean = true) {
 
-    val ptext = "dagshjd #hjasdashsjd\n- asdhjdasj \n- www.google.com ad hjh fdsdf\n#jkgfh\n https://youtube.com/ sdjfgb sdf \n \u2022 sd dsfsd ffg "
     var sText = mutableStateOf(TextFieldValue(text, TextRange.Zero))
-    //var isTextEditing = mutableStateOf(false)
+    var isTextEditing by mutableStateOf(false)
 
-    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    fun textField(): String {
-        //VARS
-        //val tText = rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue(ptext, TextRange.Zero)) }
+    fun CombinedTextField(): String {
         sText = rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue(sText.value.text, TextRange.Zero)) }
-        val isTextEditing = rememberSaveable { mutableStateOf(false) }
 
-        //text-fields
-        @Composable
-        fun EditTextField(){
-            var firstFocus = 0
-            val focusRequester = remember { FocusRequester() }
-            OutlinedTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .focusRequester(focusRequester)
-                    .onFocusChanged {
-                        if (it.isFocused) { Log.d("TextMarkup", "textedit is focused") } else { Log.d("TextMarkup", "textedit is not focused") }
-                        if (!it.isFocused && firstFocus>1) {
-                            isTextEditing.value = false
-                            //TODO doesn't trigger change of textview
-                        }
-                        if (!it.isFocused){ focusRequester.requestFocus()}
-                        //TODO BUG unimportant: keyboard enter freezes textedit
-                        firstFocus++
-                    },
-                onValueChange = {sText.value = it},
-                value = sText.value,
-                label = { Text(text = "Text") },
-                visualTransformation = {textMarkup(it)},
-            )
-        }
-        @Composable
-        fun ViewTextField(){
-            val uriHandler = LocalUriHandler.current
-            Surface(
-                modifier = Modifier
-                    .padding(0.dp, 8.dp, 0.dp, 0.dp)
-                    .fillMaxWidth(),
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
-                shape = MaterialTheme.shapes.medium,
-                onClick = { isTextEditing.value = true }
-            ) {
-
-                ClickableText(
-                    modifier = Modifier
-                        .padding(16.dp, 16.dp)
-                        .fillMaxWidth(),
-                    text = textMarkup(sText.value.annotatedString).text,
-                    style = TextStyle(color = MaterialTheme.colorScheme.primary, fontSize = 16.sp, lineHeight = 24.sp),
-                    onClick = {
-                        isTextEditing.value = true
-                        textMarkup(sText.value.annotatedString).text
-                            .getStringAnnotations("URL", it, it)
-                            .firstOrNull()?.let { stringAnnotation ->
-                                uriHandler.openUri(stringAnnotation.item)
-                            }
-                    }
-                )
-            }
-        }
-
-        //TOGGLE
-        if (isTextEditing.value){
+        if (isTextEditing){
             EditTextField()
         } else {
             ViewTextField()
         }
-        Button(onClick = {isTextEditing.value = !isTextEditing.value}) { Text(text = "toggle EDIT") }
-
-        //sub-functions
-        fun toggleEdit(){ isTextEditing.value = !isTextEditing.value }
-        fun changeTo( enum: Enum<TextEditState> ){
-            when(enum){
-                TextEditState.VIEW -> {isTextEditing.value = false}
-                TextEditState.EDIT -> {isTextEditing.value = true}
-            }
-        }
+        fun toggleEdit(){ isTextEditing = !isTextEditing }
 
         return sText.value.text
     }
@@ -170,56 +100,62 @@ class TextMarkup(text: String) {
         )
     }
 
-    //@OptIn(ExperimentalMaterial3Api::class)
-    //@Composable
-    //fun EditTextField(){
-    //    var firstFocus = 0
-    //    OutlinedTextField(
-    //        modifier = Modifier
-    //            .fillMaxWidth()
-    //            .onFocusChanged {
-    //                if (it.isFocused && firstFocus>1) {
-    //                    isTextEditing.value = false
-    //                //TODO doesn't trigger change of textview
-    //                }
-    //                firstFocus++
-//
-    //            },
-    //        onValueChange = {sText.value = it},
-    //        value = sText.value,
-    //        label = { Text(text = "Text") },
-    //        visualTransformation = {textMarkup(it)},
-    //    )
-    //}
-    //@OptIn(ExperimentalMaterial3Api::class)
-    //@Composable
-    //fun ViewTextField(){
-    //    val uriHandler = LocalUriHandler.current
-    //    Surface(
-    //        modifier = Modifier
-    //            .padding(0.dp, 8.dp, 0.dp, 0.dp)
-    //            .fillMaxWidth(),
-    //        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
-    //        shape = MaterialTheme.shapes.medium,
-    //        onClick = { isTextEditing.value = true }
-    //    ) {
-//
-    //        ClickableText(
-    //            modifier = Modifier
-    //                .padding(16.dp, 16.dp)
-    //                .fillMaxWidth(),
-    //            text = textMarkup(sText.value.annotatedString).text,
-    //            style = TextStyle(color = MaterialTheme.colorScheme.primary, fontSize = 16.sp, lineHeight = 24.sp),
-    //            onClick = {
-    //                isTextEditing.value = true
-    //                textMarkup(sText.value.annotatedString).text
-    //                    .getStringAnnotations("URL", it, it)
-    //                    .firstOrNull()?.let { stringAnnotation ->
-    //                        uriHandler.openUri(stringAnnotation.item)
-    //                    }
-    //            }
-    //        )
-    //    }
-    //}
-    enum class TextEditState{EDIT, VIEW}
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Composable
+    fun ViewTextField(){
+        val uriHandler = LocalUriHandler.current
+        Surface(
+            modifier = Modifier
+                .padding(0.dp, 8.dp, 0.dp, 0.dp)
+                .fillMaxWidth(),
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
+            shape = MaterialTheme.shapes.medium,
+            onClick = { if(editable) {isTextEditing = true} }
+        ) {
+
+            ClickableText(
+                modifier = Modifier
+                    .padding(16.dp, 16.dp)
+                    .fillMaxWidth(),
+                text = textMarkup(sText.value.annotatedString).text,
+                style = TextStyle(color = MaterialTheme.colorScheme.primary, fontSize = 16.sp, lineHeight = 24.sp),
+                onClick = {
+                    if(editable) {isTextEditing = true}
+                    textMarkup(sText.value.annotatedString).text
+                        .getStringAnnotations("URL", it, it)
+                        .firstOrNull()?.let { stringAnnotation ->
+                            uriHandler.openUri(stringAnnotation.item)
+                        }
+                }
+            )
+        }
+    }
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Composable
+    fun EditTextField(){
+        var firstFocus = 0
+        val focusRequester = remember { FocusRequester() }
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .focusRequester(focusRequester)
+                .onFocusChanged {
+                    if (it.isFocused) { Log.d("TextMarkup", "textedit is focused") } else { Log.d("TextMarkup", "textedit is not focused") }
+                    if (!it.isFocused && firstFocus>1) {
+                        isTextEditing = false
+                        //TODO doesn't trigger change of textview
+                    }
+                    if (!it.isFocused){ focusRequester.requestFocus()}
+                    //TODO BUG unimportant: keyboard enter freezes textedit
+                    firstFocus++
+                },
+            onValueChange = {sText.value = it},
+            value = sText.value,
+            label = { Text(text = "Text") },
+            visualTransformation = {textMarkup(it)},
+        )
+    }
+
+
 }

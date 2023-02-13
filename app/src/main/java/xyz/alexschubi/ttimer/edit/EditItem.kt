@@ -75,7 +75,7 @@ open class EditItem {
                 }
                 item {
                     //custom markup
-                    returnNote.text = TextMarkup(note.value.text).textField()
+                    returnNote.text = TextMarkup(note.value.text, true).CombinedTextField()
                 }
                 item { Text(text = "category = " + note.value.category) }
                 item { Text(text = "tags = " + note.value.tags.toString()) }

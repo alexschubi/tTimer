@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import xyz.alexschubi.ttimer.data.*
+import xyz.alexschubi.ttimer.edit.TextMarkup
 import xyz.alexschubi.ttimer.mEditItem
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -40,7 +41,8 @@ fun ItemsScreen(category: Category) {
             ){
                 //row with Text
                 Row(modifier = Modifier.fillMaxWidth()) {
-                    Text(text = item.text, modifier = Modifier.padding(8.dp, 4.dp))
+                    //Text(text = item.text, modifier = Modifier.padding(8.dp, 4.dp))
+                    TextMarkup(item.text, false).ViewTextField()
                 }
                 //row with Notifications
                 Row(modifier = Modifier
