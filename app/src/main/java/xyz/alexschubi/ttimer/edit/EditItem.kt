@@ -63,10 +63,10 @@ open class EditItem {
         Surface(
             modifier = Modifier
                 .fillMaxSize()
-                .clickable { focusManager.clearFocus() }
+                //.clickable { focusManager.clearFocus() }
         ) {
             LazyColumn(Modifier
-                .clickable { focusManager.clearFocus() }
+               // .clickable { focusManager.clearFocus() }
             ){
                 item {
                     Text(text = "id = " + note.value.uid)
@@ -75,7 +75,7 @@ open class EditItem {
                 }
                 item {
                     //custom markup
-                    returnNote.text = TextMarkup(note.value.text, true).CombinedTextField()
+                    returnNote.text = TextMarkup(note.value.text).CombinedTextField()
                 }
                 item { Text(text = "category = " + note.value.category) }
                 item { Text(text = "tags = " + note.value.tags.toString()) }

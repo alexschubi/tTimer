@@ -41,8 +41,11 @@ fun ItemsScreen(category: Category) {
             ){
                 //row with Text
                 Row(modifier = Modifier.fillMaxWidth()) {
-                    //Text(text = item.text, modifier = Modifier.padding(8.dp, 4.dp))
-                    TextMarkup(item.text, false).ViewTextField()
+                    Text(
+                        text = TextMarkup(item.text).textMarkup().text,
+                        modifier = Modifier.padding(8.dp, 4.dp)
+                    )
+                    //TextMarkup(item.text, false).ViewTextField()
                 }
                 //row with Notifications
                 Row(modifier = Modifier
