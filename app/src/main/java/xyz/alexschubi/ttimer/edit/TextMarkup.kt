@@ -75,28 +75,13 @@ class TextMarkup(text: String) {
             OutlinedTextField(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .focusRequester(focusRequester)
-                    .onFocusChanged {
-                        if (it.isFocused) {
-                            Log.d("TextMarkup", "textedit is focused")
-                        } else {
-                            Log.d("TextMarkup", "textedit is not focused")
-                        }
-                       // if (!it.isFocused && firstFocus > 1) {
-                       //     isTextEditing = false
-                       //     //TODO doesn't trigger change of textview
-                       // }
-                       // if (!it.isFocused) {
-                       //     focusRequester.requestFocus()
-                       // }
-                        //TODO BUG unimportant: keyboard enter freezes textedit
-                        firstFocus++
-                    },
+                    .focusRequester(focusRequester),
                 onValueChange = {sText.value = it},
                 value = sText.value,
                 label = { Text(text = "Text") },
                 visualTransformation = {textMarkup()},
             )
+            focusRequester.requestFocus()
         }
 
         //TOGGLE FUN

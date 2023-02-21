@@ -39,7 +39,10 @@ open class EditItem {
             AlertDialog(
                 modifier = Modifier
                     .fillMaxSize()
-                    .clickable { focusManager.clearFocus() },
+                    .clickable {
+                               //TODO clear focus
+                        //focusManager.clearFocus() //not working properly
+                               },
                 shape  = MaterialTheme.shapes.large.copy(CornerSize(8.dp)),
                 properties = DialogProperties(usePlatformDefaultWidth = false),
                 onDismissRequest = { show.value = false },
@@ -48,7 +51,8 @@ open class EditItem {
                 confirmButton = { Button(onClick = {
                     note.value = returnNote
                     show.value = false
-                    json().saveToJson(note.value) //TODO after that the data needs to get refreshed in the list
+                    json().saveToJson(note.value)
+                //TODO the data needs to get refreshed in the list
                 }){ Text("submit") } },
                 dismissButton = { Button(onClick = { show.value = false }){ Text("cancel") } }
             )
