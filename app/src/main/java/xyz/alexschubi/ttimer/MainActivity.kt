@@ -34,6 +34,8 @@ class MainActivity : ComponentActivity() {
         actionBar?.hide() //TODO better way?
         mcontext = applicationContext
         mEditItem = EditItem()
+        //TODO load  settings
+
         setContent {
             TTimerTheme{
                 Surface {
@@ -67,7 +69,7 @@ fun MainScreen() {
                 .align(Alignment.BottomEnd),
             shape = MaterialTheme.shapes.small.copy(CornerSize(percent = 50)),
             onClick = {
-                mEditItem.sNoteDialog.value = kNote()
+                mEditItem.sNoteDialog.value = kNote() //TODO use old notes
                 mEditItem.sShowDialog.value = true
                       },
         ) { Icon(Icons.Filled.Add, "NEW") }

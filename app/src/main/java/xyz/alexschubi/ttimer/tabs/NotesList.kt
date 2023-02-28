@@ -19,7 +19,7 @@ import xyz.alexschubi.ttimer.mEditItem
 fun ItemsScreen(category: Category) {
 
     //list of items
-    val initItemsList = remember { mutableStateOf( json().getAllFromJson() ) }.value //TODO refresh
+    val initItemsList = remember { mutableStateOf( jsonItems().getAllFromJson() ) }.value //TODO refresh
     val selectedList: List<kNote> = initItemsList.filter { it.category == category }
     val itemsList = remember { mutableStateOf( selectedList ) }
     //TODO make it selectable in the preferences to choose between separated and compact view
@@ -42,7 +42,7 @@ fun ItemsScreen(category: Category) {
                 //row with Text
                 Row(modifier = Modifier.fillMaxWidth()) {
                     Text(
-                        text = TextMarkup(item.text).textMarkup().text,
+                        text = TextMarkup(item.text).getMarkupText().text,
                         modifier = Modifier.padding(8.dp, 4.dp)
                     )
                     //TextMarkup(item.text, false).ViewTextField()

@@ -10,11 +10,11 @@ class test() {
     init {
        // testToJson(testData())
        // testFromJson()
-        val json = json()
+        val jsonItems = jsonItems()
         //activate this one time for testdata
         //testData().forEach { item -> json.saveToJson(item) }
 
-        testdata = json.getAllFromJson()
+        testdata = jsonItems.getAllFromJson()
     }
     //TEST
     fun testData(): List<kNote>{

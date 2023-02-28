@@ -9,7 +9,7 @@ import java.nio.file.Files
 import java.nio.file.Paths
 
 
-class json() {
+class jsonItems() {
     var dataPath: String = mcontext.getFilesDir().getPath() + "/data/" //TODO dont use mcontext
     val gson = Gson()
     init {
@@ -41,5 +41,25 @@ class json() {
 
         }
         return returnList.toList() //TODO use MutableList for life-data
+    }
+}
+
+class jsonSettings() {
+    init {
+        //TODO first crate settings file
+    }
+    var dataPath: String = mcontext.getFilesDir().getPath() + "/settings.json" //TODO dont use mcontext
+    val gson = Gson()
+    fun saveToJson(settings: kSettings){
+        val jsonString: String = gson.toJson(settings)
+        val file = File(dataPath)
+        Log.d("Data", "write Item to File $file")
+        file.writeText(jsonString)
+    }
+    fun getFromJson(): kSettings {
+        Log.d("Data", "data-path=$dataPath")
+        val jsonstring = File(dataPath).readText()
+        val kSettingsType = object : TypeToken<kSettings>() {}.type
+        return gson.fromJson(jsonstring, kSettingsType)
     }
 }

@@ -1,9 +1,7 @@
 package xyz.alexschubi.ttimer.edit
 
-import android.util.Log
 import android.util.Patterns
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.ClickableText
@@ -11,12 +9,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.focus.focusTarget
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.*
 import androidx.compose.ui.text.input.OffsetMapping
@@ -26,16 +19,14 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-class TextMarkup(text: String) {
-
-    var sText = mutableStateOf(TextFieldValue(text, TextRange.Zero))
-    var mIsTextEditing = mutableStateOf(false)
-
+class TextMarkup(val text: String) {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun CombinedTextField(): String {
         //sText = rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue(sText.value.text, TextRange.Zero)) }
-        var isTextEditing by rememberSaveable { mIsTextEditing }
+        var isTextEditing by rememberSaveable { mutableStateOf(false) }
+        //var sText by remember{ mutableStateOf(TextFieldValue(text)) }
+        var sText by rememberSaveable(stateSaver = TextFieldValue.Saver) { mutableStateOf(TextFieldValue(text = text, selection = TextRange.Zero)) }
 
         //COMPOSABLE TEXT FIELDS
         @Composable
@@ -47,18 +38,18 @@ class TextMarkup(text: String) {
                     .fillMaxWidth(),
                 border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
                 shape = MaterialTheme.shapes.medium,
-                onClick = { isTextEditing = true }
+                onClick = { /*isTextEditing = true*/ }
             ) {
 
                 ClickableText(
                     modifier = Modifier
                         .padding(16.dp, 16.dp)
                         .fillMaxWidth(),
-                    text = textMarkup().text,
+                    text = textMarkup(sText).text,
                     style = TextStyle(color = MaterialTheme.colorScheme.primary, fontSize = 16.sp, lineHeight = 24.sp),
                     onClick = {
-                        isTextEditing = true
-                        textMarkup().text
+                        /*isTextEditing = true*/
+                        textMarkup(sText).text
                             .getStringAnnotations("URL", it, it)
                             .firstOrNull()?.let { stringAnnotation ->
                                 uriHandler.openUri(stringAnnotation.item)
@@ -70,36 +61,67 @@ class TextMarkup(text: String) {
 
         @Composable
         fun EditTextField(){
-            var firstFocus = 0
-            val focusRequester = remember { FocusRequester() }
             OutlinedTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .focusRequester(focusRequester),
-                onValueChange = {sText.value = it},
-                value = sText.value,
+                modifier = Modifier.fillMaxWidth(),
+                onValueChange = {sText = it},
+                value = sText,
                 label = { Text(text = "Text") },
-                visualTransformation = {textMarkup()},
+                visualTransformation = {textMarkup(sText) },
             )
-            focusRequester.requestFocus()
         }
 
         //TOGGLE FUN
         if (isTextEditing){
-            EditTextField()
+            OutlinedTextField(
+                modifier = Modifier.fillMaxWidth(),
+                onValueChange = {sText = it},
+                value = sText,
+                label = { Text(text = "Text") },
+                visualTransformation = {textMarkup(sText) },
+            )
         } else {
-            ViewTextField()
+            val uriHandler = LocalUriHandler.current
+            Surface(
+                modifier = Modifier
+                    .padding(0.dp, 8.dp, 0.dp, 0.dp)
+                    .fillMaxWidth(),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
+                shape = MaterialTheme.shapes.medium,
+                onClick = { /*isTextEditing = true*/ }
+            ) {
+
+                ClickableText(
+                    modifier = Modifier
+                        .padding(16.dp, 16.dp)
+                        .fillMaxWidth(),
+                    text = textMarkup(sText).text,
+                    style = TextStyle(color = MaterialTheme.colorScheme.primary, fontSize = 16.sp, lineHeight = 24.sp),
+                    onClick = {
+                        /*isTextEditing = true*/
+                        textMarkup(sText).text
+                            .getStringAnnotations("URL", it, it)
+                            .firstOrNull()?.let { stringAnnotation ->
+                                uriHandler.openUri(stringAnnotation.item)
+                            }
+                    }
+                )
+            }
         }
         fun toggleEdit(){ isTextEditing = !isTextEditing }
+        Button(onClick = { toggleEdit()}) { Text(text = "Toggle") }
 
-        return sText.value.text
+        return sText.text
     }
 
-    fun textMarkup(): TransformedText{
+    fun getMarkupText(): TransformedText {
+        return textMarkup(TextFieldValue(text = text, selection = TextRange.Zero))
+    }
+
+    private fun textMarkup(textField: TextFieldValue): TransformedText{
         return TransformedText(
             buildAnnotatedString {
                 //for the FUTURE: dont change the appended text
-                val ntext = sText.value.annotatedString
+                val ntext = textField.annotatedString
                     .replace("\n-\\s".toRegex(), "\n\u2022 ")//list1
                     .replace("\n\u2022\\s\\s".toRegex(), "\n \u25E6 ")//list2
                 append(ntext)

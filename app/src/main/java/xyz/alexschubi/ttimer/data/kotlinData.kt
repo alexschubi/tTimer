@@ -8,15 +8,16 @@ data class kNote(
     val category: Category = Category.purple,
     val tags: List<Tag>? = null,
     val notifications: List<kNotification>? = null
-) {
-    fun toJson(): String {
-        val finalstring = "bblblbllblb"
-        return finalstring
-    }
-}
+)
 
 data class kNotification(
     val uid: Int = 0,
     val status: NotificationStatus,
     val timestamp: Long
+)
+
+data class kSettings(
+    val itemAmount: Int = 0,
+    val sortMode: Int = 0,
+    val tags: List<Tag>,
 )
