@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import xyz.alexschubi.ttimer.data.jsonItems
+import xyz.alexschubi.ttimer.data.jsonSettings
 import xyz.alexschubi.ttimer.data.kNote
 
 
@@ -41,6 +42,7 @@ open class EditItem {
                     note.value = returnNote
                     show.value = false
                     jsonItems().saveToJson(note.value)
+                    jsonSettings().registerNewItem()
                     //TODO use empty item when new note
                 //TODO the data needs to get refreshed in the list
                 }){ Text("submit") } },

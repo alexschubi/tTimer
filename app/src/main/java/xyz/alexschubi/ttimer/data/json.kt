@@ -10,8 +10,8 @@ import java.nio.file.Paths
 
 
 class jsonItems() {
-    var dataPath: String = mcontext.getFilesDir().getPath() + "/data/" //TODO dont use mcontext
-    val gson = Gson()
+    private var dataPath: String = mcontext.filesDir.path + "/data/" //TODO dont use mcontext
+    private val gson = Gson()
     init {
         Files.createDirectories(Paths.get(dataPath))
     }
@@ -45,11 +45,13 @@ class jsonItems() {
 }
 
 class jsonSettings() {
+    private var dataPath: String = mcontext.filesDir.path + "/settings.json" //TODO dont use mcontext
+    private val gson = Gson()
     init {
-        //TODO first crate settings file
+        if (!File(dataPath).exists()){
+            saveToJson(kSettings())
+        }
     }
-    var dataPath: String = mcontext.getFilesDir().getPath() + "/settings.json" //TODO dont use mcontext
-    val gson = Gson()
     fun saveToJson(settings: kSettings){
         val jsonString: String = gson.toJson(settings)
         val file = File(dataPath)
@@ -61,5 +63,14 @@ class jsonSettings() {
         val jsonstring = File(dataPath).readText()
         val kSettingsType = object : TypeToken<kSettings>() {}.type
         return gson.fromJson(jsonstring, kSettingsType)
+    }
+    fun registerNewItem(){
+        Log.d("Data", "data-path=$dataPath")
+        val jsonstring = File(dataPath).readText()
+        val kSettingsType = object : TypeToken<kSettings>() {}.type
+        var settings: kSettings = gson.fromJson(jsonstring, kSettingsType)
+        settings.itemAmount = settings.itemAmount + 1
+        val jsonString: String = gson.toJson(settings)
+        File(dataPath).writeText(jsonString)
     }
 }

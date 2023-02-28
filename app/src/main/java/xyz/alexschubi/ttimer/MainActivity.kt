@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.rememberPagerState
+import xyz.alexschubi.ttimer.data.jsonSettings
 import xyz.alexschubi.ttimer.data.kNote
 import xyz.alexschubi.ttimer.edit.EditItem
 import xyz.alexschubi.ttimer.tabs.Tabs
@@ -69,7 +70,7 @@ fun MainScreen() {
                 .align(Alignment.BottomEnd),
             shape = MaterialTheme.shapes.small.copy(CornerSize(percent = 50)),
             onClick = {
-                mEditItem.sNoteDialog.value = kNote() //TODO use old notes
+                mEditItem.sNoteDialog.value = kNote(uid = jsonSettings().getFromJson().itemAmount + 1)
                 mEditItem.sShowDialog.value = true
                       },
         ) { Icon(Icons.Filled.Add, "NEW") }

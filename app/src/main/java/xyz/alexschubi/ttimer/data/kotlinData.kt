@@ -17,7 +17,7 @@ data class kNotification(
 )
 
 data class kSettings(
-    val itemAmount: Int = 0,
+    var itemAmount: Int = 0,
     val sortMode: Int = 0,
-    val tags: List<Tag>,
+    val tags: List<Tag> = listOf(),
 )
