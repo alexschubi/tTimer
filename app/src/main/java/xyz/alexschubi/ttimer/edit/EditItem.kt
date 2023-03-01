@@ -1,6 +1,8 @@
 package xyz.alexschubi.ttimer.edit
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material3.*
@@ -8,58 +10,56 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
-import xyz.alexschubi.ttimer.data.jsonItems
-import xyz.alexschubi.ttimer.data.jsonSettings
-import xyz.alexschubi.ttimer.data.kNote
+import xyz.alexschubi.ttimer.data.*
 
 
 open class EditItem {
-
     open val sShowDialog = mutableStateOf(false)
     open val sNoteDialog = mutableStateOf(kNote())
-
 
     @OptIn(ExperimentalComposeUiApi::class)
     @Composable
     fun EditItemDialog(
-        show: MutableState<Boolean>,
+        showDialog: MutableState<Boolean>,
         note: MutableState<kNote>
-    //TODO add text/dates/etc maybe as whole mutablestateof kItem
     ): Boolean {
         //val focusManager = LocalFocusManager.current
-
         var returnNote =  kNote()
-        if (show.value) {
+        if (showDialog.value) {
             AlertDialog(
-                modifier = Modifier
-                    .fillMaxSize(),
+                modifier = Modifier.fillMaxSize(),
                 shape  = MaterialTheme.shapes.large.copy(CornerSize(8.dp)),
                 properties = DialogProperties(usePlatformDefaultWidth = false),
-                onDismissRequest = { show.value = false },
+                onDismissRequest = { showDialog.value = false },
                 text = { returnNote = editItemDialogBody(note = note) },
                 confirmButton = { Button(onClick = {
                     note.value = returnNote
-                    show.value = false
+                    showDialog.value = false
                     jsonItems().saveToJson(note.value)
                     jsonSettings().registerNewItem()
                     //TODO use empty item when new note
                 //TODO the data needs to get refreshed in the list
                 }){ Text("submit") } },
-                dismissButton = { Button(onClick = { show.value = false }){ Text("cancel") } }
+                dismissButton = { Button(onClick = {
+                    showDialog.value = false
+                }){ Text("cancel") } }
             )
         }
         return false
     }
+    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun editItemDialogBody(note: MutableState<kNote>): kNote {
         val returnNote = note.value
-
+        //Body
         Surface(
             modifier = Modifier
                 .fillMaxSize()
                 //.clickable { focusManager.clearFocus() }
         ) {
+            Notification().NotificationDialog()
             LazyColumn(Modifier
                // .clickable { focusManager.clearFocus() }
             ){
@@ -72,13 +72,29 @@ open class EditItem {
                     //custom markup
                     returnNote.text = TextMarkup(note.value.text).CombinedTextField()
                 }
-                item { Text(text = "category = " + note.value.category) }
+                item { 
+                    Text(text = "category = " + note.value.category)
+                    SimpleDialog().Dialog(title = "Category", body = Text("text")) {}
+                }
                 item { Text(text = "tags = " + note.value.tags.toString()) }
-                item { Text(text = "notifications" + note.value.notifications.toString()) }
+                item {
+                    val notifications = note.value.notifications
+                    Text(text = "notifications = " + notifications.toString())
+                    notifications?.forEach { notification ->
+                        AssistChip(
+                            shape = MaterialTheme.shapes.extraSmall,
+                            modifier = Modifier.padding(2.dp).height(18.dp),
+                            label = { Text(text = notification.timestamp.toString(), fontSize = 12.sp)},
+                            onClick = { /*TODO*/ }
+                        )
+                    }
+                    SimpleDialog().Dialog(title = "Add Notification", body = Text("text")) {}
+
+                }
             }
 
         }
-        //returnNote.text = mtext.text
+        //RETURN
         return returnNote
     }
 }

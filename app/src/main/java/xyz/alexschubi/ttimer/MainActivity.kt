@@ -62,7 +62,7 @@ fun MainScreen() {
             TabsContent(tabs = tabs, pagerState = pagerState)
         }
     }
-    EditItem().EditItemDialog(show = showDialog, note = noteDialog)
+    EditItem().EditItemDialog(showDialog = showDialog, note = noteDialog)
     Box(modifier = Modifier.fillMaxSize()) {
         FloatingActionButton(
             modifier = Modifier

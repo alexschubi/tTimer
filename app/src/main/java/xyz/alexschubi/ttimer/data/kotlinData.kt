@@ -12,8 +12,8 @@ data class kNote(
 
 data class kNotification(
     val uid: Int = 0,
-    val status: NotificationStatus,
-    val timestamp: Long
+    var status: NotificationStatus = NotificationStatus.new,
+    var timestamp: Long = 0
 )
 
 data class kSettings(

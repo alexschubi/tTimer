@@ -1,5 +1,6 @@
 package xyz.alexschubi.ttimer.tabs
 
+import android.widget.Filter
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -7,23 +8,25 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import xyz.alexschubi.ttimer.data.*
 import xyz.alexschubi.ttimer.edit.TextMarkup
 import xyz.alexschubi.ttimer.mEditItem
+import java.util.Collections
+import java.util.function.Predicate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ItemsScreen(category: Category) {
 
     //list of items
-    val initItemsList = remember { mutableStateOf( jsonItems().getAllFromJson() ) }.value //TODO refresh
-    val selectedList: List<kNote> = initItemsList.filter { it.category == category }
-    val itemsList = remember { mutableStateOf( selectedList ) }
+    val itemsList = rememberSaveable { mutableStateOf( jsonItems().getAllFromJson().filter { it.category == category } ) }
     //TODO make it selectable in the preferences to choose between separated and compact view
     //TODO recompose the list so its new when an item was edited
+        //TODO use livedata maybe
     //start of the layout
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
