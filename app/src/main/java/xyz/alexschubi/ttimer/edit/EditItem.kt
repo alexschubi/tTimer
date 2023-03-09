@@ -14,6 +14,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
+import com.vanpra.composematerialdialogs.MaterialDialog
+import com.vanpra.composematerialdialogs.datetime.date.datepicker
+import com.vanpra.composematerialdialogs.datetime.time.timepicker
+import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import xyz.alexschubi.ttimer.data.*
 
 
@@ -128,6 +132,22 @@ open class EditItem {
     fun NotificationDialog(notification: MutableState<kNotification>, show: MutableState<Boolean>){
         //val sNotification = notification
         //val showDialog = remember{show}
+        val dateTimeDialogState = rememberMaterialDialogState()
+        MaterialDialog(
+            dialogState = dateTimeDialogState,
+            buttons = {
+                positiveButton("Ok")
+                negativeButton("Cancel")
+            }
+        ) {
+            datepicker { date ->
+                // Do stuff with java.time.LocalDate object which is passed in
+            }
+            timepicker { time ->
+                // Do stuff with java.time.LocalTime object which is passed in
+            }
+        }
+
         if(show.value){
             AlertDialog(
                 modifier = Modifier.fillMaxSize(),
@@ -136,11 +156,8 @@ open class EditItem {
                 onDismissRequest = {  },
                 text = {
                     //TODO LAST
-                    Text(text = "uid = " + notification.value.uid)
-                    Text(text = "status = " + notification.value.status)
-                    Text(text = "timestamp = " + notification.value.timestamp)
-
-
+                    Text(text = "uid = " + notification.value.uid + " \nstatus = " + notification.value.status + " \ntimestamp = " + notification.value.timestamp)
+                    Button(onClick = { dateTimeDialogState.show() }) { Text(text = "Custom") }
                 },
                 confirmButton = {
                     Button(onClick = {

@@ -1,15 +1,21 @@
 package xyz.alexschubi.ttimer.tabs
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.layout.requiredSize
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.TabRow
 import androidx.compose.material.TabRowDefaults
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RadialGradient
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -20,9 +26,10 @@ import com.google.accompanist.pager.pagerTabIndicatorOffset
 import kotlinx.coroutines.launch
 import xyz.alexschubi.ttimer.TabItem
 
+/*
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun Tabs(tabs: List<TabItem>, pagerState: PagerState) {
+fun Tabs(tabs: List<TabItem>, pagerState: PagerState, count: Int) {
     val scope = rememberCoroutineScope()
     // OR ScrollableTabRow()
     TabRow(
@@ -30,11 +37,12 @@ fun Tabs(tabs: List<TabItem>, pagerState: PagerState) {
         selectedTabIndex = pagerState.currentPage,
         indicator = { tabPositions ->
             TabRowDefaults.Indicator(
-                Modifier.pagerTabIndicatorOffset(pagerState, tabPositions),
+                //Modifier.pagerTabIndicatorOffset(pagerState, tabPositions),
                 height = TabRowDefaults.IndicatorHeight * 2F,
                 color = tabs[pagerState.currentPage].tint
             )
-        }) {
+        }
+    ) {
         tabs.forEachIndexed { index, tab ->
             // OR Tab()
             LeadingIconTab(
@@ -52,12 +60,40 @@ fun Tabs(tabs: List<TabItem>, pagerState: PagerState) {
             )
         }
     }
-}
+}*/
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun TabsContent(tabs: List<TabItem>, pagerState: PagerState) {
-    HorizontalPager(state = pagerState) { page ->
+fun TabsContent(tabs: List<TabItem>, pagerState: PagerState, count: Int) {
+    //Indicator
+    val scope = rememberCoroutineScope()
+    //val backColor = lerp(tabs[pagerState.currentPage].tint, MaterialTheme.colorScheme.secondary ,0.5f)
+    Row(
+        Modifier
+            .height(40.dp)
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center
+    ){
+        repeat(count) {
+            var color = tabs[it].tint
+            //if(pagerState.currentPage != it) { color = lerp(color, MaterialTheme.colorScheme.secondary ,0.5f) }
+            Box(modifier = Modifier
+                .padding(4.dp)
+                .clip(RectangleShape)
+                .background(color)
+                .size(46.dp)
+                .clickable { scope.launch { pagerState.animateScrollToPage(it) } }
+            )
+        }
+    }
+    Box(modifier = Modifier
+        .background(tabs[pagerState.currentPage].tint)
+        .height(3.dp)
+        .fillMaxWidth()
+    )
+
+    //Content
+    HorizontalPager(state = pagerState, count = count) { page ->
         tabs[page].screen()
     }
 }

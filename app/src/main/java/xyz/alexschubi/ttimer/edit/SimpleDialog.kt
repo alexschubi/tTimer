@@ -18,8 +18,7 @@ class SimpleDialog {
 
     @OptIn(ExperimentalComposeUiApi::class)
     @Composable
-    fun Dialog(
-        title: String,
+    fun Dialog(        title: String,
         body: Unit,
         doIfSubmit: () -> Unit
     ){

@@ -22,7 +22,7 @@ import com.google.accompanist.pager.rememberPagerState
 import xyz.alexschubi.ttimer.data.jsonSettings
 import xyz.alexschubi.ttimer.data.kNote
 import xyz.alexschubi.ttimer.edit.EditItem
-import xyz.alexschubi.ttimer.tabs.Tabs
+//import xyz.alexschubi.ttimer.tabs.Tabs
 import xyz.alexschubi.ttimer.tabs.TabsContent
 import xyz.alexschubi.ttimer.theme.TTimerTheme
 
@@ -51,15 +51,15 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainScreen() {
     val tabs = listOf(TabItem.ItemPurple, TabItem.ItemsBlue, TabItem.ItemsGreen,TabItem.ItemsYellow, TabItem.ItemsOrange, TabItem.ItemsRed, TabItem.Settings)
-    val pagerState = rememberPagerState(pageCount = tabs.size)
+    val pagerState = rememberPagerState(/*pageCount = tabs.size*/)
     //dialog values
     val showDialog = remember { mEditItem.sShowDialog }
     val noteDialog = remember { mEditItem.sNoteDialog }
     //Layout
     Scaffold { padding ->
         Column(modifier = Modifier.padding(padding)) {
-            Tabs(tabs = tabs, pagerState = pagerState)
-            TabsContent(tabs = tabs, pagerState = pagerState)
+            //Tabs(tabs = tabs, pagerState = pagerState, tabs.size)
+            TabsContent(tabs = tabs, pagerState = pagerState, tabs.size)
         }
     }
     EditItem().EditItemDialog(showDialog = showDialog, note = noteDialog)
