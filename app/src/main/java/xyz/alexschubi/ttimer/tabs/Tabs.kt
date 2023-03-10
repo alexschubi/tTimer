@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.TabRow
 import androidx.compose.material.TabRowDefaults
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.List
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -68,27 +70,28 @@ fun TabsContent(tabs: List<TabItem>, pagerState: PagerState, count: Int) {
     //Indicator
     val scope = rememberCoroutineScope()
     //val backColor = lerp(tabs[pagerState.currentPage].tint, MaterialTheme.colorScheme.secondary ,0.5f)
-    Row(
-        Modifier
-            .height(40.dp)
-            .fillMaxWidth(),
-        horizontalArrangement = Arrangement.Center
-    ){
+    Row( Modifier.height(40.dp).fillMaxWidth(), horizontalArrangement = Arrangement.Center ){
         repeat(count) {
             var color = tabs[it].tint
-            //if(pagerState.currentPage != it) { color = lerp(color, MaterialTheme.colorScheme.secondary ,0.5f) }
+            var backColor = MaterialTheme.colorScheme.background
+            if(pagerState.currentPage==it) {
+                backColor = color
+                color = MaterialTheme.colorScheme.background
+            }
             Box(modifier = Modifier
-                .padding(4.dp)
+                .fillMaxWidth()
+                .weight(1f)
+                .background(backColor)
                 .clip(RectangleShape)
-                .background(color)
-                .size(46.dp)
                 .clickable { scope.launch { pagerState.animateScrollToPage(it) } }
-            )
+            ){
+                Icon(Icons.Filled.List, "", Modifier.fillMaxSize(), color)
+            }
         }
     }
     Box(modifier = Modifier
         .background(tabs[pagerState.currentPage].tint)
-        .height(3.dp)
+        .height(4.dp)
         .fillMaxWidth()
     )
 
